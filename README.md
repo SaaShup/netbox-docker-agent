@@ -28,7 +28,7 @@ docker run -d -p 1880:1880 -v /var/run/docker.sock:/var/run/docker.sock:rw -v no
 ```
 container must have **rw access to the docker unix socket** (/var/run/docker.sock)
 
-*Default access is admin/saashup*
+Default access is *admin/saashup*
 
 # Hosting
 Check https://saashup.com for more information
