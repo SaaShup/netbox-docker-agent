@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+
+  netbox-docker-agent:
+    image: saashup/netbox-docker-agent:latest
+    command: npm start
+    volumes:
+      - type: volume
+        source: netbox-docker-agent
+        target: /data
+    restart: unless-stopped
+    ports:
+      - "1880:1880"
+    environment:
+      - NODE_ENV=prod
+      - PORT=1880
+      
+volumes:
+  netbox-docker-agent:

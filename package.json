@@ -1,0 +1,24 @@
+{
+  "name": "netbox-docker-agent",
+  "version": "0.0.1",
+  "description": "Saashup agent for netbox manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "saashup nodered docker netbox"
+  ],
+  "author": "lav@saashup.com",
+  "homepage": "https://github.com/SaaShup/netbox-docker-agent",
+  "bugs": {
+    "url": "https://github.com/SaaShup/netbox-docker-agent/issues",
+    "email": "contact@saashup.com"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "express": "*",
+    "node-red": "*"
+  }
+}
