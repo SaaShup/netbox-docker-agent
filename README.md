@@ -24,7 +24,7 @@ docker build -t saashup/netbox-docker-agent .
 ```
 ## Run
 ```
-docker run -d -p 1880:1880 -v /var/run/docker.sock:/var/run/docker.sock:rw -v node_red_data:/data --name netbox-docker-agent saashup/netbox-docker-agent 
+docker run -d -p 1880:1880 -v /var/run/docker.sock:/var/run/docker.sock:rw -v netbox-docker-agent:/data --name netbox-docker-agent saashup/netbox-docker-agent 
 ```
 container must have **rw access to the docker unix socket** (/var/run/docker.sock)
 
