@@ -2069,7 +2069,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t    \"message\":\"Wecome!\",\t    \"configured\": msg.config.netbox_token and msg.config.netbox_token != \"\" ? \"ok\" : \"nok\",\t    \"version\":\"0.1.0\"\t}",
+                "to": "{\t    \"message\":\"Wecome!\",\t    \"configured\": msg.config.netbox_token and msg.config.netbox_token != \"\" ? \"ok\" : \"nok\",\t    \"version\":\"0.2.0\"\t}",
                 "tot": "jsonata"
             }
         ],
