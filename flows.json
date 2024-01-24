@@ -1140,8 +1140,12 @@
             [
                 "3476e92979af9b66"
             ],
-            [],
-            []
+            [
+                "d4033b2ebfd87cc6"
+            ],
+            [
+                "d4033b2ebfd87cc6"
+            ]
         ]
     },
     {
@@ -1201,7 +1205,7 @@
         "oldrc": false,
         "name": "images",
         "x": 780,
-        "y": 600,
+        "y": 540,
         "wires": [
             [
                 "09c054087fafa9a4"
@@ -1268,8 +1272,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 920,
-        "y": 660,
+        "x": 1220,
+        "y": 540,
         "wires": [
             [
                 "711a3bbe868db4bd"
@@ -1292,8 +1296,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1270,
-        "y": 660,
+        "x": 1550,
+        "y": 540,
         "wires": [
             []
         ]
@@ -1306,8 +1310,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 970,
-        "y": 600,
+        "x": 930,
+        "y": 540,
         "wires": [
             [
                 "de04853e88cd7e5d"
@@ -1373,8 +1377,8 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 1110,
-        "y": 600,
+        "x": 1050,
+        "y": 540,
         "wires": [
             [
                 "360c4c56f9b16d20"
@@ -1396,8 +1400,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 1090,
-        "y": 660,
+        "x": 1390,
+        "y": 540,
         "wires": [
             [
                 "3ebc17bc97b4699a"
@@ -1451,8 +1455,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 900,
-        "y": 520,
+        "x": 1260,
+        "y": 460,
         "wires": [
             [
                 "dee592dc258f8a73"
@@ -1475,8 +1479,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1110,
-        "y": 520,
+        "x": 1470,
+        "y": 460,
         "wires": [
             []
         ]
@@ -1563,7 +1567,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 920,
+        "x": 1060,
         "y": 380,
         "wires": [
             [
@@ -1587,7 +1591,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1130,
+        "x": 1270,
         "y": 380,
         "wires": [
             []
@@ -1672,7 +1676,7 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 140,
-        "y": 460,
+        "y": 420,
         "wires": [
             [
                 "2eda772c9e4bfbe0"
@@ -1687,7 +1691,7 @@
         "statusCode": "",
         "headers": {},
         "x": 590,
-        "y": 440,
+        "y": 400,
         "wires": []
     },
     {
@@ -1698,8 +1702,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 950,
-        "y": 120,
+        "x": 970,
+        "y": 100,
         "wires": [
             [
                 "5577918114b19586"
@@ -1717,8 +1721,8 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 1130,
-        "y": 120,
+        "x": 1150,
+        "y": 140,
         "wires": [
             [
                 "eb4ff3011d0426d6"
@@ -1912,7 +1916,7 @@
         "oldrc": false,
         "name": "version",
         "x": 320,
-        "y": 460,
+        "y": 420,
         "wires": [
             [
                 "ce456e516c1b220c"
@@ -1930,7 +1934,7 @@
         "action": "obj",
         "pretty": false,
         "x": 470,
-        "y": 440,
+        "y": 400,
         "wires": [
             [
                 "3ec8489adb149dbc"
@@ -2037,7 +2041,7 @@
         "y": 520,
         "wires": [
             [
-                "ad02052a6f9ba4c4"
+                "042eddf509f7f023"
             ]
         ]
     },
@@ -2048,15 +2052,15 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 430,
-        "y": 520,
+        "x": 450,
+        "y": 580,
         "wires": []
     },
     {
         "id": "ad02052a6f9ba4c4",
         "type": "change",
         "z": "e479d0b02bb037a7",
-        "name": "Version",
+        "name": "output",
         "rules": [
             {
                 "t": "set",
@@ -2069,7 +2073,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t    \"message\":\"Wecome!\",\t    \"configured\": msg.config.netbox_token and msg.config.netbox_token != \"\" ? \"ok\" : \"nok\",\t    \"version\":\"0.2.0\"\t}",
+                "to": "{\t    \"message\":\"Wecome!\",\t    \"configured\": msg.config.netbox_token and msg.config.netbox_token != \"\" ? \"ok\" : \"nok\",\t    \"version\": msg.payload.version\t}",
                 "tot": "jsonata"
             }
         ],
@@ -2078,8 +2082,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 260,
-        "y": 520,
+        "x": 290,
+        "y": 580,
         "wires": [
             [
                 "7452dc9e3db076ac"
@@ -2134,7 +2138,7 @@
         "senderr": false,
         "headers": [],
         "x": 1010,
-        "y": 720,
+        "y": 620,
         "wires": [
             []
         ]
@@ -2187,10 +2191,57 @@
         "to": "",
         "reg": false,
         "x": 780,
-        "y": 720,
+        "y": 620,
         "wires": [
             [
                 "83b13aea1ae75b54"
+            ]
+        ]
+    },
+    {
+        "id": "d4033b2ebfd87cc6",
+        "type": "http response",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "statusCode": "500",
+        "headers": {},
+        "x": 940,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "042eddf509f7f023",
+        "type": "file in",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "filename": "./package.json",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 280,
+        "y": 520,
+        "wires": [
+            [
+                "37dd048314a84a66"
+            ]
+        ]
+    },
+    {
+        "id": "37dd048314a84a66",
+        "type": "json",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 430,
+        "y": 520,
+        "wires": [
+            [
+                "ad02052a6f9ba4c4"
             ]
         ]
     },
