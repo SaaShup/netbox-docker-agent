@@ -17,6 +17,7 @@ go to the (nodered admin page)[http://localhost:1880/nodered] to change the sett
 docker stop netbox-docker-agent
 docker rm netbox-docker-agent
 docker image rm saashup/netbox-docker-agent
+docker volume rm netbox-docker-agent
 ```
 ## Build
 ```

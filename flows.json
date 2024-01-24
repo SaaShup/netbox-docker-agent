@@ -1126,7 +1126,7 @@
         "id": "9474ae8a9218daab",
         "type": "exec",
         "z": "e479d0b02bb037a7",
-        "command": "curl -X GET --unix-socket /var/run/docker.sock http://localhost/containers/json?all=1",
+        "command": "curl -s -X GET --unix-socket /var/run/docker.sock http://localhost/containers/json?all=1",
         "addpay": "",
         "append": "",
         "useSpawn": "false",
@@ -1138,14 +1138,10 @@
         "y": 120,
         "wires": [
             [
-                "3476e92979af9b66"
+                "e39ae7ce9d456dbf"
             ],
-            [
-                "d4033b2ebfd87cc6"
-            ],
-            [
-                "d4033b2ebfd87cc6"
-            ]
+            [],
+            []
         ]
     },
     {
@@ -1695,22 +1691,6 @@
         "wires": []
     },
     {
-        "id": "3476e92979af9b66",
-        "type": "json",
-        "z": "e479d0b02bb037a7",
-        "name": "",
-        "property": "payload",
-        "action": "",
-        "pretty": false,
-        "x": 970,
-        "y": 100,
-        "wires": [
-            [
-                "5577918114b19586"
-            ]
-        ]
-    },
-    {
         "id": "5577918114b19586",
         "type": "split",
         "z": "e479d0b02bb037a7",
@@ -1721,7 +1701,7 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 1150,
+        "x": 1270,
         "y": 140,
         "wires": [
             [
@@ -2203,17 +2183,17 @@
         "type": "http response",
         "z": "e479d0b02bb037a7",
         "name": "",
-        "statusCode": "500",
+        "statusCode": "403",
         "headers": {},
-        "x": 940,
-        "y": 140,
+        "x": 1120,
+        "y": 60,
         "wires": []
     },
     {
         "id": "042eddf509f7f023",
         "type": "file in",
         "z": "e479d0b02bb037a7",
-        "name": "",
+        "name": "version",
         "filename": "./package.json",
         "filenameType": "str",
         "format": "utf8",
@@ -2242,6 +2222,51 @@
         "wires": [
             [
                 "ad02052a6f9ba4c4"
+            ]
+        ]
+    },
+    {
+        "id": "e39ae7ce9d456dbf",
+        "type": "switch",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "empty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 950,
+        "y": 100,
+        "wires": [
+            [
+                "d4033b2ebfd87cc6"
+            ],
+            [
+                "e996c95d6b0a0e51"
+            ]
+        ]
+    },
+    {
+        "id": "e996c95d6b0a0e51",
+        "type": "json",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 1110,
+        "y": 120,
+        "wires": [
+            [
+                "5577918114b19586"
             ]
         ]
     },
