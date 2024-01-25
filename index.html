@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SaasHup">
+  <meta name="author" content="LaV">
+  <title>Netbox Docker Agent</title>
+  <link rel="icon" href="https://saashup.com/img/logo_saashup.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"
+    integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"
+    integrity="sha512-pax4MlgXjHEPfCwcJLQhigY7+N8rt6bVvWLFyUMuxShv170X53TRzGPmPkZmGBhk+jikR8WBM4yl7A9WMHHqvg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body class="d-flex flex-column">
+
+  <style>
+    .nav-link {
+      border-bottom: 3px solid transparent;
+    }
+
+    .nav-link.active {
+      border-bottom: 3px solid #0dcaf0;
+      color: #0dcaf0;
+    }
+
+    .nav-link:hover {
+      border-bottom: 3px solid #0dcaf0;
+      color: #0dcaf0;
+    }
+
+    .no-transition {
+      -webkit-transition: height 0.01s;
+      -moz-transition: height 0.01s;
+      -ms-transition: height 0.01s;
+      -o-transition: height 0.01s;
+      transition: height 0.01s;
+    }
+  </style>
+
+  <nav class="navbar navbar-expand-lg" id="navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" style="padding: 0 0 0 0;" href="https://saashup.com"><img
+          src="https://saashup.com/images/logo_saashup.png" height="64px" /></a>
+      <button class="navbar-toggler border-primary" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse no-transition" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#" id="nav-home-btn" data-bs-toggle="collapse"
+              data-bs-target="#navbarCollapse"><i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#" id="nav-containers-btn" data-bs-toggle="collapse"
+              data-bs-target="#navbarCollapse"><i class="fab fa-docker"></i> Containers</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#" id="nav-images-btn" data-bs-toggle="collapse"
+              data-bs-target="#navbarCollapse"><i class="fas fa-clone"></i> Images</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#" id="nav-networks-btn" data-bs-toggle="collapse"
+              data-bs-target="#navbarCollapse"><i class="fas fa-network-wired"></i> Networks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#" id="nav-volumes-btn" data-bs-toggle="collapse"
+              data-bs-target="#navbarCollapse"><i class="fas fa-hdd"></i> Volumes</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" id="app">
+
+    <div class="row app" id="info">
+      <div class="col-12" id="info-list"></div>
+    </div>
+
+    <div class="row d-none app" id="containers">
+      <div class="col-6 text-center">
+        <span id="containers-count" class="text-primary fw-bold">0</span> container(s)
+      </div>
+      <div class="col-12" id="containers-list"></div>
+    </div>
+
+    <div class="row d-none app" id="images">
+      <div class="col-6 text-center">
+        <span id="images-count" class="text-primary fw-bold">0</span> image(s)
+      </div>
+      <div class="col-12" id="images-list"></div>
+    </div>
+
+    <div class="row d-none app" id="volumes">
+      <div class="col-6 text-center">
+        <span id="volumes-count" class="text-primary fw-bold">0</span> volume(s)
+      </div>
+      <div class="col-12" id="volumes-list"></div>
+    </div>
+
+    <div class="row d-none app" id="networks">
+      <div class="col-6 text-center">
+        <span id="networks-count" class="text-primary fw-bold">0</span> network(s)
+      </div>
+      <div class="col-12" id="networks-list"></div>
+    </div>
+
+  </main>
+
+  <footer class="footer w-100 mt-auto py-2">
+    <div class="w-100 p-1 text-center text-primary">
+      <img src="https://saashup.com/images/logo_saashup.png" class="rounded-circle" width="32" /> saashup © 2024
+    </div>
+  </footer>
+
+  <script>
+    function cleanWindow() {
+      $(".app").each(function () {
+        $(this).addClass('d-none');
+      })
+      $(".nav-link").each(function () {
+        $(this).removeClass('active');
+      })
+    }
+
+    $("#nav-containers-btn").on('click', function () {
+      cleanWindow();
+      $('#containers').removeClass('d-none');
+      $('#nav-containers-btn').addClass('active');
+      $.ajax({
+        url: "/api/containers"
+      }).done(function (result) {
+        console.log(result)
+        $("#containers-count").html(result.length)
+        let containers = '';
+        for (const c of result) {
+          let id = c.Id
+          containers +=
+            '<div class="col-12"><div class="card my-2"><div class="card-header bg-white"><div class="row"><div class="col-8">' +
+            c.Name.replace('/', '') + '</div><div class="col-4"><span class="badge rounded-pill bg-' + (c.State
+              .Running === true ? "success" : "danger") + '">' + c.State.Status + '</span></div>' +
+            '</div></div><div class="card-body row">' +
+            '<div class="col-sm-12 col-md-8 text-center">' + c.Id +
+            '</div><div class="col-sm-12 col-md-4 text-center">' + c.Created.substring(0, 19).replace('T',
+              ' ') +
+            '</div></div><div class="container">'
+          containers += '<ul class="nav"><li class="nav-item"><a href="#cimages_' + id +
+            '" class="nav-link px-2 active" data-bs-toggle="tab" id="cimage-tab_' + id + '">Image</a></li>' +
+            '<li class="nav-item"><a href="#cports_' + id +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="cports-tab_' + id + '">Ports</a></li>' +
+            '<li class="nav-item"><a href="#cvolumes_' + id +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="cvolumes-tab_' + id + '">Volumes</a></li>' +
+            '<li class="nav-item"><a href="#cnetwork_' + id +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="cnetwork-tab_' + id + '">Network</a></li>' +
+            '<li class="nav-item"><a href="#cenv_' + id +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="cenv-tab_' + id + '">Env</a></li>' +
+            '<li class="nav-item"><a href="#clabels_' + id +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="clabels-tab_' + id + '">Labels</a></li>' +
+            '<li class="nav-item"><a href="#crestart_' + id +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="crestart-tab_' + id + '">Restart</a></li>' +
+            '<li class="nav-item"><a href="#cresources_' + id +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="cresources-tab_' + id + '">Resources</a></li>' +
+            '</ul></div><div class="tab-content mt-4"><div class="tab-pane fade show active" id="cimages_' +
+            id +
+            '"><div class="row m-3 align-items-center">' +
+            '<div class="col-4"><label class="col-form-label">Image:</label></div><div class="col-8"><input class="form-control" value="' +
+            c.Config.Image + '" disabled/></div></div></div>' +
+            '<div class="tab-pane fade" id="cports_' + id + '"><div class="row align-items-center">' +
+            '<div class="col-12">';
+          if (c.HostConfig.PublishAllPorts === true) {
+            for (const po of Object.keys(c.NetworkSettings.Ports)) {
+              containers +=
+                '<div class="row m-2 ports"><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">host</span><input class="form-control ports-host" placeholder="name" value="' +
+                c.NetworkSettings.Ports[po][0].HostPort +
+                '" disabled/></div></div><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">container</span><input class="form-control" value="' +
+                po.split('/')[0] +
+                '" disabled/></div></div><div class="col-2"><input class="form-control" disabled value="' + po
+                .split('/')[1] + '"></div></div>'
+            }
+          } else {
+            if ('PortBindings' in c.HostConfig && c.HostConfig.PortBindings !== null && Object.keys(c.HostConfig
+                .PortBindings).length > 0) {
+              for (const po of Object.keys(c.HostConfig.PortBindings)) {
+                containers +=
+                  '<div class="row m-2 ports"><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">host</span><input class="form-control ports-host" placeholder="name" value="' +
+                  c.HostConfig.PortBindings[po][0].HostPort +
+                  '" disabled/></div></div><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">container</span><input class="form-control" placeholder="value" value="' +
+                  po.split('/')[0] +
+                  '" disabled/></div></div><div class="col-2"><input class="form-control" value="' + po.split(
+                    '/')[1] + '" disabled></div></div>'
+              }
+            } else {
+              if ('ExposedPorts' in c.Config) {
+                for (const po of Object.keys(c.Config.ExposedPorts)) {
+                  containers +=
+                    '<div class="row m-2 ports"><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">host</span><input class="form-control ports-host" placeholder="name" type="number" value="' +
+                    po.split('/')[0] +
+                    '" disabled/></div></div><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">container</span><input class="form-control ports-container" placeholder="value" type="number" value="' +
+                    po.split('/')[0] +
+                    '" disabled/></div></div><div class="col-2"><input class="form-control ports-proto"value="' +
+                    po.split('/')[1] + ' disabled"></div></div>'
+                }
+              }
+            }
+          }
+          containers += '</div></div></div>' +
+            '<div class="tab-pane fade" id="ccommand_' + id + '"><p>Command tab content ...</p></div>' +
+            '<div class="tab-pane fade" id="clogging_' + id + '"><p>Logging tab content ...</p></div>' +
+            '<div class="tab-pane fade" id="cvolumes_' + id + '"><div class="row align-items-center">' +
+            '<div class="col-12">';
+          for (const vo of c.Mounts) {
+            if (vo.Type === "volume") containers +=
+              '<div class="row m-2 volumes"><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">volume</span><input class="form-control volume-source" value="' +
+              vo.Name +
+              '" disabled /></div></div><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">container</span><input class="form-control volume-destination" placeholder="value" type="text" value="' +
+              vo.Destination +
+              '" disabled/></div></div><div class="col-2"><select class="form-control"><option>RW</option><option ' +
+              (vo.RW === true ? "" : "default") + '>R</option></select></div></div>'
+          }
+          for (const vo of c.Mounts) {
+            if (vo.Type !== "volume") containers +=
+              '<div class="row m-2 binds"><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">host</span><input class="form-control volume-source" placeholder="name" type="text" value="' +
+              vo.Source +
+              '" disabled/></div></div><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">container</span><input class="form-control volume-destination" placeholder="value" type="text" value="' +
+              vo.Destination +
+              '" disabled/></div></div><div class="col-2"><select class="form-control"><option>RW</option><option ' +
+              (vo.RW === true ? "" : "default") + '>R</option></select></div></div>'
+          }
+          containers += '</div></div></div>' +
+            '<div class="tab-pane fade" id="cnetwork_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="col-4"><label class="col-form-label">Network:</label></div><div class="col-8"><input class="form-control" value="' +
+            Object.keys(c.NetworkSettings.Networks)[0] + '" disabled>';
+          containers += '</div></div></div>' +
+            '<div class="tab-pane fade" id="cenv_' + id + '"><div class="row align-items-center">' +
+            '<div class="col-12">';
+          for (const e in c.Config.Env) {
+            containers += '<div class="row m-2"><div class="col-5">' + c.Config.Env[e].split('=')[0] +
+              '</div><div class="col-5"><input class="form-control envvar-value" placeholder="value" type="text" value="' +
+              c.Config.Env[e].split('=')[1] + '" disabled/></div></div>'
+          }
+          containers += '</div></div></div>' +
+            '<div class="tab-pane fade" id="clabels_' + id + '"><div class="row align-items-center">' +
+            '<div class="col-12">';
+          for (const l of Object.keys(c.Config.Labels)) {
+            containers += '<div class="row m-2 labels"><div class="col-5">' + l +
+              '</div><div class="col-5"><input class="form-control labels-value" placeholder="value" type="text" value="' +
+              c.Config.Labels[l] + '" disabled/></div></div>'
+          }
+          containers += '</div></div></div>' +
+            '<div class="tab-pane fade" id="crestart_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="col-4"><label class="col-form-label">Policy:</label></div><div class="col-8"><input class="form-control" value="no" disabled>';
+          containers += '</div></div></div>' +
+            '<div class="tab-pane fade" id="cruntime_' + id + '"><p>Runtime tab content ...</p></div>' +
+            '<div class="tab-pane fade" id="cresources_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="col-4"><label class="col-form-label">Memory limit (MB):</label></div><div class="col-8"><input class="form-control" value="' +
+            ('Memory' in c.HostConfig ? parseInt(c.HostConfig.Memory) / 1024 / 1024 : "0") + '" disabled/>';
+          containers += '</div></div></div>' +
+            '<div class="tab-pane fade" id="ccapabilities_' + id +
+            '"><p>Capabilities tab content ...</p></div></div></div>';
+        }
+        $('#containers-list').html(containers);
+      })
+    })
+
+    $("#nav-home-btn").on('click', function () {
+      cleanWindow();
+      $('#info').removeClass('d-none');
+      $('#nav-home-btn').addClass('active')
+      $.ajax({
+        url: "/info",
+      }).done(function (result) {
+        info =
+          '<div class="col-12"><div class="card my-3"><div class="card-header bg-white"><div class="row"><div class="col-9 text-primary">' +
+          result.message + '</div></div></div><div class="card-body row">' +
+          '<div class="col-sm-12 col-md-6 p-2"> <b>Configured</b>: <span class="badge rounded-pill bg-' + (
+            result.configured === "ok" ? "success" : "danger") + '">' + result.configured + '</span>' +
+          '</div><div class="col-sm-12 col-md-6 p-2"> <b>Configured</b>: ' + result.docker.KernelVersion +
+          '</div><div class="col-sm-12 col-md-6 p-2"> <b>Version</b>: ' + result.version +
+          '</div><div class="col-sm-12 col-md-6 p-2"> <b>Api</b>: ' + result.docker.ApiVersion +
+          '</div></div></div></div>';
+        $('#info-list').html(info);
+      })
+    })
+
+    $("#nav-volumes-btn").on('click', function () {
+      cleanWindow();
+      $('#nav-volumes-btn').addClass('active')
+      $('#volumes').removeClass('d-none');
+      $.ajax({
+        url: "/api/volumes",
+      }).done(function (result) {
+        $("#volumes-count").html(result.Volumes.length)
+        let vols = '';
+        for (const c of result.Volumes) {
+          vols +=
+            '<div class="col-12"><div class="card my-3"><div class="card-header bg-white"><div class="row"><div class="col-9 text-primary">' +
+            c.Name +
+            '</div></div></div><div class="card-body row"><div class="col-sm-12 col-md-6 p-2"> <b>Created</b>: ' +
+            c.CreatedAt.replace('T', ' ').replace('Z', '').substring(0, 19) +
+            '</div><div class="col-sm-12 col-md-6 p-2"> <b>Driver</b>: ' + c.Driver +
+            '</div><div class="col-sm-12 col-md-12 p-2"> <b>Mountpoint</b>: ' + c.Mountpoint +
+            '</div></div></div></div>';
+        }
+        $('#volumes-list').html(vols);
+      })
+    })
+
+    $("#nav-networks-btn").on('click', function () {
+      cleanWindow();
+      $('#networks').removeClass('d-none');
+      $('#nav-networks-btn').addClass('active')
+      $.ajax({
+        url: "/api/networks",
+      }).done(function (result) {
+        $("#networks-count").html(result.length)
+        let networks = ''
+        for (const c of result) {
+          networks +=
+            '<div class="col-12"><div class="card my-3"><div class="card-header bg-white"><div class="row"><div class="col-9 text-primary">' +
+            c.Name +
+            '</div></div></div><div class="card-body row"><div class="col-sm-12 col-md-6 p-2"> <b>Created</b>: ' +
+            c.Created.replace('T', ' ').substring(0, 19) +
+            '</div><div class="col-sm-12 col-md-6 p-2"> <b>Driver</b>: ' + c.Driver + '</div>'
+          if (c.IPAM.Config.length > 0) networks +=
+            '<div class="col-sm-12 col-md-6 p-2"> <b>IPv4 Subnet</b>: ' + c.IPAM.Config[0].Subnet +
+            '</div><div class="col-sm-12 col-md-6 p-2">  <b>IPv4 Subnet</b>: ' + c.IPAM.Config[0].Gateway +
+            '</div>'
+          networks += '</div></div></div>';
+        }
+        $('#networks-list').html(networks);
+      })
+    })
+
+    $("#nav-images-btn").on('click', function () {
+      cleanWindow();
+      $('#images').removeClass('d-none');
+      $('#nav-images-btn').addClass('active')
+      $.ajax({
+        url: "/api/images",
+      }).done(function (result) {
+        $("#images-count").html(result.length)
+        let images = ''
+        for (const c of result) {
+          images +=
+            '<div class="col-12"><div class="card my-2"><div class="card-header bg-white"><div class="row"><div class="col-10 row"><div class="col-9 text-primary">' +
+            (c.RepoTags === null || c.RepoTags.length === 0 || c.RepoTags.toString().includes('<none>') ? c.Id :
+              c.RepoTags[0]) +
+            '</div></div></div></div><div class="card-body row"><div class="col-sm-12 col-md-6 p-2"> <b>Created</b>: ' +
+            new Date(c.Created * 1000).toISOString().substring(0, 19).replace('T', ' ') +
+            '</div><div class="col-sm-12 col-md-6 p-2"> <b>Size</b>: ' + (c.Size / 1024 / 1024).toFixed(2) +
+            'MB</div><div class="col-sm-12 col-md-12 p-2"> <b>Id</b>: ' + c.Id + '</div></div></div></div>'
+        }
+        $('#images-list').html(images);
+      })
+    })
+    $("#nav-home-btn").click();
+  </script>
+
+</body>
+
+</html>

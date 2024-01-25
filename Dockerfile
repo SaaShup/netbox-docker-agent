@@ -9,6 +9,7 @@ WORKDIR /usr/src/node-red
 RUN npm install --unsafe-perm --no-update-notifier --no-fund --omit=dev
 COPY package.json /usr/src/node-red
 
+COPY index.html /usr/src/node-red/index.html
 COPY flows.json /usr/src/node-red/flows.json
 ENV FLOWS=/usr/src/node-red/flows.json
 
