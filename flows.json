@@ -533,7 +533,8 @@
                 "6e75e01fb248613e",
                 "1cd8ff37781909ed",
                 "389eb13829cc673c",
-                "762cde1768645016"
+                "762cde1768645016",
+                "2eda772c9e4bfbe0"
             ]
         ]
     },
@@ -1254,7 +1255,7 @@
         "oldrc": false,
         "name": "images",
         "x": 780,
-        "y": 540,
+        "y": 560,
         "wires": [
             [
                 "09c054087fafa9a4"
@@ -1321,8 +1322,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1220,
-        "y": 540,
+        "x": 1380,
+        "y": 560,
         "wires": [
             [
                 "711a3bbe868db4bd"
@@ -1345,26 +1346,10 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1550,
-        "y": 540,
+        "x": 1670,
+        "y": 560,
         "wires": [
             []
-        ]
-    },
-    {
-        "id": "09c054087fafa9a4",
-        "type": "json",
-        "z": "e479d0b02bb037a7",
-        "name": "",
-        "property": "payload",
-        "action": "",
-        "pretty": false,
-        "x": 930,
-        "y": 540,
-        "wires": [
-            [
-                "de04853e88cd7e5d"
-            ]
         ]
     },
     {
@@ -1426,8 +1411,8 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 1050,
-        "y": 540,
+        "x": 1210,
+        "y": 560,
         "wires": [
             [
                 "360c4c56f9b16d20"
@@ -1449,8 +1434,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 1390,
-        "y": 540,
+        "x": 1530,
+        "y": 560,
         "wires": [
             [
                 "3ebc17bc97b4699a"
@@ -1504,8 +1489,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1260,
-        "y": 460,
+        "x": 1440,
+        "y": 480,
         "wires": [
             [
                 "dee592dc258f8a73"
@@ -1528,8 +1513,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1470,
-        "y": 460,
+        "x": 1650,
+        "y": 480,
         "wires": [
             []
         ]
@@ -1546,7 +1531,7 @@
         "y": 460,
         "wires": [
             [
-                "cb3e97a54fb2b257"
+                "84c0ab6e5b6a2c9d"
             ]
         ]
     },
@@ -1561,8 +1546,8 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 1090,
-        "y": 460,
+        "x": 1270,
+        "y": 480,
         "wires": [
             [
                 "014b94c94ca27ab2"
@@ -1617,7 +1602,7 @@
         "to": "",
         "reg": false,
         "x": 1060,
-        "y": 380,
+        "y": 400,
         "wires": [
             [
                 "4ee2167111a0b6d8"
@@ -1641,7 +1626,7 @@
         "senderr": false,
         "headers": [],
         "x": 1270,
-        "y": 380,
+        "y": 400,
         "wires": [
             []
         ]
@@ -1654,11 +1639,11 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 970,
+        "x": 930,
         "y": 320,
         "wires": [
             [
-                "6b60e411674acf53"
+                "c90a8f91b6cb9095"
             ]
         ]
     },
@@ -1673,8 +1658,8 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 1310,
-        "y": 320,
+        "x": 1470,
+        "y": 340,
         "wires": [
             [
                 "cba398c632157edf"
@@ -1707,41 +1692,13 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1140,
-        "y": 320,
+        "x": 1300,
+        "y": 340,
         "wires": [
             [
                 "9e4de62dbd45560a"
             ]
         ]
-    },
-    {
-        "id": "9245592e48efc67e",
-        "type": "http in",
-        "z": "e479d0b02bb037a7",
-        "name": "",
-        "url": "/api/probe",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 140,
-        "y": 420,
-        "wires": [
-            [
-                "2eda772c9e4bfbe0"
-            ]
-        ]
-    },
-    {
-        "id": "3ec8489adb149dbc",
-        "type": "http response",
-        "z": "e479d0b02bb037a7",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 590,
-        "y": 400,
-        "wires": []
     },
     {
         "id": "5577918114b19586",
@@ -1948,30 +1905,14 @@
         "winHide": false,
         "oldrc": false,
         "name": "version",
-        "x": 320,
-        "y": 420,
+        "x": 740,
+        "y": 720,
         "wires": [
             [
-                "ce456e516c1b220c"
+                "84f2d58a06ba6cf6"
             ],
             [],
             []
-        ]
-    },
-    {
-        "id": "ce456e516c1b220c",
-        "type": "json",
-        "z": "e479d0b02bb037a7",
-        "name": "",
-        "property": "payload",
-        "action": "obj",
-        "pretty": false,
-        "x": 470,
-        "y": 400,
-        "wires": [
-            [
-                "3ec8489adb149dbc"
-            ]
         ]
     },
     {
@@ -2066,12 +2007,12 @@
         "type": "http in",
         "z": "e479d0b02bb037a7",
         "name": "",
-        "url": "/",
+        "url": "/info",
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 110,
-        "y": 520,
+        "x": 120,
+        "y": 720,
         "wires": [
             [
                 "042eddf509f7f023"
@@ -2085,8 +2026,8 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 450,
-        "y": 580,
+        "x": 1330,
+        "y": 720,
         "wires": []
     },
     {
@@ -2104,9 +2045,9 @@
             },
             {
                 "t": "set",
-                "p": "payload",
+                "p": "output",
                 "pt": "msg",
-                "to": "{\t    \"message\":\"Wecome!\",\t    \"configured\": msg.config.netbox_token and msg.config.netbox_token != \"\" ? \"ok\" : \"nok\",\t    \"version\": msg.payload.version\t}",
+                "to": "{\t    \"message\":\"netbox-saashup-agent\",\t    \"configured\": msg.config.netbox_token and msg.config.netbox_token != \"\" ? \"ok\" : \"nok\",\t    \"version\": msg.payload.version\t}",
                 "tot": "jsonata"
             }
         ],
@@ -2115,11 +2056,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 290,
-        "y": 580,
+        "x": 590,
+        "y": 720,
         "wires": [
             [
-                "7452dc9e3db076ac"
+                "2eda772c9e4bfbe0"
             ]
         ]
     },
@@ -2255,7 +2196,7 @@
         "encoding": "none",
         "allProps": false,
         "x": 280,
-        "y": 520,
+        "y": 720,
         "wires": [
             [
                 "37dd048314a84a66"
@@ -2271,7 +2212,7 @@
         "action": "",
         "pretty": false,
         "x": 430,
-        "y": 520,
+        "y": 720,
         "wires": [
             [
                 "ad02052a6f9ba4c4"
@@ -2320,6 +2261,328 @@
         "wires": [
             [
                 "5577918114b19586"
+            ]
+        ]
+    },
+    {
+        "id": "007a092834934b7a",
+        "type": "http in",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "url": "/",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 500,
+        "wires": [
+            [
+                "ae4a25a72693cd25"
+            ]
+        ]
+    },
+    {
+        "id": "6165326c4abe88e7",
+        "type": "http response",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 450,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "142c4f670830baa7",
+        "type": "http in",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "url": "/api/images",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 780,
+        "y": 500,
+        "wires": [
+            [
+                "5e1c3b73a5912923"
+            ]
+        ]
+    },
+    {
+        "id": "c720062d0d5b33cc",
+        "type": "switch",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "property": "req.url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "/api/images",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1050,
+        "y": 560,
+        "wires": [
+            [
+                "ffab62f7de8ba312"
+            ],
+            [
+                "de04853e88cd7e5d"
+            ]
+        ]
+    },
+    {
+        "id": "ffab62f7de8ba312",
+        "type": "http response",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1190,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "09c054087fafa9a4",
+        "type": "json",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 910,
+        "y": 560,
+        "wires": [
+            [
+                "c720062d0d5b33cc"
+            ]
+        ]
+    },
+    {
+        "id": "70f09cd41f1c7406",
+        "type": "http in",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "url": "/api/networks",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 790,
+        "y": 380,
+        "wires": [
+            [
+                "6e75e01fb248613e"
+            ]
+        ]
+    },
+    {
+        "id": "84c0ab6e5b6a2c9d",
+        "type": "switch",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "property": "req.url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "/api/networks",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1090,
+        "y": 460,
+        "wires": [
+            [
+                "6ab7dea6829c3297"
+            ],
+            [
+                "cb3e97a54fb2b257"
+            ]
+        ]
+    },
+    {
+        "id": "6ab7dea6829c3297",
+        "type": "http response",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1230,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "f7e9be0118e2d616",
+        "type": "http in",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "url": "/api/volumes",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 800,
+        "y": 260,
+        "wires": [
+            [
+                "1cd8ff37781909ed"
+            ]
+        ]
+    },
+    {
+        "id": "c90a8f91b6cb9095",
+        "type": "switch",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "property": "req.url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "/api/volumes",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1070,
+        "y": 320,
+        "wires": [
+            [
+                "d61adec1f9262df2"
+            ],
+            [
+                "6b60e411674acf53"
+            ]
+        ]
+    },
+    {
+        "id": "d61adec1f9262df2",
+        "type": "http response",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1190,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "84f2d58a06ba6cf6",
+        "type": "json",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 890,
+        "y": 720,
+        "wires": [
+            [
+                "75df2976c5bb2d19"
+            ]
+        ]
+    },
+    {
+        "id": "2fdc31a741376f63",
+        "type": "change",
+        "z": "e479d0b02bb037a7",
+        "name": "output",
+        "rules": [
+            {
+                "t": "set",
+                "p": "output.docker",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "output",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1170,
+        "y": 720,
+        "wires": [
+            [
+                "7452dc9e3db076ac"
+            ]
+        ]
+    },
+    {
+        "id": "75df2976c5bb2d19",
+        "type": "switch",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "property": "req.url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "/api/engine/endpoint",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "/info",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1030,
+        "y": 720,
+        "wires": [
+            [],
+            [
+                "2fdc31a741376f63"
+            ]
+        ]
+    },
+    {
+        "id": "ae4a25a72693cd25",
+        "type": "file in",
+        "z": "e479d0b02bb037a7",
+        "name": "/",
+        "filename": "/usr/src/node-red/index.html",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 290,
+        "y": 500,
+        "wires": [
+            [
+                "6165326c4abe88e7"
             ]
         ]
     },
