@@ -55,5 +55,21 @@ netbox_docker_agent_container_stopped{name="example-stopped", state="stopped", s
 netbox_docker_agent_docker_daemon{socket="/var/run/docker.socket"} 1
 ```
 
+Example of prometheus configuration:
+
+```
+  - job_name: 'netbox-docker-agent'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    static_configs:
+      - targets: ['IP_ADDRESS:1880']
+    metrics_path: "/metrics"
+    basic_auth:
+      username: 'admin'
+      password: 'saashup'
+```
+
 # Hosting
 Check https://saashup.com for more information
