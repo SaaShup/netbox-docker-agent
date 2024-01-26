@@ -6,6 +6,7 @@
 ## Description
 
 Agent to install on the docker server to manage containers though (netbox plugin)[https://github.com/SaaShup/netbox-docker-plugin].
+![netbox-docker-agent](https://github.com/SaaShup/netbox-docker-agent/assets/17571692/06f81159-1830-45d2-9cd0-b4a949ab086e)
 
 
 ## Settings
