@@ -32,5 +32,44 @@ container must have **rw access to the docker unix socket** (/var/run/docker.soc
 
 Default access is *admin/saashup*
 
+## Monitoring
+The application has a '/metrics' endpoint which can be used with prometheus to monitor if the access on the docker daemon socket is working and if all the containers are up and running.
+
+The following metrics are currently exposed:
+
+```
+# HELP netbox_docker_agent_container_running Show if a container is running
+# TYPE netbox_docker_agent_container_running gauge
+netbox_docker_agent_container_running{name="example-running", state="running", status="Up 5 seconds (health: starting)"} 1
+
+# HELP netbox_docker_agent_container_exited Show if a container is exited
+# TYPE netbox_docker_agent_container_exited gauge
+netbox_docker_agent_container_exited{name="example-exited", state="exited", status="Exited (130) 6 months ago"} 1
+
+# HELP netbox_docker_agent_container_stopped Show if a container is exited
+# TYPE netbox_docker_agent_container_stopped gauge
+netbox_docker_agent_container_stopped{name="example-stopped", state="stopped", status="Stopped"} 1
+
+# HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working
+# TYPE netbox_docker_agent_docker_daemon gauge
+netbox_docker_agent_docker_daemon{socket="/var/run/docker.socket"} 1
+```
+
+Example of prometheus configuration:
+
+```
+  - job_name: 'netbox-docker-agent'
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    static_configs:
+      - targets: ['IP_ADDRESS:1880']
+    metrics_path: "/metrics"
+    basic_auth:
+      username: 'admin'
+      password: 'saashup'
+```
+
 # Hosting
 Check https://saashup.com for more information

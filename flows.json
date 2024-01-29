@@ -40,6 +40,14 @@
         "env": []
     },
     {
+        "id": "a02e6d42663c576b",
+        "type": "tab",
+        "label": "METRICS",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "7a34470e5e6d6216",
         "type": "inject",
         "z": "17a901efe3098d72",
@@ -343,7 +351,7 @@
         "once": true,
         "onceDelay": "1",
         "topic": "",
-        "x": 280,
+        "x": 300,
         "y": 60,
         "wires": [
             [
@@ -409,7 +417,7 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 300,
+        "x": 280,
         "y": 460,
         "wires": [
             [
@@ -1924,7 +1932,7 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 650,
+        "x": 590,
         "y": 60,
         "wires": [
             [
@@ -4694,6 +4702,294 @@
             [
                 "3ba83eb49e08c6a6"
             ]
+        ]
+    },
+    {
+        "id": "88bfc68142b18e1f",
+        "type": "http in",
+        "z": "a02e6d42663c576b",
+        "name": "",
+        "url": "/metrics",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 230,
+        "y": 540,
+        "wires": [
+            [
+                "46dbd905ebb4b7a5"
+            ]
+        ]
+    },
+    {
+        "id": "14e11cd7a7c79172",
+        "type": "exec",
+        "z": "a02e6d42663c576b",
+        "command": "curl -s -X GET --unix-socket /var/run/docker.sock http://localhost/containers/json?all=1",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Fetch all containers",
+        "x": 410,
+        "y": 80,
+        "wires": [
+            [
+                "94217953a8099a53"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "94217953a8099a53",
+        "type": "switch",
+        "z": "a02e6d42663c576b",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "empty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 590,
+        "y": 80,
+        "wires": [
+            [
+                "08d0cbd04d6f2367"
+            ],
+            [
+                "37fc88db9034e16c"
+            ]
+        ]
+    },
+    {
+        "id": "37fc88db9034e16c",
+        "type": "json",
+        "z": "a02e6d42663c576b",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 910,
+        "y": 120,
+        "wires": [
+            [
+                "68821b8a2c7472b8"
+            ]
+        ]
+    },
+    {
+        "id": "b6a8459814dcfd36",
+        "type": "template",
+        "z": "a02e6d42663c576b",
+        "name": "Parse Containers Output and Transform to Prometheus",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "# HELP netbox_docker_agent_container_running Show if a container is running\n# TYPE netbox_docker_agent_container_running gauge\n{{#container.running}}\nnetbox_docker_agent_container_running{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.running}}\n\n# HELP netbox_docker_agent_container_exited Show if a container is exited\n# TYPE netbox_docker_agent_container_exited gauge\n{{#container.exited}}\nnetbox_docker_agent_container_exited{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.exited}}\n\n# HELP netbox_docker_agent_container_stopped Show if a container is exited\n# TYPE netbox_docker_agent_container_stopped gauge\n{{#container.stopped}}\nnetbox_docker_agent_container_stopped{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.stopped}}\n\n# HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working\n# TYPE netbox_docker_agent_docker_daemon gauge\nnetbox_docker_agent_docker_daemon{socket=\"/var/run/docker.socket\"} {{container.docker_daemon}}",
+        "output": "str",
+        "x": 700,
+        "y": 220,
+        "wires": [
+            [
+                "7f193b1288071a71"
+            ]
+        ]
+    },
+    {
+        "id": "68821b8a2c7472b8",
+        "type": "change",
+        "z": "a02e6d42663c576b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "result",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "container",
+                "pt": "msg",
+                "to": "{\t    \"running\": msg.payload[State= \"running\"],\t    \"exited\": msg.payload[State= \"exited\"],\t    \"stopped\": msg.payload[State= \"stopped\"],\t    \"docker_daemon\": 1\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1080,
+        "y": 120,
+        "wires": [
+            [
+                "b6a8459814dcfd36"
+            ]
+        ]
+    },
+    {
+        "id": "7f193b1288071a71",
+        "type": "change",
+        "z": "a02e6d42663c576b",
+        "name": "",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "name=\"/",
+                "fromt": "str",
+                "to": "name=\"",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "metricPayload",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1040,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e2cef9de7c7a06b5",
+        "type": "inject",
+        "z": "a02e6d42663c576b",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 190,
+        "y": 80,
+        "wires": [
+            [
+                "14e11cd7a7c79172"
+            ]
+        ]
+    },
+    {
+        "id": "66c59b6a98f929e1",
+        "type": "http response",
+        "z": "a02e6d42663c576b",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "text/plain"
+        },
+        "x": 630,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "46dbd905ebb4b7a5",
+        "type": "change",
+        "z": "a02e6d42663c576b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "metricPayload",
+                "tot": "global"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 440,
+        "y": 540,
+        "wires": [
+            [
+                "66c59b6a98f929e1"
+            ]
+        ]
+    },
+    {
+        "id": "08d0cbd04d6f2367",
+        "type": "json",
+        "z": "a02e6d42663c576b",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 910,
+        "y": 60,
+        "wires": [
+            [
+                "fb3be4ace76f1668"
+            ]
+        ]
+    },
+    {
+        "id": "fb3be4ace76f1668",
+        "type": "change",
+        "z": "a02e6d42663c576b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "result",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "container",
+                "pt": "msg",
+                "to": "{\t    \"running\": msg.payload[State= \"running\"],\t    \"exited\": msg.payload[State= \"exited\"],\t    \"stopped\": msg.payload[State= \"stopped\"],\t    \"docker_daemon\": 0\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1080,
+        "y": 60,
+        "wires": [
+            []
         ]
     }
 ]
