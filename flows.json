@@ -4797,7 +4797,7 @@
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
-        "template": "# HELP netbox_docker_agent_container_running Show if a container is running\n# TYPE netbox_docker_agent_container_running gauge\n{{#container.running}}\nnetbox_docker_agent_container_running{name=\"{{Names.0}}\", state=\"{{ State }}\", status=\"{{ Status }}\"} 1\n{{/container.running}}\n\n# HELP netbox_docker_agent_container_exited Show if a container is exited\n# TYPE netbox_docker_agent_container_exited gauge\n{{#container.exited}}\nnetbox_docker_agent_container_exited{name=\"{{Names.0}}\", state=\"{{ State }}\", status=\"{{ Status }}\"} 1\n{{/container.exited}}\n\n# HELP netbox_docker_agent_container_stopped Show if a container is exited\n# TYPE netbox_docker_agent_container_stopped gauge\n{{#container.stopped}}\nnetbox_docker_agent_container_stopped{name=\"{{Names.0}}\", state=\"{{ State }}\", status=\"{{ Status }}\"} 1\n{{/container.stopped}}\n\n# HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working\n# TYPE netbox_docker_agent_docker_daemon gauge\nnetbox_docker_agent_docker_daemon{socket=\"/var/run/docker.socket\"} {{container.docker_daemon}}",
+        "template": "# HELP netbox_docker_agent_container_running Show if a container is running\n# TYPE netbox_docker_agent_container_running gauge\n{{#container.running}}\nnetbox_docker_agent_container_running{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.running}}\n\n# HELP netbox_docker_agent_container_exited Show if a container is exited\n# TYPE netbox_docker_agent_container_exited gauge\n{{#container.exited}}\nnetbox_docker_agent_container_exited{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.exited}}\n\n# HELP netbox_docker_agent_container_stopped Show if a container is exited\n# TYPE netbox_docker_agent_container_stopped gauge\n{{#container.stopped}}\nnetbox_docker_agent_container_stopped{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.stopped}}\n\n# HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working\n# TYPE netbox_docker_agent_docker_daemon gauge\nnetbox_docker_agent_docker_daemon{socket=\"/var/run/docker.socket\"} {{container.docker_daemon}}",
         "output": "str",
         "x": 700,
         "y": 220,
@@ -4851,7 +4851,7 @@
                 "t": "change",
                 "p": "payload",
                 "pt": "msg",
-                "from": "&#x2F;",
+                "from": "/",
                 "fromt": "str",
                 "to": "",
                 "tot": "str"
