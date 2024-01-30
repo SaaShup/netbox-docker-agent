@@ -32,6 +32,12 @@ container must have **rw access to the docker unix socket** (/var/run/docker.soc
 
 Default access is *admin/saashup*
 
+## Connect
+
+log into [ui page](http://localhost:1880) to see your docker assets
+
+![Screenshot from 2024-01-30 18-40-14](https://github.com/SaaShup/netbox-docker-agent/assets/17571692/2437410b-734d-4601-bbd1-745041e08529)
+
 ## Monitoring
 The application has a '/metrics' endpoint which can be used with prometheus to monitor if the access on the docker daemon socket is working and if all the containers are up and running.
 
