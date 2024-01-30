@@ -1488,7 +1488,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t   \"host\": msg.config.id,\t   \"name\": msg.result.Name,\t   \"driver\": msg.result.Driver,\t   \"NetworkID\": msg.result.Id\t}",
+                "to": "{\t   \"host\": msg.config.id,\t   \"name\": msg.result.Name,\t   \"driver\": msg.result.Driver,\t   \"NetworkID\": msg.result.Id,\t   \"state\": \"created\"\t}",
                 "tot": "jsonata"
             }
         ],
@@ -2659,7 +2659,7 @@
                 "650ee648a38eec5e"
             ],
             [
-                "1e3d80678b459c39"
+                "04c2d6dd6aa8f167"
             ],
             [
                 "abd9e5e92b4da769"
@@ -2701,7 +2701,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "networks",
-        "x": 840,
+        "x": 960,
         "y": 380,
         "wires": [
             [
@@ -2992,7 +2992,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 660,
+        "x": 780,
         "y": 380,
         "wires": [
             [
@@ -3294,7 +3294,7 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 1010,
+        "x": 1130,
         "y": 360,
         "wires": [
             [
@@ -3347,7 +3347,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "[{\t   \"id\": msg.input.data.id,\t   \"NetworkID\":  msg.payload.Id\t}]",
+                "to": "[{\t   \"id\": msg.input.data.id,\t   \"NetworkID\":  msg.payload.Id,\t   \"state\": \"created\"\t}]",
                 "tot": "jsonata"
             }
         ],
@@ -3356,7 +3356,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1020,
+        "x": 1140,
         "y": 420,
         "wires": [
             [
@@ -3380,7 +3380,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1210,
+        "x": 1330,
         "y": 420,
         "wires": [
             []
@@ -3429,6 +3429,31 @@
             [],
             [],
             []
+        ]
+    },
+    {
+        "id": "04c2d6dd6aa8f167",
+        "type": "switch",
+        "z": "3b6b8358e806c1c1",
+        "name": "",
+        "property": "payload.data.state",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "creating",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 610,
+        "y": 380,
+        "wires": [
+            [
+                "1e3d80678b459c39"
+            ]
         ]
     },
     {
@@ -4713,8 +4738,8 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 230,
-        "y": 540,
+        "x": 190,
+        "y": 300,
         "wires": [
             [
                 "46dbd905ebb4b7a5"
@@ -4913,8 +4938,8 @@
         "headers": {
             "content-type": "text/plain"
         },
-        "x": 630,
-        "y": 540,
+        "x": 590,
+        "y": 300,
         "wires": []
     },
     {
@@ -4936,8 +4961,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 440,
-        "y": 540,
+        "x": 400,
+        "y": 300,
         "wires": [
             [
                 "66c59b6a98f929e1"
