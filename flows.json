@@ -1357,7 +1357,9 @@
         "x": 1670,
         "y": 560,
         "wires": [
-            []
+            [
+                "b1226d0f3c886841"
+            ]
         ]
     },
     {
@@ -1524,7 +1526,9 @@
         "x": 1650,
         "y": 480,
         "wires": [
-            []
+            [
+                "b1226d0f3c886841"
+            ]
         ]
     },
     {
@@ -1636,7 +1640,9 @@
         "x": 1270,
         "y": 400,
         "wires": [
-            []
+            [
+                "b1226d0f3c886841"
+            ]
         ]
     },
     {
@@ -1826,7 +1832,9 @@
         "x": 1330,
         "y": 260,
         "wires": [
-            []
+            [
+                "b1226d0f3c886841"
+            ]
         ]
     },
     {
@@ -2122,7 +2130,9 @@
         "x": 1010,
         "y": 620,
         "wires": [
-            []
+            [
+                "b1226d0f3c886841"
+            ]
         ]
     },
     {
@@ -2595,6 +2605,75 @@
         ]
     },
     {
+        "id": "b1226d0f3c886841",
+        "type": "switch",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "property": "statusCode",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "400",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1990,
+        "y": 420,
+        "wires": [
+            [
+                "600af0d48b09dd28"
+            ]
+        ]
+    },
+    {
+        "id": "e229d4022dc85aa7",
+        "type": "debug",
+        "z": "e479d0b02bb037a7",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": false,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2430,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "600af0d48b09dd28",
+        "type": "change",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "errorCounter",
+                "pt": "global",
+                "to": "$globalContext('errorCounter') + 1",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2220,
+        "y": 420,
+        "wires": [
+            [
+                "e229d4022dc85aa7"
+            ]
+        ]
+    },
+    {
         "id": "6a5547fed44243dc",
         "type": "http in",
         "z": "3b6b8358e806c1c1",
@@ -2949,7 +3028,9 @@
         "x": 930,
         "y": 640,
         "wires": [
-            []
+            [
+                "800ace7dae6cdd9f"
+            ]
         ]
     },
     {
@@ -3195,7 +3276,9 @@
         "x": 1070,
         "y": 220,
         "wires": [
-            []
+            [
+                "800ace7dae6cdd9f"
+            ]
         ]
     },
     {
@@ -3383,7 +3466,9 @@
         "x": 1210,
         "y": 420,
         "wires": [
-            []
+            [
+                "800ace7dae6cdd9f"
+            ]
         ]
     },
     {
@@ -3429,6 +3514,75 @@
             [],
             [],
             []
+        ]
+    },
+    {
+        "id": "800ace7dae6cdd9f",
+        "type": "switch",
+        "z": "3b6b8358e806c1c1",
+        "name": "",
+        "property": "statusCode",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "400",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1570,
+        "y": 340,
+        "wires": [
+            [
+                "5b7eebfe9e973d1e"
+            ]
+        ]
+    },
+    {
+        "id": "e7997bf960bfe086",
+        "type": "debug",
+        "z": "3b6b8358e806c1c1",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": false,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2050,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "5b7eebfe9e973d1e",
+        "type": "change",
+        "z": "3b6b8358e806c1c1",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "errorCounter",
+                "pt": "global",
+                "to": "$globalContext(\"errorCounter\") + 1",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1800,
+        "y": 340,
+        "wires": [
+            [
+                "e7997bf960bfe086"
+            ]
         ]
     },
     {
@@ -4232,7 +4386,9 @@
         "x": 1160,
         "y": 540,
         "wires": [
-            []
+            [
+                "67f883783bbfc638"
+            ]
         ]
     },
     {
@@ -4295,6 +4451,75 @@
         "wires": [
             [
                 "eec716c775194583"
+            ]
+        ]
+    },
+    {
+        "id": "67f883783bbfc638",
+        "type": "switch",
+        "z": "20311078e0546418",
+        "name": "",
+        "property": "statusCode",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "gte",
+                "v": "400",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1650,
+        "y": 360,
+        "wires": [
+            [
+                "06b618f448f0a7e2"
+            ]
+        ]
+    },
+    {
+        "id": "e599c33807e41b12",
+        "type": "debug",
+        "z": "20311078e0546418",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": false,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2210,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "06b618f448f0a7e2",
+        "type": "change",
+        "z": "20311078e0546418",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "errorCounter",
+                "pt": "global",
+                "to": "$globalContext(\"errorCounter\") + 1",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1900,
+        "y": 360,
+        "wires": [
+            [
+                "e599c33807e41b12"
             ]
         ]
     },
@@ -4733,7 +4958,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "Fetch all containers",
-        "x": 410,
+        "x": 550,
         "y": 80,
         "wires": [
             [
@@ -4761,7 +4986,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 590,
+        "x": 750,
         "y": 80,
         "wires": [
             [
@@ -4797,7 +5022,7 @@
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
-        "template": "# HELP netbox_docker_agent_container_running Show if a container is running\n# TYPE netbox_docker_agent_container_running gauge\n{{#container.running}}\nnetbox_docker_agent_container_running{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.running}}\n\n# HELP netbox_docker_agent_container_exited Show if a container is exited\n# TYPE netbox_docker_agent_container_exited gauge\n{{#container.exited}}\nnetbox_docker_agent_container_exited{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.exited}}\n\n# HELP netbox_docker_agent_container_stopped Show if a container is exited\n# TYPE netbox_docker_agent_container_stopped gauge\n{{#container.stopped}}\nnetbox_docker_agent_container_stopped{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.stopped}}\n\n# HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working\n# TYPE netbox_docker_agent_docker_daemon gauge\nnetbox_docker_agent_docker_daemon{socket=\"/var/run/docker.socket\"} {{container.docker_daemon}}",
+        "template": "# HELP netbox_docker_agent_container_running Show if a container is running\n# TYPE netbox_docker_agent_container_running gauge\n{{#container.running}}\nnetbox_docker_agent_container_running{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.running}}\n\n# HELP netbox_docker_agent_container_exited Show if a container is exited\n# TYPE netbox_docker_agent_container_exited gauge\n{{#container.exited}}\nnetbox_docker_agent_container_exited{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.exited}}\n\n# HELP netbox_docker_agent_container_stopped Show if a container is exited\n# TYPE netbox_docker_agent_container_stopped gauge\n{{#container.stopped}}\nnetbox_docker_agent_container_stopped{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.stopped}}\n\n# HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working\n# TYPE netbox_docker_agent_docker_daemon gauge\nnetbox_docker_agent_docker_daemon{socket=\"/var/run/docker.socket\"} {{container.docker_daemon}}\n\n# HELP netbox_docker_agent_netbox_error_response Show the netbox error response counter\n# TYPE netbox_docker_agent_netbox_error_response counter\nnetbox_docker_agent_netbox_error_response{} {{global.errorCounter}}",
         "output": "str",
         "x": 700,
         "y": 220,
@@ -4896,7 +5121,7 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 190,
+        "x": 70,
         "y": 80,
         "wires": [
             [
