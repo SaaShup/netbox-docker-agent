@@ -75,5 +75,22 @@ Example of prometheus configuration:
       password: 'saashup'
 ```
 
+## Logging
+The agent send logs to the stdout, which could be forwarded to syslog or other platforms.
+
+This allows the user to retrieve error and see the log messages.
+
+Example of syslog config in the daemon.json:
+
+```
+# see for further information: https://docs.docker.com/config/containers/logging/syslog/
+{
+  "log-driver": "syslog",
+  "log-opts": {
+    "syslog-address": "udp://1.2.3.4:1111"
+  }
+}
+```
+
 # Hosting
 Check https://saashup.com for more information
