@@ -2625,7 +2625,7 @@
         "y": 340,
         "wires": [
             [
-                "9bb270b6accb41e9"
+                "46001072daf66da7"
             ]
         ]
     },
@@ -2645,6 +2645,33 @@
         "x": 2690,
         "y": 340,
         "wires": []
+    },
+    {
+        "id": "46001072daf66da7",
+        "type": "change",
+        "z": "e479d0b02bb037a7",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "errorCounter",
+                "pt": "global",
+                "to": "$globalContext('errorCounter') + 1",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2400,
+        "y": 340,
+        "wires": [
+            [
+                "9bb270b6accb41e9"
+            ]
+        ]
     },
     {
         "id": "6a5547fed44243dc",
@@ -3535,7 +3562,7 @@
         "y": 340,
         "wires": [
             [
-                "fbd52a48430ef695"
+                "2822bbb42ab372a1"
             ]
         ]
     },
@@ -3552,9 +3579,36 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 2250,
+        "x": 2430,
         "y": 340,
         "wires": []
+    },
+    {
+        "id": "2822bbb42ab372a1",
+        "type": "change",
+        "z": "3b6b8358e806c1c1",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "errorCounter",
+                "pt": "global",
+                "to": "$globalContext('errorCounter') + 1",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2120,
+        "y": 340,
+        "wires": [
+            [
+                "fbd52a48430ef695"
+            ]
+        ]
     },
     {
         "id": "efa6477aecf0aef9",
@@ -4446,7 +4500,7 @@
         "y": 300,
         "wires": [
             [
-                "540e82ed2d044a5d"
+                "56353e43ed4c1b64"
             ]
         ]
     },
@@ -4463,9 +4517,36 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 2150,
+        "x": 2330,
         "y": 300,
         "wires": []
+    },
+    {
+        "id": "56353e43ed4c1b64",
+        "type": "change",
+        "z": "20311078e0546418",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "errorCounter",
+                "pt": "global",
+                "to": "$globalContext('errorCounter') + 1",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2020,
+        "y": 300,
+        "wires": [
+            [
+                "540e82ed2d044a5d"
+            ]
+        ]
     },
     {
         "id": "2b0c0db9a95dd450",
@@ -4882,8 +4963,8 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 190,
-        "y": 300,
+        "x": 170,
+        "y": 380,
         "wires": [
             [
                 "46dbd905ebb4b7a5"
@@ -4966,7 +5047,7 @@
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
-        "template": "# HELP netbox_docker_agent_container_running Show if a container is running\n# TYPE netbox_docker_agent_container_running gauge\n{{#container.running}}\nnetbox_docker_agent_container_running{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.running}}\n\n# HELP netbox_docker_agent_container_exited Show if a container is exited\n# TYPE netbox_docker_agent_container_exited gauge\n{{#container.exited}}\nnetbox_docker_agent_container_exited{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.exited}}\n\n# HELP netbox_docker_agent_container_stopped Show if a container is exited\n# TYPE netbox_docker_agent_container_stopped gauge\n{{#container.stopped}}\nnetbox_docker_agent_container_stopped{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.stopped}}\n\n# HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working\n# TYPE netbox_docker_agent_docker_daemon gauge\nnetbox_docker_agent_docker_daemon{socket=\"/var/run/docker.socket\"} {{container.docker_daemon}}",
+        "template": "# HELP netbox_docker_agent_container_running Show if a container is running\n# TYPE netbox_docker_agent_container_running gauge\n{{#container.running}}\nnetbox_docker_agent_container_running{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.running}}\n\n# HELP netbox_docker_agent_container_exited Show if a container is exited\n# TYPE netbox_docker_agent_container_exited gauge\n{{#container.exited}}\nnetbox_docker_agent_container_exited{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.exited}}\n\n# HELP netbox_docker_agent_container_stopped Show if a container is exited\n# TYPE netbox_docker_agent_container_stopped gauge\n{{#container.stopped}}\nnetbox_docker_agent_container_stopped{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.stopped}}\n\n# HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working\n# TYPE netbox_docker_agent_docker_daemon gauge\nnetbox_docker_agent_docker_daemon{socket=\"/var/run/docker.socket\"} {{container.docker_daemon}}\n\n# HELP netbox_docker_agent_netbox_error_response Show the netbox error response counter\n# TYPE netbox_docker_agent_netbox_error_response counter\nnetbox_docker_agent_netbox_error_response{} {{global.errorCounter}}",
         "output": "str",
         "x": 700,
         "y": 220,
@@ -5082,8 +5163,8 @@
         "headers": {
             "content-type": "text/plain"
         },
-        "x": 590,
-        "y": 300,
+        "x": 570,
+        "y": 380,
         "wires": []
     },
     {
@@ -5105,8 +5186,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 400,
-        "y": 300,
+        "x": 380,
+        "y": 380,
         "wires": [
             [
                 "66c59b6a98f929e1"
@@ -5157,6 +5238,60 @@
         "reg": false,
         "x": 1080,
         "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2c844df5ab519744",
+        "type": "inject",
+        "z": "a02e6d42663c576b",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 280,
+        "wires": [
+            [
+                "3813e86f3a9030dc"
+            ]
+        ]
+    },
+    {
+        "id": "3813e86f3a9030dc",
+        "type": "change",
+        "z": "a02e6d42663c576b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "errorCounter",
+                "pt": "global",
+                "to": "0",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 360,
+        "y": 280,
         "wires": [
             []
         ]
