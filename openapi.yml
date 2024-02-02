@@ -1,0 +1,1070 @@
+info:
+  title: Netbox Docker Agent
+  version: 0.4.4
+openapi: 3.0.0
+paths:
+  /api/engine/endpoint:
+    get:
+      tags:
+        - netbox endpoint
+      responses:
+        "202":
+          description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+  /api/engine/containers:
+    delete:
+      tags:
+        - netbox containers
+      responses:
+        "202":
+          description: 202 response
+    get:
+      tags:
+        - netbox containers
+      responses:
+        "202":
+          description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+    post:
+      tags:
+        - netbox containers
+      responses:
+        "202":
+          description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+    put:
+      tags:
+        - netbox containers
+      responses:
+        "202":
+          description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+  /api/engine/images:
+    delete:
+      tags:
+        - netbox images
+      responses:
+        "202":
+          description: 202 response
+    get:
+      tags:
+        - netbox images
+      responses:
+        "202":
+          description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+    post:
+      tags:
+        - netbox images
+      responses:
+        "202":
+          description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+  /api/engine/networks:
+    delete:
+      tags:
+        - netbox networks
+      responses:
+        "202":
+          description: 202 response
+    get:
+      tags:
+        - netbox networks
+      responses:
+        "202":
+          description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+    post:
+      tags:
+        - netbox networks
+      responses:
+        "202":
+          description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+  /api/engine/volumes:
+    delete:
+      tags:
+        - netbox volumes
+      responses:
+        "202":
+          description: 202 response
+    get:
+      tags:
+        - netbox volumes
+      responses:
+        "202":
+          description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+    post:
+      tags:
+        - netbox volumes
+      responses:
+        "202":
+          description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+  /api/containers:
+    get:
+      tags:
+        - ui
+      responses:
+        "200":
+          description: 200 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiContainers200ResponseBody"
+  /api/images:
+    get:
+      tags:
+        - ui
+      responses:
+        "200":
+          description: 200 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiImages200ResponseBody"
+  /api/networks:
+    get:
+      tags:
+        - ui
+      responses:
+        "200":
+          description: 200 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiNetworks200ResponseBody"
+  /api/volumes:
+    get:
+      tags:
+        - ui
+      responses:
+        "200":
+          description: 200 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiVolumes200ResponseBody"
+  /metrics:
+    get:
+      tags:
+        - metrics
+      responses:
+        "200":
+          description: 200 response
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+  /info:
+    get:
+      tags:
+        - html
+      responses:
+        "200":
+          description: 200 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetInfo200ResponseBody"
+  /:
+    get:
+      tags:
+        - html
+      responses:
+        "200":
+          description: 200 response
+          content:
+            text/html; charset=utf-8:
+              schema:
+                type: string
+components:
+  schemas:
+    GetApiContainers200ResponseBody:
+      type: array
+      items:
+        type: object
+        properties:
+          Id:
+            type: string
+          Created:
+            type: string
+          Path:
+            type: string
+          Args:
+            type: array
+            items:
+              {}
+          State:
+            type: object
+            properties:
+              Status:
+                type: string
+              Running:
+                type: boolean
+              Paused:
+                type: boolean
+              Restarting:
+                type: boolean
+              OOMKilled:
+                type: boolean
+              Dead:
+                type: boolean
+              Pid:
+                type: number
+              ExitCode:
+                type: number
+              Error:
+                type: string
+              StartedAt:
+                type: string
+              FinishedAt:
+                type: string
+              Health:
+                type: object
+                properties:
+                  Status:
+                    type: string
+                  FailingStreak:
+                    type: number
+                  Log:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        Start:
+                          type: string
+                        End:
+                          type: string
+                        ExitCode:
+                          type: number
+                        Output:
+                          type: string
+                      required:
+                        - Start
+                        - End
+                        - ExitCode
+                        - Output
+                required:
+                  - Status
+                  - FailingStreak
+                  - Log
+            required:
+              - Status
+              - Running
+              - Paused
+              - Restarting
+              - OOMKilled
+              - Dead
+              - Pid
+              - ExitCode
+              - Error
+              - StartedAt
+              - FinishedAt
+          Image:
+            type: string
+          ResolvConfPath:
+            type: string
+          HostnamePath:
+            type: string
+          HostsPath:
+            type: string
+          LogPath:
+            type: string
+          Name:
+            type: string
+          RestartCount:
+            type: number
+          Driver:
+            type: string
+          Platform:
+            type: string
+          MountLabel:
+            type: string
+          ProcessLabel:
+            type: string
+          AppArmorProfile:
+            type: string
+          ExecIDs:
+            type: string
+          HostConfig:
+            type: object
+            properties:
+              Binds:
+                type: array
+                items:
+                  type: string
+              ContainerIDFile:
+                type: string
+              LogConfig:
+                type: object
+                properties:
+                  Type:
+                    type: string
+                  Config:
+                    type: object
+                required:
+                  - Type
+                  - Config
+              NetworkMode:
+                type: string
+              PortBindings:
+                type: object
+              RestartPolicy:
+                type: object
+                properties:
+                  Name:
+                    type: string
+                  MaximumRetryCount:
+                    type: number
+                required:
+                  - Name
+                  - MaximumRetryCount
+              AutoRemove:
+                type: boolean
+              VolumeDriver:
+                type: string
+              VolumesFrom:
+                type: string
+              ConsoleSize:
+                type: array
+                items:
+                  type: number
+              CapAdd:
+                type: string
+              CapDrop:
+                type: string
+              CgroupnsMode:
+                type: string
+              Dns:
+                type: array
+                items:
+                  {}
+              DnsOptions:
+                type: array
+                items:
+                  {}
+              DnsSearch:
+                type: array
+                items:
+                  {}
+              ExtraHosts:
+                type: string
+              GroupAdd:
+                type: string
+              IpcMode:
+                type: string
+              Cgroup:
+                type: string
+              Links:
+                type: string
+              OomScoreAdj:
+                type: number
+              PidMode:
+                type: string
+              Privileged:
+                type: boolean
+              PublishAllPorts:
+                type: boolean
+              ReadonlyRootfs:
+                type: boolean
+              SecurityOpt:
+                type: string
+              UTSMode:
+                type: string
+              UsernsMode:
+                type: string
+              ShmSize:
+                type: number
+              Runtime:
+                type: string
+              Isolation:
+                type: string
+              CpuShares:
+                type: number
+              Memory:
+                type: number
+              NanoCpus:
+                type: number
+              CgroupParent:
+                type: string
+              BlkioWeight:
+                type: number
+              BlkioWeightDevice:
+                type: array
+                items:
+                  {}
+              BlkioDeviceReadBps:
+                type: array
+                items:
+                  {}
+              BlkioDeviceWriteBps:
+                type: array
+                items:
+                  {}
+              BlkioDeviceReadIOps:
+                type: array
+                items:
+                  {}
+              BlkioDeviceWriteIOps:
+                type: array
+                items:
+                  {}
+              CpuPeriod:
+                type: number
+              CpuQuota:
+                type: number
+              CpuRealtimePeriod:
+                type: number
+              CpuRealtimeRuntime:
+                type: number
+              CpusetCpus:
+                type: string
+              CpusetMems:
+                type: string
+              Devices:
+                type: array
+                items:
+                  {}
+              DeviceCgroupRules:
+                type: string
+              DeviceRequests:
+                type: string
+              MemoryReservation:
+                type: number
+              MemorySwap:
+                type: number
+              MemorySwappiness:
+                type: string
+              OomKillDisable:
+                type: string
+              PidsLimit:
+                type: string
+              Ulimits:
+                type: string
+              CpuCount:
+                type: number
+              CpuPercent:
+                type: number
+              IOMaximumIOps:
+                type: number
+              IOMaximumBandwidth:
+                type: number
+              MaskedPaths:
+                type: array
+                items:
+                  type: string
+              ReadonlyPaths:
+                type: array
+                items:
+                  type: string
+            required:
+              - Binds
+              - ContainerIDFile
+              - LogConfig
+              - NetworkMode
+              - PortBindings
+              - RestartPolicy
+              - AutoRemove
+              - VolumeDriver
+              - VolumesFrom
+              - ConsoleSize
+              - CapAdd
+              - CapDrop
+              - CgroupnsMode
+              - Dns
+              - DnsOptions
+              - DnsSearch
+              - ExtraHosts
+              - GroupAdd
+              - IpcMode
+              - Cgroup
+              - Links
+              - OomScoreAdj
+              - PidMode
+              - Privileged
+              - PublishAllPorts
+              - ReadonlyRootfs
+              - SecurityOpt
+              - UTSMode
+              - UsernsMode
+              - ShmSize
+              - Runtime
+              - Isolation
+              - CpuShares
+              - Memory
+              - NanoCpus
+              - CgroupParent
+              - BlkioWeight
+              - BlkioWeightDevice
+              - BlkioDeviceReadBps
+              - BlkioDeviceWriteBps
+              - BlkioDeviceReadIOps
+              - BlkioDeviceWriteIOps
+              - CpuPeriod
+              - CpuQuota
+              - CpuRealtimePeriod
+              - CpuRealtimeRuntime
+              - CpusetCpus
+              - CpusetMems
+              - Devices
+              - DeviceCgroupRules
+              - DeviceRequests
+              - MemoryReservation
+              - MemorySwap
+              - MemorySwappiness
+              - OomKillDisable
+              - PidsLimit
+              - Ulimits
+              - CpuCount
+              - CpuPercent
+              - IOMaximumIOps
+              - IOMaximumBandwidth
+              - MaskedPaths
+              - ReadonlyPaths
+          GraphDriver:
+            type: object
+            properties:
+              Data:
+                type: object
+                properties:
+                  LowerDir:
+                    type: string
+                  MergedDir:
+                    type: string
+                  UpperDir:
+                    type: string
+                  WorkDir:
+                    type: string
+                required:
+                  - LowerDir
+                  - MergedDir
+                  - UpperDir
+                  - WorkDir
+              Name:
+                type: string
+            required:
+              - Data
+              - Name
+          Mounts:
+            type: array
+            items:
+              type: object
+              properties:
+                Type:
+                  type: string
+                Source:
+                  type: string
+                Destination:
+                  type: string
+                Mode:
+                  type: string
+                RW:
+                  type: boolean
+                Propagation:
+                  type: string
+                Name:
+                  type: string
+                Driver:
+                  type: string
+              required:
+                - Type
+                - Source
+                - Destination
+                - Mode
+                - RW
+                - Propagation
+          Config:
+            type: object
+            properties:
+              Hostname:
+                type: string
+              Domainname:
+                type: string
+              User:
+                type: string
+              AttachStdin:
+                type: boolean
+              AttachStdout:
+                type: boolean
+              AttachStderr:
+                type: boolean
+              ExposedPorts:
+                type: object
+              Tty:
+                type: boolean
+              OpenStdin:
+                type: boolean
+              StdinOnce:
+                type: boolean
+              Env:
+                type: array
+                items:
+                  type: string
+              Cmd:
+                oneOf:
+                  - type: string
+                  - type: array
+                    items:
+                      type: string
+              Healthcheck:
+                type: object
+                properties:
+                  Test:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - Test
+              Image:
+                type: string
+              Volumes:
+                type: string
+              WorkingDir:
+                type: string
+              Entrypoint:
+                type: array
+                items:
+                  type: string
+              OnBuild:
+                type: string
+              Labels:
+                type: object
+              StopSignal:
+                type: string
+            required:
+              - Hostname
+              - Domainname
+              - User
+              - AttachStdin
+              - AttachStdout
+              - AttachStderr
+              - ExposedPorts
+              - Tty
+              - OpenStdin
+              - StdinOnce
+              - Env
+              - Cmd
+              - Image
+              - Volumes
+              - WorkingDir
+              - Entrypoint
+              - OnBuild
+              - Labels
+          NetworkSettings:
+            type: object
+            properties:
+              Bridge:
+                type: string
+              SandboxID:
+                type: string
+              HairpinMode:
+                type: boolean
+              LinkLocalIPv6Address:
+                type: string
+              LinkLocalIPv6PrefixLen:
+                type: number
+              Ports:
+                type: object
+                properties:
+                  {}
+              SandboxKey:
+                type: string
+              SecondaryIPAddresses:
+                type: string
+              SecondaryIPv6Addresses:
+                type: string
+              EndpointID:
+                type: string
+              Gateway:
+                type: string
+              GlobalIPv6Address:
+                type: string
+              GlobalIPv6PrefixLen:
+                type: number
+              IPAddress:
+                type: string
+              IPPrefixLen:
+                type: number
+              IPv6Gateway:
+                type: string
+              MacAddress:
+                type: string
+              Networks:
+                type: object
+                properties:
+                  bridge:
+                    type: object
+                    properties:
+                      IPAMConfig:
+                        type: string
+                      Links:
+                        type: string
+                      Aliases:
+                        type: string
+                      NetworkID:
+                        type: string
+                      EndpointID:
+                        type: string
+                      Gateway:
+                        type: string
+                      IPAddress:
+                        type: string
+                      IPPrefixLen:
+                        type: number
+                      IPv6Gateway:
+                        type: string
+                      GlobalIPv6Address:
+                        type: string
+                      GlobalIPv6PrefixLen:
+                        type: number
+                      MacAddress:
+                        type: string
+                      DriverOpts:
+                        type: string
+                    required:
+                      - IPAMConfig
+                      - Links
+                      - Aliases
+                      - NetworkID
+                      - EndpointID
+                      - Gateway
+                      - IPAddress
+                      - IPPrefixLen
+                      - IPv6Gateway
+                      - GlobalIPv6Address
+                      - GlobalIPv6PrefixLen
+                      - MacAddress
+                      - DriverOpts
+                required:
+                  - bridge
+            required:
+              - Bridge
+              - SandboxID
+              - HairpinMode
+              - LinkLocalIPv6Address
+              - LinkLocalIPv6PrefixLen
+              - Ports
+              - SandboxKey
+              - SecondaryIPAddresses
+              - SecondaryIPv6Addresses
+              - EndpointID
+              - Gateway
+              - GlobalIPv6Address
+              - GlobalIPv6PrefixLen
+              - IPAddress
+              - IPPrefixLen
+              - IPv6Gateway
+              - MacAddress
+              - Networks
+        required:
+          - Id
+          - Created
+          - Path
+          - Args
+          - State
+          - Image
+          - ResolvConfPath
+          - HostnamePath
+          - HostsPath
+          - LogPath
+          - Name
+          - RestartCount
+          - Driver
+          - Platform
+          - MountLabel
+          - ProcessLabel
+          - AppArmorProfile
+          - ExecIDs
+          - HostConfig
+          - GraphDriver
+          - Mounts
+          - Config
+          - NetworkSettings
+    GetApiEngineContainers202ResponseBody:
+      type: object
+    GetApiImages200ResponseBody:
+      type: array
+      items:
+        type: object
+        properties:
+          Containers:
+            type: number
+          Created:
+            type: number
+          Id:
+            type: string
+          Labels:
+            type: object
+          ParentId:
+            type: string
+          RepoDigests:
+            type: array
+            items:
+              type: string
+          RepoTags:
+            type: array
+            items:
+              type: string
+          SharedSize:
+            type: number
+          Size:
+            type: number
+          VirtualSize:
+            type: number
+        required:
+          - Containers
+          - Created
+          - Id
+          - Labels
+          - ParentId
+          - RepoDigests
+          - RepoTags
+          - SharedSize
+          - Size
+          - VirtualSize
+    GetApiNetworks200ResponseBody:
+      type: array
+      items:
+        type: object
+        properties:
+          Name:
+            type: string
+          Id:
+            type: string
+          Created:
+            type: string
+          Scope:
+            type: string
+          Driver:
+            type: string
+          EnableIPv6:
+            type: boolean
+          IPAM:
+            type: object
+            properties:
+              Driver:
+                type: string
+              Options:
+                type: string
+              Config:
+                type: array
+                items:
+                  {}
+            required:
+              - Driver
+              - Options
+              - Config
+          Internal:
+            type: boolean
+          Attachable:
+            type: boolean
+          Ingress:
+            type: boolean
+          ConfigFrom:
+            type: object
+            properties:
+              Network:
+                type: string
+            required:
+              - Network
+          ConfigOnly:
+            type: boolean
+          Containers:
+            type: object
+          Options:
+            type: object
+            properties:
+              com.docker.network.bridge.default_bridge:
+                type: string
+              com.docker.network.bridge.enable_icc:
+                type: string
+              com.docker.network.bridge.enable_ip_masquerade:
+                type: string
+              com.docker.network.bridge.host_binding_ipv4:
+                type: string
+              com.docker.network.bridge.name:
+                type: string
+              com.docker.network.driver.mtu:
+                type: string
+          Labels:
+            type: object
+        required:
+          - Name
+          - Id
+          - Created
+          - Scope
+          - Driver
+          - EnableIPv6
+          - IPAM
+          - Internal
+          - Attachable
+          - Ingress
+          - ConfigFrom
+          - ConfigOnly
+          - Containers
+          - Options
+          - Labels
+    GetApiVolumes200ResponseBody:
+      type: object
+      properties:
+        Volumes:
+          type: array
+          items:
+            type: object
+            properties:
+              CreatedAt:
+                type: string
+              Driver:
+                type: string
+              Labels:
+                oneOf:
+                  - type: string
+                  - type: object
+                    properties:
+                      com.docker.volume.anonymous:
+                        type: string
+                    required:
+                      - com.docker.volume.anonymous
+              Mountpoint:
+                type: string
+              Name:
+                type: string
+              Options:
+                type: string
+              Scope:
+                type: string
+            required:
+              - CreatedAt
+              - Driver
+              - Labels
+              - Mountpoint
+              - Name
+              - Options
+              - Scope
+        Warnings:
+          type: string
+      required:
+        - Volumes
+        - Warnings
+    GetInfo200ResponseBody:
+      type: object
+      properties:
+        message:
+          type: string
+        configured:
+          type: string
+        version:
+          type: string
+        docker:
+          type: object
+          properties:
+            Platform:
+              type: object
+              properties:
+                Name:
+                  type: string
+              required:
+                - Name
+            Components:
+              type: array
+              items:
+                type: object
+                properties:
+                  Name:
+                    type: string
+                  Version:
+                    type: string
+                  Details:
+                    type: object
+                    properties:
+                      ApiVersion:
+                        type: string
+                      Arch:
+                        type: string
+                      BuildTime:
+                        type: string
+                      Experimental:
+                        type: string
+                      GitCommit:
+                        type: string
+                      GoVersion:
+                        type: string
+                      KernelVersion:
+                        type: string
+                      MinAPIVersion:
+                        type: string
+                      Os:
+                        type: string
+                    required:
+                      - GitCommit
+                required:
+                  - Name
+                  - Version
+                  - Details
+            Version:
+              type: string
+            ApiVersion:
+              type: string
+            MinAPIVersion:
+              type: string
+            GitCommit:
+              type: string
+            GoVersion:
+              type: string
+            Os:
+              type: string
+            Arch:
+              type: string
+            KernelVersion:
+              type: string
+            BuildTime:
+              type: string
+          required:
+            - Platform
+            - Components
+            - Version
+            - ApiVersion
+            - MinAPIVersion
+            - GitCommit
+            - GoVersion
+            - Os
+            - Arch
+            - KernelVersion
+            - BuildTime
+      required:
+        - message
+        - configured
+        - version
+        - docker
