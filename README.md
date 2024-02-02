@@ -81,5 +81,15 @@ Example of prometheus configuration:
       password: 'saashup'
 ```
 
+## Logs
+Currently all logs are send to stdout, if netbox send an error message to the agent.
+
+The format of the error message is the following one:
+```
+${data.name} level=${level[lvl]} version=${data.version} msg=${JSON.stringify(msg.msg)}
+```
+
+This can be changed by updating inside the INIT flow the "settings.js template" and change the logging.console.handler .
+
 # Hosting
 Check https://saashup.com for more information
