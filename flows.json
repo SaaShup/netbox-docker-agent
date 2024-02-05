@@ -467,6 +467,81 @@
         ]
     },
     {
+        "id": "2c828dcea2260ee8",
+        "type": "inject",
+        "z": "216db6efc0df9bc0",
+        "name": "disable UI",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 860,
+        "y": 440,
+        "wires": [
+            [
+                "c7df8a3cd446ab39"
+            ]
+        ]
+    },
+    {
+        "id": "1fe26c906804c48f",
+        "type": "inject",
+        "z": "216db6efc0df9bc0",
+        "name": "enable UI",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 860,
+        "y": 500,
+        "wires": [
+            [
+                "c7df8a3cd446ab39"
+            ]
+        ]
+    },
+    {
+        "id": "c7df8a3cd446ab39",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config.ui",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1070,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "91e25dba31c28805",
         "type": "http in",
         "z": "a827fd671d6a227e",
@@ -2295,7 +2370,7 @@
         "y": 500,
         "wires": [
             [
-                "2f201f0cc6cf431f"
+                "c36cfb76e8ade619"
             ]
         ]
     },
@@ -2306,7 +2381,7 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 450,
+        "x": 550,
         "y": 500,
         "wires": []
     },
@@ -2596,8 +2671,8 @@
         "sendError": false,
         "encoding": "none",
         "allProps": false,
-        "x": 290,
-        "y": 500,
+        "x": 390,
+        "y": 460,
         "wires": [
             [
                 "33c0c19a8ba03cae"
@@ -2668,6 +2743,37 @@
         "x": 1795,
         "y": 560,
         "wires": []
+    },
+    {
+        "id": "c36cfb76e8ade619",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "property": "config.ui",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 250,
+        "y": 500,
+        "wires": [
+            [
+                "2f201f0cc6cf431f"
+            ],
+            [
+                "33c0c19a8ba03cae"
+            ]
+        ]
     },
     {
         "id": "e974d3bd502f614f",
