@@ -31,7 +31,41 @@ module.exports = {
         console: {
             level: "info",
             metrics: false,
-            audit: false
+            audit: false,
+            handler: function(settings) {
+                return function(msg) {
+                    var fs = require('fs');
+                    var data = JSON.parse(fs.readFileSync('/usr/src/node-red/package.json', 'utf8'));
+                    const level = {
+                        20: 'error',
+                        30: 'warn',
+                        40: 'info'
+                    };
+                    const lvl = "level" in msg ? msg.level : "40";
+
+                    delete msg.type;
+                    delete msg.z;
+                    delete msg.path;
+                    delete msg.name;
+                    delete msg.id;
+
+                    let line = `${data.name} level=${level[lvl]} version=${data.version}`;
+
+                    if (typeof msg.msg === 'object') {
+                        for (const key of Object.keys(msg.msg)) {
+                            line += ` ${key}=${JSON.stringify(msg.msg[key])}`;
+                        }
+                    } else {
+                        line += ` msg=` + JSON.stringify(msg.msg);
+                    }
+
+                    if (lvl <= 20) {
+                        return console.error(line);
+                    }
+
+                    return console.log(line);
+                }
+            }
         }
     },
     exportGlobalContextKeys: false,
@@ -64,6 +98,6 @@ module.exports = {
     },
     debugMaxLength: 1000,
     mqttReconnectTime: 15000,
-    serialReconnectTime: 15000,
+    serialReconnectTime: 15000
 }
 

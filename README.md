@@ -59,6 +59,10 @@ netbox_docker_agent_container_stopped{name="example-stopped", state="stopped", s
 # HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working
 # TYPE netbox_docker_agent_docker_daemon gauge
 netbox_docker_agent_docker_daemon{socket="/var/run/docker.socket"} 1
+
+# HELP netbox_docker_agent_netbox_error_response Show the netbox error response counter
+# TYPE netbox_docker_agent_netbox_error_response counter
+netbox_docker_agent_netbox_error_response{} 0
 ```
 
 Example of prometheus configuration:
@@ -76,6 +80,16 @@ Example of prometheus configuration:
       username: 'admin'
       password: 'saashup'
 ```
+
+## Logs
+Currently all logs are send to stdout, if netbox send an error message to the agent.
+
+The format of the error message is the following one:
+```
+${data.name} level=${level[lvl]} version=${data.version} msg=${JSON.stringify(msg.msg)}
+```
+
+This can be changed by updating inside the INIT flow the "settings.js template" and change the logging.console.handler .
 
 # Hosting
 Check https://saashup.com for more information
