@@ -1,4 +1,4 @@
-# Netbox Docker Agent 
+# Netbox Docker Agent
 
 [![Github Issues](http://img.shields.io/github/issues/SaaShup/netbox-docker-agent)](https://github.com/SaaShup/netbox-docker-agent/issues)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
@@ -26,11 +26,24 @@ docker build -t saashup/netbox-docker-agent .
 ```
 ## Run
 ```
-docker run -d -p 1880:1880 -v /var/run/docker.sock:/var/run/docker.sock:rw -v netbox-docker-agent:/data --name netbox-docker-agent saashup/netbox-docker-agent 
+docker run -d -p 1880:1880 -v /var/run/docker.sock:/var/run/docker.sock:rw -v netbox-docker-agent:/data --name netbox-docker-agent saashup/netbox-docker-agent
 ```
 container must have **rw access to the docker unix socket** (/var/run/docker.sock)
 
 Default access is *admin/saashup*
+
+## Contribute
+
+### Run locally
+
+On the root of the project run:
+
+```
+npm install
+npx node-red -u . -s settings.js
+```
+
+Then you can browse http://localhost:1880/nodered. Default access is *admin/saashup*.
 
 ## Connect
 

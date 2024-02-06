@@ -6,8 +6,8 @@ RUN openssl req -new -sha256 -key privkey.pem -out csr.pem -subj "/C=FR/ST=Nancy
 RUN openssl x509 -req -in csr.pem -signkey privkey.pem -out cert.pem
 
 WORKDIR /usr/src/node-red
-RUN npm install --unsafe-perm --no-update-notifier --no-fund --omit=dev
 COPY package.json /usr/src/node-red
+RUN ln -s /usr/src/node-red/package.json /data/package.json
 
 COPY index.html /usr/src/node-red/index.html
 COPY flows.json /usr/src/node-red/flows.json
