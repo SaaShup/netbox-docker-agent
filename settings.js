@@ -1,5 +1,8 @@
+data = require("./package.json")
+
 module.exports = {
     credentialSecret: "saashup",
+    flowFile: "flows.json",
     flowFilePretty: true,
     adminAuth: {
         type: "credentials",
@@ -34,8 +37,6 @@ module.exports = {
             audit: false,
             handler: function(settings) {
                 return function(msg) {
-                    var fs = require('fs');
-                    var data = JSON.parse(fs.readFileSync('/usr/src/node-red/package.json', 'utf8'));
                     const level = {
                         20: 'error',
                         30: 'warn',
@@ -100,4 +101,3 @@ module.exports = {
     mqttReconnectTime: 15000,
     serialReconnectTime: 15000
 }
-
