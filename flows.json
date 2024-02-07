@@ -59,7 +59,7 @@
         "onceDelay": "1",
         "topic": "",
         "x": 290,
-        "y": 120,
+        "y": 220,
         "wires": [
             [
                 "3f489e8a5d253765"
@@ -103,7 +103,7 @@
         "overwriteFile": "true",
         "encoding": "none",
         "x": 660,
-        "y": 200,
+        "y": 300,
         "wires": [
             []
         ]
@@ -126,7 +126,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 270,
-        "y": 200,
+        "y": 300,
         "wires": [
             [
                 "55c03f8643b324ae"
@@ -145,7 +145,7 @@
         "template": "data = require(\"./package.json\")\n\nmodule.exports = {\n    credentialSecret: \"saashup\",\n    flowFile: \"flows.json\",\n    flowFilePretty: true,\n    adminAuth: {\n        type: \"credentials\",\n        users: [{\n            username: \"admin\",\n            password: \"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\",\n            permissions: \"*\"\n        }]\n    },\n    /*https: {\n      key: require(\"fs\").readFileSync('/data/privkey.pem'),\n      cert: require(\"fs\").readFileSync('/data/cert.pem')\n    },\n    requireHttps: true,*/\n    httpNodeAuth: {\n        user:\"admin\",pass:\"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\"\n    },\n    uiPort: process.env.PORT || 1880,\n    httpAdminRoot: '/nodered',\n    diagnostics: {\n        enabled: true,\n        ui: true,\n    },\n    runtimeState: {\n        enabled: false,\n        ui: false,\n    },\n    logging: {\n        console: {\n            level: \"info\",\n            metrics: false,\n            audit: false,\n            handler: function(settings) {\n                return function(msg) {\n                    const level = {\n                        20: 'error',\n                        30: 'warn',\n                        40: 'info'\n                    };\n                    const lvl = \"level\" in msg ? msg.level : \"40\";\n\n                    delete msg.type;\n                    delete msg.z;\n                    delete msg.path;\n                    delete msg.name;\n                    delete msg.id;\n\n                    let line = `${data.name} level=${level[lvl]} version=${data.version}`;\n\n                    if (typeof msg.msg === 'object') {\n                        for (const key of Object.keys(msg.msg)) {\n                            line += ` ${key}=${JSON.stringify(msg.msg[key])}`;\n                        }\n                    } else {\n                        line += ` msg=` + JSON.stringify(msg.msg);\n                    }\n\n                    if (lvl <= 20) {\n                        return console.error(line);\n                    }\n\n                    return console.log(line);\n                }\n            }\n        }\n    },\n    exportGlobalContextKeys: false,\n    externalModules: {\n    },\n    editorTheme: {\n        tours: false,\n        palette: {\n        },\n        projects: {\n            enabled: false,\n            workflow: {\n                mode: \"manual\"\n            }\n        },\n        codeEditor: {\n            lib: \"monaco\",\n            options: {\n            }\n        },\n        markdownEditor: {\n            mermaid: {\n                enabled: true\n            }\n        },\n    },\n    functionExternalModules: true,\n    functionTimeout: 0,\n    functionGlobalContext: {\n    },\n    debugMaxLength: 1000,\n    mqttReconnectTime: 15000,\n    serialReconnectTime: 15000\n}\n",
         "output": "str",
         "x": 460,
-        "y": 200,
+        "y": 300,
         "wires": [
             [
                 "deb89a9f64f32d7e"
@@ -165,7 +165,7 @@
         "oldrc": false,
         "name": "Events",
         "x": 470,
-        "y": 300,
+        "y": 400,
         "wires": [
             [
                 "7c210c45ea82059e"
@@ -192,7 +192,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 280,
-        "y": 300,
+        "y": 400,
         "wires": [
             [
                 "b3814c680815a25b"
@@ -215,7 +215,7 @@
         "repair": false,
         "outputs": 1,
         "x": 770,
-        "y": 280,
+        "y": 380,
         "wires": [
             [
                 "8e555efa2728d8b8"
@@ -234,7 +234,7 @@
         "stream": false,
         "addname": "",
         "x": 630,
-        "y": 280,
+        "y": 380,
         "wires": [
             [
                 "06b0b14f4b337cfe"
@@ -272,7 +272,7 @@
         "repair": false,
         "outputs": 4,
         "x": 1090,
-        "y": 280,
+        "y": 380,
         "wires": [
             [],
             [],
@@ -289,7 +289,7 @@
         "action": "",
         "pretty": false,
         "x": 930,
-        "y": 280,
+        "y": 380,
         "wires": [
             [
                 "da696e53c1c7431f"
@@ -316,7 +316,7 @@
         "to": "",
         "reg": false,
         "x": 500,
-        "y": 120,
+        "y": 220,
         "wires": [
             [
                 "d216b6ee68a71932"
@@ -335,7 +335,7 @@
         "overwriteFile": "true",
         "encoding": "none",
         "x": 720,
-        "y": 120,
+        "y": 220,
         "wires": [
             []
         ]
@@ -355,7 +355,8 @@
         "y": 60,
         "wires": [
             [
-                "4f7dddf957ee0796"
+                "4f7dddf957ee0796",
+                "2b9a4a79e583d72a"
             ]
         ]
     },
@@ -418,7 +419,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "x": 280,
-        "y": 460,
+        "y": 560,
         "wires": [
             [
                 "cc58358dd78c9a8a",
@@ -439,7 +440,7 @@
         "oldrc": false,
         "name": "networks",
         "x": 460,
-        "y": 420,
+        "y": 520,
         "wires": [
             [],
             [],
@@ -459,7 +460,7 @@
         "oldrc": false,
         "name": "images",
         "x": 460,
-        "y": 500,
+        "y": 600,
         "wires": [
             [],
             [],
@@ -484,7 +485,7 @@
         "payload": "0",
         "payloadType": "num",
         "x": 860,
-        "y": 440,
+        "y": 540,
         "wires": [
             [
                 "c7df8a3cd446ab39"
@@ -509,7 +510,7 @@
         "payload": "1",
         "payloadType": "num",
         "x": 860,
-        "y": 500,
+        "y": 600,
         "wires": [
             [
                 "c7df8a3cd446ab39"
@@ -536,7 +537,68 @@
         "to": "",
         "reg": false,
         "x": 1070,
-        "y": 460,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2b9a4a79e583d72a",
+        "type": "file in",
+        "z": "216db6efc0df9bc0",
+        "name": "package",
+        "filename": "./package.json",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 480,
+        "y": 120,
+        "wires": [
+            [
+                "47acfb0f70efb0b1"
+            ]
+        ]
+    },
+    {
+        "id": "47acfb0f70efb0b1",
+        "type": "json",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 650,
+        "y": 120,
+        "wires": [
+            [
+                "8238525b0e482b59"
+            ]
+        ]
+    },
+    {
+        "id": "8238525b0e482b59",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "package",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 830,
+        "y": 120,
         "wires": [
             []
         ]
@@ -1763,13 +1825,6 @@
         "rules": [
             {
                 "t": "set",
-                "p": "volumes",
-                "pt": "global",
-                "to": "payload.Volumes",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
                 "p": "payload",
                 "pt": "msg",
                 "to": "payload.Volumes",
@@ -2102,11 +2157,11 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 120,
+        "x": 420,
         "y": 720,
         "wires": [
             [
-                "c2114a4b01803acb"
+                "ed796f5589c864f7"
             ]
         ]
     },
@@ -2136,9 +2191,16 @@
             },
             {
                 "t": "set",
+                "p": "package",
+                "pt": "msg",
+                "to": "package",
+                "tot": "global"
+            },
+            {
+                "t": "set",
                 "p": "output",
                 "pt": "msg",
-                "to": "{\t    \"message\":\"netbox-saashup-agent\",\t    \"configured\": msg.config.netbox_token and msg.config.netbox_token != \"\" ? \"ok\" : \"nok\",\t    \"version\": msg.payload.version\t}",
+                "to": "{\t    \"message\":\"netbox-saashup-agent\",\t    \"configured\": msg.config.netbox_token and msg.config.netbox_token != \"\" ? \"ok\" : \"nok\",\t    \"version\": msg.package.version\t}",
                 "tot": "jsonata"
             }
         ],
@@ -2275,42 +2337,6 @@
         "x": 1120,
         "y": 60,
         "wires": []
-    },
-    {
-        "id": "c2114a4b01803acb",
-        "type": "file in",
-        "z": "a827fd671d6a227e",
-        "name": "version",
-        "filename": "./package.json",
-        "filenameType": "str",
-        "format": "utf8",
-        "chunk": false,
-        "sendError": false,
-        "encoding": "none",
-        "allProps": false,
-        "x": 280,
-        "y": 720,
-        "wires": [
-            [
-                "d816f4490f881ceb"
-            ]
-        ]
-    },
-    {
-        "id": "d816f4490f881ceb",
-        "type": "json",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "property": "payload",
-        "action": "",
-        "pretty": false,
-        "x": 430,
-        "y": 720,
-        "wires": [
-            [
-                "ed796f5589c864f7"
-            ]
-        ]
     },
     {
         "id": "221cb4f11aa9b1dc",
@@ -2637,7 +2663,7 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "eq",
+                "t": "cont",
                 "v": "/api/engine/endpoint",
                 "vt": "str"
             },
@@ -2653,7 +2679,9 @@
         "x": 1030,
         "y": 720,
         "wires": [
-            [],
+            [
+                "5a07511ed7c011d2"
+            ],
             [
                 "9c13c13d42f82b69"
             ]
@@ -2774,6 +2802,112 @@
                 "33c0c19a8ba03cae"
             ]
         ]
+    },
+    {
+        "id": "5a07511ed7c011d2",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "package",
+                "pt": "msg",
+                "to": "package",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/hosts/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "PATCH",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "result",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "[{\t   \"id\": $number(msg.config.id),\t   \"docker_api_version\": msg.result.ApiVersion,\t   \"agent_version\": msg.package.version,\t   \"state\": \"running\"\t}]",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1200,
+        "y": 680,
+        "wires": [
+            [
+                "debd21ad874ab51b"
+            ]
+        ]
+    },
+    {
+        "id": "debd21ad874ab51b",
+        "type": "http request",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1390,
+        "y": 680,
+        "wires": [
+            [
+                "466a424beeab3020"
+            ]
+        ]
+    },
+    {
+        "id": "466a424beeab3020",
+        "type": "link out",
+        "z": "a827fd671d6a227e",
+        "name": "link out 12",
+        "mode": "link",
+        "links": [
+            "36f439d2ba0ac71a"
+        ],
+        "x": 1515,
+        "y": 680,
+        "wires": []
     },
     {
         "id": "e974d3bd502f614f",
@@ -5395,7 +5529,8 @@
             "14ee8c9739857e6c",
             "310b29964dbaaca6",
             "829323373ce00e9e",
-            "d10c0e59950649aa"
+            "d10c0e59950649aa",
+            "466a424beeab3020"
         ],
         "x": 105,
         "y": 500,
