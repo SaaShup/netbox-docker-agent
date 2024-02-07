@@ -1627,7 +1627,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t   \"host\": msg.config.id,\t   \"name\": msg.result.Name,\t   \"driver\": msg.result.Driver,\t   \"NetworkID\": msg.result.Id,\t   \"state\": \"created\"\t}",
+                "to": "{\t   \"host\": msg.config.id,\t   \"name\": msg.result.Name,\t   \"driver\": $string(msg.result.Driver) = \"null\" ? \"None\" : msg.result.Driver,\t   \"NetworkID\": msg.result.Id,\t   \"state\": \"created\"\t}",
                 "tot": "jsonata"
             }
         ],
