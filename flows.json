@@ -3914,7 +3914,7 @@
         "id": "a1b35447c74d2e5a",
         "type": "exec",
         "z": "8e85e8c54d776ddc",
-        "command": "curl -X POST --unix-socket /var/run/docker.sock",
+        "command": "curl -s -X POST --unix-socket /var/run/docker.sock",
         "addpay": "post",
         "append": "",
         "useSpawn": "false",
@@ -3926,7 +3926,7 @@
         "y": 140,
         "wires": [
             [
-                "29132a5a3f72e359"
+                "b61b7a952b88459b"
             ],
             [],
             []
@@ -4197,7 +4197,7 @@
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "\"http://localhost/containers/create?name=\" & $string(msg.input.data.name) & \" -H 'content-type: application/json' -d '\" & $string(msg.payload) & \"'\"",
+                "to": "\"http://localhost/containers/create?name=\" & $string(msg.input.data.name) & \" -H 'content-type: application/json' -d '\" & $replace($string(msg.payload),\"'\",\"\") & \"'\"",
                 "tot": "jsonata"
             }
         ],
@@ -4218,7 +4218,7 @@
         "id": "3442c7ad3a999fb0",
         "type": "exec",
         "z": "8e85e8c54d776ddc",
-        "command": "curl -X POST --unix-socket /var/run/docker.sock",
+        "command": "curl -s -X POST --unix-socket /var/run/docker.sock",
         "addpay": "post",
         "append": "",
         "useSpawn": "false",
@@ -4460,7 +4460,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 460,
+        "x": 280,
         "y": 540,
         "wires": [
             [
@@ -4480,7 +4480,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 650,
+        "x": 470,
         "y": 540,
         "wires": [
             [
@@ -4499,7 +4499,7 @@
             "87af9743f25dca82",
             "ec4a365091d27e97"
         ],
-        "x": 315,
+        "x": 135,
         "y": 540,
         "wires": [
             [
@@ -4528,7 +4528,7 @@
         "property": "payload",
         "action": "obj",
         "pretty": false,
-        "x": 810,
+        "x": 630,
         "y": 540,
         "wires": [
             [
@@ -4590,11 +4590,12 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 980,
+        "x": 800,
         "y": 540,
         "wires": [
             [
-                "c469b4b880927dc6"
+                "c469b4b880927dc6",
+                "1e31acfa8553b622"
             ]
         ]
     },
@@ -4614,7 +4615,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1160,
+        "x": 1030,
         "y": 540,
         "wires": [
             [
@@ -4631,8 +4632,8 @@
         "links": [
             "a12cfbe9ec7b317a"
         ],
-        "x": 1165,
-        "y": 120,
+        "x": 1305,
+        "y": 80,
         "wires": []
     },
     {
@@ -4652,8 +4653,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 1060,
-        "y": 120,
+        "x": 1200,
+        "y": 80,
         "wires": [
             [
                 "ec4a365091d27e97"
@@ -4694,9 +4695,185 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1285,
+        "x": 1155,
         "y": 540,
         "wires": []
+    },
+    {
+        "id": "b61b7a952b88459b",
+        "type": "switch",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "empty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1050,
+        "y": 120,
+        "wires": [
+            [
+                "29132a5a3f72e359"
+            ],
+            [
+                "44b70c4a1a5241f9"
+            ]
+        ]
+    },
+    {
+        "id": "44b70c4a1a5241f9",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/extras/journal-entries/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "POST",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "result",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"warning\",\t   \"comments\": $string(msg.result)\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1080,
+        "y": 180,
+        "wires": [
+            [
+                "fc1e63a44287e26a"
+            ]
+        ]
+    },
+    {
+        "id": "fc1e63a44287e26a",
+        "type": "http request",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1290,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1e31acfa8553b622",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/extras/journal-entries/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "POST",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"operation \" & msg.input.data.operation & \" ok \"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 780,
+        "y": 600,
+        "wires": [
+            [
+                "9315edc0877baef6"
+            ]
+        ]
+    },
+    {
+        "id": "9315edc0877baef6",
+        "type": "http request",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 990,
+        "y": 600,
+        "wires": [
+            []
+        ]
     },
     {
         "id": "5401a8e6f806f2a4",
@@ -5467,7 +5644,8 @@
         "y": 500,
         "wires": [
             [
-                "efc97803a70d7841"
+                "efc97803a70d7841",
+                "d138d4d1284cc210"
             ]
         ]
     },
@@ -5519,24 +5697,131 @@
         "id": "36f439d2ba0ac71a",
         "type": "link in",
         "z": "3ee57a9d7dc5fae7",
-        "name": "log",
+        "name": "log cb",
         "links": [
-            "85576a332e06d405",
-            "2b11dfa028894e68",
-            "eac6a267ba1d8eaf",
-            "0f90d4602b562160",
             "05457d6efadc3737",
+            "0f90d4602b562160",
             "14ee8c9739857e6c",
+            "2b11dfa028894e68",
             "310b29964dbaaca6",
+            "466a424beeab3020",
             "829323373ce00e9e",
+            "85576a332e06d405",
             "d10c0e59950649aa",
-            "466a424beeab3020"
+            "eac6a267ba1d8eaf"
         ],
         "x": 105,
         "y": 500,
         "wires": [
             [
                 "df2cb95dca98e944"
+            ]
+        ]
+    },
+    {
+        "id": "d138d4d1284cc210",
+        "type": "change",
+        "z": "3ee57a9d7dc5fae7",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "package",
+                "pt": "msg",
+                "to": "package",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/extras/journal-entries/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "POST",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "result",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": msg.config.id,\t   \"kind\": \"danger\",\t   \"comments\": $string(msg.result)\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 500,
+        "y": 560,
+        "wires": [
+            [
+                "198ae5a8fa13d26b"
+            ]
+        ]
+    },
+    {
+        "id": "198ae5a8fa13d26b",
+        "type": "http request",
+        "z": "3ee57a9d7dc5fae7",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 690,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b0cac6c15fd048ef",
+        "type": "link in",
+        "z": "3ee57a9d7dc5fae7",
+        "name": "log docker",
+        "links": [
+            "9fc01bf414b956de"
+        ],
+        "x": 315,
+        "y": 560,
+        "wires": [
+            [
+                "d138d4d1284cc210"
             ]
         ]
     }
