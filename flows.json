@@ -4836,7 +4836,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"operation \" & input.data.operation & \" ok \"\t}",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"operation \" & msg.input.data.operation & \" ok \"\t}",
                 "tot": "jsonata"
             }
         ],
