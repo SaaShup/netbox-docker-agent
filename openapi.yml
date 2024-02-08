@@ -198,6 +198,17 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: "#/components/schemas/GetInfo200ResponseBody"
+  /doc:
+    get:
+      tags:
+        - html
+      responses:
+        "200":
+          description: 200 response
+          content:
+            text/html; charset=utf-8:
+              schema:
+                type: string
   /:
     get:
       tags:
