@@ -76,7 +76,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.1.0",
+                "to": "0.1.1",
                 "tot": "str"
             },
             {
@@ -1525,7 +1525,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t   \"host\": msg.config.id,\t   \"name\": $split(msg.result[0].RepoDigests[0],\"@\")[0],\t   \"provider\": \"dockerhub\",\t   \"version\": $split(msg.result[0].RepoTags[0],\":\")[1] ? $split(msg.result[0].RepoTags[0],\":\")[1] : $substring(msg.result[0].Id,7,32),\t   \"size\": $round(msg.result[0].Size / 1024 / 1024),\t   \"ImageID\": msg.result[0].Id\t}",
+                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $split(msg.result[0].RepoTags[0], \":\")[0] ? $split(msg.result[0].RepoTags[0], \":\")[0] : $substring(msg.result[0].Id,7,12),\t    \"provider\": \"dockerhub\",\t    \"version\": $split([msg.result][0].RepoTags[0],\":\")[1] ? $split(msg.result[0].RepoTags[0],\":\")[1] : $substring(msg.result[0].Id,7,12),\t    \"size\": $round(msg.result[0].Size / 1024 / 1024),\t    \"ImageID\": msg.result[0].Id\t}",
                 "tot": "jsonata"
             }
         ],
