@@ -74,6 +74,13 @@
         "rules": [
             {
                 "t": "set",
+                "p": "payload.flows",
+                "pt": "msg",
+                "to": "0.1.0",
+                "tot": "str"
+            },
+            {
+                "t": "set",
                 "p": "config",
                 "pt": "global",
                 "to": "payload",
@@ -599,6 +606,66 @@
         "reg": false,
         "x": 830,
         "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7c1fed0134e0e2b7",
+        "type": "inject",
+        "z": "216db6efc0df9bc0",
+        "name": "upgrade",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 280,
+        "y": 720,
+        "wires": [
+            [
+                "f88ace255ca58e9c"
+            ]
+        ]
+    },
+    {
+        "id": "f88ace255ca58e9c",
+        "type": "http request",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://raw.githubusercontent.com/SaaShup/netbox-docker-agent/main/flows.json",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 470,
+        "y": 720,
+        "wires": [
+            [
+                "d60b525378a25078"
+            ]
+        ]
+    },
+    {
+        "id": "d60b525378a25078",
+        "type": "file",
+        "z": "216db6efc0df9bc0",
+        "name": "upg flows",
+        "filename": "/usr/src/node-red/flows.json",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 660,
+        "y": 720,
         "wires": [
             []
         ]
@@ -1391,7 +1458,7 @@
         "id": "840619e239d214aa",
         "type": "exec",
         "z": "a827fd671d6a227e",
-        "command": "curl -X GET --unix-socket /var/run/docker.sock http://localhost/images/json",
+        "command": "curl -X GET --unix-socket /var/run/docker.sock http://localhost/images/json?digests=true",
         "addpay": "",
         "append": "",
         "useSpawn": "false",
@@ -2200,7 +2267,7 @@
                 "t": "set",
                 "p": "output",
                 "pt": "msg",
-                "to": "{\t    \"message\":\"netbox-saashup-agent\",\t    \"configured\": msg.config.netbox_token and msg.config.netbox_token != \"\" ? \"ok\" : \"nok\",\t    \"version\": msg.package.version\t}",
+                "to": "{\t    \"message\":\"netbox-saashup-agent\",\t    \"configured\": msg.config.netbox_token and msg.config.netbox_token != \"\" ? \"ok\" : \"nok\",\t    \"version\": msg.package.version,\t    \"flows\": msg.config.flows\t}",
                 "tot": "jsonata"
             }
         ],
@@ -2908,6 +2975,54 @@
         "x": 1515,
         "y": 680,
         "wires": []
+    },
+    {
+        "id": "d393b36439ab7997",
+        "type": "http in",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "url": "/doc",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 600,
+        "wires": [
+            [
+                "ba4ae8e3a48c7a69"
+            ]
+        ]
+    },
+    {
+        "id": "0f796f4bc3e61cc2",
+        "type": "http response",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 430,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "ba4ae8e3a48c7a69",
+        "type": "file in",
+        "z": "a827fd671d6a227e",
+        "name": "/doc",
+        "filename": "/usr/src/node-red/doc.html",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 290,
+        "y": 600,
+        "wires": [
+            [
+                "0f796f4bc3e61cc2"
+            ]
+        ]
     },
     {
         "id": "e974d3bd502f614f",
@@ -5290,8 +5405,8 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 170,
-        "y": 380,
+        "x": 270,
+        "y": 340,
         "wires": [
             [
                 "73888c186762494e"
@@ -5338,12 +5453,10 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 590,
+        "x": 730,
         "y": 80,
         "wires": [
-            [
-                "8534c7afec8166eb"
-            ],
+            [],
             [
                 "0d955034e00fa0f5"
             ]
@@ -5358,7 +5471,7 @@
         "action": "obj",
         "pretty": false,
         "x": 910,
-        "y": 120,
+        "y": 80,
         "wires": [
             [
                 "a15a7b2000f3b6c9"
@@ -5376,8 +5489,8 @@
         "syntax": "mustache",
         "template": "# HELP netbox_docker_agent_container_running Show if a container is running\n# TYPE netbox_docker_agent_container_running gauge\n{{#container.running}}\nnetbox_docker_agent_container_running{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.running}}\n\n# HELP netbox_docker_agent_container_exited Show if a container is exited\n# TYPE netbox_docker_agent_container_exited gauge\n{{#container.exited}}\nnetbox_docker_agent_container_exited{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.exited}}\n\n# HELP netbox_docker_agent_container_stopped Show if a container is exited\n# TYPE netbox_docker_agent_container_stopped gauge\n{{#container.stopped}}\nnetbox_docker_agent_container_stopped{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.stopped}}\n\n# HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working\n# TYPE netbox_docker_agent_docker_daemon gauge\nnetbox_docker_agent_docker_daemon{socket=\"/var/run/docker.socket\"} {{container.docker_daemon}}\n\n# HELP netbox_docker_agent_netbox_error_response Show the netbox error response counter\n# TYPE netbox_docker_agent_netbox_error_response counter\nnetbox_docker_agent_netbox_error_response{} {{global.errorCounter}}",
         "output": "str",
-        "x": 700,
-        "y": 220,
+        "x": 720,
+        "y": 160,
         "wires": [
             [
                 "cdecbe9f078ed45b"
@@ -5410,8 +5523,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1080,
-        "y": 120,
+        "x": 1100,
+        "y": 80,
         "wires": [
             [
                 "990b1773880e3b7d"
@@ -5446,8 +5559,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1040,
-        "y": 220,
+        "x": 1080,
+        "y": 160,
         "wires": [
             []
         ]
@@ -5490,8 +5603,8 @@
         "headers": {
             "content-type": "text/plain"
         },
-        "x": 570,
-        "y": 380,
+        "x": 670,
+        "y": 340,
         "wires": []
     },
     {
@@ -5513,8 +5626,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 380,
-        "y": 380,
+        "x": 480,
+        "y": 340,
         "wires": [
             [
                 "cb3f2dc534bf1c31"
@@ -5522,76 +5635,18 @@
         ]
     },
     {
-        "id": "8534c7afec8166eb",
-        "type": "json",
-        "z": "3ee57a9d7dc5fae7",
-        "name": "",
-        "property": "payload",
-        "action": "obj",
-        "pretty": false,
-        "x": 910,
-        "y": 60,
-        "wires": [
-            [
-                "c4bdf0a642d02be3"
-            ]
-        ]
-    },
-    {
-        "id": "c4bdf0a642d02be3",
-        "type": "change",
-        "z": "3ee57a9d7dc5fae7",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "result",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "container",
-                "pt": "msg",
-                "to": "{\t    \"running\": msg.payload[State= \"running\"],\t    \"exited\": msg.payload[State= \"exited\"],\t    \"stopped\": msg.payload[State= \"stopped\"],\t    \"docker_daemon\": 0\t}",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1080,
-        "y": 60,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "efb628585a41dde5",
         "type": "inject",
         "z": "3ee57a9d7dc5fae7",
         "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
+        "props": [],
         "repeat": "",
         "crontab": "",
         "once": true,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 150,
-        "y": 280,
+        "x": 270,
+        "y": 240,
         "wires": [
             [
                 "fd27e954b669b5dc"
@@ -5617,8 +5672,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 360,
-        "y": 280,
+        "x": 460,
+        "y": 240,
         "wires": [
             []
         ]
@@ -5640,8 +5695,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 290,
-        "y": 500,
+        "x": 390,
+        "y": 460,
         "wires": [
             [
                 "efc97803a70d7841",
@@ -5662,8 +5717,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 680,
-        "y": 500,
+        "x": 780,
+        "y": 460,
         "wires": []
     },
     {
@@ -5685,8 +5740,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 490,
-        "y": 500,
+        "x": 590,
+        "y": 460,
         "wires": [
             [
                 "32266cc01be545d1"
@@ -5710,8 +5765,8 @@
             "d10c0e59950649aa",
             "eac6a267ba1d8eaf"
         ],
-        "x": 105,
-        "y": 500,
+        "x": 205,
+        "y": 460,
         "wires": [
             [
                 "df2cb95dca98e944"
@@ -5779,8 +5834,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 500,
-        "y": 560,
+        "x": 600,
+        "y": 520,
         "wires": [
             [
                 "198ae5a8fa13d26b"
@@ -5803,8 +5858,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 690,
-        "y": 560,
+        "x": 790,
+        "y": 520,
         "wires": [
             []
         ]
@@ -5817,8 +5872,8 @@
         "links": [
             "9fc01bf414b956de"
         ],
-        "x": 315,
-        "y": 560,
+        "x": 415,
+        "y": 520,
         "wires": [
             [
                 "d138d4d1284cc210"
