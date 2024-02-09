@@ -76,7 +76,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.1.1",
+                "to": "0.1.2",
                 "tot": "str"
             },
             {
@@ -5200,7 +5200,7 @@
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "'\\\"http://localhost/networks/' & msg.payload.data.name  & '\\\"'",
+                "to": "'\\\"http://localhost/volumes/' & msg.payload.data.name  & '\\\"'",
                 "tot": "jsonata"
             }
         ],
