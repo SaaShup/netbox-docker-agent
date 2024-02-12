@@ -76,7 +76,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.1.3",
+                "to": "0.1.4",
                 "tot": "str"
             },
             {
@@ -4305,7 +4305,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t   \"Image\": msg.input.data.image.name & \":\" & msg.input.data.image.version,\t   \"Env\": [\t       $map(\t           msg.input.data.env,\t           function($k,$v){$k.var_name &\"=\" & $k.value}\t       )\t   ],\t   \"Labels\": $merge(\t       $map(\t           msg.input.data.labels,\t           function($k,$v) {{ $k.key: $k.value }}\t       )\t   ),\t   \"ExposedPorts\": $merge(\t       $map(\t           msg.input.data.ports,\t           function($k,$v){\t               {\t                   $k.private_port & \"/\" & $k.type: $k.public_port ? [{  \"HostPort\" : $k.public_port }] : {} \t               } \t           }\t       )\t   ),\t   \"Mounts\": [\t       $map(\t           msg.input.data.mounts,\t           function($k,$v){\t               {\t                   \"Target\": $k.source,\t                   \"Name\": $k.volume.name,\t                   \"Type\": \"volume\",\t                   \"Destination\": $k.source,\t                   \"RW\": true,\t                   \"Mode\": \"z\",\t                   \"Source\": $k.volume.name,\t                   \"Driver\": $k.volume.driver\t               }\t           }\t       )\t   ],\t   \"NetworkingConfig\": {\t       \"EndpointsConfig\": $merge($map(msg.input.data.network_settings, function($k,$v) { $v = 0 ? { $k.network.name : { \"NetworkID\": $k.network.NetworkID } } }))\t   }\t}",
+                "to": "{\t   \"Image\": msg.input.data.image.name & \":\" & msg.input.data.image.version,\t   \"Env\": [\t       $map(\t           msg.input.data.env,\t           function($k,$v){$k.var_name &\"=\" & $k.value}\t       )\t   ],\t   \"Labels\": $merge(\t       $map(\t           msg.input.data.labels,\t           function($k,$v) {{ $k.key: $k.value }}\t       )\t   ),\t   \"ExposedPorts\": $merge(\t       $map(\t           msg.input.data.ports,\t           function($k,$v){\t               {\t                   $k.private_port & \"/\" & $k.type: {} \t               } \t           }\t       )\t   ),\t   \"PortBindings\": $merge(\t       $map(\t           msg.input.data.ports,\t           function($k,$v){\t               {\t                   $k.private_port & \"/\" & $k.type: $k.public_port ? [{  \"HostIp\": \"\", \"HostPort\" : $string($k.public_port) }] : [] \t               } \t           }\t       )\t   ),\t   \"Mounts\": [\t       $map(\t           msg.input.data.mounts,\t           function($k,$v){\t               {\t                   \"Target\": $k.source,\t                   \"Name\": $k.volume.name,\t                   \"Type\": \"volume\",\t                   \"Destination\": $k.source,\t                   \"RW\": true,\t                   \"Mode\": \"z\",\t                   \"Source\": $k.volume.name,\t                   \"Driver\": $k.volume.driver\t               }\t           }\t       )\t   ],\t   \"NetworkingConfig\": {\t       \"EndpointsConfig\": $merge($map(msg.input.data.network_settings, function($k,$v) { $v = 0 ? { $k.network.name : { \"NetworkID\": $k.network.NetworkID } } }))\t   }\t}",
                 "tot": "jsonata"
             },
             {
