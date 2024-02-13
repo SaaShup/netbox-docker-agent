@@ -76,7 +76,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.1.4",
+                "to": "0.1.6",
                 "tot": "str"
             },
             {
@@ -668,6 +668,22 @@
         "y": 720,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "b0765338f9440bd2",
+        "type": "link in",
+        "z": "216db6efc0df9bc0",
+        "name": "reset config",
+        "links": [
+            "0def7304bac10f61"
+        ],
+        "x": 695,
+        "y": 20,
+        "wires": [
+            [
+                "82a20fd37e28308d"
+            ]
         ]
     },
     {
@@ -1993,7 +2009,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t   \"host\": msg.config.id,\t   \"name\": $replace(msg.result.Name,\"/\",\"\"),\t   \"status\": msg.result.State.Status = \"running\" ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\" : \"na\",\t   \"state\": msg.result.State.Status,\t   \"image\": {\t    \"host\": msg.input.data.host.id,\t    \"ImageID\": msg.result.Image\t    },\t   \"ContainerID\": msg.result.Id,\t   \"network_settings\": [$each(msg.result.NetworkSettings.Networks, function($v, $k) { { \"network\": { \"name\": $k } } })],\t   \"ports\": msg.result.NetworkSettings.Ports ? [$each(msg.result.NetworkSettings.Ports, function($v, $k) { { \"public_port\" : $v[0] = null ? 0 : $v[0].HostPort, \"private_port\": $split($k,\"/\")[0], \"type\": $split($k,\"/\")[1] } })] : [$each(msg.result.Config.ExposedPorts, function($v, $k) { $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\" ? { \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\", \"private_port\": $split($k,\"/\")[0], \"type\": $split($k,\"/\")[1] } })],\t   \"env\": [$map(msg.result.Config.Env, function($v, $k) { { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] } })],\t   \"labels\": [$each(msg.result.Config.Labels, function($v, $k) { { \"key\": $k, \"value\": $v } })],\t   \"mounts\": [$map(msg.result.Mounts, function($v, $k) { $v.Type = \"volume\" ? { \"source\": $v.Destination, \"volume\": { \"name\": $v.Name, \"host\": msg.config.id } } })]\t}",
+                "to": "{\t   \"host\": msg.config.id,\t   \"name\": $replace(msg.result.Name,\"/\",\"\"),\t   \"status\": msg.result.State.Status = \"running\" ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\" : \"na\",\t   \"state\": msg.result.State.Status,\t   \"image\": {\t    \"host\": msg.config.id,\t    \"ImageID\": msg.result.Image\t    },\t   \"ContainerID\": msg.result.Id,\t   \"network_settings\": [$each(msg.result.NetworkSettings.Networks, function($v, $k) { { \"network\": { \"name\": $k } } })],\t   \"ports\": msg.result.NetworkSettings.Ports ? [$each(msg.result.NetworkSettings.Ports, function($v, $k) { { \"public_port\" : $v[0] = null ? 0 : $v[0].HostPort, \"private_port\": $split($k,\"/\")[0], \"type\": $split($k,\"/\")[1] } })] : [$each(msg.result.Config.ExposedPorts, function($v, $k) { $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\" ? { \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\", \"private_port\": $split($k,\"/\")[0], \"type\": $split($k,\"/\")[1] } })],\t   \"env\": [$map(msg.result.Config.Env, function($v, $k) { { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] } })],\t   \"labels\": [$each(msg.result.Config.Labels, function($v, $k) { { \"key\": $k, \"value\": $v } })],\t   \"mounts\": [$map(msg.result.Mounts, function($v, $k) { $v.Type = \"volume\" ? { \"source\": $v.Destination, \"volume\": { \"name\": $v.Name, \"host\": msg.config.id } } })]\t}",
                 "tot": "jsonata"
             }
         ],
@@ -5276,13 +5292,6 @@
                 "pt": "msg",
                 "to": "{\"netbox_url\":\"\",\"netbox_token\":\"\",\"ui\":1}",
                 "tot": "json"
-            },
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "global",
-                "to": "payload",
-                "tot": "msg"
             }
         ],
         "action": "",
@@ -5293,7 +5302,9 @@
         "x": 680,
         "y": 360,
         "wires": [
-            []
+            [
+                "0def7304bac10f61"
+            ]
         ]
     },
     {
@@ -5395,6 +5406,19 @@
                 "6c90b5bd2a6c5166"
             ]
         ]
+    },
+    {
+        "id": "0def7304bac10f61",
+        "type": "link out",
+        "z": "5d9b33c2005cbce7",
+        "name": "link out 13",
+        "mode": "link",
+        "links": [
+            "b0765338f9440bd2"
+        ],
+        "x": 865,
+        "y": 360,
+        "wires": []
     },
     {
         "id": "788067a8780c7835",
