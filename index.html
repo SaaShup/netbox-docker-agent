@@ -199,7 +199,7 @@
               for (const po of Object.keys(c.HostConfig.PortBindings)) {
                 containers +=
                   '<div class="row m-2 ports"><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">host</span><input class="form-control ports-host" placeholder="name" value="' +
-                  c.HostConfig.PortBindings[po][0].HostPort +
+                  (c.HostConfig.PortBindings[po].length > 0 && 'HostPort' in c.HostConfig.PortBindings[po][0] ? c.HostConfig.PortBindings[po][0].HostPort : 0) +
                   '" disabled/></div></div><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">container</span><input class="form-control" placeholder="value" value="' +
                   po.split('/')[0] +
                   '" disabled/></div></div><div class="col-2"><input class="form-control" value="' + po.split(
