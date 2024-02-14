@@ -337,7 +337,7 @@
             '</div></div></div><div class="card-body row"><div class="col-sm-12 col-md-6 p-2"> <b>Created</b>: ' +
             c.Created.replace('T', ' ').substring(0, 19) +
             '</div><div class="col-sm-12 col-md-6 p-2"> <b>Driver</b>: ' + c.Driver + '</div>'
-          if (c.IPAM.Config.length > 0) networks +=
+          if (c.IPAM.Config !== null && c.IPAM.Config.length > 0) networks +=
             '<div class="col-sm-12 col-md-6 p-2"> <b>IPv4 Subnet</b>: ' + c.IPAM.Config[0].Subnet +
             '</div><div class="col-sm-12 col-md-6 p-2">  <b>IPv4 Subnet</b>: ' + c.IPAM.Config[0].Gateway +
             '</div>'
