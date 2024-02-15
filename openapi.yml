@@ -1,6 +1,6 @@
 info:
   title: Netbox Docker Agent
-  version: 0.4.4
+  version: 0.8.7
 openapi: 3.0.0
 paths:
   /api/engine/endpoint:
@@ -34,6 +34,13 @@ paths:
     post:
       tags:
         - netbox containers
+      requestBody:
+        description: create Container
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostApiEngineContainers'
       responses:
         "202":
           description: 202 response
@@ -44,6 +51,13 @@ paths:
     put:
       tags:
         - netbox containers
+      requestBody:
+        description: Container operation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutApiEngineContainers'
       responses:
         "202":
           description: 202 response
@@ -71,6 +85,13 @@ paths:
     post:
       tags:
         - netbox images
+      requestBody:
+        description: create Image
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostApiEngineImages'
       responses:
         "202":
           description: 202 response
@@ -98,6 +119,13 @@ paths:
     post:
       tags:
         - netbox networks
+      requestBody:
+        description: create Networks
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostApiEngineNetworks'
       responses:
         "202":
           description: 202 response
@@ -125,6 +153,13 @@ paths:
     post:
       tags:
         - netbox volumes
+      requestBody:
+        description: create Networks
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostApiEngineVolumes'
       responses:
         "202":
           description: 202 response
@@ -222,6 +257,110 @@ paths:
                 type: string
 components:
   schemas:
+    PostApiEngineVolumes:
+      type: object
+      properties:
+        data: 
+            type: object
+            properties:
+                id: 
+                    type: number
+                name: 
+                    type: string
+                driver: 
+                    type: string
+                    enum: [local]
+    PostApiEngineNetworks:
+        type: object
+        properties:
+            data: 
+                type: object
+                properties:
+                    id: 
+                        type: number
+                    name: 
+                        type: string
+                    driver: 
+                        type: string
+                        enum: [bridge,host,none]
+    PostApiEngineImages:
+        type: object
+        properties:
+            data: 
+                type: object
+                properties:
+                    id: 
+                        type: number
+                    name: 
+                        type: string
+                    version: 
+                        type: string
+    PostApiEngineContainers:
+        type: object
+        properties:
+            data: 
+                type: object
+                properties:
+                    id: 
+                        type: number
+                    name: 
+                        type: string
+                    image: 
+                        type: object
+                        properties:
+                            name: 
+                                type: string
+                            version: 
+                                type: string
+    PutApiEngineContainers:
+        type: object
+        properties:
+            data: 
+                type: object
+                properties:
+                    id: 
+                        type: number
+                    name: 
+                        type: string
+                    operation: 
+                        type: string
+                        enum: [restart,start,stop,recreate]
+                    Image:
+                        type: string
+                    Labels:
+                        type: object
+                    Env:
+                        type: array
+                        items:
+                            type: string
+                    ExposedPorts:
+                        type: object
+                    PortBindings:
+                        type: object
+                    NetworkingConfig:
+                        type: object
+                        properties:
+                            EndpointsConfig:
+                                type: object
+                    mounts:
+                        type: array
+                        items:
+                            type: object
+                            properties:
+                                type:
+                                    type: string
+                                source:
+                                    type: string
+                                destination:
+                                    type: string
+                                mode:
+                                    type: string
+                                rw:
+                                    type: boolean
+                                name:
+                                    type: string
+                                driver:
+                                    type: string
     GetApiContainers200ResponseBody:
       type: array
       items:

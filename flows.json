@@ -3041,6 +3041,54 @@
         ]
     },
     {
+        "id": "808c0ed7c09a0a88",
+        "type": "http in",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "url": "/openapi",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 820,
+        "wires": [
+            [
+                "400273952aad5748"
+            ]
+        ]
+    },
+    {
+        "id": "7edf30668f699825",
+        "type": "http response",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 470,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "400273952aad5748",
+        "type": "file in",
+        "z": "a827fd671d6a227e",
+        "name": "/openapi",
+        "filename": "/usr/src/node-red/openapi.yml",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 320,
+        "y": 820,
+        "wires": [
+            [
+                "7edf30668f699825"
+            ]
+        ]
+    },
+    {
         "id": "e974d3bd502f614f",
         "type": "http in",
         "z": "3ea1a4b04d852f38",
