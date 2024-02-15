@@ -9,9 +9,7 @@ WORKDIR /usr/src/node-red
 COPY package.json /usr/src/node-red
 RUN ln -s /usr/src/node-red/package.json /data/package.json
 
-COPY index.html /usr/src/node-red/index.html
-COPY doc.html /usr/src/node-red/doc.html
-COPY openapi.yml /usr/src/node-red/openapi.yml
+COPY --chown=node-red:node-red public /usr/src/node-red/public
 COPY --chown=node-red:node-red flows.json /usr/src/node-red/flows.json
 ENV FLOWS=/usr/src/node-red/flows.json
 

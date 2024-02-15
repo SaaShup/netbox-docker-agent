@@ -76,7 +76,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.2.0",
+                "to": "0.3.0",
                 "tot": "str"
             },
             {
@@ -149,7 +149,7 @@
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "plain",
-        "template": "data = require(\"./package.json\")\n\nmodule.exports = {\n    credentialSecret: \"saashup\",\n    flowFile: \"flows.json\",\n    flowFilePretty: true,\n    adminAuth: {\n        type: \"credentials\",\n        users: [{\n            username: \"admin\",\n            password: \"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\",\n            permissions: \"*\"\n        }]\n    },\n    /*https: {\n      key: require(\"fs\").readFileSync('/data/privkey.pem'),\n      cert: require(\"fs\").readFileSync('/data/cert.pem')\n    },\n    requireHttps: true,*/\n    httpNodeAuth: {\n        user:\"admin\",pass:\"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\"\n    },\n    uiPort: process.env.PORT || 1880,\n    httpAdminRoot: '/nodered',\n    diagnostics: {\n        enabled: true,\n        ui: true,\n    },\n    runtimeState: {\n        enabled: false,\n        ui: false,\n    },\n    logging: {\n        console: {\n            level: \"info\",\n            metrics: false,\n            audit: false,\n            handler: function(settings) {\n                return function(msg) {\n                    const level = {\n                        20: 'error',\n                        30: 'warn',\n                        40: 'info'\n                    };\n                    const lvl = \"level\" in msg ? msg.level : \"40\";\n\n                    delete msg.type;\n                    delete msg.z;\n                    delete msg.path;\n                    delete msg.name;\n                    delete msg.id;\n\n                    let line = `${data.name} level=${level[lvl]} version=${data.version}`;\n\n                    if (typeof msg.msg === 'object') {\n                        for (const key of Object.keys(msg.msg)) {\n                            line += ` ${key}=${JSON.stringify(msg.msg[key])}`;\n                        }\n                    } else {\n                        line += ` msg=` + JSON.stringify(msg.msg);\n                    }\n\n                    if (lvl <= 20) {\n                        return console.error(line);\n                    }\n\n                    return console.log(line);\n                }\n            }\n        }\n    },\n    exportGlobalContextKeys: false,\n    externalModules: {\n    },\n    editorTheme: {\n        tours: false,\n        palette: {\n        },\n        projects: {\n            enabled: false,\n            workflow: {\n                mode: \"manual\"\n            }\n        },\n        codeEditor: {\n            lib: \"monaco\",\n            options: {\n            }\n        },\n        markdownEditor: {\n            mermaid: {\n                enabled: true\n            }\n        },\n    },\n    functionExternalModules: true,\n    functionTimeout: 0,\n    functionGlobalContext: {\n    },\n    debugMaxLength: 1000,\n    mqttReconnectTime: 15000,\n    serialReconnectTime: 15000\n}\n",
+        "template": "data = require(\"./package.json\")\n\nmodule.exports = {\n    credentialSecret: \"saashup\",\n    flowFile: \"flows.json\",\n    flowFilePretty: true,\n    adminAuth: {\n        type: \"credentials\",\n        users: [{\n            username: \"admin\",\n            password: \"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\",\n            permissions: \"*\"\n        }]\n    },\n    /*https: {\n      key: require(\"fs\").readFileSync('/data/privkey.pem'),\n      cert: require(\"fs\").readFileSync('/data/cert.pem')\n    },\n    requireHttps: true,*/\n    httpNodeAuth: {\n        user:\"admin\",pass:\"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\"\n    },\n    uiPort: process.env.PORT || 1880,\n    httpStatic: '/usr/src/node-red/public',\n    httpAdminRoot: '/nodered',\n    diagnostics: {\n        enabled: true,\n        ui: true,\n    },\n    runtimeState: {\n        enabled: false,\n        ui: false,\n    },\n    logging: {\n        console: {\n            level: \"info\",\n            metrics: false,\n            audit: false,\n            handler: function(settings) {\n                return function(msg) {\n                    const level = {\n                        20: 'error',\n                        30: 'warn',\n                        40: 'info'\n                    };\n                    const lvl = \"level\" in msg ? msg.level : \"40\";\n\n                    delete msg.type;\n                    delete msg.z;\n                    delete msg.path;\n                    delete msg.name;\n                    delete msg.id;\n\n                    let line = `${data.name} level=${level[lvl]} version=${data.version}`;\n\n                    if (typeof msg.msg === 'object') {\n                        for (const key of Object.keys(msg.msg)) {\n                            line += ` ${key}=${JSON.stringify(msg.msg[key])}`;\n                        }\n                    } else {\n                        line += ` msg=` + JSON.stringify(msg.msg);\n                    }\n\n                    if (lvl <= 20) {\n                        return console.error(line);\n                    }\n\n                    return console.log(line);\n                }\n            }\n        }\n    },\n    exportGlobalContextKeys: false,\n    externalModules: {\n    },\n    editorTheme: {\n        tours: false,\n        palette: {\n        },\n        projects: {\n            enabled: false,\n            workflow: {\n                mode: \"manual\"\n            }\n        },\n        codeEditor: {\n            lib: \"monaco\",\n            options: {\n            }\n        },\n        markdownEditor: {\n            mermaid: {\n                enabled: true\n            }\n        },\n    },\n    functionExternalModules: true,\n    functionTimeout: 0,\n    functionGlobalContext: {\n    },\n    debugMaxLength: 1000,\n    mqttReconnectTime: 15000,\n    serialReconnectTime: 15000\n}\n",
         "output": "str",
         "x": 460,
         "y": 300,
@@ -2467,34 +2467,6 @@
         ]
     },
     {
-        "id": "f40640d266bf843b",
-        "type": "http in",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "url": "/",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 130,
-        "y": 500,
-        "wires": [
-            [
-                "c36cfb76e8ade619"
-            ]
-        ]
-    },
-    {
-        "id": "33c0c19a8ba03cae",
-        "type": "http response",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 550,
-        "y": 500,
-        "wires": []
-    },
-    {
         "id": "1649d9a702989caf",
         "type": "http in",
         "z": "a827fd671d6a227e",
@@ -2771,26 +2743,6 @@
         ]
     },
     {
-        "id": "2f201f0cc6cf431f",
-        "type": "file in",
-        "z": "a827fd671d6a227e",
-        "name": "/",
-        "filename": "/usr/src/node-red/index.html",
-        "filenameType": "str",
-        "format": "utf8",
-        "chunk": false,
-        "sendError": false,
-        "encoding": "none",
-        "allProps": false,
-        "x": 390,
-        "y": 460,
-        "wires": [
-            [
-                "33c0c19a8ba03cae"
-            ]
-        ]
-    },
-    {
         "id": "85576a332e06d405",
         "type": "link out",
         "z": "a827fd671d6a227e",
@@ -2854,37 +2806,6 @@
         "x": 1795,
         "y": 560,
         "wires": []
-    },
-    {
-        "id": "c36cfb76e8ade619",
-        "type": "switch",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "property": "config.ui",
-        "propertyType": "global",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "1",
-                "vt": "num"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 250,
-        "y": 500,
-        "wires": [
-            [
-                "2f201f0cc6cf431f"
-            ],
-            [
-                "33c0c19a8ba03cae"
-            ]
-        ]
     },
     {
         "id": "5a07511ed7c011d2",
@@ -2991,102 +2912,6 @@
         "x": 1515,
         "y": 680,
         "wires": []
-    },
-    {
-        "id": "d393b36439ab7997",
-        "type": "http in",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "url": "/doc",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 140,
-        "y": 600,
-        "wires": [
-            [
-                "ba4ae8e3a48c7a69"
-            ]
-        ]
-    },
-    {
-        "id": "0f796f4bc3e61cc2",
-        "type": "http response",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 430,
-        "y": 600,
-        "wires": []
-    },
-    {
-        "id": "ba4ae8e3a48c7a69",
-        "type": "file in",
-        "z": "a827fd671d6a227e",
-        "name": "/doc",
-        "filename": "/usr/src/node-red/doc.html",
-        "filenameType": "str",
-        "format": "utf8",
-        "chunk": false,
-        "sendError": false,
-        "encoding": "none",
-        "allProps": false,
-        "x": 290,
-        "y": 600,
-        "wires": [
-            [
-                "0f796f4bc3e61cc2"
-            ]
-        ]
-    },
-    {
-        "id": "808c0ed7c09a0a88",
-        "type": "http in",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "url": "/openapi",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 150,
-        "y": 820,
-        "wires": [
-            [
-                "400273952aad5748"
-            ]
-        ]
-    },
-    {
-        "id": "7edf30668f699825",
-        "type": "http response",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 470,
-        "y": 820,
-        "wires": []
-    },
-    {
-        "id": "400273952aad5748",
-        "type": "file in",
-        "z": "a827fd671d6a227e",
-        "name": "/openapi",
-        "filename": "/usr/src/node-red/openapi.yml",
-        "filenameType": "str",
-        "format": "utf8",
-        "chunk": false,
-        "sendError": false,
-        "encoding": "none",
-        "allProps": false,
-        "x": 320,
-        "y": 820,
-        "wires": [
-            [
-                "7edf30668f699825"
-            ]
-        ]
     },
     {
         "id": "e974d3bd502f614f",
