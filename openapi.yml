@@ -320,28 +320,25 @@ components:
                 properties:
                     id: 
                         type: number
+                    hostname:
+                        type: string
                     name: 
                         type: string
                     operation: 
                         type: string
                         enum: [restart,start,stop,recreate]
-                    Image:
+                    image:
                         type: string
-                    Labels:
+                    labels:
                         type: object
-                    Env:
+                    env:
                         type: array
                         items:
                             type: string
-                    ExposedPorts:
+                    ports:
                         type: object
-                    PortBindings:
+                    networks:
                         type: object
-                    NetworkingConfig:
-                        type: object
-                        properties:
-                            EndpointsConfig:
-                                type: object
                     mounts:
                         type: array
                         items:
