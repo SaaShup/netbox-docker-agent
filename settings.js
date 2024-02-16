@@ -21,7 +21,11 @@ module.exports = {
         user:"admin",pass:"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK"
     },
     uiPort: process.env.PORT || 1880,
-    httpStatic: '/usr/src/node-red/public',
+    httpStatic: [
+        { path: '/usr/src/node-red/public', root: '/' },
+        { path: '/usr/src/node-red/public/doc.html', root: '/doc' },
+        { path: '/usr/src/node-red/public/openapi.yml', root: '/openapi' }
+    ],
     httpAdminRoot: '/nodered',
     diagnostics: {
         enabled: true,
