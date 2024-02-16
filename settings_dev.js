@@ -22,9 +22,9 @@ module.exports = {
     },
     uiPort: process.env.PORT || 1880,
     httpStatic: [
-        { path: '/usr/src/node-red/public', root: '/' },
-        { path: '/usr/src/node-red/public/doc.html', root: '/doc' },
-        { path: '/usr/src/node-red/public/openapi.yml', root: '/openapi' }
+        { path: './public', root: '/' },
+        { path: './public/doc.html', root: '/doc' },
+        { path: './public/openapi.yml', root: '/openapi' }
     ],
     httpAdminRoot: '/nodered',
     diagnostics: {
