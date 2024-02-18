@@ -59,10 +59,12 @@
         "onceDelay": "1",
         "topic": "",
         "x": 290,
-        "y": 220,
+        "y": 180,
         "wires": [
             [
-                "3f489e8a5d253765"
+                "3f489e8a5d253765",
+                "f54188e747b972e5",
+                "2b9a4a79e583d72a"
             ]
         ]
     },
@@ -76,7 +78,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.3.0",
+                "to": "0.3.1",
                 "tot": "str"
             },
             {
@@ -102,15 +104,15 @@
         "id": "deb89a9f64f32d7e",
         "type": "file",
         "z": "216db6efc0df9bc0",
-        "name": "",
-        "filename": "/data/settings.js",
-        "filenameType": "str",
+        "name": "settings",
+        "filename": "($env(\"DATAPATH\") ?  $env(\"DATAPATH\") : \"/data\") & \"/settings.js\"",
+        "filenameType": "env",
         "appendNewline": false,
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 660,
-        "y": 300,
+        "x": 620,
+        "y": 360,
         "wires": [
             []
         ]
@@ -132,8 +134,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 270,
-        "y": 300,
+        "x": 250,
+        "y": 360,
         "wires": [
             [
                 "55c03f8643b324ae"
@@ -151,8 +153,8 @@
         "syntax": "plain",
         "template": "data = require(\"./package.json\")\n\nmodule.exports = {\n    credentialSecret: \"saashup\",\n    flowFile: \"flows.json\",\n    flowFilePretty: true,\n    adminAuth: {\n        type: \"credentials\",\n        users: [{\n            username: \"admin\",\n            password: \"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\",\n            permissions: \"*\"\n        }]\n    },\n    /*https: {\n      key: require(\"fs\").readFileSync('/data/privkey.pem'),\n      cert: require(\"fs\").readFileSync('/data/cert.pem')\n    },\n    requireHttps: true,*/\n    httpNodeAuth: {\n        user:\"admin\",pass:\"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\"\n    },\n    uiPort: process.env.PORT || 1880,\n    httpStatic: [\n        { path: '/usr/src/node-red/public', root: '/' },\n        { path: '/usr/src/node-red/public/doc.html', root: '/doc' },\n        { path: '/usr/src/node-red/public/openapi.yml', root: '/openapi' }\n    ],\n    httpAdminRoot: '/nodered',\n    diagnostics: {\n        enabled: true,\n        ui: true,\n    },\n    runtimeState: {\n        enabled: false,\n        ui: false,\n    },\n    logging: {\n        console: {\n            level: \"info\",\n            metrics: false,\n            audit: false,\n            handler: function(settings) {\n                return function(msg) {\n                    const level = {\n                        20: 'error',\n                        30: 'warn',\n                        40: 'info'\n                    };\n                    const lvl = \"level\" in msg ? msg.level : \"40\";\n\n                    delete msg.type;\n                    delete msg.z;\n                    delete msg.path;\n                    delete msg.name;\n                    delete msg.id;\n\n                    let line = `${data.name} level=${level[lvl]} version=${data.version}`;\n\n                    if (typeof msg.msg === 'object') {\n                        for (const key of Object.keys(msg.msg)) {\n                            line += ` ${key}=${JSON.stringify(msg.msg[key])}`;\n                        }\n                    } else {\n                        line += ` msg=` + JSON.stringify(msg.msg);\n                    }\n\n                    if (lvl <= 20) {\n                        return console.error(line);\n                    }\n\n                    return console.log(line);\n                }\n            }\n        }\n    },\n    exportGlobalContextKeys: false,\n    externalModules: {\n    },\n    editorTheme: {\n        tours: false,\n        palette: {\n        },\n        projects: {\n            enabled: false,\n            workflow: {\n                mode: \"manual\"\n            }\n        },\n        codeEditor: {\n            lib: \"monaco\",\n            options: {\n            }\n        },\n        markdownEditor: {\n            mermaid: {\n                enabled: true\n            }\n        },\n    },\n    functionExternalModules: true,\n    functionTimeout: 0,\n    functionGlobalContext: {\n    },\n    debugMaxLength: 1000,\n    mqttReconnectTime: 15000,\n    serialReconnectTime: 15000\n}\n",
         "output": "str",
-        "x": 460,
-        "y": 300,
+        "x": 440,
+        "y": 360,
         "wires": [
             [
                 "deb89a9f64f32d7e"
@@ -171,8 +173,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "Events",
-        "x": 470,
-        "y": 400,
+        "x": 450,
+        "y": 460,
         "wires": [
             [
                 "7c210c45ea82059e"
@@ -198,8 +200,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 280,
-        "y": 400,
+        "x": 260,
+        "y": 460,
         "wires": [
             [
                 "b3814c680815a25b"
@@ -221,8 +223,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 770,
-        "y": 380,
+        "x": 750,
+        "y": 440,
         "wires": [
             [
                 "8e555efa2728d8b8"
@@ -240,8 +242,8 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 630,
-        "y": 380,
+        "x": 610,
+        "y": 440,
         "wires": [
             [
                 "06b0b14f4b337cfe"
@@ -278,8 +280,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 4,
-        "x": 1090,
-        "y": 380,
+        "x": 1070,
+        "y": 440,
         "wires": [
             [],
             [],
@@ -295,8 +297,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 930,
-        "y": 380,
+        "x": 910,
+        "y": 440,
         "wires": [
             [
                 "da696e53c1c7431f"
@@ -315,6 +317,13 @@
                 "pt": "msg",
                 "to": "config",
                 "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "filename",
+                "pt": "msg",
+                "to": "($env(\"DATAPATH\") ?  $env(\"DATAPATH\") : \"/data\") & \"/config.js\"",
+                "tot": "jsonata"
             }
         ],
         "action": "",
@@ -323,7 +332,7 @@
         "to": "",
         "reg": false,
         "x": 500,
-        "y": 220,
+        "y": 180,
         "wires": [
             [
                 "d216b6ee68a71932"
@@ -334,15 +343,15 @@
         "id": "d216b6ee68a71932",
         "type": "file",
         "z": "216db6efc0df9bc0",
-        "name": "",
-        "filename": "/data/config.js",
-        "filenameType": "str",
+        "name": "config",
+        "filename": "filename",
+        "filenameType": "msg",
         "appendNewline": false,
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 720,
-        "y": 220,
+        "x": 690,
+        "y": 180,
         "wires": [
             []
         ]
@@ -352,7 +361,13 @@
         "type": "inject",
         "z": "216db6efc0df9bc0",
         "name": "Set config start",
-        "props": [],
+        "props": [
+            {
+                "p": "filename",
+                "v": "($env(\"DATAPATH\") ?  $env(\"DATAPATH\") : \"/data\") & \"/config.js\"",
+                "vt": "jsonata"
+            }
+        ],
         "repeat": "",
         "crontab": "",
         "once": true,
@@ -362,8 +377,7 @@
         "y": 60,
         "wires": [
             [
-                "4f7dddf957ee0796",
-                "2b9a4a79e583d72a"
+                "4f7dddf957ee0796"
             ]
         ]
     },
@@ -371,15 +385,15 @@
         "id": "4f7dddf957ee0796",
         "type": "file in",
         "z": "216db6efc0df9bc0",
-        "name": "",
-        "filename": "/data/config.js",
-        "filenameType": "str",
+        "name": "config",
+        "filename": "filename",
+        "filenameType": "msg",
         "format": "utf8",
         "chunk": false,
         "sendError": false,
         "encoding": "none",
         "allProps": false,
-        "x": 500,
+        "x": 470,
         "y": 60,
         "wires": [
             [
@@ -395,7 +409,7 @@
         "property": "payload",
         "action": "obj",
         "pretty": false,
-        "x": 650,
+        "x": 670,
         "y": 60,
         "wires": [
             [
@@ -426,7 +440,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "x": 280,
-        "y": 560,
+        "y": 600,
         "wires": [
             [
                 "cc58358dd78c9a8a",
@@ -447,7 +461,7 @@
         "oldrc": false,
         "name": "networks",
         "x": 460,
-        "y": 520,
+        "y": 560,
         "wires": [
             [],
             [],
@@ -467,7 +481,7 @@
         "oldrc": false,
         "name": "images",
         "x": 460,
-        "y": 600,
+        "y": 640,
         "wires": [
             [],
             [],
@@ -491,8 +505,8 @@
         "topic": "",
         "payload": "0",
         "payloadType": "num",
-        "x": 860,
-        "y": 540,
+        "x": 840,
+        "y": 580,
         "wires": [
             [
                 "c7df8a3cd446ab39"
@@ -516,8 +530,8 @@
         "topic": "",
         "payload": "1",
         "payloadType": "num",
-        "x": 860,
-        "y": 600,
+        "x": 840,
+        "y": 640,
         "wires": [
             [
                 "c7df8a3cd446ab39"
@@ -543,8 +557,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1070,
-        "y": 560,
+        "x": 1050,
+        "y": 600,
         "wires": [
             []
         ]
@@ -562,7 +576,7 @@
         "encoding": "none",
         "allProps": false,
         "x": 480,
-        "y": 120,
+        "y": 260,
         "wires": [
             [
                 "47acfb0f70efb0b1"
@@ -577,8 +591,8 @@
         "property": "payload",
         "action": "obj",
         "pretty": false,
-        "x": 650,
-        "y": 120,
+        "x": 670,
+        "y": 260,
         "wires": [
             [
                 "8238525b0e482b59"
@@ -604,8 +618,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 830,
-        "y": 120,
+        "x": 850,
+        "y": 260,
         "wires": [
             []
         ]
@@ -687,6 +701,143 @@
         ]
     },
     {
+        "id": "f54188e747b972e5",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "registries",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "filename",
+                "pt": "msg",
+                "to": "($env(\"DATAPATH\") ?  $env(\"DATAPATH\") : \"/data\") & \"/registries.js\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 500,
+        "y": 220,
+        "wires": [
+            [
+                "e2de2e9bb953dea1"
+            ]
+        ]
+    },
+    {
+        "id": "e2de2e9bb953dea1",
+        "type": "file",
+        "z": "216db6efc0df9bc0",
+        "name": "registries",
+        "filename": "filename",
+        "filenameType": "msg",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 700,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3480946faba90b93",
+        "type": "file in",
+        "z": "216db6efc0df9bc0",
+        "name": "registries",
+        "filename": "filename",
+        "filenameType": "msg",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 480,
+        "y": 100,
+        "wires": [
+            [
+                "09c3142e6ad67175"
+            ]
+        ]
+    },
+    {
+        "id": "09c3142e6ad67175",
+        "type": "json",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 670,
+        "y": 100,
+        "wires": [
+            [
+                "8e73390425a4b518"
+            ]
+        ]
+    },
+    {
+        "id": "8e73390425a4b518",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "registries",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 850,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d0a6ab107cddd347",
+        "type": "inject",
+        "z": "216db6efc0df9bc0",
+        "name": "Set registries start",
+        "props": [
+            {
+                "p": "filename",
+                "v": "($env(\"DATAPATH\") ?  $env(\"DATAPATH\") : \"/data\") & \"/registries.js\"",
+                "vt": "jsonata"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "x": 310,
+        "y": 100,
+        "wires": [
+            [
+                "3480946faba90b93"
+            ]
+        ]
+    },
+    {
         "id": "91e25dba31c28805",
         "type": "http in",
         "z": "a827fd671d6a227e",
@@ -734,13 +885,18 @@
             },
             {
                 "t": "eq",
+                "v": "registries",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
                 "v": "endpoint",
                 "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 5,
+        "outputs": 6,
         "x": 570,
         "y": 280,
         "wires": [
@@ -755,6 +911,9 @@
             ],
             [
                 "840619e239d214aa"
+            ],
+            [
+                "6148d77b5a899296"
             ],
             [
                 "840619e239d214aa",
@@ -2135,7 +2294,7 @@
         "oldrc": false,
         "name": "version",
         "x": 740,
-        "y": 720,
+        "y": 820,
         "wires": [
             [
                 "cdf0ca856701cd23"
@@ -2241,7 +2400,7 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 420,
-        "y": 720,
+        "y": 820,
         "wires": [
             [
                 "ed796f5589c864f7"
@@ -2256,7 +2415,7 @@
         "statusCode": "",
         "headers": {},
         "x": 1330,
-        "y": 720,
+        "y": 820,
         "wires": []
     },
     {
@@ -2293,7 +2452,7 @@
         "to": "",
         "reg": false,
         "x": 590,
-        "y": 720,
+        "y": 820,
         "wires": [
             [
                 "7a4d9d8b863a0612"
@@ -2668,7 +2827,7 @@
         "action": "",
         "pretty": false,
         "x": 890,
-        "y": 720,
+        "y": 820,
         "wires": [
             [
                 "f415bfcc211c0729"
@@ -2702,7 +2861,7 @@
         "to": "",
         "reg": false,
         "x": 1170,
-        "y": 720,
+        "y": 820,
         "wires": [
             [
                 "7581057e6d016ca9"
@@ -2732,7 +2891,7 @@
         "repair": false,
         "outputs": 2,
         "x": 1030,
-        "y": 720,
+        "y": 820,
         "wires": [
             [
                 "5a07511ed7c011d2"
@@ -2869,7 +3028,7 @@
         "to": "",
         "reg": false,
         "x": 1200,
-        "y": 680,
+        "y": 780,
         "wires": [
             [
                 "debd21ad874ab51b"
@@ -2893,7 +3052,7 @@
         "senderr": false,
         "headers": [],
         "x": 1390,
-        "y": 680,
+        "y": 780,
         "wires": [
             [
                 "466a424beeab3020"
@@ -2910,8 +3069,168 @@
             "36f439d2ba0ac71a"
         ],
         "x": 1515,
-        "y": 680,
+        "y": 780,
         "wires": []
+    },
+    {
+        "id": "1eeda704f5c37284",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/registries/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "POST",
+                "tot": "str"
+            },
+            {
+                "t": "delete",
+                "p": "payload.password",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1380,
+        "y": 680,
+        "wires": [
+            [
+                "7cd37714a247d0f3"
+            ]
+        ]
+    },
+    {
+        "id": "8be5d58715557791",
+        "type": "split",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 1170,
+        "y": 680,
+        "wires": [
+            [
+                "1eeda704f5c37284"
+            ]
+        ]
+    },
+    {
+        "id": "6148d77b5a899296",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "registries",
+                "tot": "global"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 780,
+        "y": 720,
+        "wires": [
+            [
+                "0304bbe986bd8ff5"
+            ]
+        ]
+    },
+    {
+        "id": "0304bbe986bd8ff5",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "property": "req.url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "/api/registries",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "/api/registries",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 970,
+        "y": 720,
+        "wires": [
+            [
+                "8be5d58715557791"
+            ],
+            [
+                "44bcea0dd53ffd2a"
+            ]
+        ]
+    },
+    {
+        "id": "44bcea0dd53ffd2a",
+        "type": "http response",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1170,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "8d5636000738b8f8",
+        "type": "http in",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "url": "/api/registries",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 790,
+        "y": 680,
+        "wires": [
+            [
+                "6148d77b5a899296"
+            ]
+        ]
     },
     {
         "id": "e974d3bd502f614f",
@@ -2961,13 +3280,18 @@
             },
             {
                 "t": "eq",
+                "v": "registries",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
                 "v": "endpoint",
                 "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 5,
+        "outputs": 6,
         "x": 410,
         "y": 200,
         "wires": [
@@ -2982,6 +3306,9 @@
             ],
             [
                 "dfd9416e4f31ef88"
+            ],
+            [
+                "b505830bd99cf21c"
             ],
             []
         ]
@@ -3042,7 +3369,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "images",
-        "x": 960,
+        "x": 1000,
         "y": 480,
         "wires": [
             [
@@ -3071,6 +3398,13 @@
         "rules": [
             {
                 "t": "set",
+                "p": "registries",
+                "pt": "msg",
+                "to": "registries",
+                "tot": "global"
+            },
+            {
+                "t": "set",
                 "p": "input",
                 "pt": "msg",
                 "to": "payload",
@@ -3080,7 +3414,7 @@
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "'\\\"http://localhost/images/create?fromImage=' & msg.input.data.name  & '&tag=' & msg.input.data.version & '\\\"'",
+                "to": "'\\\"http://localhost/images/create?fromImage=' & msg.input.data.name  & '&tag=' & msg.input.data.version & '\\\"' & \" -H 'X-Registry-Auth: \" & $base64encode($string(msg.registries[msg.input.data.provider])) & \"'\"",
                 "tot": "jsonata"
             }
         ],
@@ -3114,7 +3448,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 590,
+        "x": 610,
         "y": 480,
         "wires": [
             [
@@ -3130,8 +3464,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 1150,
-        "y": 540,
+        "x": 930,
+        "y": 560,
         "wires": [
             [
                 "d375e2981f9fa4fb"
@@ -3150,7 +3484,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "images",
-        "x": 960,
+        "x": 760,
         "y": 560,
         "wires": [
             [
@@ -3179,7 +3513,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1170,
+        "x": 1210,
         "y": 480,
         "wires": [
             [
@@ -3241,8 +3575,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 720,
-        "y": 640,
+        "x": 1120,
+        "y": 560,
         "wires": [
             [
                 "231e0a10bb5c0cac"
@@ -3265,8 +3599,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 930,
-        "y": 640,
+        "x": 1310,
+        "y": 560,
         "wires": [
             [
                 "829323373ce00e9e"
@@ -3816,7 +4150,45 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1055,
+        "x": 1455,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "b505830bd99cf21c",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "add registry",
+        "rules": [
+            {
+                "t": "set",
+                "p": "registries[msg.payload.data.name]",
+                "pt": "global",
+                "to": "payload.data",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 630,
+        "y": 640,
+        "wires": [
+            [
+                "3438fae1d4a8309d"
+            ]
+        ]
+    },
+    {
+        "id": "3438fae1d4a8309d",
+        "type": "http response",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 890,
         "y": 640,
         "wires": []
     },
@@ -4927,13 +5299,18 @@
             },
             {
                 "t": "eq",
+                "v": "registries",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
                 "v": "endpoint",
                 "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 5,
+        "outputs": 6,
         "x": 430,
         "y": 200,
         "wires": [
@@ -4948,6 +5325,9 @@
             ],
             [
                 "149d08725d1012b8"
+            ],
+            [
+                "5f3288b6116b1183"
             ],
             [
                 "a00dd0a79554aef3"
@@ -5173,7 +5553,7 @@
         "to": "",
         "reg": false,
         "x": 680,
-        "y": 360,
+        "y": 460,
         "wires": [
             [
                 "0def7304bac10f61"
@@ -5290,8 +5670,31 @@
             "b0765338f9440bd2"
         ],
         "x": 865,
-        "y": 360,
+        "y": 460,
         "wires": []
+    },
+    {
+        "id": "5f3288b6116b1183",
+        "type": "change",
+        "z": "5d9b33c2005cbce7",
+        "name": "add registry",
+        "rules": [
+            {
+                "t": "delete",
+                "p": "registries[msg.payload.data.name]",
+                "pt": "global"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 670,
+        "y": 380,
+        "wires": [
+            []
+        ]
     },
     {
         "id": "788067a8780c7835",

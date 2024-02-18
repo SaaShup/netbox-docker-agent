@@ -1,7 +1,1 @@
-{
-	"netbox_url":"",
-	"netbox_token":"",
-	"ui":1,
-	"id":"",
-	"endpoint":""
-}
+{"netbox_url":"","netbox_token":"","ui":1,"id":"","endpoint":"","flows":"0.3.1"}

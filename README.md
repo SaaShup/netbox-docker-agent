@@ -40,7 +40,7 @@ On the root of the project run:
 
 ```
 npm install
-npx node-red -u . -s settings_dev.js
+DATAPATH=. npx node-red -u . -s settings_dev.js
 ```
 
 Then you can browse http://localhost:1880/nodered. Default access is *admin/saashup*.
