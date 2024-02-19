@@ -43,6 +43,14 @@ npm install
 DATAPATH=. npx node-red -u . -s settings_dev.js
 ```
 
+### Run tests locally
+
+On the root of the project run and the project running locally:
+
+```
+HOST=localhost PORT=1880 USER=admin PASSWORD=saashup npx jest tests/
+```
+
 Then you can browse http://localhost:1880/nodered. Default access is *admin/saashup*.
 
 ## Connect
