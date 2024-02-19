@@ -11,7 +11,9 @@ RUN ln -s /usr/src/node-red/package.json /data/package.json
 
 COPY --chown=node-red:node-red public /usr/src/node-red/public
 COPY --chown=node-red:node-red flows.json /usr/src/node-red/flows.json
-ENV FLOWS=/usr/src/node-red/flows.json
 
-COPY --chown=node-red:node-red settings.js /data/settings.js
-COPY --chown=node-red:node-red config.js /data/config.js
+ENV FLOWS=/usr/src/node-red/flows.json
+ENV DATAPATH=/data
+ENV APPPATH=/usr/src/node-red
+
+COPY --chown=node-red:node-red settings.js config.js registries.js /data

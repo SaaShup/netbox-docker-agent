@@ -79,7 +79,11 @@
             <a class="nav-link" aria-current="page" href="#" id="nav-volumes-btn" data-bs-toggle="collapse"
               data-bs-target="#navbarCollapse"><i class="fas fa-hdd"></i> Volumes</a>
           </li>
-	  <li class="nav-item">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#" id="nav-registries-btn" data-bs-toggle="collapse"
+              data-bs-target="#navbarCollapse"><i class="fas fa-registered"></i> Registries</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/doc"><i class="fas fa-file-code"></i> Apidoc</a>
           </li>
         </ul>
@@ -119,6 +123,13 @@
         <span id="networks-count" class="text-primary fw-bold">0</span> network(s)
       </div>
       <div class="col-12" id="networks-list"></div>
+    </div>
+
+    <div class="row d-none app" id="registries">
+      <div class="col-6 text-center">
+        <span id="registries-count" class="text-primary fw-bold">0</span> registrie(s)
+      </div>
+      <div class="col-12" id="registries-list"></div>
     </div>
 
   </main>
@@ -199,7 +210,8 @@
               for (const po of Object.keys(c.HostConfig.PortBindings)) {
                 containers +=
                   '<div class="row m-2 ports"><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">host</span><input class="form-control ports-host" placeholder="name" value="' +
-                  (c.HostConfig.PortBindings[po].length > 0 && 'HostPort' in c.HostConfig.PortBindings[po][0] ? c.HostConfig.PortBindings[po][0].HostPort : 0) +
+                  (c.HostConfig.PortBindings[po].length > 0 && 'HostPort' in c.HostConfig.PortBindings[po][0] ?
+                    c.HostConfig.PortBindings[po][0].HostPort : 0) +
                   '" disabled/></div></div><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">container</span><input class="form-control" placeholder="value" value="' +
                   po.split('/')[0] +
                   '" disabled/></div></div><div class="col-2"><input class="form-control" value="' + po.split(
@@ -288,7 +300,8 @@
         info =
           '<div class="col-12"><div class="card my-3"><div class="card-header bg-white"><div class="row"><div class="col-9 text-primary">' +
           result.message + '</div><div class="col-3"><span class="badge rounded-pill bg-' + (
-            result.configured === "ok" ? "success" : "danger") + '">' + result.configured + '</span></div></div></div><div class="card-body row">' +
+            result.configured === "ok" ? "success" : "danger") + '">' + result.configured +
+          '</span></div></div></div><div class="card-body row">' +
           '<div class="col-sm-12 col-md-6 p-2"> <b>Flow</b>:  ' + result.flows +
           '</div><div class="col-sm-12 col-md-6 p-2"> <b>Kernel</b>: ' + result.docker.KernelVersion +
           '</div><div class="col-sm-12 col-md-6 p-2"> <b>Version</b>: ' + result.version +
@@ -367,6 +380,28 @@
             'MB</div><div class="col-sm-12 col-md-12 p-2"> <b>Id</b>: ' + c.Id + '</div></div></div></div>'
         }
         $('#images-list').html(images);
+      })
+    })
+    $("#nav-home-btn").click();
+
+    $("#nav-registries-btn").on('click', function () {
+      cleanWindow();
+      $('#registries').removeClass('d-none');
+      $('#nav-registries-btn').addClass('active')
+      $.ajax({
+        url: "/api/registries",
+      }).done(function (result) {
+        $("#registries-count").html(Object.keys(result).length)
+        let registries = ''
+        for (const c in result) {
+          console.log(result[c])
+          registries += '<div class="card m-5"><div class="card-header bg-white text-primary">' + c + '</div><div class="card-body"><div class="row m-3">' +
+                          '<div class="col-2"><label">Username:</label></div><div class="col-4">' + (result[c].username || 'none') + '</div>' +
+                          '<div class="col-2"><label">Password:</label></div><div class="col-4">' + (result[c].password || 'none') + '</div></div>' +
+                          '<div class="row m-3"><div class="col-2"><label>Email:</label></div><div class="col-4">' + (result[c].email || 'none') + '</div>' +
+                          '<div class="col-2"><label>Server:</label></div><div class="col-4">' + (result[c].server || 'none') + '</div></div></div></div></div>';
+        }
+        $('#registries-list').html(registries);
       })
     })
     $("#nav-home-btn").click();

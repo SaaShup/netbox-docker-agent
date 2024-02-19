@@ -1,6 +1,6 @@
 info:
   title: Netbox Docker Agent
-  version: 0.8.7
+  version: 0.11.0
 openapi: 3.0.0
 paths:
   /api/engine/endpoint:
@@ -13,7 +13,7 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
   /api/engine/containers:
     delete:
       tags:
@@ -21,6 +21,10 @@ paths:
       responses:
         "202":
           description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
     get:
       tags:
         - netbox containers
@@ -30,7 +34,7 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
     post:
       tags:
         - netbox containers
@@ -47,7 +51,7 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
     put:
       tags:
         - netbox containers
@@ -64,7 +68,7 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
   /api/engine/images:
     delete:
       tags:
@@ -72,6 +76,10 @@ paths:
       responses:
         "202":
           description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
     get:
       tags:
         - netbox images
@@ -81,7 +89,7 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
     post:
       tags:
         - netbox images
@@ -98,7 +106,7 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
   /api/engine/networks:
     delete:
       tags:
@@ -106,6 +114,10 @@ paths:
       responses:
         "202":
           description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
     get:
       tags:
         - netbox networks
@@ -115,7 +127,7 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
     post:
       tags:
         - netbox networks
@@ -132,7 +144,7 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
   /api/engine/volumes:
     delete:
       tags:
@@ -149,7 +161,7 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
     post:
       tags:
         - netbox volumes
@@ -166,7 +178,45 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: "#/components/schemas/GetApiEngineContainers202ResponseBody"
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
+  /api/engine/registries:
+    delete:
+      tags:
+        - netbox registries
+      responses:
+        "202":
+          description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
+    get:
+      tags:
+        - netbox registries
+      responses:
+        "202":
+          description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
+    post:
+      tags:
+        - netbox registries
+      requestBody:
+        description: create Networks
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostApiEngineRegistry'
+      responses:
+        "202":
+          description: 202 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiEngine202ResponseBody"
   /api/containers:
     get:
       tags:
@@ -211,6 +261,17 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: "#/components/schemas/GetApiVolumes200ResponseBody"
+  /api/registries:
+    get:
+      tags:
+        - ui
+      responses:
+        "200":
+          description: 200 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/GetApiRegistries200ResponseBody"
   /metrics:
     get:
       tags:
@@ -257,6 +318,24 @@ paths:
                 type: string
 components:
   schemas:
+    PostApiEngineRegistry:
+      type: object
+      properties:
+        data: 
+            type: object
+            properties:
+                id: 
+                    type: number
+                name: 
+                    type: string
+                username: 
+                    type: string
+                password: 
+                    type: string
+                email: 
+                    type: string
+                server: 
+                    type: string
     PostApiEngineVolumes:
       type: object
       properties:
@@ -959,7 +1038,7 @@ components:
           - Mounts
           - Config
           - NetworkSettings
-    GetApiEngineContainers202ResponseBody:
+    GetApiEngine202ResponseBody:
       type: object
     GetApiImages200ResponseBody:
       type: array
@@ -1125,6 +1204,21 @@ components:
       required:
         - Volumes
         - Warnings
+    GetApiRegistries200ResponseBody:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          id:
+            type: number
+          username:
+            type: string
+          email:
+            type: string
+          server:
+            type: string
     GetInfo200ResponseBody:
       type: object
       properties:
