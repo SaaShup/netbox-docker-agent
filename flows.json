@@ -58,13 +58,12 @@
         "once": false,
         "onceDelay": "1",
         "topic": "",
-        "x": 290,
-        "y": 180,
+        "x": 270,
+        "y": 260,
         "wires": [
             [
                 "3f489e8a5d253765",
-                "f54188e747b972e5",
-                "2b9a4a79e583d72a"
+                "f54188e747b972e5"
             ]
         ]
     },
@@ -78,7 +77,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.3.1",
+                "to": "0.3.2",
                 "tot": "str"
             },
             {
@@ -95,7 +94,7 @@
         "to": "",
         "reg": false,
         "x": 840,
-        "y": 60,
+        "y": 80,
         "wires": [
             []
         ]
@@ -331,8 +330,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 500,
-        "y": 180,
+        "x": 480,
+        "y": 260,
         "wires": [
             [
                 "d216b6ee68a71932"
@@ -350,8 +349,8 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 690,
-        "y": 180,
+        "x": 670,
+        "y": 260,
         "wires": [
             []
         ]
@@ -374,7 +373,7 @@
         "onceDelay": "1",
         "topic": "",
         "x": 300,
-        "y": 60,
+        "y": 80,
         "wires": [
             [
                 "4f7dddf957ee0796"
@@ -394,7 +393,7 @@
         "encoding": "none",
         "allProps": false,
         "x": 470,
-        "y": 60,
+        "y": 80,
         "wires": [
             [
                 "b4754f87e535ecc9"
@@ -410,7 +409,7 @@
         "action": "obj",
         "pretty": false,
         "x": 670,
-        "y": 60,
+        "y": 80,
         "wires": [
             [
                 "82a20fd37e28308d"
@@ -564,67 +563,6 @@
         ]
     },
     {
-        "id": "2b9a4a79e583d72a",
-        "type": "file in",
-        "z": "216db6efc0df9bc0",
-        "name": "package",
-        "filename": "./package.json",
-        "filenameType": "str",
-        "format": "utf8",
-        "chunk": false,
-        "sendError": false,
-        "encoding": "none",
-        "allProps": false,
-        "x": 480,
-        "y": 260,
-        "wires": [
-            [
-                "47acfb0f70efb0b1"
-            ]
-        ]
-    },
-    {
-        "id": "47acfb0f70efb0b1",
-        "type": "json",
-        "z": "216db6efc0df9bc0",
-        "name": "",
-        "property": "payload",
-        "action": "obj",
-        "pretty": false,
-        "x": 670,
-        "y": 260,
-        "wires": [
-            [
-                "8238525b0e482b59"
-            ]
-        ]
-    },
-    {
-        "id": "8238525b0e482b59",
-        "type": "change",
-        "z": "216db6efc0df9bc0",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "package",
-                "pt": "global",
-                "to": "payload",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 850,
-        "y": 260,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "7c1fed0134e0e2b7",
         "type": "inject",
         "z": "216db6efc0df9bc0",
@@ -693,7 +631,7 @@
             "0def7304bac10f61"
         ],
         "x": 695,
-        "y": 20,
+        "y": 40,
         "wires": [
             [
                 "82a20fd37e28308d"
@@ -726,8 +664,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 500,
-        "y": 220,
+        "x": 480,
+        "y": 300,
         "wires": [
             [
                 "e2de2e9bb953dea1"
@@ -745,8 +683,8 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 700,
-        "y": 220,
+        "x": 680,
+        "y": 300,
         "wires": [
             []
         ]
@@ -764,7 +702,7 @@
         "encoding": "none",
         "allProps": false,
         "x": 480,
-        "y": 100,
+        "y": 120,
         "wires": [
             [
                 "09c3142e6ad67175"
@@ -780,7 +718,7 @@
         "action": "obj",
         "pretty": false,
         "x": 670,
-        "y": 100,
+        "y": 120,
         "wires": [
             [
                 "8e73390425a4b518"
@@ -807,7 +745,7 @@
         "to": "",
         "reg": false,
         "x": 850,
-        "y": 100,
+        "y": 120,
         "wires": [
             []
         ]
@@ -830,10 +768,90 @@
         "onceDelay": "1",
         "topic": "",
         "x": 310,
-        "y": 100,
+        "y": 120,
         "wires": [
             [
                 "3480946faba90b93"
+            ]
+        ]
+    },
+    {
+        "id": "2b9a4a79e583d72a",
+        "type": "file in",
+        "z": "216db6efc0df9bc0",
+        "name": "package",
+        "filename": "./package.json",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 480,
+        "y": 160,
+        "wires": [
+            [
+                "47acfb0f70efb0b1"
+            ]
+        ]
+    },
+    {
+        "id": "47acfb0f70efb0b1",
+        "type": "json",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 670,
+        "y": 160,
+        "wires": [
+            [
+                "8238525b0e482b59"
+            ]
+        ]
+    },
+    {
+        "id": "8238525b0e482b59",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "package",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 850,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d155ebf84384e38c",
+        "type": "inject",
+        "z": "216db6efc0df9bc0",
+        "name": "Set package start",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "x": 310,
+        "y": 160,
+        "wires": [
+            [
+                "2b9a4a79e583d72a"
             ]
         ]
     },
@@ -922,644 +940,6 @@
                 "4de06d76878cdbd0",
                 "70c57a4688add144",
                 "7a4d9d8b863a0612"
-            ]
-        ]
-    },
-    {
-        "id": "e9f0354eab8d7e74",
-        "type": "http in",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "url": "/api/images/:id/:server/updateAll",
-        "method": "post",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 230,
-        "y": 1140,
-        "wires": [
-            [
-                "76cc755e336a49b4"
-            ]
-        ]
-    },
-    {
-        "id": "76cc755e336a49b4",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "id",
-                "pt": "msg",
-                "to": "req.params.id",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "server",
-                "pt": "msg",
-                "to": "req.params.server",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "logEvent",
-                "pt": "msg",
-                "to": "Images:POST",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 520,
-        "y": 1140,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "638d7280d71ba478",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "dockers[msg.server].images",
-                "tot": "global"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 920,
-        "y": 1140,
-        "wires": [
-            [
-                "3c8afd4635a96a87"
-            ]
-        ]
-    },
-    {
-        "id": "3c8afd4635a96a87",
-        "type": "split",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "",
-        "x": 1110,
-        "y": 1140,
-        "wires": [
-            [
-                "db0793e7274f3a8a"
-            ]
-        ]
-    },
-    {
-        "id": "e2e981e6c514feb4",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "\"http://localhost:1880/api/engine/\" & msg.id & \"/\" & msg.server & \"/images/create?fromImage=\" & msg.payload.RepoTags[0]",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{}",
-                "tot": "json"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{ \"x-auth-token\": msg.token }",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "POST",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 540,
-        "y": 1200,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "db0793e7274f3a8a",
-        "type": "switch",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "property": "payload.RepoTags[0]",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "regex",
-                "v": ":latest$",
-                "vt": "str",
-                "case": false
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 170,
-        "y": 1200,
-        "wires": [
-            [
-                "eabece74968eac3b"
-            ],
-            [
-                "769b5173e23d983a"
-            ]
-        ]
-    },
-    {
-        "id": "eabece74968eac3b",
-        "type": "delay",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "pauseType": "rate",
-        "timeout": "5",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 350,
-        "y": 1200,
-        "wires": [
-            [
-                "e2e981e6c514feb4"
-            ]
-        ]
-    },
-    {
-        "id": "769b5173e23d983a",
-        "type": "join",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "mode": "auto",
-        "build": "object",
-        "property": "payload",
-        "propertyType": "msg",
-        "key": "topic",
-        "joiner": "\\n",
-        "joinerType": "str",
-        "accumulate": "false",
-        "timeout": "",
-        "count": "",
-        "reduceRight": false,
-        "x": 330,
-        "y": 1260,
-        "wires": [
-            [
-                "5559e10b283dedc4"
-            ]
-        ]
-    },
-    {
-        "id": "5559e10b283dedc4",
-        "type": "http response",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 530,
-        "y": 1260,
-        "wires": []
-    },
-    {
-        "id": "f200149509f2291b",
-        "type": "http in",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "url": "/api/containers/:id/:server/updateAll",
-        "method": "post",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 240,
-        "y": 1340,
-        "wires": [
-            [
-                "6c9cb6aea92e4508"
-            ]
-        ]
-    },
-    {
-        "id": "6c9cb6aea92e4508",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "id",
-                "pt": "msg",
-                "to": "req.params.id",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "server",
-                "pt": "msg",
-                "to": "req.params.server",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "logEvent",
-                "pt": "msg",
-                "to": "Images:POST",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 520,
-        "y": 1340,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "bfab342db173a4f2",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "images",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "dockers[msg.server].containers",
-                "tot": "global"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 540,
-        "y": 1400,
-        "wires": [
-            [
-                "d8602976d5689ec4"
-            ]
-        ]
-    },
-    {
-        "id": "d8602976d5689ec4",
-        "type": "split",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "",
-        "x": 270,
-        "y": 1460,
-        "wires": [
-            [
-                "e105c9676e4cb793"
-            ]
-        ]
-    },
-    {
-        "id": "0c36f881b20c72f8",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload.Image",
-                "pt": "msg",
-                "to": "images[msg.payload.ImageID]",
-                "tot": "msg"
-            },
-            {
-                "t": "delete",
-                "p": "payload.ImageID",
-                "pt": "msg"
-            },
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "\"http://localhost:1880/api/recreate/\" & msg.id & \"/\" & msg.server & msg.payload.Names[0]",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{ \"x-auth-token\": msg.token }",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "PUT",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 960,
-        "y": 1460,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "a41fd3c95c962c78",
-        "type": "switch",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "property": "payload.Image",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "regex",
-                "v": "^sha256:",
-                "vt": "str",
-                "case": false
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 570,
-        "y": 1460,
-        "wires": [
-            [
-                "c9d63f4e9d4877d2"
-            ],
-            [
-                "579359edf1b98950"
-            ]
-        ]
-    },
-    {
-        "id": "c9d63f4e9d4877d2",
-        "type": "delay",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "pauseType": "rate",
-        "timeout": "5",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "10",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 780,
-        "y": 1460,
-        "wires": [
-            [
-                "0c36f881b20c72f8"
-            ]
-        ]
-    },
-    {
-        "id": "579359edf1b98950",
-        "type": "join",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "mode": "auto",
-        "build": "object",
-        "property": "payload",
-        "propertyType": "msg",
-        "key": "topic",
-        "joiner": "\\n",
-        "joinerType": "str",
-        "accumulate": "false",
-        "timeout": "",
-        "count": "",
-        "reduceRight": false,
-        "x": 630,
-        "y": 1520,
-        "wires": [
-            [
-                "50858e1b88581847"
-            ]
-        ]
-    },
-    {
-        "id": "50858e1b88581847",
-        "type": "http response",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 810,
-        "y": 1520,
-        "wires": []
-    },
-    {
-        "id": "e105c9676e4cb793",
-        "type": "switch",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "property": "payload.State",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "running",
-                "vt": "str"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 410,
-        "y": 1460,
-        "wires": [
-            [
-                "a41fd3c95c962c78"
-            ],
-            [
-                "579359edf1b98950"
-            ]
-        ]
-    },
-    {
-        "id": "300c141cd74207b0",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "dockers[msg.server].images",
-                "tot": "global"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 920,
-        "y": 1340,
-        "wires": [
-            [
-                "767e2b687b4f286d"
-            ]
-        ]
-    },
-    {
-        "id": "767e2b687b4f286d",
-        "type": "split",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "",
-        "x": 1110,
-        "y": 1340,
-        "wires": [
-            [
-                "814c2ac7247343fc"
-            ]
-        ]
-    },
-    {
-        "id": "814c2ac7247343fc",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{\t    msg.payload.Id: $substringBefore(msg.payload.RepoDigests[0], \"@\") & \":latest\"\t}",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 180,
-        "y": 1400,
-        "wires": [
-            [
-                "5da9867cbeeef990"
-            ]
-        ]
-    },
-    {
-        "id": "5da9867cbeeef990",
-        "type": "join",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "mode": "custom",
-        "build": "merged",
-        "property": "payload",
-        "propertyType": "msg",
-        "key": "topic",
-        "joiner": "\\n",
-        "joinerType": "str",
-        "accumulate": true,
-        "timeout": "",
-        "count": "",
-        "reduceRight": false,
-        "reduceExp": "",
-        "reduceInit": "",
-        "reduceInitType": "",
-        "reduceFixup": "",
-        "x": 370,
-        "y": 1400,
-        "wires": [
-            [
-                "bfab342db173a4f2"
             ]
         ]
     },
