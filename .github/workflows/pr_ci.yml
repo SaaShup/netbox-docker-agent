@@ -16,7 +16,7 @@ jobs:
         steps:
             - name: Start test env
               run: |
-                  /usr/local/bin/start.sh start github_ci_netbox_docker_agent
+                  /usr/local/bin/server.sh start github_ci_netbox_docker_agent
             - name: executing remote ssh commands using password
               uses: appleboy/ssh-action@v1.0.3
               env:
@@ -35,4 +35,4 @@ jobs:
             - name: Stop test env
               if: ${{ always() }}
               run: |
-                  /usr/local/bin/start.sh stop github_ci_netbox_docker_agent
+                  /usr/local/bin/server.sh stop github_ci_netbox_docker_agent
