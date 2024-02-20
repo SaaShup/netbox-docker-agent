@@ -16,7 +16,7 @@ jobs:
         steps:
             - name: Start test env
               run: |
-                  /usr/local/bin/test_start.sh
+                  /usr/local/bin/start.sh start github_ci_netbox_docker_agent
             - name: executing remote ssh commands using password
               uses: appleboy/ssh-action@v1.0.3
               env:
@@ -32,15 +32,7 @@ jobs:
                       docker network create netbox-docker-agent
                       docker run -d -p 1880:1880 -v /var/run/docker.sock:/var/run/docker.sock:rw -v netbox-docker-agent:/data --name netbox-docker-agent --network netbox-docker-agent saashup/netbox-docker-agent
                       docker run -v ./netbox-docker-agent:/usr/app --workdir /usr/app -e HOST=netbox-docker-agent --network netbox-docker-agent node /bin/sh -c "npm install && npx jest tests/"
-                      docker stop netbox-docker-agent
-                      docker rm netbox-docker-agent
-                      docker network rm netbox-docker-agent
-                      docker volume rm netbox-docker-agent
-                      docker image rm saashup/netbox-docker-agent:latest
-                      docker image rm node:latest
-                      ls -al netbox-docker-agent
-                      rm -rf netbox-docker-agent
             - name: Stop test env
               if: ${{ always() }}
               run: |
-                  /usr/local/bin/test_stop.sh
+                  /usr/local/bin/start.sh stop github_ci_netbox_docker_agent
