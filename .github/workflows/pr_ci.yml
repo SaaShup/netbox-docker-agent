@@ -28,7 +28,7 @@ jobs:
                   envs: HEAD_REF
                   script: |
                       git clone https://github.com/SaaShup/netbox-docker-agent.git -b $HEAD_REF
-                      docker build -t saashup/netbox-docker-agent netbox-docker-agent
+                      cd netbox-docker-agent; docker build -t saashup/netbox-docker-agent netbox-docker-agent; cd ../
                       docker network create netbox-docker-agent
                       docker run -d -p 1880:1880 -v /var/run/docker.sock:/var/run/docker.sock:rw -v netbox-docker-agent:/data --name netbox-docker-agent --network netbox-docker-agent saashup/netbox-docker-agent
                       docker run -v ./netbox-docker-agent:/usr/app --workdir /usr/app -e HOST=netbox-docker-agent --network netbox-docker-agent node /bin/sh -c "npm install && npx jest tests/"
