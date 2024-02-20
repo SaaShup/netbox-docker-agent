@@ -1,0 +1,38 @@
+name: Pull Request CI
+
+on:
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+    testing:
+        runs-on:
+            group: organization/netbox-docker-agent
+            labels:
+                - self-hosted
+                - Linux
+                - X64
+        steps:
+            - name: Start test env
+              run: |
+                  /usr/local/bin/server.sh start github_ci_netbox_docker_agent
+            - name: executing remote ssh commands using password
+              uses: appleboy/ssh-action@v1.0.3
+              env:
+                  HEAD_REF: ${{ github.head_ref }}
+              with:
+                  host: agent-1.netbox-docker-agent.github-ci.saashup.com
+                  key: ${{ secrets.KEY }}
+                  username: ${{ secrets.USER }}
+                  envs: HEAD_REF
+                  script: |
+                      git clone https://github.com/SaaShup/netbox-docker-agent.git -b $HEAD_REF
+                      cd netbox-docker-agent; docker build -t saashup/netbox-docker-agent .; cd ../
+                      docker network create netbox-docker-agent
+                      docker run -d -p 1880:1880 -v /var/run/docker.sock:/var/run/docker.sock:rw -v netbox-docker-agent:/data --name netbox-docker-agent --network netbox-docker-agent saashup/netbox-docker-agent
+                      docker run -v ./netbox-docker-agent:/usr/app --workdir /usr/app -e HOST=netbox-docker-agent --network netbox-docker-agent node /bin/sh -c "npm install && npx jest tests/"
+            - name: Stop test env
+              if: ${{ always() }}
+              run: |
+                  /usr/local/bin/server.sh stop github_ci_netbox_docker_agent
