@@ -292,6 +292,11 @@ paths:
           description: 200 response
           content:
             application/json; charset=utf-8:
+              examples:
+                /info:
+                  value:
+                    message: netbox-saashup-agent
+                    configured: nok
               schema:
                 $ref: "#/components/schemas/GetInfo200ResponseBody"
   /doc:
