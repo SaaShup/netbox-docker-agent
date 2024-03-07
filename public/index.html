@@ -80,10 +80,6 @@
               data-bs-target="#navbarCollapse"><i class="fas fa-hdd"></i> Volumes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#" id="nav-registries-btn" data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse"><i class="fas fa-registered"></i> Registries</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/doc"><i class="fas fa-file-code"></i> Apidoc</a>
           </li>
         </ul>
@@ -124,14 +120,7 @@
       </div>
       <div class="col-12" id="networks-list"></div>
     </div>
-
-    <div class="row d-none app" id="registries">
-      <div class="col-6 text-center">
-        <span id="registries-count" class="text-primary fw-bold">0</span> registrie(s)
-      </div>
-      <div class="col-12" id="registries-list"></div>
-    </div>
-
+   
   </main>
 
   <footer class="footer w-100 mt-auto py-2">
@@ -384,26 +373,6 @@
     })
     $("#nav-home-btn").click();
 
-    $("#nav-registries-btn").on('click', function () {
-      cleanWindow();
-      $('#registries').removeClass('d-none');
-      $('#nav-registries-btn').addClass('active')
-      $.ajax({
-        url: "/api/registries",
-      }).done(function (result) {
-        $("#registries-count").html(Object.keys(result).length)
-        let registries = ''
-        for (const c in result) {
-          console.log(result[c])
-          registries += '<div class="card m-5"><div class="card-header bg-white text-primary">' + c + '</div><div class="card-body"><div class="row m-3">' +
-                          '<div class="col-2"><label">Username:</label></div><div class="col-4">' + (result[c].username || 'none') + '</div>' +
-                          '<div class="col-2"><label">Password:</label></div><div class="col-4">' + (result[c].password || 'none') + '</div></div>' +
-                          '<div class="row m-3"><div class="col-2"><label>Email:</label></div><div class="col-4">' + (result[c].email || 'none') + '</div>' +
-                          '<div class="col-2"><label>Server:</label></div><div class="col-4">' + (result[c].server || 'none') + '</div></div></div></div></div>';
-        }
-        $('#registries-list').html(registries);
-      })
-    })
     $("#nav-home-btn").click();
   </script>
 
