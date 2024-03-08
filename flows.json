@@ -967,9 +967,7 @@
             [
                 "840619e239d214aa"
             ],
-            [
-                "6148d77b5a899296"
-            ],
+            [],
             [
                 "840619e239d214aa",
                 "2efc622d38ebd4aa",
@@ -1117,7 +1115,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] ? $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] : $substring(msg.result[0].Id,7,12),\t    \"provider\": \"dockerhub\",\t    \"version\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] : $substring(msg.result[0].Id,7,12),\t    \"size\": $round(msg.result[0].Size / 1024 / 1024),\t    \"ImageID\": msg.result[0].Id\t}",
+                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[0] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[0] : $substring(msg.result[0].Id,7,12),\t    \"provider\": \"dockerhub\",\t    \"version\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] : $substring(msg.result[0].Id,7,12),\t    \"size\": $round(msg.result[0].Size / 1024 / 1024),\t    \"ImageID\": msg.result[0].Id\t}",
                 "tot": "jsonata"
             }
         ],
@@ -2488,166 +2486,6 @@
         "x": 1515,
         "y": 780,
         "wires": []
-    },
-    {
-        "id": "1eeda704f5c37284",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/registries/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "POST",
-                "tot": "str"
-            },
-            {
-                "t": "delete",
-                "p": "payload.password",
-                "pt": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1380,
-        "y": 680,
-        "wires": [
-            [
-                "7cd37714a247d0f3"
-            ]
-        ]
-    },
-    {
-        "id": "8be5d58715557791",
-        "type": "split",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "",
-        "x": 1170,
-        "y": 680,
-        "wires": [
-            [
-                "1eeda704f5c37284"
-            ]
-        ]
-    },
-    {
-        "id": "6148d77b5a899296",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "registries",
-                "tot": "global"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 780,
-        "y": 720,
-        "wires": [
-            [
-                "0304bbe986bd8ff5"
-            ]
-        ]
-    },
-    {
-        "id": "0304bbe986bd8ff5",
-        "type": "switch",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "property": "req.url",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "neq",
-                "v": "/api/registries",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "/api/registries",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 970,
-        "y": 720,
-        "wires": [
-            [
-                "8be5d58715557791"
-            ],
-            [
-                "44bcea0dd53ffd2a"
-            ]
-        ]
-    },
-    {
-        "id": "44bcea0dd53ffd2a",
-        "type": "http response",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 1170,
-        "y": 720,
-        "wires": []
-    },
-    {
-        "id": "8d5636000738b8f8",
-        "type": "http in",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "url": "/api/registries",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 790,
-        "y": 680,
-        "wires": [
-            [
-                "6148d77b5a899296"
-            ]
-        ]
     },
     {
         "id": "e974d3bd502f614f",
