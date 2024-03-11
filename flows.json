@@ -62,8 +62,7 @@
         "y": 320,
         "wires": [
             [
-                "3f489e8a5d253765",
-                "f54188e747b972e5"
+                "3f489e8a5d253765"
             ]
         ]
     },
@@ -77,7 +76,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.4.0",
+                "to": "0.5.0",
                 "tot": "str"
             },
             {
@@ -630,148 +629,11 @@
         "links": [
             "0def7304bac10f61"
         ],
-        "x": 695,
-        "y": 40,
+        "x": 685,
+        "y": 20,
         "wires": [
             [
                 "82a20fd37e28308d"
-            ]
-        ]
-    },
-    {
-        "id": "f54188e747b972e5",
-        "type": "change",
-        "z": "216db6efc0df9bc0",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "registries",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "filename",
-                "pt": "msg",
-                "to": "($env(\"DATAPATH\") ?  $env(\"DATAPATH\") : \"/data\") & \"/registries.js\"",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 500,
-        "y": 360,
-        "wires": [
-            [
-                "e2de2e9bb953dea1"
-            ]
-        ]
-    },
-    {
-        "id": "e2de2e9bb953dea1",
-        "type": "file",
-        "z": "216db6efc0df9bc0",
-        "name": "registries",
-        "filename": "filename",
-        "filenameType": "msg",
-        "appendNewline": false,
-        "createDir": false,
-        "overwriteFile": "true",
-        "encoding": "none",
-        "x": 700,
-        "y": 360,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "3480946faba90b93",
-        "type": "file in",
-        "z": "216db6efc0df9bc0",
-        "name": "registries",
-        "filename": "filename",
-        "filenameType": "msg",
-        "format": "utf8",
-        "chunk": false,
-        "sendError": false,
-        "encoding": "none",
-        "allProps": false,
-        "x": 480,
-        "y": 120,
-        "wires": [
-            [
-                "09c3142e6ad67175"
-            ]
-        ]
-    },
-    {
-        "id": "09c3142e6ad67175",
-        "type": "json",
-        "z": "216db6efc0df9bc0",
-        "name": "",
-        "property": "payload",
-        "action": "obj",
-        "pretty": false,
-        "x": 670,
-        "y": 120,
-        "wires": [
-            [
-                "8e73390425a4b518"
-            ]
-        ]
-    },
-    {
-        "id": "8e73390425a4b518",
-        "type": "change",
-        "z": "216db6efc0df9bc0",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "registries",
-                "pt": "global",
-                "to": "payload",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 850,
-        "y": 120,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "d0a6ab107cddd347",
-        "type": "inject",
-        "z": "216db6efc0df9bc0",
-        "name": "Set registries start",
-        "props": [
-            {
-                "p": "filename",
-                "v": "($env(\"DATAPATH\") ?  $env(\"DATAPATH\") : \"/data\") & \"/registries.js\"",
-                "vt": "jsonata"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "1",
-        "topic": "",
-        "x": 310,
-        "y": 120,
-        "wires": [
-            [
-                "3480946faba90b93"
             ]
         ]
     },
@@ -1105,9 +967,7 @@
             [
                 "840619e239d214aa"
             ],
-            [
-                "6148d77b5a899296"
-            ],
+            [],
             [
                 "840619e239d214aa",
                 "2efc622d38ebd4aa",
@@ -1288,7 +1148,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1670,
+        "x": 1690,
         "y": 560,
         "wires": [
             [
@@ -1378,7 +1238,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 1530,
+        "x": 1550,
         "y": 560,
         "wires": [
             [
@@ -2517,7 +2377,7 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1795,
+        "x": 1805,
         "y": 560,
         "wires": []
     },
@@ -2626,166 +2486,6 @@
         "x": 1515,
         "y": 780,
         "wires": []
-    },
-    {
-        "id": "1eeda704f5c37284",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/registries/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "POST",
-                "tot": "str"
-            },
-            {
-                "t": "delete",
-                "p": "payload.password",
-                "pt": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1380,
-        "y": 680,
-        "wires": [
-            [
-                "7cd37714a247d0f3"
-            ]
-        ]
-    },
-    {
-        "id": "8be5d58715557791",
-        "type": "split",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "",
-        "x": 1170,
-        "y": 680,
-        "wires": [
-            [
-                "1eeda704f5c37284"
-            ]
-        ]
-    },
-    {
-        "id": "6148d77b5a899296",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "registries",
-                "tot": "global"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 780,
-        "y": 720,
-        "wires": [
-            [
-                "0304bbe986bd8ff5"
-            ]
-        ]
-    },
-    {
-        "id": "0304bbe986bd8ff5",
-        "type": "switch",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "property": "req.url",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "neq",
-                "v": "/api/registries",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "/api/registries",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 970,
-        "y": 720,
-        "wires": [
-            [
-                "8be5d58715557791"
-            ],
-            [
-                "44bcea0dd53ffd2a"
-            ]
-        ]
-    },
-    {
-        "id": "44bcea0dd53ffd2a",
-        "type": "http response",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 1170,
-        "y": 720,
-        "wires": []
-    },
-    {
-        "id": "8d5636000738b8f8",
-        "type": "http in",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "url": "/api/registries",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 790,
-        "y": 680,
-        "wires": [
-            [
-                "6148d77b5a899296"
-            ]
-        ]
     },
     {
         "id": "e974d3bd502f614f",
@@ -2955,8 +2655,8 @@
                 "t": "set",
                 "p": "registries",
                 "pt": "msg",
-                "to": "registries",
-                "tot": "global"
+                "to": "payload.data.registry",
+                "tot": "msg"
             },
             {
                 "t": "set",
@@ -2969,7 +2669,7 @@
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "'\\\"http://localhost/images/create?fromImage=' & msg.input.data.name  & '&tag=' & msg.input.data.version & '\\\"' & \" -H 'X-Registry-Auth: \" & $base64encode($string(msg.registries[msg.input.data.provider])) & \"'\"",
+                "to": "'\\\"http://localhost/images/create?fromImage=' & msg.input.data.name  & '&tag=' & msg.input.data.version & '\\\"' & \" -H 'X-Registry-Auth: \" & $base64encode($string(msg.registries)) & \"'\"",
                 "tot": "jsonata"
             }
         ],
