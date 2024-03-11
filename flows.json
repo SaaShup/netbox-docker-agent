@@ -76,7 +76,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.4.1",
+                "to": "0.5.0",
                 "tot": "str"
             },
             {
