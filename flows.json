@@ -1115,7 +1115,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[0] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[0] : $substring(msg.result[0].Id,7,12),\t    \"provider\": \"dockerhub\",\t    \"version\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] : $substring(msg.result[0].Id,7,12),\t    \"size\": $round(msg.result[0].Size / 1024 / 1024),\t    \"ImageID\": msg.result[0].Id\t}",
+                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] ? $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] : $substring(msg.result[0].Id,7,12),\t    \"provider\": \"dockerhub\",\t    \"version\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] : $substring(msg.result[0].Id,7,12),\t    \"size\": $round(msg.result[0].Size / 1024 / 1024),\t    \"ImageID\": msg.result[0].Id\t}",
                 "tot": "jsonata"
             }
         ],
@@ -1921,8 +1921,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1010,
-        "y": 620,
+        "x": 990,
+        "y": 720,
         "wires": [
             [
                 "0f90d4602b562160"
@@ -1976,8 +1976,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 780,
-        "y": 620,
+        "x": 760,
+        "y": 720,
         "wires": [
             [
                 "7cd37714a247d0f3"
@@ -2364,8 +2364,8 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1165,
-        "y": 620,
+        "x": 1155,
+        "y": 720,
         "wires": []
     },
     {
