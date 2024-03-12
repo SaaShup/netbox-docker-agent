@@ -76,7 +76,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.5.1",
+                "to": "0.5.0",
                 "tot": "str"
             },
             {
@@ -1115,7 +1115,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] ? $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] : $substring(msg.result[0].Id,7,12),\t    \"provider\": \"dockerhub\",\t    \"version\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] : $substring(msg.result[0].Id,7,12),\t    \"size\": $round(msg.result[0].Size / 1024 / 1024),\t    \"ImageID\": msg.result[0].Id\t}",
+                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] ? $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] : $substring(msg.result[0].Id,7,12),\t    \"registry\": { \"id\": $lookup(msg.registryresponse, $count($split(msg.result[0].RepoTags[0], '/' )) > 1 ? $contains($split(msg.result[0].RepoTags[0], '/')[0], /([.:]|localhost)/) ? $split(msg.result[0].RepoTags[0], '/')[0] : \"dockerhub\" : \"dockerhub\")},\t    \"version\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] : $substring(msg.result[0].Id,7,12),\t    \"size\": $round(msg.result[0].Size / 1024 / 1024),\t    \"ImageID\": msg.result[0].Id\t}",
                 "tot": "jsonata"
             }
         ],
@@ -1124,7 +1124,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1380,
+        "x": 1620,
         "y": 560,
         "wires": [
             [
@@ -1148,7 +1148,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1690,
+        "x": 1910,
         "y": 560,
         "wires": [
             [
@@ -1215,7 +1215,7 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 1210,
+        "x": 1470,
         "y": 560,
         "wires": [
             [
@@ -1238,7 +1238,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 1550,
+        "x": 1770,
         "y": 560,
         "wires": [
             [
@@ -2084,7 +2084,7 @@
                 "39acafa9d2f2d6ba"
             ],
             [
-                "6faf3827d41504fd"
+                "53d68a4462e6d77e"
             ]
         ]
     },
@@ -2377,7 +2377,7 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1805,
+        "x": 2015,
         "y": 560,
         "wires": []
     },
@@ -2486,6 +2486,119 @@
         "x": 1515,
         "y": 780,
         "wires": []
+    },
+    {
+        "id": "53d68a4462e6d77e",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "oldpayload",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$distinct([msg.oldpayload.(\t    $address := $count($split(RepoTags[0], '/' )) > 1 ? $contains($split(RepoTags[0], '/')[0], /([.:]|localhost)/) ? $split(RepoTags[0], '/')[0] : \"dockerhub\" : \"dockerhub\";\t    $address != \"dockerhub\" ? { \"name\" : $address, \"serveraddress\": \"https://\" & $address & \"/v2/\" }) \t])",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/registries/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1200,
+        "y": 620,
+        "wires": [
+            [
+                "61288a7609631dc6"
+            ]
+        ]
+    },
+    {
+        "id": "61288a7609631dc6",
+        "type": "http request",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1410,
+        "y": 620,
+        "wires": [
+            [
+                "5a72a6c552c36127"
+            ]
+        ]
+    },
+    {
+        "id": "5a72a6c552c36127",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "registryresponse",
+                "pt": "msg",
+                "to": "$merge($append(msg.payload.{name : id}, {\"dockerhub\": 1}))",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "oldpayload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1680,
+        "y": 620,
+        "wires": [
+            [
+                "6faf3827d41504fd"
+            ]
+        ]
     },
     {
         "id": "e974d3bd502f614f",
