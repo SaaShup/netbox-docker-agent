@@ -76,7 +76,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.6.0",
+                "to": "0.6.1",
                 "tot": "str"
             },
             {
@@ -2084,7 +2084,7 @@
                 "39acafa9d2f2d6ba"
             ],
             [
-                "53d68a4462e6d77e"
+                "121ec6eb7cd9d1e3"
             ]
         ]
     },
@@ -2495,13 +2495,6 @@
         "rules": [
             {
                 "t": "set",
-                "p": "oldpayload",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
                 "p": "config",
                 "pt": "msg",
                 "to": "config",
@@ -2509,9 +2502,16 @@
             },
             {
                 "t": "set",
+                "p": "netboxregistryresult",
+                "pt": "msg",
+                "to": "$merge(msg.payload.results.{         name : id     })",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "$distinct([msg.oldpayload.(\t    $address := $count($split(RepoTags[0], '/' )) > 1 ? $contains($split(RepoTags[0], '/')[0], /([.:]|localhost)/) ? $split(RepoTags[0], '/')[0] : \"dockerhub\" : \"dockerhub\";\t    $address != \"dockerhub\" ? { \"name\" : $address, \"serveraddress\": \"https://\" & $address & \"/v2/\" }) \t])",
+                "to": "$distinct([msg.oldpayload.(\t    $address := $count($split(RepoTags[0], '/' )) > 1 ? $contains($split(RepoTags[0], '/')[0], /([.:]|localhost)/) ? $split(RepoTags[0], '/')[0] : \"dockerhub\" : \"dockerhub\";\t    $address in $keys($$.msg.netboxregistryresult) ? continue : { \"name\" : $address, \"serveraddress\": \"https://\" & $address & \"/v2/\" }) \t])\t",
                 "tot": "jsonata"
             },
             {
@@ -2534,8 +2534,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1200,
-        "y": 620,
+        "x": 1260,
+        "y": 660,
         "wires": [
             [
                 "61288a7609631dc6"
@@ -2558,8 +2558,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1410,
-        "y": 620,
+        "x": 1450,
+        "y": 660,
         "wires": [
             [
                 "5a72a6c552c36127"
@@ -2576,7 +2576,7 @@
                 "t": "set",
                 "p": "registryresponse",
                 "pt": "msg",
-                "to": "$merge($append(msg.payload.{name : id}, {\"dockerhub\": 1}))",
+                "to": "$merge($append(msg.payload.{name : id}, msg.netboxregistryresult))",
                 "tot": "jsonata"
             },
             {
@@ -2592,11 +2592,83 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1680,
-        "y": 620,
+        "x": 1660,
+        "y": 660,
         "wires": [
             [
                 "6faf3827d41504fd"
+            ]
+        ]
+    },
+    {
+        "id": "121ec6eb7cd9d1e3",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "oldpayload",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/registries/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 840,
+        "y": 660,
+        "wires": [
+            [
+                "6a9c98bfa97f9c1e"
+            ]
+        ]
+    },
+    {
+        "id": "6a9c98bfa97f9c1e",
+        "type": "http request",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1050,
+        "y": 660,
+        "wires": [
+            [
+                "53d68a4462e6d77e"
             ]
         ]
     },
