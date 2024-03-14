@@ -76,7 +76,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.6.1",
+                "to": "0.6.2",
                 "tot": "str"
             },
             {
@@ -416,77 +416,6 @@
         ]
     },
     {
-        "id": "3b22d73702c2e8a8",
-        "type": "inject",
-        "z": "216db6efc0df9bc0",
-        "name": "Prune",
-        "props": [
-            {
-                "p": "networks",
-                "v": "http://localhost/networks/prune",
-                "vt": "str"
-            },
-            {
-                "p": "images",
-                "v": "http://localhost/images/prune",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "30 02 * * *",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 300,
-        "y": 660,
-        "wires": [
-            [
-                "cc58358dd78c9a8a",
-                "61949d7422f4c8a3"
-            ]
-        ]
-    },
-    {
-        "id": "cc58358dd78c9a8a",
-        "type": "exec",
-        "z": "216db6efc0df9bc0",
-        "command": "curl -s -X POST --unix-socket /var/run/docker.sock ",
-        "addpay": "networks",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "networks",
-        "x": 480,
-        "y": 620,
-        "wires": [
-            [],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "61949d7422f4c8a3",
-        "type": "exec",
-        "z": "216db6efc0df9bc0",
-        "command": "curl -s -X POST --unix-socket /var/run/docker.sock ",
-        "addpay": "images",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "images",
-        "x": 480,
-        "y": 700,
-        "wires": [
-            [],
-            [],
-            []
-        ]
-    },
-    {
         "id": "2c828dcea2260ee8",
         "type": "inject",
         "z": "216db6efc0df9bc0",
@@ -572,8 +501,8 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 300,
-        "y": 780,
+        "x": 280,
+        "y": 620,
         "wires": [
             [
                 "f88ace255ca58e9c"
@@ -596,8 +525,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 490,
-        "y": 780,
+        "x": 470,
+        "y": 620,
         "wires": [
             [
                 "d60b525378a25078"
@@ -615,8 +544,8 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 680,
-        "y": 780,
+        "x": 660,
+        "y": 620,
         "wires": [
             []
         ]
