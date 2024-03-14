@@ -48,6 +48,105 @@
         "env": []
     },
     {
+        "id": "0455d311f0e53c09",
+        "type": "subflow",
+        "name": "JOURNAL",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 240,
+                "y": 220,
+                "wires": [
+                    {
+                        "id": "6a7a0467075486e3"
+                    }
+                ]
+            }
+        ],
+        "out": [],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
+        "id": "6a7a0467075486e3",
+        "type": "change",
+        "z": "0455d311f0e53c09",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/extras/journal-entries/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "POST",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "journal",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 440,
+        "y": 220,
+        "wires": [
+            [
+                "3547e249e2f4244a"
+            ]
+        ]
+    },
+    {
+        "id": "3547e249e2f4244a",
+        "type": "http request",
+        "z": "0455d311f0e53c09",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 650,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "d7a287982b6bd303",
         "type": "inject",
         "z": "216db6efc0df9bc0",
@@ -759,28 +858,7 @@
         "rules": [
             {
                 "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/extras/journal-entries/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "POST",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "payload",
+                "p": "journal",
                 "pt": "msg",
                 "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": msg.config.id,\t   \"kind\": \"info\",\t   \"comments\": $string(\"agent restarted\")\t}",
                 "tot": "jsonata"
@@ -795,31 +873,18 @@
         "y": 200,
         "wires": [
             [
-                "170a7868f79e7b06"
+                "af0f2ce79605a0a7"
             ]
         ]
     },
     {
-        "id": "170a7868f79e7b06",
-        "type": "http request",
+        "id": "af0f2ce79605a0a7",
+        "type": "subflow:0455d311f0e53c09",
         "z": "216db6efc0df9bc0",
         "name": "",
-        "method": "use",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 1090,
+        "x": 1060,
         "y": 200,
-        "wires": [
-            []
-        ]
+        "wires": []
     },
     {
         "id": "91e25dba31c28805",
@@ -2649,18 +2714,13 @@
             },
             {
                 "t": "eq",
-                "v": "registries",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
                 "v": "endpoint",
                 "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 6,
+        "outputs": 5,
         "x": 410,
         "y": 200,
         "wires": [
@@ -2675,9 +2735,6 @@
             ],
             [
                 "dfd9416e4f31ef88"
-            ],
-            [
-                "b505830bd99cf21c"
             ],
             []
         ]
@@ -3524,44 +3581,6 @@
         "wires": []
     },
     {
-        "id": "b505830bd99cf21c",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "add registry",
-        "rules": [
-            {
-                "t": "set",
-                "p": "registries[msg.payload.data.name]",
-                "pt": "global",
-                "to": "payload.data",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 630,
-        "y": 640,
-        "wires": [
-            [
-                "3438fae1d4a8309d"
-            ]
-        ]
-    },
-    {
-        "id": "3438fae1d4a8309d",
-        "type": "http response",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 890,
-        "y": 640,
-        "wires": []
-    },
-    {
         "id": "dcf35b57666a30f9",
         "type": "http in",
         "z": "8e85e8c54d776ddc",
@@ -4328,6 +4347,13 @@
                 "pt": "msg",
                 "to": "[{\t    \"id\": msg.input.data.id,\t   \"host\": msg.input.data.host.id,\t   \"name\": $replace(msg.result.Name,\"/\",\"\"),\t   \"hostname\": msg.result.Config.Hostname,\t   \"operation\": \"none\",\t   \"state\": msg.result.State.Status,\t   \"status\": msg.result.State.Status = \"running\" ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\" : \"na\",\t   \"image\": {\t    \"host\": msg.input.data.host.id,\t    \"ImageID\": msg.result.Image\t    },\t   \"ContainerID\": msg.result.Id,\t   \"network_settings\": [$each(msg.result.NetworkSettings.Networks, function($v, $k) { { \"network\": { \"name\": $k } } })],\t   \"ports\": msg.result.NetworkSettings.Ports ? [$each(msg.result.NetworkSettings.Ports, function($v, $k) { { \"public_port\" : $v[0] = null ? 0 : $v[0].HostPort, \"private_port\": $split($k,\"/\")[0], \"type\": $split($k,\"/\")[1] } })] : [$each(msg.result.Config.ExposedPorts, function($v, $k) { $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\" ? { \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\", \"private_port\": $split($k,\"/\")[0], \"type\": $split($k,\"/\")[1] } })],\t   \"env\": [$map(msg.result.Config.Env, function($v, $k) { { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] } })],\t   \"labels\": [$each(msg.result.Config.Labels, function($v, $k) { { \"key\": $k, \"value\": $v } })],\t   \"mounts\": [$map(msg.result.Mounts, function($v, $k) { $v.Type = \"volume\" ? { \"source\": $v.Source, \"volume\": { \"name\": $v.Name, \"host\": msg.config.id } } })]\t}]",
                 "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"operation \" & msg.input.data.operation & \" ok \"\t}",
+                "tot": "jsonata"
             }
         ],
         "action": "",
@@ -4340,7 +4366,7 @@
         "wires": [
             [
                 "c469b4b880927dc6",
-                "1e31acfa8553b622"
+                "f97a2faad0f4275a"
             ]
         ]
     },
@@ -4466,7 +4492,8 @@
         "y": 120,
         "wires": [
             [
-                "29132a5a3f72e359"
+                "29132a5a3f72e359",
+                "6eb66280ca1fa10a"
             ],
             [
                 "44b70c4a1a5241f9"
@@ -4481,44 +4508,9 @@
         "rules": [
             {
                 "t": "set",
-                "p": "config",
+                "p": "journal",
                 "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/extras/journal-entries/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "POST",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "result",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"warning\",\t   \"comments\": $string(msg.result)\t}",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"warning\",\t   \"comments\": $string(msg.input.data.operation & \"-ing\")\t}",
                 "tot": "jsonata"
             }
         ],
@@ -4531,57 +4523,39 @@
         "y": 180,
         "wires": [
             [
-                "fc1e63a44287e26a"
+                "803bd832af0f5029"
             ]
         ]
     },
     {
-        "id": "fc1e63a44287e26a",
-        "type": "http request",
+        "id": "803bd832af0f5029",
+        "type": "subflow:0455d311f0e53c09",
         "z": "8e85e8c54d776ddc",
         "name": "",
-        "method": "use",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 1290,
+        "x": 1260,
         "y": 180,
-        "wires": [
-            []
-        ]
+        "wires": []
     },
     {
-        "id": "1e31acfa8553b622",
+        "id": "f97a2faad0f4275a",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "x": 1000,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "6eb66280ca1fa10a",
         "type": "change",
         "z": "8e85e8c54d776ddc",
         "name": "",
         "rules": [
             {
                 "t": "set",
-                "p": "url",
+                "p": "journal",
                 "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/extras/journal-entries/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "POST",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"operation \" & msg.input.data.operation & \" ok \"\t}",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"info\",\t   \"comments\": $string(msg.result)\t}",
                 "tot": "jsonata"
             }
         ],
@@ -4590,34 +4564,12 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 780,
-        "y": 600,
+        "x": 1260,
+        "y": 120,
         "wires": [
             [
-                "9315edc0877baef6"
+                "803bd832af0f5029"
             ]
-        ]
-    },
-    {
-        "id": "9315edc0877baef6",
-        "type": "http request",
-        "z": "8e85e8c54d776ddc",
-        "name": "",
-        "method": "use",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 990,
-        "y": 600,
-        "wires": [
-            []
         ]
     },
     {
@@ -5122,8 +5074,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 730,
-        "y": 80,
+        "x": 610,
+        "y": 60,
         "wires": [
             [],
             [
@@ -5139,8 +5091,8 @@
         "property": "payload",
         "action": "obj",
         "pretty": false,
-        "x": 910,
-        "y": 80,
+        "x": 790,
+        "y": 60,
         "wires": [
             [
                 "a15a7b2000f3b6c9"
@@ -5151,15 +5103,15 @@
         "id": "990b1773880e3b7d",
         "type": "template",
         "z": "3ee57a9d7dc5fae7",
-        "name": "Parse Containers Output and Transform to Prometheus",
+        "name": "Containers2Prometheus",
         "field": "payload",
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
         "template": "# HELP netbox_docker_agent_container_running Show if a container is running\n# TYPE netbox_docker_agent_container_running gauge\n{{#container.running}}\nnetbox_docker_agent_container_running{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.running}}\n\n# HELP netbox_docker_agent_container_exited Show if a container is exited\n# TYPE netbox_docker_agent_container_exited gauge\n{{#container.exited}}\nnetbox_docker_agent_container_exited{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.exited}}\n\n# HELP netbox_docker_agent_container_stopped Show if a container is exited\n# TYPE netbox_docker_agent_container_stopped gauge\n{{#container.stopped}}\nnetbox_docker_agent_container_stopped{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.stopped}}\n\n# HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working\n# TYPE netbox_docker_agent_docker_daemon gauge\nnetbox_docker_agent_docker_daemon{socket=\"/var/run/docker.socket\"} {{container.docker_daemon}}\n\n# HELP netbox_docker_agent_netbox_error_response Show the netbox error response counter\n# TYPE netbox_docker_agent_netbox_error_response counter\nnetbox_docker_agent_netbox_error_response{} {{global.errorCounter}}",
         "output": "str",
-        "x": 720,
-        "y": 160,
+        "x": 670,
+        "y": 120,
         "wires": [
             [
                 "cdecbe9f078ed45b"
@@ -5192,8 +5144,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1100,
-        "y": 80,
+        "x": 980,
+        "y": 60,
         "wires": [
             [
                 "990b1773880e3b7d"
@@ -5228,8 +5180,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1080,
-        "y": 160,
+        "x": 900,
+        "y": 120,
         "wires": [
             []
         ]
@@ -5450,49 +5402,7 @@
         "rules": [
             {
                 "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "package",
-                "pt": "msg",
-                "to": "package",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/extras/journal-entries/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "POST",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "result",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "payload",
+                "p": "journal",
                 "pt": "msg",
                 "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": msg.config.id,\t   \"kind\": \"danger\",\t   \"comments\": $string(msg.result)\t}",
                 "tot": "jsonata"
@@ -5507,46 +5417,17 @@
         "y": 520,
         "wires": [
             [
-                "198ae5a8fa13d26b"
+                "b68cbe91e9163c46"
             ]
         ]
     },
     {
-        "id": "198ae5a8fa13d26b",
-        "type": "http request",
+        "id": "b68cbe91e9163c46",
+        "type": "subflow:0455d311f0e53c09",
         "z": "3ee57a9d7dc5fae7",
         "name": "",
-        "method": "use",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 790,
+        "x": 800,
         "y": 520,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "b0cac6c15fd048ef",
-        "type": "link in",
-        "z": "3ee57a9d7dc5fae7",
-        "name": "log docker",
-        "links": [
-            "9fc01bf414b956de"
-        ],
-        "x": 415,
-        "y": 520,
-        "wires": [
-            [
-                "d138d4d1284cc210"
-            ]
-        ]
+        "wires": []
     }
 ]
