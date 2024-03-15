@@ -4493,10 +4493,10 @@
         "wires": [
             [
                 "29132a5a3f72e359",
-                "6eb66280ca1fa10a"
+                "44b70c4a1a5241f9"
             ],
             [
-                "44b70c4a1a5241f9"
+                "fd627a14335caef4"
             ]
         ]
     },
@@ -4510,7 +4510,7 @@
                 "t": "set",
                 "p": "journal",
                 "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"warning\",\t   \"comments\": $string(msg.input.data.operation & \"-ing\")\t}",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"info\",\t   \"comments\": $string(msg.input.data.operation & \"-ing\")\t}",
                 "tot": "jsonata"
             }
         ],
@@ -4519,8 +4519,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1080,
-        "y": 180,
+        "x": 1240,
+        "y": 120,
         "wires": [
             [
                 "803bd832af0f5029"
@@ -4546,7 +4546,7 @@
         "wires": []
     },
     {
-        "id": "6eb66280ca1fa10a",
+        "id": "fd627a14335caef4",
         "type": "change",
         "z": "8e85e8c54d776ddc",
         "name": "",
@@ -4555,7 +4555,7 @@
                 "t": "set",
                 "p": "journal",
                 "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"info\",\t   \"comments\": $string(msg.result)\t}",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"warning\",\t   \"comments\": $string(msg.input.data.operation & \" | failed\")\t}",
                 "tot": "jsonata"
             }
         ],
@@ -4564,8 +4564,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1260,
-        "y": 120,
+        "x": 1080,
+        "y": 180,
         "wires": [
             [
                 "803bd832af0f5029"
