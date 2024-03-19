@@ -14,4 +14,8 @@ describe('api ' + pathinfo, () => {
             }
         }
     });
+
+    test("that fail", () => {
+        expect(true).toEqual(false);
+    });
   });
