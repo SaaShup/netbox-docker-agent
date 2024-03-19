@@ -175,7 +175,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.6.2",
+                "to": "0.6.3",
                 "tot": "str"
             },
             {
@@ -1160,8 +1160,8 @@
                 "t": "set",
                 "p": "config.netbox_url",
                 "pt": "global",
-                "to": "req.query.url",
-                "tot": "msg"
+                "to": "$boolean($env('NETBOX_URL')) ? $env('NETBOX_URL') : req.query.url",
+                "tot": "jsonata"
             },
             {
                 "t": "set",
