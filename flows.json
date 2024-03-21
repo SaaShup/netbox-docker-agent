@@ -175,7 +175,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.6.3",
+                "to": "0.6.4",
                 "tot": "str"
             },
             {
@@ -5053,7 +5053,9 @@
                 "c6a678adf2e69013"
             ],
             [],
-            []
+            [
+                "6aaf41e1228310f8"
+            ]
         ]
     },
     {
@@ -5065,19 +5067,15 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "empty"
-            },
-            {
                 "t": "else"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 2,
+        "outputs": 1,
         "x": 610,
         "y": 60,
         "wires": [
-            [],
             [
                 "0d955034e00fa0f5"
             ]
@@ -5110,8 +5108,8 @@
         "syntax": "mustache",
         "template": "# HELP netbox_docker_agent_container_running Show if a container is running\n# TYPE netbox_docker_agent_container_running gauge\n{{#container.running}}\nnetbox_docker_agent_container_running{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.running}}\n\n# HELP netbox_docker_agent_container_exited Show if a container is exited\n# TYPE netbox_docker_agent_container_exited gauge\n{{#container.exited}}\nnetbox_docker_agent_container_exited{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.exited}}\n\n# HELP netbox_docker_agent_container_stopped Show if a container is exited\n# TYPE netbox_docker_agent_container_stopped gauge\n{{#container.stopped}}\nnetbox_docker_agent_container_stopped{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.stopped}}\n\n# HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working\n# TYPE netbox_docker_agent_docker_daemon gauge\nnetbox_docker_agent_docker_daemon{socket=\"/var/run/docker.socket\"} {{container.docker_daemon}}\n\n# HELP netbox_docker_agent_netbox_error_response Show the netbox error response counter\n# TYPE netbox_docker_agent_netbox_error_response counter\nnetbox_docker_agent_netbox_error_response{} {{global.errorCounter}}",
         "output": "str",
-        "x": 670,
-        "y": 120,
+        "x": 970,
+        "y": 140,
         "wires": [
             [
                 "cdecbe9f078ed45b"
@@ -5180,8 +5178,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 900,
-        "y": 120,
+        "x": 1200,
+        "y": 140,
         "wires": [
             []
         ]
@@ -5429,5 +5427,64 @@
         "x": 800,
         "y": 520,
         "wires": []
+    },
+    {
+        "id": "44be25bec015a64d",
+        "type": "change",
+        "z": "3ee57a9d7dc5fae7",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "result",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "container",
+                "pt": "msg",
+                "to": "{\t    \"running\": [],\t    \"exited\": [],\t    \"stopped\": [],\t    \"docker_daemon\": 0\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 740,
+        "y": 140,
+        "wires": [
+            [
+                "990b1773880e3b7d"
+            ]
+        ]
+    },
+    {
+        "id": "6aaf41e1228310f8",
+        "type": "switch",
+        "z": "3ee57a9d7dc5fae7",
+        "name": "",
+        "property": "payload.code",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "7",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 590,
+        "y": 140,
+        "wires": [
+            [
+                "44be25bec015a64d"
+            ]
+        ]
     }
 ]
