@@ -5054,7 +5054,7 @@
             ],
             [],
             [
-                "6aaf41e1228310f8"
+                "5fa4945a837775f3"
             ]
         ]
     },
@@ -5067,15 +5067,19 @@
         "propertyType": "msg",
         "rules": [
             {
+                "t": "empty"
+            },
+            {
                 "t": "else"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 1,
+        "outputs": 2,
         "x": 610,
         "y": 60,
         "wires": [
+            [],
             [
                 "0d955034e00fa0f5"
             ]
@@ -5108,8 +5112,8 @@
         "syntax": "mustache",
         "template": "# HELP netbox_docker_agent_container_running Show if a container is running\n# TYPE netbox_docker_agent_container_running gauge\n{{#container.running}}\nnetbox_docker_agent_container_running{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.running}}\n\n# HELP netbox_docker_agent_container_exited Show if a container is exited\n# TYPE netbox_docker_agent_container_exited gauge\n{{#container.exited}}\nnetbox_docker_agent_container_exited{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.exited}}\n\n# HELP netbox_docker_agent_container_stopped Show if a container is exited\n# TYPE netbox_docker_agent_container_stopped gauge\n{{#container.stopped}}\nnetbox_docker_agent_container_stopped{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.stopped}}\n\n# HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working\n# TYPE netbox_docker_agent_docker_daemon gauge\nnetbox_docker_agent_docker_daemon{socket=\"/var/run/docker.socket\"} {{container.docker_daemon}}\n\n# HELP netbox_docker_agent_netbox_error_response Show the netbox error response counter\n# TYPE netbox_docker_agent_netbox_error_response counter\nnetbox_docker_agent_netbox_error_response{} {{global.errorCounter}}",
         "output": "str",
-        "x": 970,
-        "y": 140,
+        "x": 990,
+        "y": 180,
         "wires": [
             [
                 "cdecbe9f078ed45b"
@@ -5178,8 +5182,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1200,
-        "y": 140,
+        "x": 1220,
+        "y": 180,
         "wires": [
             []
         ]
@@ -5429,7 +5433,7 @@
         "wires": []
     },
     {
-        "id": "44be25bec015a64d",
+        "id": "b6ef3e45b5156055",
         "type": "change",
         "z": "3ee57a9d7dc5fae7",
         "name": "",
@@ -5445,8 +5449,8 @@
                 "t": "set",
                 "p": "container",
                 "pt": "msg",
-                "to": "{\t    \"running\": [],\t    \"exited\": [],\t    \"stopped\": [],\t    \"docker_daemon\": 0\t}",
-                "tot": "jsonata"
+                "to": "{\"running\":[],\"exited\":[],\"stopped\":[],\"docker_daemon\":0}",
+                "tot": "json"
             }
         ],
         "action": "",
@@ -5455,7 +5459,7 @@
         "to": "",
         "reg": false,
         "x": 740,
-        "y": 140,
+        "y": 180,
         "wires": [
             [
                 "990b1773880e3b7d"
@@ -5463,7 +5467,7 @@
         ]
     },
     {
-        "id": "6aaf41e1228310f8",
+        "id": "5fa4945a837775f3",
         "type": "switch",
         "z": "3ee57a9d7dc5fae7",
         "name": "",
@@ -5480,10 +5484,10 @@
         "repair": false,
         "outputs": 1,
         "x": 590,
-        "y": 140,
+        "y": 180,
         "wires": [
             [
-                "44be25bec015a64d"
+                "b6ef3e45b5156055"
             ]
         ]
     }
