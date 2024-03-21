@@ -175,7 +175,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.6.4",
+                "to": "0.6.5",
                 "tot": "str"
             },
             {
@@ -515,81 +515,6 @@
         ]
     },
     {
-        "id": "2c828dcea2260ee8",
-        "type": "inject",
-        "z": "216db6efc0df9bc0",
-        "name": "disable UI",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "0",
-        "payloadType": "num",
-        "x": 860,
-        "y": 640,
-        "wires": [
-            [
-                "c7df8a3cd446ab39"
-            ]
-        ]
-    },
-    {
-        "id": "1fe26c906804c48f",
-        "type": "inject",
-        "z": "216db6efc0df9bc0",
-        "name": "enable UI",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "1",
-        "payloadType": "num",
-        "x": 860,
-        "y": 700,
-        "wires": [
-            [
-                "c7df8a3cd446ab39"
-            ]
-        ]
-    },
-    {
-        "id": "c7df8a3cd446ab39",
-        "type": "change",
-        "z": "216db6efc0df9bc0",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "config.ui",
-                "pt": "global",
-                "to": "payload",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1070,
-        "y": 660,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "7c1fed0134e0e2b7",
         "type": "inject",
         "z": "216db6efc0df9bc0",
@@ -799,11 +724,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 500,
+        "x": 520,
         "y": 200,
         "wires": [
             [
-                "ad523d94c584c18b"
+                "b96bd464463004a6"
             ]
         ]
     },
@@ -823,7 +748,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 690,
+        "x": 870,
         "y": 200,
         "wires": [
             [
@@ -869,7 +794,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 880,
+        "x": 1060,
         "y": 200,
         "wires": [
             [
@@ -882,9 +807,32 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "216db6efc0df9bc0",
         "name": "",
-        "x": 1060,
+        "x": 1240,
         "y": 200,
         "wires": []
+    },
+    {
+        "id": "b96bd464463004a6",
+        "type": "switch",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "property": "config.netbox_url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 710,
+        "y": 200,
+        "wires": [
+            [
+                "ad523d94c584c18b"
+            ]
+        ]
     },
     {
         "id": "91e25dba31c28805",
@@ -5335,10 +5283,10 @@
         "active": true,
         "tosidebar": false,
         "console": true,
-        "tostatus": false,
+        "tostatus": true,
         "complete": "payload",
         "targetType": "msg",
-        "statusVal": "",
+        "statusVal": "payload",
         "statusType": "auto",
         "x": 780,
         "y": 460,
