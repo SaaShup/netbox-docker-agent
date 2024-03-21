@@ -158,10 +158,11 @@
         "onceDelay": "1",
         "topic": "",
         "x": 290,
-        "y": 320,
+        "y": 360,
         "wires": [
             [
-                "3f489e8a5d253765"
+                "3f489e8a5d253765",
+                "f1a67281db88cfd5"
             ]
         ]
     },
@@ -175,7 +176,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.6.5",
+                "to": "0.7.0",
                 "tot": "str"
             },
             {
@@ -209,7 +210,7 @@
         "overwriteFile": "true",
         "encoding": "none",
         "x": 640,
-        "y": 420,
+        "y": 460,
         "wires": [
             []
         ]
@@ -232,7 +233,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 270,
-        "y": 420,
+        "y": 460,
         "wires": [
             [
                 "55c03f8643b324ae"
@@ -251,7 +252,7 @@
         "template": "data = require(\"./package.json\")\n\nmodule.exports = {\n    credentialSecret: \"saashup\",\n    flowFile: \"flows.json\",\n    flowFilePretty: true,\n    adminAuth: {\n        type: \"credentials\",\n        users: [{\n            username: \"admin\",\n            password: \"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\",\n            permissions: \"*\"\n        }]\n    },\n    /*https: {\n      key: require(\"fs\").readFileSync('/data/privkey.pem'),\n      cert: require(\"fs\").readFileSync('/data/cert.pem')\n    },\n    requireHttps: true,*/\n    httpNodeAuth: {\n        user:\"admin\",pass:\"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\"\n    },\n    uiPort: process.env.PORT || 1880,\n    httpStatic: [\n        { path: '/usr/src/node-red/public', root: '/' },\n        { path: '/usr/src/node-red/public/doc.html', root: '/doc' },\n        { path: '/usr/src/node-red/public/openapi.yml', root: '/openapi' }\n    ],\n    httpAdminRoot: '/nodered',\n    diagnostics: {\n        enabled: true,\n        ui: true,\n    },\n    runtimeState: {\n        enabled: false,\n        ui: false,\n    },\n    logging: {\n        console: {\n            level: \"info\",\n            metrics: false,\n            audit: false,\n            handler: function(settings) {\n                return function(msg) {\n                    const level = {\n                        20: 'error',\n                        30: 'warn',\n                        40: 'info'\n                    };\n                    const lvl = \"level\" in msg ? msg.level : \"40\";\n\n                    delete msg.type;\n                    delete msg.z;\n                    delete msg.path;\n                    delete msg.name;\n                    delete msg.id;\n\n                    let line = `${data.name} level=${level[lvl]} version=${data.version}`;\n\n                    if (typeof msg.msg === 'object') {\n                        for (const key of Object.keys(msg.msg)) {\n                            line += ` ${key}=${JSON.stringify(msg.msg[key])}`;\n                        }\n                    } else {\n                        line += ` msg=` + JSON.stringify(msg.msg);\n                    }\n\n                    if (lvl <= 20) {\n                        return console.error(line);\n                    }\n\n                    return console.log(line);\n                }\n            }\n        }\n    },\n    exportGlobalContextKeys: false,\n    externalModules: {\n    },\n    editorTheme: {\n        tours: false,\n        palette: {\n        },\n        projects: {\n            enabled: false,\n            workflow: {\n                mode: \"manual\"\n            }\n        },\n        codeEditor: {\n            lib: \"monaco\",\n            options: {\n            }\n        },\n        markdownEditor: {\n            mermaid: {\n                enabled: true\n            }\n        },\n    },\n    functionExternalModules: true,\n    functionTimeout: 0,\n    functionGlobalContext: {\n    },\n    debugMaxLength: 1000,\n    mqttReconnectTime: 15000,\n    serialReconnectTime: 15000\n}\n",
         "output": "str",
         "x": 460,
-        "y": 420,
+        "y": 460,
         "wires": [
             [
                 "deb89a9f64f32d7e"
@@ -271,7 +272,7 @@
         "oldrc": false,
         "name": "Events",
         "x": 470,
-        "y": 520,
+        "y": 560,
         "wires": [
             [
                 "7c210c45ea82059e"
@@ -298,7 +299,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 280,
-        "y": 520,
+        "y": 560,
         "wires": [
             [
                 "b3814c680815a25b"
@@ -321,7 +322,7 @@
         "repair": false,
         "outputs": 1,
         "x": 770,
-        "y": 500,
+        "y": 540,
         "wires": [
             [
                 "8e555efa2728d8b8"
@@ -340,7 +341,7 @@
         "stream": false,
         "addname": "",
         "x": 630,
-        "y": 500,
+        "y": 540,
         "wires": [
             [
                 "06b0b14f4b337cfe"
@@ -378,7 +379,7 @@
         "repair": false,
         "outputs": 4,
         "x": 1090,
-        "y": 500,
+        "y": 540,
         "wires": [
             [],
             [],
@@ -395,7 +396,7 @@
         "action": "",
         "pretty": false,
         "x": 930,
-        "y": 500,
+        "y": 540,
         "wires": [
             [
                 "da696e53c1c7431f"
@@ -429,7 +430,7 @@
         "to": "",
         "reg": false,
         "x": 500,
-        "y": 320,
+        "y": 360,
         "wires": [
             [
                 "d216b6ee68a71932"
@@ -448,7 +449,7 @@
         "overwriteFile": "true",
         "encoding": "none",
         "x": 690,
-        "y": 320,
+        "y": 360,
         "wires": [
             []
         ]
@@ -490,7 +491,7 @@
         "sendError": false,
         "encoding": "none",
         "allProps": false,
-        "x": 470,
+        "x": 510,
         "y": 80,
         "wires": [
             [
@@ -526,7 +527,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "x": 280,
-        "y": 620,
+        "y": 660,
         "wires": [
             [
                 "f88ace255ca58e9c"
@@ -550,7 +551,7 @@
         "senderr": false,
         "headers": [],
         "x": 470,
-        "y": 620,
+        "y": 660,
         "wires": [
             [
                 "d60b525378a25078"
@@ -569,7 +570,7 @@
         "overwriteFile": "true",
         "encoding": "none",
         "x": 660,
-        "y": 620,
+        "y": 660,
         "wires": [
             []
         ]
@@ -603,7 +604,7 @@
         "encoding": "none",
         "allProps": false,
         "x": 480,
-        "y": 160,
+        "y": 200,
         "wires": [
             [
                 "47acfb0f70efb0b1"
@@ -619,7 +620,7 @@
         "action": "obj",
         "pretty": false,
         "x": 670,
-        "y": 160,
+        "y": 200,
         "wires": [
             [
                 "8238525b0e482b59"
@@ -646,7 +647,7 @@
         "to": "",
         "reg": false,
         "x": 850,
-        "y": 160,
+        "y": 200,
         "wires": [
             []
         ]
@@ -663,7 +664,7 @@
         "onceDelay": "1",
         "topic": "",
         "x": 310,
-        "y": 160,
+        "y": 200,
         "wires": [
             [
                 "2b9a4a79e583d72a"
@@ -725,7 +726,7 @@
         "to": "",
         "reg": false,
         "x": 520,
-        "y": 200,
+        "y": 240,
         "wires": [
             [
                 "b96bd464463004a6"
@@ -749,7 +750,7 @@
         "senderr": false,
         "headers": [],
         "x": 870,
-        "y": 200,
+        "y": 240,
         "wires": [
             [
                 "5583ea959d42c0a6"
@@ -768,7 +769,7 @@
         "onceDelay": "5",
         "topic": "",
         "x": 290,
-        "y": 200,
+        "y": 240,
         "wires": [
             [
                 "5a9af6e1b6c7ae7e"
@@ -795,7 +796,7 @@
         "to": "",
         "reg": false,
         "x": 1060,
-        "y": 200,
+        "y": 240,
         "wires": [
             [
                 "af0f2ce79605a0a7"
@@ -808,7 +809,7 @@
         "z": "216db6efc0df9bc0",
         "name": "",
         "x": 1240,
-        "y": 200,
+        "y": 240,
         "wires": []
     },
     {
@@ -827,10 +828,265 @@
         "repair": false,
         "outputs": 1,
         "x": 710,
-        "y": 200,
+        "y": 240,
         "wires": [
             [
                 "ad523d94c584c18b"
+            ]
+        ]
+    },
+    {
+        "id": "f5ce7eaafbee5593",
+        "type": "file",
+        "z": "216db6efc0df9bc0",
+        "name": "containers",
+        "filename": "filename",
+        "filenameType": "msg",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 710,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f1a67281db88cfd5",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "containers",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "filename",
+                "pt": "msg",
+                "to": "($env(\"DATAPATH\") ?  $env(\"DATAPATH\") : \"/data\") & \"/containers.json\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 500,
+        "y": 400,
+        "wires": [
+            [
+                "f5ce7eaafbee5593"
+            ]
+        ]
+    },
+    {
+        "id": "7f079e6b0a5c50eb",
+        "type": "file in",
+        "z": "216db6efc0df9bc0",
+        "name": "containers",
+        "filename": "filename",
+        "filenameType": "msg",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 530,
+        "y": 140,
+        "wires": [
+            [
+                "433ebb77edb69d51"
+            ]
+        ]
+    },
+    {
+        "id": "433ebb77edb69d51",
+        "type": "json",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 670,
+        "y": 140,
+        "wires": [
+            [
+                "2f1e299396da25df"
+            ]
+        ]
+    },
+    {
+        "id": "d403f8d9d1f33f7c",
+        "type": "inject",
+        "z": "216db6efc0df9bc0",
+        "name": "Set containers start",
+        "props": [
+            {
+                "p": "filename",
+                "v": "($env(\"DATAPATH\") ?  $env(\"DATAPATH\") : \"/data\") & \"/containers.json\"",
+                "vt": "jsonata"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "x": 310,
+        "y": 140,
+        "wires": [
+            [
+                "7f079e6b0a5c50eb"
+            ]
+        ]
+    },
+    {
+        "id": "2f1e299396da25df",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "containers",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 860,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "efb36ea4d9f10f34",
+        "type": "inject",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 250,
+        "y": 740,
+        "wires": [
+            [
+                "3adf32dd03b0567b"
+            ]
+        ]
+    },
+    {
+        "id": "37f270433e932420",
+        "type": "switch",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "property": "containers",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "containersnew",
+                "vt": "msg"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 590,
+        "y": 740,
+        "wires": [
+            [
+                "ba5c68abad8194ed"
+            ],
+            [
+                "a1c6fd77eb9fb667"
+            ]
+        ]
+    },
+    {
+        "id": "ba5c68abad8194ed",
+        "type": "debug",
+        "z": "216db6efc0df9bc0",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "a1c6fd77eb9fb667",
+        "type": "debug",
+        "z": "216db6efc0df9bc0",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "3adf32dd03b0567b",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "containers",
+                "pt": "msg",
+                "to": "$string($globalContext(\"containers\"))",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "containersnew",
+                "pt": "msg",
+                "to": "$string($globalContext(\"containersnew\"))",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 440,
+        "y": 740,
+        "wires": [
+            [
+                "37f270433e932420"
             ]
         ]
     },
@@ -1650,11 +1906,11 @@
         "winHide": false,
         "oldrc": false,
         "name": "version",
-        "x": 740,
+        "x": 540,
         "y": 820,
         "wires": [
             [
-                "cdf0ca856701cd23"
+                "b86430a436c7605d"
             ],
             [],
             []
@@ -1687,37 +1943,6 @@
         "x": 1650,
         "y": 200,
         "wires": []
-    },
-    {
-        "id": "a407f99fbc5717c1",
-        "type": "switch",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "property": "req.url",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "/api/containers",
-                "vt": "str"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 1330,
-        "y": 200,
-        "wires": [
-            [
-                "deec1424f8eaa469"
-            ],
-            [
-                "f4ca91fa82b0cf42"
-            ]
-        ]
     },
     {
         "id": "deec1424f8eaa469",
@@ -1756,7 +1981,7 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 420,
+        "x": 140,
         "y": 820,
         "wires": [
             [
@@ -1771,8 +1996,8 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 1330,
-        "y": 820,
+        "x": 930,
+        "y": 880,
         "wires": []
     },
     {
@@ -1808,7 +2033,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 590,
+        "x": 310,
         "y": 820,
         "wires": [
             [
@@ -2615,6 +2840,118 @@
         ]
     },
     {
+        "id": "8d796cc8c275aa76",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "set global",
+        "rules": [
+            {
+                "t": "set",
+                "p": "containers[msg.payload.Name]",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1580,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b86430a436c7605d",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "empty"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 730,
+        "y": 820,
+        "wires": [
+            [
+                "cdf0ca856701cd23"
+            ],
+            [
+                "7581057e6d016ca9"
+            ]
+        ]
+    },
+    {
+        "id": "a407f99fbc5717c1",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "property": "req.url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "/api/containers",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1330,
+        "y": 200,
+        "wires": [
+            [
+                "deec1424f8eaa469",
+                "a015e52a8d0bd4da"
+            ],
+            [
+                "f4ca91fa82b0cf42",
+                "8d796cc8c275aa76"
+            ]
+        ]
+    },
+    {
+        "id": "a015e52a8d0bd4da",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "set global",
+        "rules": [
+            {
+                "t": "set",
+                "p": "containersnew[msg.payload.Name]",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1520,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "e974d3bd502f614f",
         "type": "http in",
         "z": "3ea1a4b04d852f38",
@@ -3313,7 +3650,8 @@
         "y": 220,
         "wires": [
             [
-                "836f86ac79995686"
+                "836f86ac79995686",
+                "34150f849f0bf731"
             ]
         ]
     },
@@ -3527,6 +3865,31 @@
         "x": 1455,
         "y": 560,
         "wires": []
+    },
+    {
+        "id": "34150f849f0bf731",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "set global",
+        "rules": [
+            {
+                "t": "set",
+                "p": "containers[msg.payload.Name]",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 840,
+        "y": 260,
+        "wires": [
+            []
+        ]
     },
     {
         "id": "dcf35b57666a30f9",
