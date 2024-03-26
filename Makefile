@@ -6,7 +6,7 @@ all:
 
 .PHONY: test
 test:
-	@go test -v ./tests/specs/...
+	@go test -coverpkg ./pkg/...,./internal/... -coverprofile cover.out -v ./tests/specs/...
 
 .PHONY: clean
 clean:
