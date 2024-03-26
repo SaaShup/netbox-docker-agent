@@ -14,7 +14,7 @@ type RegistryAuth struct {
 }
 
 func (r RegistryAuth) GetIdentityToken(
-	client *client.Client,
+	client client.APIClient,
 	ctx context.Context,
 ) (string, error) {
 	res, err := client.RegistryLogin(

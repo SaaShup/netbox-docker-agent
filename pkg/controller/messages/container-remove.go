@@ -18,7 +18,7 @@ type ContainerRemoveResponse struct {
 	Err error
 }
 
-func (m *ContainerRemoveRequest) Handle(client *client.Client) error {
+func (m *ContainerRemoveRequest) Handle(client client.APIClient) error {
 	slog.InfoContext(
 		m.Context,
 		"Removing container",

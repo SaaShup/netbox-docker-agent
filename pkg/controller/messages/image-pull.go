@@ -24,7 +24,7 @@ type ImagePullResponse struct {
 	Err    error
 }
 
-func (m *ImagePullRequest) Handle(client *client.Client) error {
+func (m *ImagePullRequest) Handle(client client.APIClient) error {
 	token := ""
 	if m.RegistryAuth != nil {
 		slog.InfoContext(

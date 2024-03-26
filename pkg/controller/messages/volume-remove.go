@@ -17,7 +17,7 @@ type VolumeRemoveResponse struct {
 	Err error
 }
 
-func (m *VolumeRemoveRequest) Handle(client *client.Client) error {
+func (m *VolumeRemoveRequest) Handle(client client.APIClient) error {
 	slog.InfoContext(
 		m.Context,
 		"Removing volume",

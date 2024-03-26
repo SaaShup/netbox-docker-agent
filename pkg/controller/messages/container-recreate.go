@@ -24,7 +24,7 @@ type ContainerRecreateResponse struct {
 	Err         error
 }
 
-func (m *ContainerRecreateRequest) Handle(client *client.Client) error {
+func (m *ContainerRecreateRequest) Handle(client client.APIClient) error {
 	if m.Spec.ContainerID != "" {
 		slog.InfoContext(
 			m.Context,

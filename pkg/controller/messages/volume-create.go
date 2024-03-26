@@ -20,7 +20,7 @@ type VolumeCreateResponse struct {
 	Err        error
 }
 
-func (m *VolumeCreateRequest) Handle(client *client.Client) error {
+func (m *VolumeCreateRequest) Handle(client client.APIClient) error {
 	slog.InfoContext(
 		m.Context,
 		"Creating volume",

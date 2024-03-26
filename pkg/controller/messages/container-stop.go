@@ -18,7 +18,7 @@ type ContainerStopResponse struct {
 	Err error
 }
 
-func (m *ContainerStopRequest) Handle(client *client.Client) error {
+func (m *ContainerStopRequest) Handle(client client.APIClient) error {
 	slog.InfoContext(
 		m.Context,
 		"Stopping container",

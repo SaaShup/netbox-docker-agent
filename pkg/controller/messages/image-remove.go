@@ -18,7 +18,7 @@ type ImageRemoveResponse struct {
 	Err error
 }
 
-func (m *ImageRemoveRequest) Handle(client *client.Client) error {
+func (m *ImageRemoveRequest) Handle(client client.APIClient) error {
 	slog.InfoContext(
 		m.Context,
 		"Removing image",

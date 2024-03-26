@@ -18,7 +18,7 @@ type ContainerStartResponse struct {
 	Err error
 }
 
-func (m *ContainerStartRequest) Handle(client *client.Client) error {
+func (m *ContainerStartRequest) Handle(client client.APIClient) error {
 	slog.InfoContext(
 		m.Context,
 		"Starting container",

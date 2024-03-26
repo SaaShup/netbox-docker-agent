@@ -18,7 +18,7 @@ type ContainerRestartResponse struct {
 	Err error
 }
 
-func (m *ContainerRestartRequest) Handle(client *client.Client) error {
+func (m *ContainerRestartRequest) Handle(client client.APIClient) error {
 	slog.InfoContext(
 		m.Context,
 		"Restarting container",

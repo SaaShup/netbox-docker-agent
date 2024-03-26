@@ -19,7 +19,7 @@ type ContainersListResponse struct {
 	Err        error
 }
 
-func (m *ContainersListRequest) Handle(client *client.Client) error {
+func (m *ContainersListRequest) Handle(client client.APIClient) error {
 	slog.DebugContext(
 		m.Context,
 		"Listing containers",
