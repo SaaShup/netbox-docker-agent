@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"os"
 
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/mount"
@@ -92,29 +91,13 @@ func (m *ContainerRecreateRequest) Handle(client client.APIClient) error {
 	}
 
 	for _, bindSpec := range m.Spec.Binds {
-		err := os.MkdirAll(bindSpec.HostPath, 0755)
-		if err != nil {
-			slog.ErrorContext(
-				m.Context,
-				err.Error(),
-				"container.name", m.Spec.Name,
-				"container.image", m.Spec.Image,
-				"container.mount.type", "bind",
-				"container.mount.host_path", bindSpec.HostPath,
-				"container.mount.container_path", bindSpec.ContainerPath,
-			)
-
-			m.ReplyTo <- ContainerRecreateResponse{
-				ContainerID: "",
-				Err:         err,
-			}
-			return nil
-		}
-
 		mounts = append(mounts, mount.Mount{
 			Type:   mount.TypeBind,
 			Source: bindSpec.HostPath,
 			Target: bindSpec.ContainerPath,
+			BindOptions: &mount.BindOptions{
+				CreateMountpoint: true,
+			},
 		})
 	}
 
