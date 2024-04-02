@@ -7,8 +7,8 @@ module.exports = {
     adminAuth: {
         type: "credentials",
         users: [{
-            username: "admin",
-            password: "$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK",
+            username: process.env.ADMIN_USERNAME || "admin",
+            password: process.env.ADMIN_PASSWORD || "$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK",
             permissions: "*"
         }]
     },
@@ -18,7 +18,8 @@ module.exports = {
     },
     requireHttps: true,*/
     httpNodeAuth: {
-        user:"admin",pass:"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK"
+        user: process.env.API_USERNAME || "admin",
+        pass: process.env.API_PASSWORD || "$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK"
     },
     uiPort: process.env.PORT || 1880,
     httpStatic: [
