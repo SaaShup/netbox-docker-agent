@@ -12,6 +12,9 @@ Agent to install on the docker server to manage containers though [netbox plugin
 ## Settings
 
 go to the [nodered admin page](http://localhost:1880/nodered) to change the settings.
+you can define username and password via envionment variable:
+- USERNAME 
+- PASSWORD (NOTE: password should be a hash of node-red admin hash-pw)
 
 ## Clean
 ```
