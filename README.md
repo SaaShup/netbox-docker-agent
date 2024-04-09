@@ -18,7 +18,7 @@ You can define username and password via envionment variable:
 - ADMIN_USERNAME
 - ADMIN_PASSWORD (NOTE: password should be a hash of node-red admin hash-pw)
 
-You can disable node-red editor by setting DISABLE_EDITOR to any value.
+You can disable node-red editor by setting ENABLE_EDITOR to any value.
 
 ## Clean
 ```

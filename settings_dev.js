@@ -21,7 +21,7 @@ module.exports = {
         user:"admin",pass:"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK"
     },
     uiPort: process.env.PORT || 1880,
-    disableEditor: process.env.DISABLE_EDITOR || false,
+    disableEditor: false,
     httpStatic: [
         { path: './public', root: '/' },
         { path: './public/doc.html', root: '/doc' },
