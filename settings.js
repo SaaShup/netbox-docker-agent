@@ -22,7 +22,7 @@ module.exports = {
         pass: process.env.API_PASSWORD || "$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK"
     },
     uiPort: process.env.PORT || 1880,
-    disableEditor: process.env.DISABLE_EDITOR || true,
+    disableEditor: 'DISABLE_EDITOR' in process.env ? false : true,
     httpStatic: [
         { path: '/usr/src/node-red/public', root: '/' },
         { path: '/usr/src/node-red/public/doc.html', root: '/doc' },
