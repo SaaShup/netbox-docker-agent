@@ -175,7 +175,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.9.0",
+                "to": "0.9.1",
                 "tot": "str"
             },
             {
@@ -2453,7 +2453,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "$distinct([msg.oldpayload.(\t    $address := $count($split(RepoTags[0], '/' )) > 1 ? $contains($split(RepoTags[0], '/')[0], /([.:]|localhost)/) ? $split(RepoTags[0], '/')[0] : \"dockerhub\" : \"dockerhub\";\t    $address in $keys($$.msg.netboxregistryresult) ? continue : { \"name\" : $address, \"host\": msg.config.id, \"serveraddress\": \"https://\" & $address & \"/v2/\" }) \t])\t",
+                "to": "$distinct([msg.oldpayload.(\t    $address := $count($split(RepoTags[0], '/' )) > 1 ? $contains($split(RepoTags[0], '/')[0], /([.:]|localhost)/) ? $split(RepoTags[0], '/')[0] : \"dockerhub\" : \"dockerhub\";\t    $address in $keys($$.msg.netboxregistryresult) ? continue : { \"name\" : $address, \"host\": $$.msg.config.id, \"serveraddress\": \"https://\" & $address & \"/v2/\" }) \t])\t",
                 "tot": "jsonata"
             },
             {
