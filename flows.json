@@ -1027,13 +1027,6 @@
         "rules": [
             {
                 "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
-            {
-                "t": "set",
                 "p": "url",
                 "pt": "msg",
                 "to": "msg.config.netbox_url & '/api/plugins/docker/images/'",
@@ -2437,13 +2430,6 @@
         "rules": [
             {
                 "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
-            {
-                "t": "set",
                 "p": "netboxregistryresult",
                 "pt": "msg",
                 "to": "$merge(msg.payload.results.{         name : id     })",
@@ -2566,7 +2552,7 @@
                 "t": "set",
                 "p": "url",
                 "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/registries/'",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/registries/?host_id=' & msg.config.id",
                 "tot": "jsonata"
             },
             {
