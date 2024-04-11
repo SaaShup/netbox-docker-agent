@@ -175,7 +175,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.9.2",
+                "to": "0.9.1",
                 "tot": "str"
             },
             {
@@ -1025,13 +1025,6 @@
         "z": "a827fd671d6a227e",
         "name": "",
         "rules": [
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
             {
                 "t": "set",
                 "p": "url",
@@ -2435,13 +2428,6 @@
         "z": "a827fd671d6a227e",
         "name": "",
         "rules": [
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
             {
                 "t": "set",
                 "p": "netboxregistryresult",
