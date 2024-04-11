@@ -175,7 +175,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.9.1",
+                "to": "0.9.2",
                 "tot": "str"
             },
             {
@@ -2566,7 +2566,7 @@
                 "t": "set",
                 "p": "url",
                 "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/registries/'",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/registries/?host_id=' & msg.config.id",
                 "tot": "jsonata"
             },
             {
