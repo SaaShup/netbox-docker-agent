@@ -1,8 +1,0 @@
-- name: testa
-  hosts: all
-  connection: local
-
-  tasks:
-    - file:
-        path: test
-        state: touch
