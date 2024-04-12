@@ -1,1 +1,1 @@
-{"netbox_url":"","netbox_token":"","ui":1,"id":"","endpoint":"","flows":"0.10.0"}
+{"netbox_url":"","netbox_token":"","ui":1,"id":"","endpoint":"","flows":"0.10.1"}
