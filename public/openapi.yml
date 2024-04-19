@@ -410,7 +410,7 @@ components:
                         type: string
                     operation: 
                         type: string
-                        enum: [restart,start,stop,recreate]
+                        enum: [restart,start,stop,recreate,none]
                     image:
                         type: string
                     labels:
