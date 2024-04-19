@@ -175,7 +175,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.17.3",
+                "to": "0.17.4",
                 "tot": "str"
             },
             {
@@ -1050,7 +1050,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] ? $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] : $substring(msg.result[0].Id,7,12),\t    \"registry\": { \"id\": $lookup(msg.registryresponse, $count($split(msg.result[0].RepoTags[0], '/' )) > 1 ? $contains($split(msg.result[0].RepoTags[0], '/')[0], /([.:]|localhost)/) ? $split(msg.result[0].RepoTags[0], '/')[0] : \"dockerhub\" : \"dockerhub\")},\t    \"version\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] : $substring(msg.result[0].Id,7,12),\t    \"size\": $round(msg.result[0].Size / 1024 / 1024),\t    \"ImageID\": msg.result[0].Id,\t    \"Digest\": $split(msg.result[0].RepoDigests[0], \"@\")[-1]\t}",
+                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] ? $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] : $substring(msg.result[0].Id,7,12),\t    \"registry\": { \"id\": $lookup(msg.registryresponse, $count($split(msg.result[0].RepoTags[0], '/' )) > 1 ? $contains($split(msg.result[0].RepoTags[0], '/')[0], /([.:]|localhost)/) ? $split(msg.result[0].RepoTags[0], '/')[0] : \"dockerhub\" : \"dockerhub\")},\t    \"version\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] : msg.result[0].Id,\t    \"size\": $round(msg.result[0].Size / 1024 / 1024),\t    \"ImageID\": msg.result[0].Id,\t    \"Digest\": $split(msg.result[0].RepoDigests[0], \"@\")[-1]\t}",
                 "tot": "jsonata"
             }
         ],
@@ -3192,6 +3192,13 @@
                 "pt": "msg",
                 "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"state\": msg.result.State.State,\t    \"operation\": \"none\",\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                }\t            )\t          ],\t   \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] }\t            }\t        )\t    ],\t   \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t   \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Source,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id }\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination\t                    }\t            }\t        )\t    ]\t}]",
                 "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"container created\"\t}",
+                "tot": "jsonata"
             }
         ],
         "action": "",
@@ -3203,7 +3210,8 @@
         "y": 220,
         "wires": [
             [
-                "a363e235a4fda0b0"
+                "a363e235a4fda0b0",
+                "4b0b315e5dbc14f1"
             ]
         ]
     },
@@ -3607,6 +3615,15 @@
                 "042f9d4dafa3cf3d"
             ]
         ]
+    },
+    {
+        "id": "4b0b315e5dbc14f1",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "x": 1070,
+        "y": 260,
+        "wires": []
     },
     {
         "id": "dcf35b57666a30f9",
