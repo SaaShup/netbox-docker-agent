@@ -175,7 +175,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.17.4",
+                "to": "0.18.0",
                 "tot": "str"
             },
             {
@@ -3634,8 +3634,8 @@
         "method": "put",
         "upload": false,
         "swaggerDoc": "",
-        "x": 130,
-        "y": 140,
+        "x": 160,
+        "y": 240,
         "wires": [
             [
                 "5fb5be1ef90b0e1b",
@@ -3651,6 +3651,11 @@
         "property": "input.data.operation",
         "propertyType": "msg",
         "rules": [
+            {
+                "t": "eq",
+                "v": "none",
+                "vt": "str"
+            },
             {
                 "t": "eq",
                 "v": "restart",
@@ -3674,10 +3679,13 @@
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 4,
-        "x": 510,
-        "y": 140,
+        "outputs": 5,
+        "x": 540,
+        "y": 240,
         "wires": [
+            [
+                "7ee645765c871b60"
+            ],
             [
                 "abf33f3924f79790"
             ],
@@ -3711,8 +3719,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 690,
-        "y": 100,
+        "x": 720,
+        "y": 200,
         "wires": [
             [
                 "a1b35447c74d2e5a"
@@ -3731,8 +3739,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 890,
-        "y": 140,
+        "x": 920,
+        "y": 240,
         "wires": [
             [
                 "b61b7a952b88459b"
@@ -3748,8 +3756,8 @@
         "name": "",
         "statusCode": "202",
         "headers": {},
-        "x": 220,
-        "y": 200,
+        "x": 250,
+        "y": 300,
         "wires": []
     },
     {
@@ -3771,8 +3779,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 690,
-        "y": 140,
+        "x": 720,
+        "y": 240,
         "wires": [
             [
                 "a1b35447c74d2e5a"
@@ -3798,8 +3806,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 690,
-        "y": 180,
+        "x": 720,
+        "y": 280,
         "wires": [
             [
                 "a1b35447c74d2e5a"
@@ -3825,8 +3833,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 370,
-        "y": 140,
+        "x": 400,
+        "y": 240,
         "wires": [
             [
                 "e19033703f460489"
@@ -3850,8 +3858,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 840,
-        "y": 400,
+        "x": 870,
+        "y": 500,
         "wires": [
             [
                 "785742096b0cfd9d"
@@ -3875,8 +3883,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 370,
-        "y": 460,
+        "x": 400,
+        "y": 560,
         "wires": [
             [
                 "e785a313f36a684d",
@@ -3903,8 +3911,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 640,
-        "y": 260,
+        "x": 670,
+        "y": 360,
         "wires": [
             [
                 "c1b8315cfebedf9c"
@@ -3923,8 +3931,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 830,
-        "y": 260,
+        "x": 860,
+        "y": 360,
         "wires": [
             [
                 "98651876cfa546d5"
@@ -3959,8 +3967,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1010,
-        "y": 260,
+        "x": 1040,
+        "y": 360,
         "wires": [
             [
                 "789ecf873c6742a1"
@@ -3979,8 +3987,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 1190,
-        "y": 260,
+        "x": 1220,
+        "y": 360,
         "wires": [
             [
                 "6624c4443f54445e"
@@ -4015,8 +4023,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 390,
-        "y": 380,
+        "x": 420,
+        "y": 480,
         "wires": [
             [
                 "3442c7ad3a999fb0"
@@ -4035,8 +4043,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 630,
-        "y": 400,
+        "x": 660,
+        "y": 500,
         "wires": [
             [
                 "1bf5b7a7b84328e5"
@@ -4064,8 +4072,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1020,
-        "y": 400,
+        "x": 1050,
+        "y": 500,
         "wires": [
             [
                 "e89d15e93a51d48e"
@@ -4084,8 +4092,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 1250,
-        "y": 400,
+        "x": 1280,
+        "y": 500,
         "wires": [
             [
                 "feaf6c69125cfe65"
@@ -4113,8 +4121,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 570,
-        "y": 460,
+        "x": 600,
+        "y": 560,
         "wires": [
             [
                 "f23087336998dbdc"
@@ -4133,8 +4141,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 780,
-        "y": 460,
+        "x": 810,
+        "y": 560,
         "wires": [
             [
                 "db2200593ae3a709"
@@ -4154,8 +4162,8 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 700,
-        "y": 520,
+        "x": 730,
+        "y": 620,
         "wires": [
             [
                 "931e6c9d6c7e2d5b"
@@ -4181,8 +4189,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 510,
-        "y": 520,
+        "x": 540,
+        "y": 620,
         "wires": [
             [
                 "6eb853fc4be1bae7"
@@ -4201,8 +4209,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "connect network",
-        "x": 1090,
-        "y": 520,
+        "x": 1120,
+        "y": 620,
         "wires": [
             [],
             [],
@@ -4235,8 +4243,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 890,
-        "y": 520,
+        "x": 920,
+        "y": 620,
         "wires": [
             [
                 "632a00a8c87297bd"
@@ -4269,8 +4277,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 290,
-        "y": 600,
+        "x": 320,
+        "y": 700,
         "wires": [
             [
                 "3b574a7133f293da"
@@ -4289,8 +4297,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 480,
-        "y": 600,
+        "x": 510,
+        "y": 700,
         "wires": [
             [
                 "414b3bae361e79d7"
@@ -4308,8 +4316,8 @@
             "87af9743f25dca82",
             "ec4a365091d27e97"
         ],
-        "x": 125,
-        "y": 600,
+        "x": 155,
+        "y": 700,
         "wires": [
             [
                 "608ba0f355161cc5"
@@ -4325,8 +4333,8 @@
         "links": [
             "a12cfbe9ec7b317a"
         ],
-        "x": 1095,
-        "y": 460,
+        "x": 1125,
+        "y": 560,
         "wires": []
     },
     {
@@ -4337,8 +4345,8 @@
         "property": "payload",
         "action": "obj",
         "pretty": false,
-        "x": 640,
-        "y": 600,
+        "x": 670,
+        "y": 700,
         "wires": [
             [
                 "f7449a4ba2ed4548"
@@ -4406,8 +4414,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 810,
-        "y": 600,
+        "x": 840,
+        "y": 700,
         "wires": [
             [
                 "c469b4b880927dc6",
@@ -4431,8 +4439,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1040,
-        "y": 600,
+        "x": 1070,
+        "y": 700,
         "wires": [
             [
                 "d10c0e59950649aa"
@@ -4448,8 +4456,8 @@
         "links": [
             "a12cfbe9ec7b317a"
         ],
-        "x": 1305,
-        "y": 80,
+        "x": 1335,
+        "y": 180,
         "wires": []
     },
     {
@@ -4469,8 +4477,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 1200,
-        "y": 80,
+        "x": 1230,
+        "y": 180,
         "wires": [
             [
                 "ec4a365091d27e97"
@@ -4494,8 +4502,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 970,
-        "y": 460,
+        "x": 1000,
+        "y": 560,
         "wires": [
             [
                 "87af9743f25dca82"
@@ -4511,8 +4519,8 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1185,
-        "y": 600,
+        "x": 1215,
+        "y": 700,
         "wires": []
     },
     {
@@ -4533,8 +4541,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1050,
-        "y": 120,
+        "x": 1080,
+        "y": 220,
         "wires": [
             [
                 "29132a5a3f72e359",
@@ -4564,8 +4572,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1240,
-        "y": 120,
+        "x": 1270,
+        "y": 220,
         "wires": [
             [
                 "803bd832af0f5029"
@@ -4577,8 +4585,8 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "8e85e8c54d776ddc",
         "name": "",
-        "x": 1260,
-        "y": 180,
+        "x": 1290,
+        "y": 280,
         "wires": []
     },
     {
@@ -4586,8 +4594,8 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "8e85e8c54d776ddc",
         "name": "",
-        "x": 1010,
-        "y": 660,
+        "x": 1040,
+        "y": 760,
         "wires": []
     },
     {
@@ -4609,8 +4617,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1080,
-        "y": 180,
+        "x": 1110,
+        "y": 280,
         "wires": [
             [
                 "803bd832af0f5029"
@@ -4635,8 +4643,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1450,
-        "y": 400,
+        "x": 1480,
+        "y": 500,
         "wires": [
             [
                 "c0427424cda32752"
@@ -4651,8 +4659,8 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "8e85e8c54d776ddc",
         "name": "",
-        "x": 1380,
-        "y": 320,
+        "x": 1410,
+        "y": 420,
         "wires": []
     },
     {
@@ -4674,8 +4682,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1150,
-        "y": 320,
+        "x": 1180,
+        "y": 420,
         "wires": [
             [
                 "4bca60c1739e2a78"
@@ -4702,8 +4710,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 890,
-        "y": 340,
+        "x": 920,
+        "y": 440,
         "wires": [
             [
                 "dee6879c09c11a9e"
@@ -4721,12 +4729,68 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 750,
-        "y": 340,
+        "x": 780,
+        "y": 440,
         "wires": [
             [
                 "e173b20c711e5320"
             ]
+        ]
+    },
+    {
+        "id": "7ee645765c871b60",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t    \"RestartPolicy\": {\t        \"Name\": msg.input.data.restart_policy\t    }\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/update -H 'content-type: application/json' -d '\" & msg.payload & \"'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 720,
+        "y": 140,
+        "wires": [
+            [
+                "fd8c8c6e687c07bd"
+            ]
+        ]
+    },
+    {
+        "id": "fd8c8c6e687c07bd",
+        "type": "exec",
+        "z": "8e85e8c54d776ddc",
+        "command": "curl -s -X POST --unix-socket /var/run/docker.sock",
+        "addpay": "post",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "containers",
+        "x": 1010,
+        "y": 140,
+        "wires": [
+            [
+                "44b70c4a1a5241f9"
+            ],
+            [],
+            []
         ]
     },
     {
