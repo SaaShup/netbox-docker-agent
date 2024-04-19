@@ -175,7 +175,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.17.2",
+                "to": "0.17.3",
                 "tot": "str"
             },
             {
@@ -1050,7 +1050,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] ? $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] : $substring(msg.result[0].Id,7,12),\t    \"registry\": { \"id\": $lookup(msg.registryresponse, $count($split(msg.result[0].RepoTags[0], '/' )) > 1 ? $contains($split(msg.result[0].RepoTags[0], '/')[0], /([.:]|localhost)/) ? $split(msg.result[0].RepoTags[0], '/')[0] : \"dockerhub\" : \"dockerhub\")},\t    \"version\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] : $substring(msg.result[0].Id,7,12),\t    \"size\": $round(msg.result[0].Size / 1024 / 1024),\t    \"ImageID\": msg.result[0].Id\t}",
+                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] ? $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] : $substring(msg.result[0].Id,7,12),\t    \"registry\": { \"id\": $lookup(msg.registryresponse, $count($split(msg.result[0].RepoTags[0], '/' )) > 1 ? $contains($split(msg.result[0].RepoTags[0], '/')[0], /([.:]|localhost)/) ? $split(msg.result[0].RepoTags[0], '/')[0] : \"dockerhub\" : \"dockerhub\")},\t    \"version\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] : $substring(msg.result[0].Id,7,12),\t    \"size\": $round(msg.result[0].Size / 1024 / 1024),\t    \"ImageID\": msg.result[0].Id,\t    \"Digest\": $split(msg.result[0].RepoDigests[0], \"@\")[-1]\t}",
                 "tot": "jsonata"
             }
         ],
@@ -2934,7 +2934,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "[{\t   \"id\": msg.input.data.id,\t   \"size\": $round(msg.payload.Size / 1024 / 1024),\t   \"ImageID\":  msg.payload.Id\t}]",
+                "to": "[{\t   \"id\": msg.input.data.id,\t   \"size\": $round(msg.payload.Size / 1024 / 1024),\t   \"ImageID\":  msg.payload.Id,\t   \"Digest\": $split(msg.result[0].RepoDigests[0], \"@\")[-1]\t}]",
                 "tot": "jsonata"
             },
             {
