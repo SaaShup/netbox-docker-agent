@@ -175,7 +175,7 @@
                 "t": "set",
                 "p": "payload.flows",
                 "pt": "msg",
-                "to": "0.18.1",
+                "to": "0",
                 "tot": "str"
             },
             {
@@ -512,66 +512,6 @@
             [
                 "82a20fd37e28308d"
             ]
-        ]
-    },
-    {
-        "id": "7c1fed0134e0e2b7",
-        "type": "inject",
-        "z": "216db6efc0df9bc0",
-        "name": "upgrade",
-        "props": [],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 280,
-        "y": 620,
-        "wires": [
-            [
-                "f88ace255ca58e9c"
-            ]
-        ]
-    },
-    {
-        "id": "f88ace255ca58e9c",
-        "type": "http request",
-        "z": "216db6efc0df9bc0",
-        "name": "",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "https://raw.githubusercontent.com/SaaShup/netbox-docker-agent/main/flows.json",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 470,
-        "y": 620,
-        "wires": [
-            [
-                "d60b525378a25078"
-            ]
-        ]
-    },
-    {
-        "id": "d60b525378a25078",
-        "type": "file",
-        "z": "216db6efc0df9bc0",
-        "name": "upg flows",
-        "filename": "/usr/src/node-red/flows.json",
-        "filenameType": "str",
-        "appendNewline": true,
-        "createDir": false,
-        "overwriteFile": "true",
-        "encoding": "none",
-        "x": 660,
-        "y": 620,
-        "wires": [
-            []
         ]
     },
     {

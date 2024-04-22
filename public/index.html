@@ -265,7 +265,7 @@
           }
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="crestart_' + id + '"><div class="row m-3 align-items-center">' +
-            '<div class="col-4"><label class="col-form-label">Policy:</label></div><div class="col-8"><input class="form-control" value="no" disabled>';
+            '<div class="col-4"><label class="col-form-label">Policy:</label></div><div class="col-8"><input class="form-control" value="' + (c.HostConfig.RestartPolicy.Name || 'no') + '" disabled>';
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cruntime_' + id + '"><p>Runtime tab content ...</p></div>' +
             '<div class="tab-pane fade" id="cresources_' + id + '"><div class="row m-3 align-items-center">' +
