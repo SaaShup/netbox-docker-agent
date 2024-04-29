@@ -120,7 +120,7 @@
       </div>
       <div class="col-12" id="networks-list"></div>
     </div>
-   
+
   </main>
 
   <footer class="footer w-100 mt-auto py-2">
@@ -176,6 +176,8 @@
             '" class="nav-link px-2" data-bs-toggle="tab" id="crestart-tab_' + id + '">Restart</a></li>' +
             '<li class="nav-item"><a href="#cresources_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cresources-tab_' + id + '">Resources</a></li>' +
+            '<li class="nav-item"><a href="#cexec_' + id +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="cexec-tab_' + id + '">Exec</a></li>' +
             '</ul></div><div class="tab-content mt-4"><div class="tab-pane fade show active" id="cimages_' +
             id +
             '"><div class="row m-3 align-items-center">' +
@@ -272,10 +274,19 @@
             '<div class="col-4"><label class="col-form-label">Memory limit (MB):</label></div><div class="col-8"><input class="form-control" value="' +
             ('Memory' in c.HostConfig ? parseInt(c.HostConfig.Memory) / 1024 / 1024 : "0") + '" disabled/>';
           containers += '</div></div></div>' +
+            '<div class="tab-pane fade" id="cexec_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="col-4"><label class="col-form-label">Command:</label></div><div class="col-8">' +
+            '<div class="input-group"><input class="form-control"/><button type="button" class="btn btn-primary exec">Exec</button></div>';
+          containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="ccapabilities_' + id +
             '"><p>Capabilities tab content ...</p></div></div></div>';
         }
         $('#containers-list').html(containers);
+        $('.btn.exec').on('click', (event) => exec(
+          $(event.target).parents('.tab-pane').attr('id').split('_')[1],
+          event.target.previousElementSibling.value.split(' '),
+          $(event.target).parents('.tab-pane')[0],
+        ));
       })
     })
 
@@ -374,6 +385,26 @@
     $("#nav-home-btn").click();
 
     $("#nav-home-btn").click();
+
+    const exec = (containerId, cmd, elemOutput) => {
+      if (cmd.length > 0 && cmd[0].length > 0) {
+        $.ajax({
+          method: "PUT",
+          url: `/api/engine/containers/${containerId}/exec`,
+          data: {
+            cmd: cmd
+          },
+          dataType: "json"
+        }).done(result => {
+          $(elemOutput).children('pre').remove();
+
+          const pre = document.createElement('pre');
+          pre.classList.add('p-2', 'text-light', 'bg-dark', 'overflow-scroll', 'border', 'border-dark-subtle');
+          pre.appendChild(document.createTextNode(result.stdout));
+          elemOutput.appendChild(pre);
+        });
+      }
+    }
   </script>
 
 </body>
