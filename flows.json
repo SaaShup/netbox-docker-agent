@@ -3773,8 +3773,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 400,
-        "y": 240,
+        "x": 370,
+        "y": 160,
         "wires": [
             [
                 "e19033703f460489"
@@ -4733,6 +4733,182 @@
             [],
             []
         ]
+    },
+    {
+        "id": "305f23764ca23090",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t  \"AttachStdin\": false,\t  \"AttachStdout\": true,\t  \"AttachStderr\": false,\t  \"Tty\": false,\t  \"Cmd\": msg.payload.cmd\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"http://localhost/containers/\" & msg.req.params.id & \"/exec\" & \" -H 'content-type: application/json' -d '\" & $string(msg.payload) & \"'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 160,
+        "y": 1000,
+        "wires": [
+            [
+                "5f124776ff1a85d7"
+            ]
+        ]
+    },
+    {
+        "id": "5f124776ff1a85d7",
+        "type": "exec",
+        "z": "8e85e8c54d776ddc",
+        "command": "curl -X POST --unix-socket /var/run/docker.sock",
+        "addpay": "post",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "containers",
+        "x": 370,
+        "y": 1000,
+        "wires": [
+            [
+                "b8d355c66845317c"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "b8d355c66845317c",
+        "type": "json",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 530,
+        "y": 980,
+        "wires": [
+            [
+                "984d2a4c759834b6"
+            ]
+        ]
+    },
+    {
+        "id": "984d2a4c759834b6",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"http://localhost/exec/\" & msg.payload.Id & \"/start\" & \" -H 'content-type: application/json' -d '\" & $string(msg.payload) & \"'\"",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t  \"Detach\": false,\t  \"Tty\": false\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 720,
+        "y": 980,
+        "wires": [
+            [
+                "298e6c9fd2249160"
+            ]
+        ]
+    },
+    {
+        "id": "298e6c9fd2249160",
+        "type": "exec",
+        "z": "8e85e8c54d776ddc",
+        "command": "curl -X POST --unix-socket /var/run/docker.sock",
+        "addpay": "post",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "containers",
+        "x": 930,
+        "y": 1000,
+        "wires": [
+            [
+                "408e711657ee14ab"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "408e711657ee14ab",
+        "type": "function",
+        "z": "8e85e8c54d776ddc",
+        "name": "function 1",
+        "func": "msg.payload = {\n    stdout: msg.payload.toString('utf8')\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1120,
+        "y": 980,
+        "wires": [
+            [
+                "21201e5b02739ce2"
+            ]
+        ]
+    },
+    {
+        "id": "5528cd8d52eeef7a",
+        "type": "http in",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "url": "/api/engine/containers/:id/exec",
+        "method": "put",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 940,
+        "wires": [
+            [
+                "305f23764ca23090"
+            ]
+        ]
+    },
+    {
+        "id": "21201e5b02739ce2",
+        "type": "http response",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1270,
+        "y": 980,
+        "wires": []
     },
     {
         "id": "5401a8e6f806f2a4",
