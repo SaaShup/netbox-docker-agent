@@ -4958,18 +4958,13 @@
             },
             {
                 "t": "eq",
-                "v": "registries",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
                 "v": "endpoint",
                 "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 6,
+        "outputs": 5,
         "x": 430,
         "y": 200,
         "wires": [
@@ -4984,9 +4979,6 @@
             ],
             [
                 "149d08725d1012b8"
-            ],
-            [
-                "5f3288b6116b1183"
             ],
             [
                 "a00dd0a79554aef3"
@@ -5043,7 +5035,7 @@
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "'\\\"http://localhost/images/' & msg.payload.data.name  & ':' & msg.payload.data.version & '\\\"'",
+                "to": "'\\\"http://localhost/images/' & msg.payload.data.ImageID & '\\\"'",
                 "tot": "jsonata"
             }
         ],
@@ -5220,8 +5212,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 680,
-        "y": 460,
+        "x": 700,
+        "y": 380,
         "wires": [
             [
                 "0def7304bac10f61"
@@ -5337,32 +5329,9 @@
         "links": [
             "b0765338f9440bd2"
         ],
-        "x": 865,
-        "y": 460,
-        "wires": []
-    },
-    {
-        "id": "5f3288b6116b1183",
-        "type": "change",
-        "z": "5d9b33c2005cbce7",
-        "name": "add registry",
-        "rules": [
-            {
-                "t": "delete",
-                "p": "registries[msg.payload.data.name]",
-                "pt": "global"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 670,
+        "x": 885,
         "y": 380,
-        "wires": [
-            []
-        ]
+        "wires": []
     },
     {
         "id": "aeea89ce775f0467",
