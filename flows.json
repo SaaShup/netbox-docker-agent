@@ -4919,12 +4919,12 @@
         "method": "delete",
         "upload": false,
         "swaggerDoc": "",
-        "x": 230,
+        "x": 130,
         "y": 200,
         "wires": [
             [
-                "e4e551b6bc5dea37",
-                "de75d640c88c7f3d"
+                "de75d640c88c7f3d",
+                "4069c1f1ebd27d06"
             ]
         ]
     },
@@ -4965,7 +4965,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 5,
-        "x": 430,
+        "x": 550,
         "y": 200,
         "wires": [
             [
@@ -4992,7 +4992,7 @@
         "name": "",
         "statusCode": "202",
         "headers": {},
-        "x": 200,
+        "x": 100,
         "y": 260,
         "wires": []
     },
@@ -5008,11 +5008,11 @@
         "winHide": false,
         "oldrc": false,
         "name": "images",
-        "x": 1040,
+        "x": 1260,
         "y": 300,
         "wires": [
             [
-                "aeea89ce775f0467"
+                "8b528643b5033e68"
             ],
             [],
             []
@@ -5026,16 +5026,16 @@
         "rules": [
             {
                 "t": "set",
-                "p": "input",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
                 "p": "post",
                 "pt": "msg",
                 "to": "'\\\"http://localhost/images/' & msg.payload.data.ImageID & '\\\"'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": msg.config.id,\t   \"kind\": \"success\",\t   \"comments\": $string(msg.input.data.ImageID & \" removed\")\t}",
                 "tot": "jsonata"
             }
         ],
@@ -5044,8 +5044,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 860,
-        "y": 300,
+        "x": 1080,
+        "y": 280,
         "wires": [
             [
                 "5dcfa45fe6f717c1"
@@ -5064,7 +5064,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "networks",
-        "x": 1040,
+        "x": 1100,
         "y": 220,
         "wires": [
             [],
@@ -5091,7 +5091,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 850,
+        "x": 910,
         "y": 220,
         "wires": [
             [
@@ -5111,7 +5111,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "volumes",
-        "x": 1040,
+        "x": 1100,
         "y": 140,
         "wires": [
             [],
@@ -5138,7 +5138,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 850,
+        "x": 910,
         "y": 140,
         "wires": [
             [
@@ -5158,7 +5158,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 1050,
+        "x": 1110,
         "y": 60,
         "wires": [
             [],
@@ -5185,7 +5185,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 850,
+        "x": 910,
         "y": 60,
         "wires": [
             [
@@ -5212,7 +5212,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 700,
+        "x": 760,
         "y": 380,
         "wires": [
             [
@@ -5237,7 +5237,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 650,
+        "x": 710,
         "y": 60,
         "wires": [
             [
@@ -5262,7 +5262,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 670,
+        "x": 730,
         "y": 160,
         "wires": [
             [
@@ -5287,7 +5287,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 670,
+        "x": 730,
         "y": 220,
         "wires": [
             [
@@ -5312,11 +5312,11 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 670,
+        "x": 730,
         "y": 280,
         "wires": [
             [
-                "6c90b5bd2a6c5166"
+                "37542b13663bf4fb"
             ]
         ]
     },
@@ -5329,22 +5329,60 @@
         "links": [
             "b0765338f9440bd2"
         ],
-        "x": 885,
+        "x": 945,
         "y": 380,
         "wires": []
     },
     {
-        "id": "aeea89ce775f0467",
+        "id": "8b528643b5033e68",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "5d9b33c2005cbce7",
+        "name": "",
+        "x": 1470,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "37542b13663bf4fb",
+        "type": "switch",
+        "z": "5d9b33c2005cbce7",
+        "name": "",
+        "property": "msg.payload.data.ImageID",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 910,
+        "y": 300,
+        "wires": [
+            [
+                "6c90b5bd2a6c5166"
+            ],
+            [
+                "60067e9ca2e5d75c"
+            ]
+        ]
+    },
+    {
+        "id": "60067e9ca2e5d75c",
         "type": "change",
         "z": "5d9b33c2005cbce7",
         "name": "",
         "rules": [
             {
                 "t": "set",
-                "p": "config",
+                "p": "post",
                 "pt": "msg",
-                "to": "config",
-                "tot": "global"
+                "to": "'\\\"http://localhost/images/' & msg.input.data.name  & ':' & msg.input.data.version & '\\\"'",
+                "tot": "jsonata"
             },
             {
                 "t": "set",
@@ -5359,22 +5397,47 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1220,
-        "y": 300,
+        "x": 1080,
+        "y": 320,
         "wires": [
             [
-                "8b528643b5033e68"
+                "5dcfa45fe6f717c1"
             ]
         ]
     },
     {
-        "id": "8b528643b5033e68",
-        "type": "subflow:0455d311f0e53c09",
+        "id": "4069c1f1ebd27d06",
+        "type": "change",
         "z": "5d9b33c2005cbce7",
         "name": "",
-        "x": 1410,
-        "y": 300,
-        "wires": []
+        "rules": [
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "input",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 380,
+        "y": 200,
+        "wires": [
+            [
+                "e4e551b6bc5dea37"
+            ]
+        ]
     },
     {
         "id": "788067a8780c7835",
