@@ -1458,7 +1458,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"state\": msg.result.State.Status,\t    \"operation\": \"none\",\t    \"restart_policy\": msg.result.HostConfig.RestartPolicy.Name = \"\" ? \"no\" : msg.result.HostConfig.RestartPolicy.Name,\t    \"image\": {\t        \"host\": msg.config.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"host\": msg.config.id, \"name\": $k } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                }\t            )\t          ],\t    \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] }\t            }\t        )\t    ],\t    \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t    \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Destination,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id }\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination\t                    }\t            }\t        )\t    ]\t}",
+                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"state\": msg.result.State.Status,\t    \"operation\": \"none\",\t    \"restart_policy\": msg.result.HostConfig.RestartPolicy.Name = \"\" ? \"no\" : msg.result.HostConfig.RestartPolicy.Name,\t    \"image\": {\t        \"host\": msg.config.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"host\": msg.config.id, \"name\": $k } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                }\t            )\t          ],\t    \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] }\t            }\t        )\t    ],\t    \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t    \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Destination,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ]\t}",
                 "tot": "jsonata"
             }
         ],
@@ -3130,7 +3130,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"state\": msg.result.State.State,\t    \"operation\": \"none\",\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                }\t            )\t          ],\t   \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] }\t            }\t        )\t    ],\t   \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t   \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Source,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id }\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination\t                    }\t            }\t        )\t    ]\t}]",
+                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"state\": msg.result.State.State,\t    \"operation\": \"none\",\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                }\t            )\t          ],\t   \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] }\t            }\t        )\t    ],\t   \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t   \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Source,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ]\t}]",
                 "tot": "jsonata"
             },
             {
@@ -3948,7 +3948,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t   \"Image\": msg.input.data.image.name & \":\" & msg.input.data.image.version,\t   \"Hostname\": msg.input.data.hostname,\t   \"Env\": [\t       $map(\t           msg.input.data.env,\t           function($v, $k) {\t               $v.var_name &\"=\" & $v.value\t            }\t        )\t    ],\t   \"Labels\": $merge(\t       $map(\t           msg.input.data.labels,\t           function($v, $k) {\t               { $v.key: $v.value }\t            }\t        )\t    ),\t   \"ExposedPorts\": $merge(\t       $map(\t           msg.input.data.ports,\t           function($v, $k) {\t               {\t                   $v.private_port & \"/\" & $v.type: {} \t                } \t            }\t        )\t    ),\t    \"NetworkingConfig\": {\t       \"EndpointsConfig\": $merge(\t           $map(\t               msg.input.data.network_settings,\t               function($v, $k) {\t                   $k = 0 ? {\t                       $v.network.name : { \"NetworkID\": $v.network.NetworkID } \t                   }\t                }\t            )\t        )\t    },\t   \"HostConfig\": {\t            \"PortBindings\": $merge(\t            $map(\t                msg.input.data.ports,\t                function($v, $k){\t                    {\t                        $v.private_port & \"/\" & $v.type: $v.public_port\t                        ? [\t                            {\t                                \"HostIp\": \"\",\t                                \"HostPort\" : $string($v.public_port) \t                            }\t                        ]\t                            : [] \t                    } \t                }\t            )\t        ),\t        \"Mounts\": [\t            $map(\t                msg.input.data.mounts,\t                function($v, $k) {\t                    {\t                        \"Target\": $v.source,\t                        \"Name\": $v.volume.name,\t                        \"Type\": \"volume\",\t                        \"Destination\": $v.source,\t                        \"RW\": true,\t                        \"Mode\": \"z\",\t                        \"Source\": $v.volume.name,\t                        \"Driver\": $v.volume.driver\t                    }\t                }\t            ),\t            $map(\t                msg.input.data.binds,\t                function($v, $k) {\t                    {\t                        \"Target\": $v.container_path,\t                        \"Type\": \"bind\",\t                        \"Destination\": $v.container_path,\t                        \"RW\": true,\t                        \"Mode\": \"z\",\t                        \"Source\": $v.host_path,\t                        \"BindOptions\": {\t                           \"CreateMountpoint\": true\t                        }\t                    }\t               }\t            )\t        ],\t       \"RestartPolicy\": {\t           \"Name\": msg.input.data.restart_policy\t        }\t    }\t}\t",
+                "to": "{\t   \"Image\": msg.input.data.image.name & \":\" & msg.input.data.image.version,\t   \"Hostname\": msg.input.data.hostname,\t   \"Env\": [\t       $map(\t           msg.input.data.env,\t           function($v, $k) {\t               $v.var_name &\"=\" & $v.value\t            }\t        )\t    ],\t   \"Labels\": $merge(\t       $map(\t           msg.input.data.labels,\t           function($v, $k) {\t               { $v.key: $v.value }\t            }\t        )\t    ),\t   \"ExposedPorts\": $merge(\t       $map(\t           msg.input.data.ports,\t           function($v, $k) {\t               {\t                   $v.private_port & \"/\" & $v.type: {} \t                } \t            }\t        )\t    ),\t    \"NetworkingConfig\": {\t       \"EndpointsConfig\": $merge(\t           $map(\t               msg.input.data.network_settings,\t               function($v, $k) {\t                   $k = 0 ? {\t                       $v.network.name : { \"NetworkID\": $v.network.NetworkID } \t                   }\t                }\t            )\t        )\t    },\t   \"HostConfig\": {\t            \"PortBindings\": $merge(\t            $map(\t                msg.input.data.ports,\t                function($v, $k){\t                    {\t                        $v.private_port & \"/\" & $v.type: $v.public_port\t                        ? [\t                            {\t                                \"HostIp\": \"\",\t                                \"HostPort\" : $string($v.public_port) \t                            }\t                        ]\t                            : [] \t                    } \t                }\t            )\t        ),\t        \"Mounts\": [\t            $map(\t                msg.input.data.mounts,\t                function($v, $k) {\t                    {\t                        \"Target\": $v.source,\t                        \"Name\": $v.volume.name,\t                        \"Type\": \"volume\",\t                        \"Destination\": $v.source,\t                        \"ReadOnly\": $v.read_only,\t                        \"Source\": $v.volume.name,\t                        \"Driver\": $v.volume.driver\t                    }\t                }\t            ),\t            $map(\t                msg.input.data.binds,\t                function($v, $k) {\t                    {\t                        \"Target\": $v.container_path,\t                        \"Type\": \"bind\",\t                        \"Destination\": $v.container_path,\t                        \"ReadOnly\": $v.read_only,\t                        \"Source\": $v.host_path,\t                        \"BindOptions\": {\t                           \"CreateMountpoint\": true\t                        }\t                    }\t               }\t            )\t        ],\t       \"RestartPolicy\": {\t           \"Name\": msg.input.data.restart_policy\t        }\t    }\t}\t",
                 "tot": "jsonata"
             },
             {
@@ -4339,7 +4339,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"operation\": \"none\",\t    \"state\": msg.result.State.Status,\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                    }\t                )\t          ],\t    \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] }\t            }\t        )\t    ],\t    \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t    \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Source,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id }\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination\t                    }\t            }\t        )\t    ]\t}]",
+                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"operation\": \"none\",\t    \"state\": msg.result.State.Status,\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                    }\t                )\t          ],\t    \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] }\t            }\t        )\t    ],\t    \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t    \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Source,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ]\t}]",
                 "tot": "jsonata"
             },
             {
@@ -4482,7 +4482,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1080,
+        "x": 1060,
         "y": 220,
         "wires": [
             [
@@ -4919,12 +4919,12 @@
         "method": "delete",
         "upload": false,
         "swaggerDoc": "",
-        "x": 130,
+        "x": 230,
         "y": 200,
         "wires": [
             [
-                "de75d640c88c7f3d",
-                "4069c1f1ebd27d06"
+                "e4e551b6bc5dea37",
+                "de75d640c88c7f3d"
             ]
         ]
     },
@@ -4958,14 +4958,19 @@
             },
             {
                 "t": "eq",
+                "v": "registries",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
                 "v": "endpoint",
                 "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 5,
-        "x": 550,
+        "outputs": 6,
+        "x": 430,
         "y": 200,
         "wires": [
             [
@@ -4981,6 +4986,9 @@
                 "149d08725d1012b8"
             ],
             [
+                "5f3288b6116b1183"
+            ],
+            [
                 "a00dd0a79554aef3"
             ]
         ]
@@ -4992,7 +5000,7 @@
         "name": "",
         "statusCode": "202",
         "headers": {},
-        "x": 100,
+        "x": 200,
         "y": 260,
         "wires": []
     },
@@ -5008,11 +5016,11 @@
         "winHide": false,
         "oldrc": false,
         "name": "images",
-        "x": 1260,
+        "x": 1040,
         "y": 300,
         "wires": [
             [
-                "8b528643b5033e68"
+                "aeea89ce775f0467"
             ],
             [],
             []
@@ -5026,16 +5034,16 @@
         "rules": [
             {
                 "t": "set",
-                "p": "post",
+                "p": "input",
                 "pt": "msg",
-                "to": "'\\\"http://localhost/images/' & msg.payload.data.ImageID & '\\\"'",
-                "tot": "jsonata"
+                "to": "payload",
+                "tot": "msg"
             },
             {
                 "t": "set",
-                "p": "journal",
+                "p": "post",
                 "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": msg.config.id,\t   \"kind\": \"success\",\t   \"comments\": $string(msg.input.data.ImageID & \" removed\")\t}",
+                "to": "'\\\"http://localhost/images/' & msg.payload.data.name  & ':' & msg.payload.data.version & '\\\"'",
                 "tot": "jsonata"
             }
         ],
@@ -5044,8 +5052,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1080,
-        "y": 280,
+        "x": 860,
+        "y": 300,
         "wires": [
             [
                 "5dcfa45fe6f717c1"
@@ -5064,7 +5072,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "networks",
-        "x": 1100,
+        "x": 1040,
         "y": 220,
         "wires": [
             [],
@@ -5091,7 +5099,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 910,
+        "x": 850,
         "y": 220,
         "wires": [
             [
@@ -5111,7 +5119,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "volumes",
-        "x": 1100,
+        "x": 1040,
         "y": 140,
         "wires": [
             [],
@@ -5138,7 +5146,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 910,
+        "x": 850,
         "y": 140,
         "wires": [
             [
@@ -5158,7 +5166,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 1110,
+        "x": 1050,
         "y": 60,
         "wires": [
             [],
@@ -5185,7 +5193,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 910,
+        "x": 850,
         "y": 60,
         "wires": [
             [
@@ -5212,8 +5220,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 760,
-        "y": 380,
+        "x": 680,
+        "y": 460,
         "wires": [
             [
                 "0def7304bac10f61"
@@ -5237,7 +5245,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 710,
+        "x": 650,
         "y": 60,
         "wires": [
             [
@@ -5262,7 +5270,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 730,
+        "x": 670,
         "y": 160,
         "wires": [
             [
@@ -5287,7 +5295,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 730,
+        "x": 670,
         "y": 220,
         "wires": [
             [
@@ -5312,11 +5320,11 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 730,
+        "x": 670,
         "y": 280,
         "wires": [
             [
-                "37542b13663bf4fb"
+                "6c90b5bd2a6c5166"
             ]
         ]
     },
@@ -5329,60 +5337,45 @@
         "links": [
             "b0765338f9440bd2"
         ],
-        "x": 945,
-        "y": 380,
+        "x": 865,
+        "y": 460,
         "wires": []
     },
     {
-        "id": "8b528643b5033e68",
-        "type": "subflow:0455d311f0e53c09",
+        "id": "5f3288b6116b1183",
+        "type": "change",
         "z": "5d9b33c2005cbce7",
-        "name": "",
-        "x": 1470,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "37542b13663bf4fb",
-        "type": "switch",
-        "z": "5d9b33c2005cbce7",
-        "name": "",
-        "property": "msg.payload.data.ImageID",
-        "propertyType": "msg",
+        "name": "add registry",
         "rules": [
             {
-                "t": "nempty"
-            },
-            {
-                "t": "else"
+                "t": "delete",
+                "p": "registries[msg.payload.data.name]",
+                "pt": "global"
             }
         ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 910,
-        "y": 300,
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 670,
+        "y": 380,
         "wires": [
-            [
-                "6c90b5bd2a6c5166"
-            ],
-            [
-                "60067e9ca2e5d75c"
-            ]
+            []
         ]
     },
     {
-        "id": "60067e9ca2e5d75c",
+        "id": "aeea89ce775f0467",
         "type": "change",
         "z": "5d9b33c2005cbce7",
         "name": "",
         "rules": [
             {
                 "t": "set",
-                "p": "post",
+                "p": "config",
                 "pt": "msg",
-                "to": "'\\\"http://localhost/images/' & msg.input.data.name  & ':' & msg.input.data.version & '\\\"'",
-                "tot": "jsonata"
+                "to": "config",
+                "tot": "global"
             },
             {
                 "t": "set",
@@ -5397,47 +5390,22 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1080,
-        "y": 320,
+        "x": 1220,
+        "y": 300,
         "wires": [
             [
-                "5dcfa45fe6f717c1"
+                "8b528643b5033e68"
             ]
         ]
     },
     {
-        "id": "4069c1f1ebd27d06",
-        "type": "change",
+        "id": "8b528643b5033e68",
+        "type": "subflow:0455d311f0e53c09",
         "z": "5d9b33c2005cbce7",
         "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "input",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 380,
-        "y": 200,
-        "wires": [
-            [
-                "e4e551b6bc5dea37"
-            ]
-        ]
+        "x": 1410,
+        "y": 300,
+        "wires": []
     },
     {
         "id": "788067a8780c7835",
