@@ -1,7 +1,7 @@
 {
   "info": {
     "title": "Netbox Docker Agent",
-    "version": "0.20.0"
+    "version": "0.21.0"
   },
   "openapi": "3.0.0",
   "paths": {
