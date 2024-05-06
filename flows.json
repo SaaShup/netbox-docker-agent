@@ -32,7 +32,7 @@
         "env": []
     },
     {
-        "id": "5d9b33c2005cbce7",
+        "id": "177047e3d7a351be",
         "type": "tab",
         "label": "API - DELETE",
         "disabled": false,
@@ -3130,7 +3130,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"state\": msg.result.State.State,\t    \"operation\": \"none\",\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                }\t            )\t          ],\t   \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] }\t            }\t        )\t    ],\t   \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t   \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Source,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ]\t}]",
+                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"state\": msg.result.State.State,\t    \"operation\": \"none\",\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                }\t            )\t          ],\t   \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] }\t            }\t        )\t    ],\t   \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t   \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Destination,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ]\t}]",
                 "tot": "jsonata"
             },
             {
@@ -3812,7 +3812,7 @@
         "z": "8e85e8c54d776ddc",
         "name": "",
         "pauseType": "delay",
-        "timeout": "5",
+        "timeout": "3",
         "timeoutUnits": "seconds",
         "rate": "1",
         "nbRateUnits": "1",
@@ -4339,7 +4339,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"operation\": \"none\",\t    \"state\": msg.result.State.Status,\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                    }\t                )\t          ],\t    \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] }\t            }\t        )\t    ],\t    \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t    \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Source,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ]\t}]",
+                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"operation\": \"none\",\t    \"state\": msg.result.State.Status,\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                    }\t                )\t          ],\t    \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                { \"var_name\": $split($v,\"=\")[0], \"value\": $split($v,\"=\")[1] }\t            }\t        )\t    ],\t    \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t    \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Destination,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ]\t}]",
                 "tot": "jsonata"
             },
             {
@@ -4911,27 +4911,27 @@
         "wires": []
     },
     {
-        "id": "5401a8e6f806f2a4",
+        "id": "3eb97ccb653722a0",
         "type": "http in",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "",
         "url": "/api/engine/:type",
         "method": "delete",
         "upload": false,
         "swaggerDoc": "",
-        "x": 230,
+        "x": 130,
         "y": 200,
         "wires": [
             [
-                "e4e551b6bc5dea37",
-                "de75d640c88c7f3d"
+                "0a57e0d1d1e7b853",
+                "def493fd34b215bc"
             ]
         ]
     },
     {
-        "id": "e4e551b6bc5dea37",
+        "id": "4ee9334de2f7b337",
         "type": "switch",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "",
         "property": "req.params.type",
         "propertyType": "msg",
@@ -4958,56 +4958,48 @@
             },
             {
                 "t": "eq",
-                "v": "registries",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
                 "v": "endpoint",
                 "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 6,
-        "x": 430,
+        "outputs": 5,
+        "x": 550,
         "y": 200,
         "wires": [
             [
-                "26be5d556ed73b83"
+                "6b8914321e269ff0"
             ],
             [
-                "b355cef7173754d0"
+                "fbf3bcd631979ce5"
             ],
             [
-                "60d5d72a994b7968"
+                "ba51cee0aa2ab895"
             ],
             [
-                "149d08725d1012b8"
+                "74282c37e59eb461"
             ],
             [
-                "5f3288b6116b1183"
-            ],
-            [
-                "a00dd0a79554aef3"
+                "00a7f64ecb58e0c8"
             ]
         ]
     },
     {
-        "id": "de75d640c88c7f3d",
+        "id": "0a57e0d1d1e7b853",
         "type": "http response",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "",
         "statusCode": "202",
         "headers": {},
-        "x": 200,
+        "x": 100,
         "y": 260,
         "wires": []
     },
     {
-        "id": "5dcfa45fe6f717c1",
+        "id": "489afa20fcdf043a",
         "type": "exec",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "command": "curl -X DELETE --unix-socket /var/run/docker.sock ",
         "addpay": "post",
         "append": "",
@@ -5016,34 +5008,34 @@
         "winHide": false,
         "oldrc": false,
         "name": "images",
-        "x": 1040,
+        "x": 1260,
         "y": 300,
         "wires": [
             [
-                "aeea89ce775f0467"
+                "b87eba8ac3329ce3"
             ],
             [],
             []
         ]
     },
     {
-        "id": "6c90b5bd2a6c5166",
+        "id": "68ea572045adeda7",
         "type": "change",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "",
         "rules": [
             {
                 "t": "set",
-                "p": "input",
+                "p": "post",
                 "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
+                "to": "'\\\"http://localhost/images/' & msg.payload.data.ImageID & '\\\"'",
+                "tot": "jsonata"
             },
             {
                 "t": "set",
-                "p": "post",
+                "p": "journal",
                 "pt": "msg",
-                "to": "'\\\"http://localhost/images/' & msg.payload.data.name  & ':' & msg.payload.data.version & '\\\"'",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": msg.config.id,\t   \"kind\": \"success\",\t   \"comments\": $string(msg.input.data.ImageID & \" removed\")\t}",
                 "tot": "jsonata"
             }
         ],
@@ -5052,18 +5044,18 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 860,
-        "y": 300,
+        "x": 1080,
+        "y": 280,
         "wires": [
             [
-                "5dcfa45fe6f717c1"
+                "489afa20fcdf043a"
             ]
         ]
     },
     {
-        "id": "fcf477d8445749af",
+        "id": "f40ceca8b2fe91cf",
         "type": "exec",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "command": "curl -X DELETE --unix-socket /var/run/docker.sock ",
         "addpay": "post",
         "append": "",
@@ -5072,7 +5064,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "networks",
-        "x": 1040,
+        "x": 1100,
         "y": 220,
         "wires": [
             [],
@@ -5081,9 +5073,9 @@
         ]
     },
     {
-        "id": "5bf51c208da96dcf",
+        "id": "8f39826ad701f225",
         "type": "change",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "",
         "rules": [
             {
@@ -5099,18 +5091,18 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 850,
+        "x": 910,
         "y": 220,
         "wires": [
             [
-                "fcf477d8445749af"
+                "f40ceca8b2fe91cf"
             ]
         ]
     },
     {
-        "id": "7ab52978cc3f435c",
+        "id": "8dc73accdac55b3b",
         "type": "exec",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "command": "curl -X DELETE --unix-socket /var/run/docker.sock ",
         "addpay": "post",
         "append": "",
@@ -5119,7 +5111,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "volumes",
-        "x": 1040,
+        "x": 1100,
         "y": 140,
         "wires": [
             [],
@@ -5128,9 +5120,9 @@
         ]
     },
     {
-        "id": "2c62d4f9425726c8",
+        "id": "059ff76a638ac4d6",
         "type": "change",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "",
         "rules": [
             {
@@ -5146,18 +5138,18 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 850,
+        "x": 910,
         "y": 140,
         "wires": [
             [
-                "7ab52978cc3f435c"
+                "8dc73accdac55b3b"
             ]
         ]
     },
     {
-        "id": "75209dbf0bb3c98a",
+        "id": "551cf7f33257a9d3",
         "type": "exec",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "command": "curl -X DELETE --unix-socket /var/run/docker.sock ",
         "addpay": "post",
         "append": "",
@@ -5166,18 +5158,20 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 1050,
+        "x": 1110,
         "y": 60,
         "wires": [
-            [],
+            [
+                "c594da7accef66e1"
+            ],
             [],
             []
         ]
     },
     {
-        "id": "93252cf054d8a9fa",
+        "id": "2475512b9999fc45",
         "type": "change",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "",
         "rules": [
             {
@@ -5193,18 +5187,18 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 850,
+        "x": 910,
         "y": 60,
         "wires": [
             [
-                "75209dbf0bb3c98a"
+                "551cf7f33257a9d3"
             ]
         ]
     },
     {
-        "id": "a00dd0a79554aef3",
+        "id": "00a7f64ecb58e0c8",
         "type": "change",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "",
         "rules": [
             {
@@ -5220,18 +5214,18 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 680,
-        "y": 460,
+        "x": 760,
+        "y": 380,
         "wires": [
             [
-                "0def7304bac10f61"
+                "53c71fbaf754a819"
             ]
         ]
     },
     {
-        "id": "26be5d556ed73b83",
+        "id": "6b8914321e269ff0",
         "type": "switch",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "",
         "property": "msg.payload.data.host.state",
         "propertyType": "msg",
@@ -5245,18 +5239,18 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 650,
+        "x": 710,
         "y": 60,
         "wires": [
             [
-                "93252cf054d8a9fa"
+                "2475512b9999fc45"
             ]
         ]
     },
     {
-        "id": "b355cef7173754d0",
+        "id": "fbf3bcd631979ce5",
         "type": "switch",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "",
         "property": "msg.payload.data.host.state",
         "propertyType": "msg",
@@ -5270,18 +5264,18 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 670,
+        "x": 730,
         "y": 160,
         "wires": [
             [
-                "2c62d4f9425726c8"
+                "059ff76a638ac4d6"
             ]
         ]
     },
     {
-        "id": "60d5d72a994b7968",
+        "id": "ba51cee0aa2ab895",
         "type": "switch",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "",
         "property": "msg.payload.data.host.state",
         "propertyType": "msg",
@@ -5295,18 +5289,18 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 670,
+        "x": 730,
         "y": 220,
         "wires": [
             [
-                "5bf51c208da96dcf"
+                "8f39826ad701f225"
             ]
         ]
     },
     {
-        "id": "149d08725d1012b8",
+        "id": "74282c37e59eb461",
         "type": "switch",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "",
         "property": "msg.payload.data.host.state",
         "propertyType": "msg",
@@ -5320,62 +5314,77 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 670,
+        "x": 730,
         "y": 280,
         "wires": [
             [
-                "6c90b5bd2a6c5166"
+                "e1a1c4427886a1e6"
             ]
         ]
     },
     {
-        "id": "0def7304bac10f61",
+        "id": "53c71fbaf754a819",
         "type": "link out",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "link out 13",
         "mode": "link",
         "links": [
             "b0765338f9440bd2"
         ],
-        "x": 865,
-        "y": 460,
+        "x": 945,
+        "y": 380,
         "wires": []
     },
     {
-        "id": "5f3288b6116b1183",
-        "type": "change",
-        "z": "5d9b33c2005cbce7",
-        "name": "add registry",
+        "id": "b87eba8ac3329ce3",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "177047e3d7a351be",
+        "name": "",
+        "x": 1530,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "e1a1c4427886a1e6",
+        "type": "switch",
+        "z": "177047e3d7a351be",
+        "name": "",
+        "property": "msg.payload.data.ImageID",
+        "propertyType": "msg",
         "rules": [
             {
-                "t": "delete",
-                "p": "registries[msg.payload.data.name]",
-                "pt": "global"
+                "t": "nempty"
+            },
+            {
+                "t": "else"
             }
         ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 670,
-        "y": 380,
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 910,
+        "y": 300,
         "wires": [
-            []
+            [
+                "68ea572045adeda7"
+            ],
+            [
+                "231ec94d70cd3762"
+            ]
         ]
     },
     {
-        "id": "aeea89ce775f0467",
+        "id": "231ec94d70cd3762",
         "type": "change",
-        "z": "5d9b33c2005cbce7",
+        "z": "177047e3d7a351be",
         "name": "",
         "rules": [
             {
                 "t": "set",
-                "p": "config",
+                "p": "post",
                 "pt": "msg",
-                "to": "config",
-                "tot": "global"
+                "to": "'\\\"http://localhost/images/' & msg.input.data.name  & ':' & msg.input.data.version & '\\\"'",
+                "tot": "jsonata"
             },
             {
                 "t": "set",
@@ -5390,22 +5399,81 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1220,
-        "y": 300,
+        "x": 1080,
+        "y": 320,
         "wires": [
             [
-                "8b528643b5033e68"
+                "489afa20fcdf043a"
             ]
         ]
     },
     {
-        "id": "8b528643b5033e68",
-        "type": "subflow:0455d311f0e53c09",
-        "z": "5d9b33c2005cbce7",
+        "id": "def493fd34b215bc",
+        "type": "change",
+        "z": "177047e3d7a351be",
         "name": "",
-        "x": 1410,
-        "y": 300,
-        "wires": []
+        "rules": [
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "input",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 380,
+        "y": 200,
+        "wires": [
+            [
+                "4ee9334de2f7b337"
+            ]
+        ]
+    },
+    {
+        "id": "c594da7accef66e1",
+        "type": "change",
+        "z": "177047e3d7a351be",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "'\\\"http://localhost/images/' & msg.input.data.name  & ':' & msg.input.data.version & '\\\"'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": msg.config.id,\t   \"kind\": \"info\",\t   \"comments\": msg.input.data.name & \" removed - \" & $string(msg.payload)\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1320,
+        "y": 80,
+        "wires": [
+            [
+                "b87eba8ac3329ce3"
+            ]
+        ]
     },
     {
         "id": "788067a8780c7835",
