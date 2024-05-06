@@ -1590,7 +1590,9 @@
                 "cdf0ca856701cd23"
             ],
             [],
-            []
+            [
+                "c9f9930a51ca8c8f"
+            ]
         ]
     },
     {
@@ -2537,6 +2539,72 @@
         "wires": [
             [
                 "53d68a4462e6d77e"
+            ]
+        ]
+    },
+    {
+        "id": "c9f9930a51ca8c8f",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "property": "payload.code",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "7",
+                "vt": "num"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 890,
+        "y": 880,
+        "wires": [
+            [
+                "d3292e92a3507d2c"
+            ]
+        ]
+    },
+    {
+        "id": "d3292e92a3507d2c",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "output",
+        "rules": [
+            {
+                "t": "set",
+                "p": "output.docker",
+                "pt": "msg",
+                "to": "error",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "output",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.configured",
+                "pt": "msg",
+                "to": "socket error",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1070,
+        "y": 880,
+        "wires": [
+            [
+                "7581057e6d016ca9"
             ]
         ]
     },
