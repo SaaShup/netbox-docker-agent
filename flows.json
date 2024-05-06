@@ -5638,8 +5638,8 @@
         "syntax": "mustache",
         "template": "# HELP netbox_docker_agent_container_running Show if a container is running\n# TYPE netbox_docker_agent_container_running gauge\n{{#container.running}}\nnetbox_docker_agent_container_running{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.running}}\n\n# HELP netbox_docker_agent_container_exited Show if a container is exited\n# TYPE netbox_docker_agent_container_exited gauge\n{{#container.exited}}\nnetbox_docker_agent_container_exited{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.exited}}\n\n# HELP netbox_docker_agent_container_stopped Show if a container is exited\n# TYPE netbox_docker_agent_container_stopped gauge\n{{#container.stopped}}\nnetbox_docker_agent_container_stopped{name=\"{{{Names.0}}}\", state=\"{{{ State }}}\", status=\"{{{ Status }}}\"} 1\n{{/container.stopped}}\n\n# HELP netbox_docker_agent_docker_daemon Show if the connection to the daemon is working\n# TYPE netbox_docker_agent_docker_daemon gauge\nnetbox_docker_agent_docker_daemon{socket=\"/var/run/docker.socket\"} {{container.docker_daemon}}\n\n# HELP netbox_docker_agent_netbox_error_response Show the netbox error response counter\n# TYPE netbox_docker_agent_netbox_error_response counter\nnetbox_docker_agent_netbox_error_response{} {{global.errorCounter}}",
         "output": "str",
-        "x": 990,
-        "y": 180,
+        "x": 1010,
+        "y": 120,
         "wires": [
             [
                 "cdecbe9f078ed45b"
@@ -5709,7 +5709,7 @@
         "to": "",
         "reg": false,
         "x": 1220,
-        "y": 180,
+        "y": 120,
         "wires": [
             []
         ]
@@ -5719,23 +5719,13 @@
         "type": "inject",
         "z": "3ee57a9d7dc5fae7",
         "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
+        "props": [],
         "repeat": "5",
         "crontab": "",
         "once": true,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 190,
+        "x": 170,
         "y": 80,
         "wires": [
             [
@@ -5844,8 +5834,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 390,
-        "y": 460,
+        "x": 610,
+        "y": 420,
         "wires": [
             [
                 "efc97803a70d7841",
@@ -5866,8 +5856,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 780,
-        "y": 460,
+        "x": 1000,
+        "y": 420,
         "wires": []
     },
     {
@@ -5889,8 +5879,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 590,
-        "y": 460,
+        "x": 810,
+        "y": 420,
         "wires": [
             [
                 "32266cc01be545d1"
@@ -5914,8 +5904,8 @@
             "d10c0e59950649aa",
             "eac6a267ba1d8eaf"
         ],
-        "x": 205,
-        "y": 460,
+        "x": 425,
+        "y": 420,
         "wires": [
             [
                 "df2cb95dca98e944"
@@ -5941,8 +5931,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 600,
-        "y": 520,
+        "x": 820,
+        "y": 480,
         "wires": [
             [
                 "b68cbe91e9163c46"
@@ -5954,8 +5944,8 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "3ee57a9d7dc5fae7",
         "name": "",
-        "x": 800,
-        "y": 520,
+        "x": 1020,
+        "y": 480,
         "wires": []
     },
     {
@@ -5984,8 +5974,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 740,
-        "y": 180,
+        "x": 760,
+        "y": 120,
         "wires": [
             [
                 "990b1773880e3b7d"
@@ -6013,7 +6003,35 @@
         "y": 180,
         "wires": [
             [
-                "b6ef3e45b5156055"
+                "b6ef3e45b5156055",
+                "8e2d58df583dd160"
+            ]
+        ]
+    },
+    {
+        "id": "8e2d58df583dd160",
+        "type": "change",
+        "z": "3ee57a9d7dc5fae7",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "docker socket error",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 780,
+        "y": 200,
+        "wires": [
+            [
+                "32266cc01be545d1"
             ]
         ]
     }
