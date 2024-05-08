@@ -5006,7 +5006,7 @@
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/rename -H 'content-type: application/json'\"",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/rename?name=\" & msg.input.data.name & \" -H 'content-type: application/json'\"",
                 "tot": "jsonata"
             }
         ],

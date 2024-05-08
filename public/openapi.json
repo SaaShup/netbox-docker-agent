@@ -694,6 +694,9 @@
               "name": {
                 "type": "string"
               },
+              "ContainerID": {
+                "type": "string"
+              },
               "image": {
                 "type": "object",
                 "properties": {
@@ -722,6 +725,9 @@
                 "type": "string"
               },
               "name": {
+                "type": "string"
+              },
+              "ContainerID": {
                 "type": "string"
               },
               "operation": {

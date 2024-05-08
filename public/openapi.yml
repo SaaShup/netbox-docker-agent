@@ -419,6 +419,8 @@ components:
               type: number
             name:
               type: string
+            ContainerID:
+              type: string
             image:
               type: object
               properties:
@@ -437,6 +439,8 @@ components:
             hostname:
               type: string
             name:
+              type: string
+            ContainerID:
               type: string
             operation:
               type: string
