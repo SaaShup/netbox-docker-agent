@@ -3666,6 +3666,21 @@
             },
             {
                 "t": "eq",
+                "v": "rename",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "pause",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "unpause",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
                 "v": "restart",
                 "vt": "str"
             },
@@ -3681,18 +3696,32 @@
             },
             {
                 "t": "eq",
+                "v": "kill",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
                 "v": "recreate",
                 "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 5,
-        "x": 540,
-        "y": 240,
+        "outputs": 9,
+        "x": 450,
+        "y": 280,
         "wires": [
             [
                 "7ee645765c871b60"
+            ],
+            [
+                "07b12e9a42e0d339"
+            ],
+            [
+                "f34ee348717b159f"
+            ],
+            [
+                "61221a3271f599d0"
             ],
             [
                 "abf33f3924f79790"
@@ -3704,6 +3733,9 @@
                 "2a9bfcb142dfe007"
             ],
             [
+                "ec3fd4f5bb39373e"
+            ],
+            [
                 "789b51cd58a06f88"
             ]
         ]
@@ -3712,13 +3744,13 @@
         "id": "abf33f3924f79790",
         "type": "change",
         "z": "8e85e8c54d776ddc",
-        "name": "",
+        "name": "restart",
         "rules": [
             {
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "\"http://localhost/containers/\" & $string(msg.input.data.name) & \"/restart -H 'content-type: application/json'\"",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/restart -H 'content-type: application/json'\"",
                 "tot": "jsonata"
             }
         ],
@@ -3727,8 +3759,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 720,
-        "y": 200,
+        "x": 710,
+        "y": 240,
         "wires": [
             [
                 "a1b35447c74d2e5a"
@@ -3747,7 +3779,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 920,
+        "x": 950,
         "y": 240,
         "wires": [
             [
@@ -3772,13 +3804,13 @@
         "id": "962de83b529657a1",
         "type": "change",
         "z": "8e85e8c54d776ddc",
-        "name": "",
+        "name": "stop",
         "rules": [
             {
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "\"http://localhost/containers/\" & $string(msg.input.data.name) & \"/stop -H 'content-type: application/json'\"",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/stop -H 'content-type: application/json'\"",
                 "tot": "jsonata"
             }
         ],
@@ -3787,8 +3819,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 720,
-        "y": 240,
+        "x": 710,
+        "y": 280,
         "wires": [
             [
                 "a1b35447c74d2e5a"
@@ -3799,13 +3831,13 @@
         "id": "2a9bfcb142dfe007",
         "type": "change",
         "z": "8e85e8c54d776ddc",
-        "name": "",
+        "name": "start",
         "rules": [
             {
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "\"http://localhost/containers/\" & $string(msg.input.data.name) & \"/start -H 'content-type: application/json'\"",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/start -H 'content-type: application/json'\"",
                 "tot": "jsonata"
             }
         ],
@@ -3814,8 +3846,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 720,
-        "y": 280,
+        "x": 710,
+        "y": 320,
         "wires": [
             [
                 "a1b35447c74d2e5a"
@@ -3834,6 +3866,13 @@
                 "pt": "msg",
                 "to": "payload",
                 "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"info\",\t   \"comments\": \"operating \" & msg.input.data.operation & \": pending\"\t}",
+                "tot": "jsonata"
             }
         ],
         "action": "",
@@ -3841,11 +3880,12 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 370,
+        "x": 380,
         "y": 160,
         "wires": [
             [
-                "e19033703f460489"
+                "e19033703f460489",
+                "8a7f167c07eca98c"
             ]
         ]
     },
@@ -3866,8 +3906,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 870,
-        "y": 500,
+        "x": 880,
+        "y": 560,
         "wires": [
             [
                 "785742096b0cfd9d"
@@ -3891,8 +3931,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 400,
-        "y": 560,
+        "x": 410,
+        "y": 620,
         "wires": [
             [
                 "e785a313f36a684d",
@@ -3910,7 +3950,7 @@
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "\"http://localhost/containers/\" & $string(msg.input.data.name) & \"/stop -H 'content-type: application/json'\"",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/stop -H 'content-type: application/json'\"",
                 "tot": "jsonata"
             }
         ],
@@ -3919,8 +3959,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 670,
-        "y": 360,
+        "x": 680,
+        "y": 420,
         "wires": [
             [
                 "c1b8315cfebedf9c"
@@ -3939,12 +3979,11 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 860,
-        "y": 360,
+        "x": 870,
+        "y": 420,
         "wires": [
             [
-                "98651876cfa546d5",
-                "44b70c4a1a5241f9"
+                "98651876cfa546d5"
             ],
             [],
             []
@@ -3967,7 +4006,7 @@
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "\"http://localhost/containers/\" & $string(msg.input.data.name) & \"/rename?name=\" & msg.input.data.name & \"-\" & msg.millis & \" -H 'content-type: application/json'\"",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/rename?name=\" & msg.input.data.name & \"-\" & msg.millis & \" -H 'content-type: application/json'\"",
                 "tot": "jsonata"
             }
         ],
@@ -3976,8 +4015,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1040,
-        "y": 360,
+        "x": 1050,
+        "y": 420,
         "wires": [
             [
                 "789ecf873c6742a1"
@@ -3996,8 +4035,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 1220,
-        "y": 360,
+        "x": 1230,
+        "y": 420,
         "wires": [
             [
                 "6624c4443f54445e"
@@ -4032,8 +4071,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 420,
-        "y": 480,
+        "x": 430,
+        "y": 540,
         "wires": [
             [
                 "3442c7ad3a999fb0"
@@ -4052,8 +4091,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 660,
-        "y": 500,
+        "x": 670,
+        "y": 560,
         "wires": [
             [
                 "1bf5b7a7b84328e5"
@@ -4081,8 +4120,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1050,
-        "y": 500,
+        "x": 1060,
+        "y": 560,
         "wires": [
             [
                 "e89d15e93a51d48e"
@@ -4101,8 +4140,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 1280,
-        "y": 500,
+        "x": 1290,
+        "y": 560,
         "wires": [
             [
                 "feaf6c69125cfe65"
@@ -4130,8 +4169,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 600,
-        "y": 560,
+        "x": 610,
+        "y": 620,
         "wires": [
             [
                 "f23087336998dbdc"
@@ -4150,8 +4189,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 810,
-        "y": 560,
+        "x": 820,
+        "y": 620,
         "wires": [
             [
                 "db2200593ae3a709"
@@ -4171,8 +4210,8 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 730,
-        "y": 620,
+        "x": 740,
+        "y": 680,
         "wires": [
             [
                 "931e6c9d6c7e2d5b"
@@ -4198,8 +4237,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 540,
-        "y": 620,
+        "x": 550,
+        "y": 680,
         "wires": [
             [
                 "6eb853fc4be1bae7"
@@ -4218,8 +4257,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "connect network",
-        "x": 1120,
-        "y": 620,
+        "x": 1130,
+        "y": 680,
         "wires": [
             [],
             [],
@@ -4252,8 +4291,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 920,
-        "y": 620,
+        "x": 930,
+        "y": 680,
         "wires": [
             [
                 "632a00a8c87297bd"
@@ -4286,8 +4325,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 320,
-        "y": 700,
+        "x": 330,
+        "y": 760,
         "wires": [
             [
                 "3b574a7133f293da"
@@ -4306,8 +4345,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 510,
-        "y": 700,
+        "x": 520,
+        "y": 760,
         "wires": [
             [
                 "414b3bae361e79d7"
@@ -4325,8 +4364,8 @@
             "87af9743f25dca82",
             "ec4a365091d27e97"
         ],
-        "x": 155,
-        "y": 700,
+        "x": 165,
+        "y": 760,
         "wires": [
             [
                 "608ba0f355161cc5"
@@ -4342,8 +4381,8 @@
         "links": [
             "a12cfbe9ec7b317a"
         ],
-        "x": 1125,
-        "y": 560,
+        "x": 1135,
+        "y": 620,
         "wires": []
     },
     {
@@ -4354,8 +4393,8 @@
         "property": "payload",
         "action": "obj",
         "pretty": false,
-        "x": 670,
-        "y": 700,
+        "x": 680,
+        "y": 760,
         "wires": [
             [
                 "f7449a4ba2ed4548"
@@ -4423,8 +4462,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 840,
-        "y": 700,
+        "x": 850,
+        "y": 760,
         "wires": [
             [
                 "c469b4b880927dc6",
@@ -4448,8 +4487,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1070,
-        "y": 700,
+        "x": 1080,
+        "y": 760,
         "wires": [
             [
                 "d10c0e59950649aa"
@@ -4465,7 +4504,7 @@
         "links": [
             "a12cfbe9ec7b317a"
         ],
-        "x": 1335,
+        "x": 1395,
         "y": 180,
         "wires": []
     },
@@ -4486,7 +4525,7 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 1230,
+        "x": 1260,
         "y": 180,
         "wires": [
             [
@@ -4511,8 +4550,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 1000,
-        "y": 560,
+        "x": 1010,
+        "y": 620,
         "wires": [
             [
                 "87af9743f25dca82"
@@ -4528,8 +4567,8 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1215,
-        "y": 700,
+        "x": 1225,
+        "y": 760,
         "wires": []
     },
     {
@@ -4550,42 +4589,14 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1060,
+        "x": 1090,
         "y": 220,
         "wires": [
             [
-                "29132a5a3f72e359",
-                "44b70c4a1a5241f9"
+                "29132a5a3f72e359"
             ],
             [
                 "fd627a14335caef4"
-            ]
-        ]
-    },
-    {
-        "id": "44b70c4a1a5241f9",
-        "type": "change",
-        "z": "8e85e8c54d776ddc",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "journal",
-                "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"info\",\t   \"comments\": \"operating \" & msg.input.data.operation & \": pending\"\t}",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1270,
-        "y": 220,
-        "wires": [
-            [
-                "803bd832af0f5029"
             ]
         ]
     },
@@ -4594,8 +4605,8 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "8e85e8c54d776ddc",
         "name": "",
-        "x": 1290,
-        "y": 280,
+        "x": 1490,
+        "y": 220,
         "wires": []
     },
     {
@@ -4603,8 +4614,8 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "8e85e8c54d776ddc",
         "name": "",
-        "x": 1040,
-        "y": 760,
+        "x": 1050,
+        "y": 820,
         "wires": []
     },
     {
@@ -4626,8 +4637,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1110,
-        "y": 280,
+        "x": 1280,
+        "y": 220,
         "wires": [
             [
                 "803bd832af0f5029"
@@ -4652,8 +4663,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1480,
-        "y": 500,
+        "x": 1490,
+        "y": 560,
         "wires": [
             [
                 "c0427424cda32752"
@@ -4668,8 +4679,8 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "8e85e8c54d776ddc",
         "name": "",
-        "x": 1410,
-        "y": 420,
+        "x": 1420,
+        "y": 480,
         "wires": []
     },
     {
@@ -4691,8 +4702,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1180,
-        "y": 420,
+        "x": 1190,
+        "y": 480,
         "wires": [
             [
                 "4bca60c1739e2a78"
@@ -4719,8 +4730,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 920,
-        "y": 440,
+        "x": 930,
+        "y": 500,
         "wires": [
             [
                 "dee6879c09c11a9e"
@@ -4738,8 +4749,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 780,
-        "y": 440,
+        "x": 790,
+        "y": 500,
         "wires": [
             [
                 "e173b20c711e5320"
@@ -4750,7 +4761,7 @@
         "id": "7ee645765c871b60",
         "type": "change",
         "z": "8e85e8c54d776ddc",
-        "name": "",
+        "name": "none",
         "rules": [
             {
                 "t": "set",
@@ -4765,6 +4776,13 @@
                 "pt": "msg",
                 "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/update -H 'content-type: application/json' -d '\" & msg.payload & \"'\"",
                 "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"operation \" & msg.input.data.operation & \": ok\"\t}",
+                "tot": "jsonata"
             }
         ],
         "action": "",
@@ -4772,8 +4790,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 720,
-        "y": 140,
+        "x": 710,
+        "y": 80,
         "wires": [
             [
                 "fd8c8c6e687c07bd"
@@ -4793,10 +4811,10 @@
         "oldrc": false,
         "name": "containers",
         "x": 1010,
-        "y": 140,
+        "y": 80,
         "wires": [
             [
-                "44b70c4a1a5241f9"
+                "5e48ca8642958b39"
             ],
             [],
             []
@@ -4977,6 +4995,190 @@
         "x": 1270,
         "y": 980,
         "wires": []
+    },
+    {
+        "id": "07b12e9a42e0d339",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "rename",
+        "rules": [
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/rename -H 'content-type: application/json'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 720,
+        "y": 120,
+        "wires": [
+            [
+                "fd8c8c6e687c07bd"
+            ]
+        ]
+    },
+    {
+        "id": "f34ee348717b159f",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "pause",
+        "rules": [
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/pause -H 'content-type: application/json'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 710,
+        "y": 160,
+        "wires": [
+            [
+                "fd8c8c6e687c07bd"
+            ]
+        ]
+    },
+    {
+        "id": "61221a3271f599d0",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "unpause",
+        "rules": [
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/unpause -H 'content-type: application/json'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 720,
+        "y": 200,
+        "wires": [
+            [
+                "fd8c8c6e687c07bd"
+            ]
+        ]
+    },
+    {
+        "id": "ec3fd4f5bb39373e",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "kill",
+        "rules": [
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/kill -H 'content-type: application/json'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 710,
+        "y": 360,
+        "wires": [
+            [
+                "a1b35447c74d2e5a"
+            ]
+        ]
+    },
+    {
+        "id": "8a7f167c07eca98c",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "x": 430,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "5e48ca8642958b39",
+        "type": "switch",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "{\"Warnings\":null}",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1210,
+        "y": 60,
+        "wires": [
+            [
+                "b647369ca1895887"
+            ],
+            [
+                "f94a9a239bbfa606"
+            ]
+        ]
+    },
+    {
+        "id": "b647369ca1895887",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "x": 1530,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "f94a9a239bbfa606",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"warning\",\t   \"comments\": \"operation \" & msg.input.data.operation & \": failed\"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1420,
+        "y": 100,
+        "wires": [
+            [
+                "b647369ca1895887"
+            ]
+        ]
     },
     {
         "id": "3eb97ccb653722a0",
