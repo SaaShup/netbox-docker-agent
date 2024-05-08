@@ -4414,7 +4414,7 @@
                 "t": "set",
                 "p": "journal",
                 "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"operation \" & msg.input.data.operation & \" ok \"\t}",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"operation \" & msg.input.data.operation & \": ok\"\t}",
                 "tot": "jsonata"
             }
         ],
@@ -4572,7 +4572,7 @@
                 "t": "set",
                 "p": "journal",
                 "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"info\",\t   \"comments\": $string(msg.input.data.operation & \"-ing\")\t}",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"info\",\t   \"comments\": \"operating \" & msg.input.data.operation & \": pending\"\t}",
                 "tot": "jsonata"
             }
         ],
@@ -4617,7 +4617,7 @@
                 "t": "set",
                 "p": "journal",
                 "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"warning\",\t   \"comments\": $string(msg.input.data.operation & \" | failed\")\t}",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"warning\",\t   \"comments\": \"operation \" & msg.input.data.operation & \": failed\"\t}",
                 "tot": "jsonata"
             }
         ],
@@ -4682,7 +4682,7 @@
                 "t": "set",
                 "p": "journal",
                 "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"danger\",\t   \"comments\":  $string(msg.payload)\t}",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"danger\",\t   \"comments\":  \"operation \" & msg.input.data.operation & \": error => \" & $string(msg.payload)\t}",
                 "tot": "jsonata"
             }
         ],
