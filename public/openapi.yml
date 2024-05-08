@@ -1,6 +1,6 @@
 info:
   title: Netbox Docker Agent
-  version: 0.23.0
+  version: 0.23.1
 openapi: 3.0.0
 paths:
   /api/engine/endpoint:
