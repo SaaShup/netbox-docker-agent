@@ -146,7 +146,6 @@
       $.ajax({
         url: "/api/containers"
       }).done(function (result) {
-        console.log(result)
         $("#containers-count").html(result.length)
         let containers = '';
         for (const c of result) {
@@ -178,6 +177,8 @@
             '" class="nav-link px-2" data-bs-toggle="tab" id="cresources-tab_' + id + '">Resources</a></li>' +
             '<li class="nav-item"><a href="#cexec_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cexec-tab_' + id + '">Exec</a></li>' +
+            '<li class="nav-item"><a href="#clogs_' + id +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="clogs-tab_' + id + '" onclick="logs(\'' + id + '\');">Logs</a></li>' +
             '</ul></div><div class="tab-content mt-4"><div class="tab-pane fade show active" id="cimages_' +
             id +
             '"><div class="row m-3 align-items-center">' +
@@ -278,6 +279,9 @@
             '<div class="col-4"><label class="col-form-label">Command:</label></div><div class="col-8">' +
             '<div class="input-group"><input class="form-control"/><button type="button" class="btn btn-primary exec">Exec</button></div>';
           containers += '</div></div></div>' +
+          '<div class="tab-pane fade" id="clogs_' + id + '"><div class="row m-3 align-items-center">' +
+            '<pre id="clogs_' + id + '_pre" class="p-2 text-light bg-dark overflow-scroll border border-dark-subtle"></pre>';
+          containers += '</div></div>' +
             '<div class="tab-pane fade" id="ccapabilities_' + id +
             '"><p>Capabilities tab content ...</p></div></div></div>';
         }
@@ -384,8 +388,6 @@
     })
     $("#nav-home-btn").click();
 
-    $("#nav-home-btn").click();
-
     const exec = (containerId, cmd, elemOutput) => {
       if (cmd.length > 0 && cmd[0].length > 0) {
         $.ajax({
@@ -404,6 +406,15 @@
           elemOutput.appendChild(pre);
         });
       }
+    }
+
+    const logs = (containerId) => {
+        $.ajax({
+          method: "PUT",
+          url: `/api/engine/containers/${containerId}/logs`
+        }).done(result => {
+          $("#clogs_" + containerId + "_pre").html(result.toString().replace(/(?:\r\n|\r|\n)/g, '<br>'))
+        });
     }
   </script>
 
