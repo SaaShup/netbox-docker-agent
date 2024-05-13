@@ -5761,7 +5761,7 @@
         "z": "1d08205d001d337b",
         "name": "",
         "url": "/api/engine/containers/:id/logs",
-        "method": "put",
+        "method": "get",
         "upload": false,
         "swaggerDoc": "",
         "x": 200,
