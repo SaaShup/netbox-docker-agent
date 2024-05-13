@@ -410,7 +410,7 @@
 
     const logs = (containerId) => {
         $.ajax({
-          method: "PUT",
+          method: "GET",
           url: `/api/engine/containers/${containerId}/logs`
         }).done(result => {
           $("#clogs_" + containerId + "_pre").html(result.toString().replace(/(?:\r\n|\r|\n)/g, '<br>'))
