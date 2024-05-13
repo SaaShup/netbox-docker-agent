@@ -1,7 +1,7 @@
 {
   "info": {
     "title": "Netbox Docker Agent",
-    "version": "0.23.1"
+    "version": "0.24.0"
   },
   "openapi": "3.0.0",
   "paths": {
@@ -377,6 +377,37 @@
               "application/json; charset=utf-8": {
                 "schema": {
                   "$ref": "#/components/schemas/GetApiContainers200ResponseBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/container/{containerId}/logs": {
+      "put": {
+        "summary": "Get log from a Container",
+        "tags": [
+          "ui"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "containerId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The Container unique identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogsApiContainers200ResponseBody"
                 }
               }
             }
@@ -1641,6 +1672,10 @@
         "example": {
           "stdout": "total 10\ndrwxr-xr-x  24 user group    768 avr 30 09:57 ./\ndrwxr-xr-x  13 user group    416 mar 13 17:54 ../\ndrwxr-xr-x 435 user group  13920 fév 21 18:10 test1/\n-rw-r--r--   1 user group 250200 avr 30 09:57 file1.json\n"
         }
+      },
+      "LogsApiContainers200ResponseBody": {
+        "type": "string",
+        "example": "2024-05-10T11:42:08.530171933Z 2024/05/10 11:42:08 [notice] 28#28: start worker process 30\n2024-05-10T11:42:08.532813004Z 2024/05/10 11:42:08 [notice] 28#28: start worker process 31\n2024-05-10T11:42:08.532852562Z 2024/05/10 11:42:08 [notice] 28#28: start worker process 32\n"
       },
       "GetApiEngine202ResponseBody": {
         "type": "object"
