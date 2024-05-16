@@ -32,6 +32,7 @@ jobs:
                       docker network create netbox-docker-agent
                       docker run -d -p 1880:1880 -v /var/run/docker.sock:/var/run/docker.sock:rw -v netbox-docker-agent:/data --name netbox-docker-agent --network netbox-docker-agent saashup/netbox-docker-agent
                       docker run -v ./netbox-docker-agent:/usr/app --workdir /usr/app -e HOST=netbox-docker-agent --network netbox-docker-agent node /bin/sh -c "npm install && npx jest tests/"
+                      cat ./tests/hurl/tests.hurl | docker run --rm --network netbox-docker-agent -i ghcr.io/orange-opensource/hurl:latest --test --color -v --variable host=http://netbox-docker-agent:1880 -u admin:saashup
             - name: Stop test env
               if: ${{ always() }}
               run: |

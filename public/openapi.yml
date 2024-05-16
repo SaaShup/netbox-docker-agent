@@ -228,7 +228,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/GetApiContainers200ResponseBody'
-  /api/container/{containerId}/logs:
+  /api/engine/containers/{containerId}/logs:
     put:
       summary: Get log from a Container
       tags:
@@ -247,7 +247,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/LogsApiContainers200ResponseBody'
-  /api/container/{containerId}/exec:
+  /api/engine/containers/{containerId}/exec:
     put:
       summary: Exec a command into a Container
       tags:
@@ -306,17 +306,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/GetApiVolumes200ResponseBody'
-  /api/registries:
-    get:
-      tags:
-        - ui
-      responses:
-        '200':
-          description: 200 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiRegistries200ResponseBody'
   /metrics:
     get:
       tags:

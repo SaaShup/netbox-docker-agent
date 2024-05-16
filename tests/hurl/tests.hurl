@@ -1,9 +1,22 @@
 GET {{host}}/
 
+HTTP *
+[Asserts]
+
+status < 400
+body isString
 GET {{host}}/api/containers
 
+HTTP *
+[Asserts]
+
+status < 400
+jsonpath "$" isCollection
 GET {{host}}/api/engine/containers
 
+HTTP *
+[Asserts]
+status < 400
 POST {{host}}/api/engine/containers
 ```json
 {
@@ -19,6 +32,9 @@ POST {{host}}/api/engine/containers
 }
 ```
 
+HTTP *
+[Asserts]
+status < 400
 PUT {{host}}/api/engine/containers
 ```json
 {
@@ -50,12 +66,24 @@ PUT {{host}}/api/engine/containers
 }
 ```
 
+HTTP *
+[Asserts]
+status < 400
 DELETE {{host}}/api/engine/containers
 
+HTTP *
+[Asserts]
+status < 400
 GET {{host}}/api/engine/endpoint
 
+HTTP *
+[Asserts]
+status < 400
 GET {{host}}/api/engine/images
 
+HTTP *
+[Asserts]
+status < 400
 POST {{host}}/api/engine/images
 ```json
 {
@@ -67,10 +95,19 @@ POST {{host}}/api/engine/images
 }
 ```
 
+HTTP *
+[Asserts]
+status < 400
 DELETE {{host}}/api/engine/images
 
+HTTP *
+[Asserts]
+status < 400
 GET {{host}}/api/engine/networks
 
+HTTP *
+[Asserts]
+status < 400
 POST {{host}}/api/engine/networks
 ```json
 {
@@ -82,10 +119,19 @@ POST {{host}}/api/engine/networks
 }
 ```
 
+HTTP *
+[Asserts]
+status < 400
 DELETE {{host}}/api/engine/networks
 
+HTTP *
+[Asserts]
+status < 400
 GET {{host}}/api/engine/registries
 
+HTTP *
+[Asserts]
+status < 400
 POST {{host}}/api/engine/registries
 ```json
 {
@@ -100,10 +146,19 @@ POST {{host}}/api/engine/registries
 }
 ```
 
+HTTP *
+[Asserts]
+status < 400
 DELETE {{host}}/api/engine/registries
 
+HTTP *
+[Asserts]
+status < 400
 GET {{host}}/api/engine/volumes
 
+HTTP *
+[Asserts]
+status < 400
 POST {{host}}/api/engine/volumes
 ```json
 {
@@ -115,19 +170,62 @@ POST {{host}}/api/engine/volumes
 }
 ```
 
+HTTP *
+[Asserts]
+status < 400
 DELETE {{host}}/api/engine/volumes
 
+HTTP *
+[Asserts]
+status < 400
 GET {{host}}/api/images
 
+HTTP *
+[Asserts]
+
+status < 400
+jsonpath "$" isCollection
 GET {{host}}/api/networks
 
-GET {{host}}/api/registries
+HTTP *
+[Asserts]
 
-GET {{host}}/api/volumes
-
+status < 400
+jsonpath "$" isCollection
 GET {{host}}/doc
 
+HTTP *
+[Asserts]
+
+status < 400
+body isString
 GET {{host}}/info
 
+HTTP *
+[Asserts]
+
+status < 400
+jsonpath "$" isCollection
+jsonpath "$.configured" isString
+jsonpath "$.docker" isCollection
+jsonpath "$.docker.ApiVersion" isString
+jsonpath "$.docker.Arch" isString
+jsonpath "$.docker.BuildTime" isString
+jsonpath "$.docker.Components" isCollection
+jsonpath "$.docker.GitCommit" isString
+jsonpath "$.docker.GoVersion" isString
+jsonpath "$.docker.KernelVersion" isString
+jsonpath "$.docker.MinAPIVersion" isString
+jsonpath "$.docker.Os" isString
+jsonpath "$.docker.Platform" isCollection
+jsonpath "$.docker.Platform.Name" isString
+jsonpath "$.docker.Version" isString
+jsonpath "$.message" isString
+jsonpath "$.version" isString
 GET {{host}}/metrics
 
+HTTP *
+[Asserts]
+
+status < 400
+body isString
