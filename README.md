@@ -20,6 +20,8 @@ You can define username and password via envionment variable:
 
 You can disable node-red editor by setting ENABLE_EDITOR to any value.
 
+You can disable docker exec command by settings DISABLE_EXEC to any value.
+
 ## Clean
 ```
 docker stop netbox-docker-agent

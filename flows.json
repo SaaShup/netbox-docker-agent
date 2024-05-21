@@ -5596,6 +5596,13 @@
                 "pt": "msg",
                 "to": "\"http://localhost/containers/\" & msg.req.params.id & \"/exec\" & \" -H 'content-type: application/json' -d '\" & $string(msg.payload) & \"'\"",
                 "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "disable_exec",
+                "pt": "msg",
+                "to": "DISABLE_EXEC",
+                "tot": "env"
             }
         ],
         "action": "",
@@ -5603,11 +5610,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 160,
-        "y": 140,
+        "x": 500,
+        "y": 60,
         "wires": [
             [
-                "5f124776ff1a85d7"
+                "d1c9f9295fdca517"
             ]
         ]
     },
@@ -5623,7 +5630,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 370,
+        "x": 170,
         "y": 140,
         "wires": [
             [
@@ -5641,8 +5648,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 530,
-        "y": 120,
+        "x": 350,
+        "y": 140,
         "wires": [
             [
                 "984d2a4c759834b6"
@@ -5675,7 +5682,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 720,
+        "x": 600,
         "y": 120,
         "wires": [
             [
@@ -5695,7 +5702,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 930,
+        "x": 810,
         "y": 140,
         "wires": [
             [
@@ -5717,7 +5724,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1160,
+        "x": 1000,
         "y": 140,
         "wires": [
             [
@@ -5734,8 +5741,8 @@
         "method": "put",
         "upload": false,
         "swaggerDoc": "",
-        "x": 200,
-        "y": 80,
+        "x": 220,
+        "y": 60,
         "wires": [
             [
                 "305f23764ca23090"
@@ -5751,8 +5758,8 @@
         "headers": {
             "content-type": "text/plain; charset=utf-8"
         },
-        "x": 1290,
-        "y": 200,
+        "x": 1190,
+        "y": 120,
         "wires": []
     },
     {
@@ -5915,6 +5922,35 @@
         "wires": [
             [
                 "21201e5b02739ce2"
+            ]
+        ]
+    },
+    {
+        "id": "d1c9f9295fdca517",
+        "type": "switch",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "property": "disable_exec",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 750,
+        "y": 60,
+        "wires": [
+            [
+                "21201e5b02739ce2"
+            ],
+            [
+                "5f124776ff1a85d7"
             ]
         ]
     },
