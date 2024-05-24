@@ -5829,7 +5829,7 @@
         "y": 240,
         "wires": [
             [
-                "4162e2069a4e1e72"
+                "cd52bc77a65b9441"
             ],
             [],
             []
@@ -5847,7 +5847,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1060,
+        "x": 1140,
         "y": 220,
         "wires": [
             [
@@ -5866,7 +5866,7 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 890,
+        "x": 950,
         "y": 220,
         "wires": [
             [
@@ -5893,7 +5893,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 920,
+        "x": 1060,
         "y": 280,
         "wires": [
             [
@@ -5917,11 +5917,11 @@
         "timeout": "",
         "count": "",
         "reduceRight": false,
-        "x": 1110,
+        "x": 1230,
         "y": 280,
         "wires": [
             [
-                "21201e5b02739ce2"
+                "7da9a83d74d9daed"
             ]
         ]
     },
@@ -5951,6 +5951,75 @@
             ],
             [
                 "5f124776ff1a85d7"
+            ]
+        ]
+    },
+    {
+        "id": "cd52bc77a65b9441",
+        "type": "switch",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 830,
+        "y": 220,
+        "wires": [
+            [
+                "4162e2069a4e1e72"
+            ],
+            [
+                "86a15ae6532cb93b"
+            ]
+        ]
+    },
+    {
+        "id": "7da9a83d74d9daed",
+        "type": "http response",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "text/plain; charset=utf-8"
+        },
+        "x": 910,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "86a15ae6532cb93b",
+        "type": "change",
+        "z": "1d08205d001d337b",
+        "name": "no logs",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 860,
+        "y": 280,
+        "wires": [
+            [
+                "7da9a83d74d9daed"
             ]
         ]
     },
