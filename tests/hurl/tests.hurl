@@ -1,21 +1,18 @@
 GET {{host}}/
-
 HTTP 200
 [Asserts]
-
 body isString
-GET {{host}}/api/containers
 
+GET {{host}}/api/containers
 HTTP 200
 [Asserts]
-
 jsonpath "$" isCollection
-GET {{host}}/api/engine/containers
 
+GET {{host}}/api/engine/containers
 HTTP 202
 [Asserts]
-
 jsonpath "$" isCollection
+
 POST {{host}}/api/engine/containers
 ```json
 {
@@ -30,11 +27,29 @@ POST {{host}}/api/engine/containers
   }
 }
 ```
-
 HTTP 202
 [Asserts]
-
 jsonpath "$" isCollection
+
+GET {{host}}/api/engine/images
+HTTP 202
+[Asserts]
+jsonpath "$" isCollection
+
+POST {{host}}/api/engine/images
+```json
+{
+  "data": {
+    "id": 3.3,
+    "name": "string",
+    "version": "string"
+  }
+}
+```
+HTTP 202
+[Asserts]
+jsonpath "$" isCollection
+
 PUT {{host}}/api/engine/containers
 ```json
 {
@@ -65,56 +80,26 @@ PUT {{host}}/api/engine/containers
   }
 }
 ```
-
 HTTP 202
 [Asserts]
-
 jsonpath "$" isCollection
+
 DELETE {{host}}/api/engine/containers
-
 HTTP 202
-[Asserts]
 
-jsonpath "$" isCollection
 GET {{host}}/api/engine/endpoint
-
 HTTP 202
 [Asserts]
-
 jsonpath "$" isCollection
-GET {{host}}/api/engine/images
 
-HTTP 202
-[Asserts]
-
-jsonpath "$" isCollection
-POST {{host}}/api/engine/images
-```json
-{
-  "data": {
-    "id": 3.3,
-    "name": "string",
-    "version": "string"
-  }
-}
-```
-
-HTTP 202
-[Asserts]
-
-jsonpath "$" isCollection
 DELETE {{host}}/api/engine/images
-
 HTTP 202
-[Asserts]
 
-jsonpath "$" isCollection
 GET {{host}}/api/engine/networks
-
 HTTP 202
 [Asserts]
-
 jsonpath "$" isCollection
+
 POST {{host}}/api/engine/networks
 ```json
 {
@@ -125,23 +110,18 @@ POST {{host}}/api/engine/networks
   }
 }
 ```
-
 HTTP 202
 [Asserts]
-
 jsonpath "$" isCollection
+
 DELETE {{host}}/api/engine/networks
-
 HTTP 202
-[Asserts]
 
-jsonpath "$" isCollection
 GET {{host}}/api/engine/registries
-
 HTTP 202
 [Asserts]
-
 jsonpath "$" isCollection
+
 POST {{host}}/api/engine/registries
 ```json
 {
@@ -155,23 +135,18 @@ POST {{host}}/api/engine/registries
   }
 }
 ```
-
 HTTP 202
 [Asserts]
-
 jsonpath "$" isCollection
+
 DELETE {{host}}/api/engine/registries
-
 HTTP 202
-[Asserts]
 
-jsonpath "$" isCollection
 GET {{host}}/api/engine/volumes
-
 HTTP 202
 [Asserts]
-
 jsonpath "$" isCollection
+
 POST {{host}}/api/engine/volumes
 ```json
 {
@@ -182,44 +157,37 @@ POST {{host}}/api/engine/volumes
   }
 }
 ```
-
 HTTP 202
 [Asserts]
-
 jsonpath "$" isCollection
+
 DELETE {{host}}/api/engine/volumes
 
 GET {{host}}/api/images
-
 HTTP 200
 [Asserts]
-
 jsonpath "$" isCollection
+
 GET {{host}}/api/networks
-
 HTTP 200
 [Asserts]
-
 jsonpath "$" isCollection
-GET {{host}}/api/volumes
 
+GET {{host}}/api/volumes
 HTTP 200
 [Asserts]
-
 jsonpath "$" isCollection
 jsonpath "$.Volumes" isCollection
-jsonpath "$.Warnings" isString
+jsonpath "$.Warnings" == null
+
 GET {{host}}/doc
-
 HTTP 200
 [Asserts]
-
 body isString
-GET {{host}}/info
 
+GET {{host}}/info
 HTTP 200
 [Asserts]
-
 jsonpath "$" isCollection
 jsonpath "$.configured" isString
 jsonpath "$.docker" isCollection
@@ -237,9 +205,8 @@ jsonpath "$.docker.Platform.Name" isString
 jsonpath "$.docker.Version" isString
 jsonpath "$.message" isString
 jsonpath "$.version" isString
-GET {{host}}/metrics
 
+GET {{host}}/metrics
 HTTP 200
 [Asserts]
-
 body isString
