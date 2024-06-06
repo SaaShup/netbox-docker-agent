@@ -3979,7 +3979,7 @@
         "id": "c1b8315cfebedf9c",
         "type": "exec",
         "z": "8e85e8c54d776ddc",
-        "command": "curl -X POST --unix-socket /var/run/docker.sock",
+        "command": "curl -s -X POST --unix-socket /var/run/docker.sock",
         "addpay": "post",
         "append": "",
         "useSpawn": "false",
@@ -3991,7 +3991,7 @@
         "y": 420,
         "wires": [
             [
-                "98651876cfa546d5"
+                "af1be3389f29018e"
             ],
             [],
             []
@@ -4023,7 +4023,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1050,
+        "x": 1110,
         "y": 420,
         "wires": [
             [
@@ -4043,7 +4043,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "containers",
-        "x": 1230,
+        "x": 1290,
         "y": 420,
         "wires": [
             [
@@ -5010,6 +5010,55 @@
             [
                 "b647369ca1895887"
             ]
+        ]
+    },
+    {
+        "id": "af1be3389f29018e",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "wait",
+        "rules": [
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/wait -H 'content-type: application/json'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1050,
+        "y": 360,
+        "wires": [
+            [
+                "8e599cf2e587d848"
+            ]
+        ]
+    },
+    {
+        "id": "8e599cf2e587d848",
+        "type": "exec",
+        "z": "8e85e8c54d776ddc",
+        "command": "curl -s -X POST --unix-socket /var/run/docker.sock",
+        "addpay": "post",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "containers",
+        "x": 1250,
+        "y": 360,
+        "wires": [
+            [
+                "98651876cfa546d5"
+            ],
+            [],
+            []
         ]
     },
     {
