@@ -21,5 +21,6 @@
     "node-red": "*"
   },
   "devDependencies": {
+    "@orangeopensource/hurl": "*"
   }
 }
