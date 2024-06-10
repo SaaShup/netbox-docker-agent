@@ -57,7 +57,10 @@ DATAPATH=. npx node-red -u . -s settings_dev.js
 On the root of the project run and the project running locally:
 
 ```
-HOST=localhost PORT=1880 USER=admin PASSWORD=saashup npx jest tests/
+cat ./netbox-docker-agent/tests/hurl/tests.hurl | docker run --rm --network netbox-docker-agent -i ghcr.io/orange-opensource/hurl:latest --test --color --variable host=http://netbox-docker-agent:1880 -u admin:saashup
+
+or if you have hurl installed locally
+cat ./netbox-docker-agent/tests/hurl/tests.hurl | hurl --test --color --variable host=http://localhost:1880 -u admin:saashup
 ```
 
 Then you can browse http://localhost:1880/nodered. Default access is *admin/saashup*.
