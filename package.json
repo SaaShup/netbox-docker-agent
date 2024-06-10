@@ -4,7 +4,7 @@
   "description": "Saashup agent for netbox manager",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cat ./tests/hurl/tests.hurl | ./node_modules/@orangeopensource/hurl/dist/bin/hurl --test --color --variable host=http://localhost:1880 -u admin:saashup",
     "start": "node index.js"
   },
   "keywords": [
