@@ -158,7 +158,20 @@
             '<div class="col-sm-12 col-md-8 text-center">' + c.Id +
             '</div><div class="col-sm-12 col-md-4 text-center">' + c.Created.substring(0, 19).replace('T',
               ' ') +
-            '</div></div><div class="container">'
+            '</div></div><div class="col-12 px-5 text-end"><button class="btn btn-sm btn-success m-2 ' + (c
+              .State
+              .Running === true ? "disabled" : "") + '" onclick="startContainer(\'' + id +
+            '\');"><i class="fas fa-play"></i> Start</button>' +
+            '<button class="btn btn-sm btn-danger m-2 ' + (c.State
+              .Running === true ? "" : "disabled") + '" onclick="stopContainer(\'' + id +
+            '\');"><i class="fas fa-stop"></i> Stop</button>' +
+            '<button class="btn btn-sm btn-warning m-2 text-white disabled" onclick="stopContainer();"><i class="fas fa-pause"></i> Pause</button>' +
+            '<button class="btn btn-sm btn-warning m-2 text-white disabled" onclick="stopContainer();"><i class="fas fa-resume"></i> Unpause</button>' +
+            '<button class="btn btn-sm btn-danger m-2 disabled" onclick="killContainer();"><i class="fas fa-skull"></i> Kill</button>' +
+            '<button class="btn btn-sm btn-primary m-2 disabled" onclick="restartContainer();"><i class="fas fa-redo"></i> Restart</button>' +
+            '<button class="btn btn-sm btn-warning m-2 text-white disabled" onclick="recreateContainer();"><i class="fas fa-upload"></i> Recreate</button>' +
+            '<button class="btn btn-sm btn-danger m-2 disabled" onclick="deleteContainer();"><i class="fas fa-trash-alt"></i> Remove</button></div>' +
+            '<div class="container">'
           containers += '<ul class="nav"><li class="nav-item"><a href="#cimages_' + id +
             '" class="nav-link px-2 active" data-bs-toggle="tab" id="cimage-tab_' + id + '">Image</a></li>' +
             '<li class="nav-item"><a href="#cports_' + id +
@@ -178,7 +191,8 @@
             '<li class="nav-item"><a href="#cexec_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cexec-tab_' + id + '">Exec</a></li>' +
             '<li class="nav-item"><a href="#clogs_' + id +
-            '" class="nav-link px-2" data-bs-toggle="tab" id="clogs-tab_' + id + '" onclick="logs(\'' + id + '\');">Logs</a></li>' +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="clogs-tab_' + id + '" onclick="logs(\'' + id +
+            '\');">Logs</a></li>' +
             '</ul></div><div class="tab-content mt-4"><div class="tab-pane fade show active" id="cimages_' +
             id +
             '"><div class="row m-3 align-items-center">' +
@@ -268,7 +282,8 @@
           }
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="crestart_' + id + '"><div class="row m-3 align-items-center">' +
-            '<div class="col-4"><label class="col-form-label">Policy:</label></div><div class="col-8"><input class="form-control" value="' + (c.HostConfig.RestartPolicy.Name || 'no') + '" disabled>';
+            '<div class="col-4"><label class="col-form-label">Policy:</label></div><div class="col-8"><input class="form-control" value="' +
+            (c.HostConfig.RestartPolicy.Name || 'no') + '" disabled>';
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cruntime_' + id + '"><p>Runtime tab content ...</p></div>' +
             '<div class="tab-pane fade" id="cresources_' + id + '"><div class="row m-3 align-items-center">' +
@@ -279,8 +294,9 @@
             '<div class="col-4"><label class="col-form-label">Command:</label></div><div class="col-8">' +
             '<div class="input-group"><input class="form-control"/><button type="button" class="btn btn-primary exec">Exec</button></div>';
           containers += '</div></div></div>' +
-          '<div class="tab-pane fade" id="clogs_' + id + '"><div class="row m-3 align-items-center">' +
-            '<pre id="clogs_' + id + '_pre" class="p-2 text-light bg-dark overflow-scroll border border-dark-subtle"></pre>';
+            '<div class="tab-pane fade" id="clogs_' + id + '"><div class="row m-3 align-items-center">' +
+            '<pre id="clogs_' + id +
+            '_pre" class="p-2 text-light bg-dark overflow-scroll border border-dark-subtle"></pre>';
           containers += '</div></div>' +
             '<div class="tab-pane fade" id="ccapabilities_' + id +
             '"><p>Capabilities tab content ...</p></div></div></div>';
@@ -388,6 +404,46 @@
     })
     $("#nav-home-btn").click();
 
+    function actionContainer(id, action) {
+      $.ajax({
+        url: "/api/engine/containers",
+        method: "PUT",
+        data: {
+          "data": {
+            "operation": action,
+            "ContainerID": id
+          }
+        },
+        dataType: "json"
+      }).done(function (result) {
+        $("#nav-containers-btn").click();
+      })
+    }
+
+    function stopContainer(name) {
+      actionContainer(name, "stop")
+    }
+
+    function startContainer(name) {
+      actionContainer(name, "start")
+    }
+
+    function restartContainer(name) {
+      actionContainer(name, "restart")
+    }
+
+    function killContainer(name) {
+      actionContainer(name, "kill")
+    }
+
+    function pauseContainer(name) {
+      actionContainer(name, "pause")
+    }
+
+    function unpauseContainer(name) {
+      actionContainer(name, "unpause")
+    }
+
     const exec = (containerId, cmd, elemOutput) => {
       if (cmd.length > 0 && cmd[0].length > 0) {
         $.ajax({
@@ -409,12 +465,12 @@
     }
 
     const logs = (containerId) => {
-        $.ajax({
-          method: "GET",
-          url: `/api/engine/containers/${containerId}/logs`
-        }).done(result => {
-          $("#clogs_" + containerId + "_pre").html(result.toString().replace(/(?:\r\n|\r|\n)/g, '<br>'))
-        });
+      $.ajax({
+        method: "GET",
+        url: `/api/engine/containers/${containerId}/logs`
+      }).done(result => {
+        $("#clogs_" + containerId + "_pre").html(result.toString().replace(/(?:\r\n|\r|\n)/g, '<br>'))
+      });
     }
   </script>
 
