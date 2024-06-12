@@ -3888,12 +3888,12 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 380,
+        "x": 300,
         "y": 160,
         "wires": [
             [
                 "e19033703f460489",
-                "8a7f167c07eca98c"
+                "3fb24016d76424c3"
             ]
         ]
     },
@@ -4324,7 +4324,7 @@
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "\"http://localhost/containers/\" & $string(msg.input.data.name) & \"/json -H 'content-type: application/json'\"",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/json -H 'content-type: application/json'\"",
                 "tot": "jsonata"
             }
         ],
@@ -4345,7 +4345,7 @@
         "id": "3b574a7133f293da",
         "type": "exec",
         "z": "8e85e8c54d776ddc",
-        "command": "curl -X GET --unix-socket /var/run/docker.sock",
+        "command": "curl -s -X GET --unix-socket /var/run/docker.sock",
         "addpay": "post",
         "append": "",
         "useSpawn": "false",
@@ -4474,8 +4474,7 @@
         "y": 760,
         "wires": [
             [
-                "c469b4b880927dc6",
-                "f97a2faad0f4275a"
+                "2386f957b4f1a646"
             ]
         ]
     },
@@ -4495,7 +4494,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1080,
+        "x": 1130,
         "y": 760,
         "wires": [
             [
@@ -4575,7 +4574,7 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1225,
+        "x": 1265,
         "y": 760,
         "wires": []
     },
@@ -4604,7 +4603,7 @@
                 "29132a5a3f72e359"
             ],
             [
-                "fd627a14335caef4"
+                "2ca8bc5af87333b2"
             ]
         ]
     },
@@ -4613,7 +4612,7 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "8e85e8c54d776ddc",
         "name": "",
-        "x": 1530,
+        "x": 1630,
         "y": 260,
         "wires": []
     },
@@ -4622,7 +4621,7 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "8e85e8c54d776ddc",
         "name": "",
-        "x": 1050,
+        "x": 1130,
         "y": 820,
         "wires": []
     },
@@ -4645,7 +4644,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1320,
+        "x": 1440,
         "y": 260,
         "wires": [
             [
@@ -4942,7 +4941,7 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "8e85e8c54d776ddc",
         "name": "",
-        "x": 430,
+        "x": 510,
         "y": 100,
         "wires": []
     },
@@ -5083,6 +5082,88 @@
         ]
     },
     {
+        "id": "2386f957b4f1a646",
+        "type": "switch",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "property": "config.id",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 930,
+        "y": 820,
+        "wires": [
+            [
+                "f97a2faad0f4275a",
+                "c469b4b880927dc6"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "2ca8bc5af87333b2",
+        "type": "switch",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "property": "config.id",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1270,
+        "y": 260,
+        "wires": [
+            [
+                "fd627a14335caef4"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "3fb24016d76424c3",
+        "type": "switch",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "property": "config.id",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 350,
+        "y": 100,
+        "wires": [
+            [
+                "8a7f167c07eca98c"
+            ],
+            []
+        ]
+    },
+    {
         "id": "3eb97ccb653722a0",
         "type": "http in",
         "z": "177047e3d7a351be",
@@ -5172,7 +5253,7 @@
         "id": "489afa20fcdf043a",
         "type": "exec",
         "z": "177047e3d7a351be",
-        "command": "curl -X DELETE --unix-socket /var/run/docker.sock ",
+        "command": "curl -s -X DELETE --unix-socket /var/run/docker.sock ",
         "addpay": "post",
         "append": "",
         "useSpawn": "false",
@@ -5228,7 +5309,7 @@
         "id": "f40ceca8b2fe91cf",
         "type": "exec",
         "z": "177047e3d7a351be",
-        "command": "curl -X DELETE --unix-socket /var/run/docker.sock ",
+        "command": "curl -s -X DELETE --unix-socket /var/run/docker.sock ",
         "addpay": "post",
         "append": "",
         "useSpawn": "false",
@@ -5275,7 +5356,7 @@
         "id": "8dc73accdac55b3b",
         "type": "exec",
         "z": "177047e3d7a351be",
-        "command": "curl -X DELETE --unix-socket /var/run/docker.sock ",
+        "command": "curl -s -X DELETE --unix-socket /var/run/docker.sock ",
         "addpay": "post",
         "append": "",
         "useSpawn": "false",
@@ -5322,7 +5403,7 @@
         "id": "551cf7f33257a9d3",
         "type": "exec",
         "z": "177047e3d7a351be",
-        "command": "curl -X DELETE --unix-socket /var/run/docker.sock ",
+        "command": "curl -s -X DELETE --unix-socket /var/run/docker.sock ",
         "addpay": "post",
         "append": "",
         "useSpawn": "false",
@@ -5334,7 +5415,7 @@
         "y": 60,
         "wires": [
             [
-                "c594da7accef66e1"
+                "47d05b450f712ec1"
             ],
             [],
             []
@@ -5350,7 +5431,7 @@
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "'\\\"http://localhost/containers/' & msg.payload.data.name  & '\\\"'",
+                "to": "'\\\"http://localhost/containers/' & msg.payload.data.ContainerID  & '\\\"'",
                 "tot": "jsonata"
             }
         ],
@@ -5621,13 +5702,6 @@
         "rules": [
             {
                 "t": "set",
-                "p": "post",
-                "pt": "msg",
-                "to": "'\\\"http://localhost/images/' & msg.input.data.name  & ':' & msg.input.data.version & '\\\"'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
                 "p": "journal",
                 "pt": "msg",
                 "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": msg.config.id,\t   \"kind\": \"info\",\t   \"comments\": msg.input.data.name & \" removed - \" & $string(msg.payload)\t}",
@@ -5639,12 +5713,39 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1320,
+        "x": 1420,
         "y": 80,
         "wires": [
             [
                 "b87eba8ac3329ce3"
             ]
+        ]
+    },
+    {
+        "id": "47d05b450f712ec1",
+        "type": "switch",
+        "z": "177047e3d7a351be",
+        "name": "",
+        "property": "config.id",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1250,
+        "y": 60,
+        "wires": [
+            [
+                "c594da7accef66e1"
+            ],
+            []
         ]
     },
     {

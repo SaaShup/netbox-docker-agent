@@ -48,6 +48,20 @@
     }
   </style>
 
+  <div class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" id="modalNotification">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header text-primary">
+          <h5 class="modal-title" id="modalNotificationTitle"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <p id="modalNotificationContent"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <nav class="navbar navbar-expand-lg" id="navbar">
     <div class="container-fluid">
       <a class="navbar-brand" style="padding: 0 0 0 0;" href="https://saashup.com"><img
@@ -155,22 +169,32 @@
             c.Name.replace('/', '') + '</div><div class="col-4"><span class="badge rounded-pill bg-' + (c.State
               .Running === true ? "success" : "danger") + '">' + c.State.Status + '</span></div>' +
             '</div></div><div class="card-body row">' +
-            '<div class="col-sm-12 col-md-8 text-center">' + c.Id +
-            '</div><div class="col-sm-12 col-md-4 text-center">' + c.Created.substring(0, 19).replace('T',
+            '<div class="col-sm-12 col-md-6 text-center">' + c.Id +
+            '</div><div class="col-sm-6 col-md-3 text-center">' + c.Created.substring(0, 19).replace('T',
+              ' ') +
+            '</div><div class="col-sm-6 col-md-3 text-center">' + c.State.StartedAt.substring(0, 19).replace('T',
               ' ') +
             '</div></div><div class="col-12 px-5 text-end"><button class="btn btn-sm btn-success m-2 ' + (c
-              .State
-              .Running === true ? "disabled" : "") + '" onclick="startContainer(\'' + id +
+              .State.Running === false || c.State.Paused === true ? "" : "disabled") + '" onclick="startContainer(\'' + id +
             '\');"><i class="fas fa-play"></i> Start</button>' +
             '<button class="btn btn-sm btn-danger m-2 ' + (c.State
               .Running === true ? "" : "disabled") + '" onclick="stopContainer(\'' + id +
             '\');"><i class="fas fa-stop"></i> Stop</button>' +
-            '<button class="btn btn-sm btn-warning m-2 text-white disabled" onclick="stopContainer();"><i class="fas fa-pause"></i> Pause</button>' +
-            '<button class="btn btn-sm btn-warning m-2 text-white disabled" onclick="stopContainer();"><i class="fas fa-resume"></i> Unpause</button>' +
-            '<button class="btn btn-sm btn-danger m-2 disabled" onclick="killContainer();"><i class="fas fa-skull"></i> Kill</button>' +
-            '<button class="btn btn-sm btn-primary m-2 disabled" onclick="restartContainer();"><i class="fas fa-redo"></i> Restart</button>' +
+            '<button class="btn btn-sm btn-info m-2 text-white ' + (c.State
+              .Running === true && c.State.Paused === false ? "" : "disabled") + '" onclick="pauseContainer(\'' + id +
+            '\');"><i class="fas fa-pause"></i> Pause</button>' +
+            '<button class="btn btn-sm btn-info m-2 text-white ' + (c.State
+              .Paused === true ? "" : "disabled") + '" onclick="unpauseContainer(\'' + id +
+            '\');"><i class="fas fa-play"></i> Unpause</button>' +
+            '<button class="btn btn-sm btn-danger m-2 ' + (c
+              .State.Running === true ? "" : "disabled") + '" onclick="killContainer(\'' + id +
+            '\');"><i class="fas fa-skull"></i> Kill</button>' +
+            '<button class="btn btn-sm btn-primary m-2" onclick="restartContainer(\'' + id +
+            '\');"><i class="fas fa-redo"></i> Restart</button>' +
             '<button class="btn btn-sm btn-warning m-2 text-white disabled" onclick="recreateContainer();"><i class="fas fa-upload"></i> Recreate</button>' +
-            '<button class="btn btn-sm btn-danger m-2 disabled" onclick="deleteContainer();"><i class="fas fa-trash-alt"></i> Remove</button></div>' +
+            '<button class="btn btn-sm btn-danger m-2 ' + (c.State
+              .Running === true ? "disabled" : "") + '" onclick="deleteContainer(\'' + id +
+            '\');"><i class="fas fa-trash-alt"></i> Remove</button></div>' +
             '<div class="container">'
           containers += '<ul class="nav"><li class="nav-item"><a href="#cimages_' + id +
             '" class="nav-link px-2 active" data-bs-toggle="tab" id="cimage-tab_' + id + '">Image</a></li>' +
@@ -292,7 +316,9 @@
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cexec_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Command:</label></div><div class="col-8">' +
-            '<div class="input-group"><input class="form-control"/><button type="button" class="btn btn-primary exec">Exec</button></div>';
+            '<div class="input-group"><input class="form-control" ' + (c.State.Running === true ? "" :
+              "disabled") + '/><button type="button" class="btn btn-primary exec" ' +
+            (c.State.Running === true ? "" : "disabled") + '>Exec</button></div>';
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="clogs_' + id + '"><div class="row m-3 align-items-center">' +
             '<pre id="clogs_' + id +
@@ -405,6 +431,9 @@
     $("#nav-home-btn").click();
 
     function actionContainer(id, action) {
+      $("#modalNotificationTitle").html("operation " + action);
+      $("#modalNotificationContent").html('Pls wait ! ' + action + ' is ongoing.... ');
+      $("#modalNotification").modal("show");
       $.ajax({
         url: "/api/engine/containers",
         method: "PUT",
@@ -416,7 +445,34 @@
         },
         dataType: "json"
       }).done(function (result) {
-        $("#nav-containers-btn").click();
+        setTimeout(function () {
+          $("#modalNotification").modal("hide");
+          $("#nav-containers-btn").click();
+        }, 5000)
+      })
+    }
+
+    function deleteContainer(id) {
+      $("#modalNotificationTitle").html("operation delete");
+      $("#modalNotificationContent").html('Pls wait ! delete is ongoing.... ');
+      $("#modalNotification").modal("show");
+      $.ajax({
+        url: "/api/engine/containers",
+        method: "DELETE",
+        data: {
+          "data": {
+            "host": {
+              "state": "stopped"
+            },
+            "ContainerID": id
+          }
+        },
+        dataType: "json"
+      }).done(function (result) {
+        setTimeout(function () {
+          $("#modalNotification").modal("hide");
+          $("#nav-containers-btn").click();
+        }, 5000)
       })
     }
 
