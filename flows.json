@@ -4117,9 +4117,16 @@
         "rules": [
             {
                 "t": "set",
+                "p": "newinput",
+                "pt": "msg",
+                "to": "payload.Id",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "\"http://localhost/containers/\" & $string(msg.input.data.name) & \"/start -H 'content-type: application/json'\"",
+                "to": "\"http://localhost/containers/\" & $string(msg.newinput) & \"/start -H 'content-type: application/json'\"",
                 "tot": "jsonata"
             }
         ],
@@ -4290,7 +4297,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{ \"Container\": \"test\" }",
+                "to": "{ \"Container\": msg.newinput }",
                 "tot": "jsonata"
             }
         ],
@@ -4324,7 +4331,7 @@
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/json -H 'content-type: application/json'\"",
+                "to": "\"http://localhost/containers/\" & $string(msg.newinput) & \"/json -H 'content-type: application/json'\"",
                 "tot": "jsonata"
             }
         ],
