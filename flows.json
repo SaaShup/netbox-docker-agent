@@ -4072,6 +4072,13 @@
                 "pt": "msg",
                 "to": "\"http://localhost/containers/create?name=\" & $string(msg.input.data.name) & \" -H 'content-type: application/json' -d '\" & $replace($string(msg.payload),\"'\",\"\") & \"'\"",
                 "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "newinput",
+                "pt": "msg",
+                "to": "input.data.ContainerID",
+                "tot": "msg"
             }
         ],
         "action": "",
@@ -4340,7 +4347,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 330,
+        "x": 340,
         "y": 760,
         "wires": [
             [
@@ -4377,7 +4384,10 @@
         "name": "fetch container",
         "links": [
             "87af9743f25dca82",
-            "ec4a365091d27e97"
+            "ec4a365091d27e97",
+            "da26660c1af4c7c5",
+            "40e69b6c258cf831",
+            "5d89d141056587f0"
         ],
         "x": 165,
         "y": 760,
@@ -4693,8 +4703,8 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "8e85e8c54d776ddc",
         "name": "",
-        "x": 1420,
-        "y": 480,
+        "x": 1510,
+        "y": 440,
         "wires": []
     },
     {
@@ -4720,7 +4730,8 @@
         "y": 480,
         "wires": [
             [
-                "4bca60c1739e2a78"
+                "4bca60c1739e2a78",
+                "5d89d141056587f0"
             ]
         ]
     },
@@ -5169,6 +5180,19 @@
             ],
             []
         ]
+    },
+    {
+        "id": "5d89d141056587f0",
+        "type": "link out",
+        "z": "8e85e8c54d776ddc",
+        "name": "link out 14",
+        "mode": "link",
+        "links": [
+            "a12cfbe9ec7b317a"
+        ],
+        "x": 1395,
+        "y": 480,
+        "wires": []
     },
     {
         "id": "3eb97ccb653722a0",
