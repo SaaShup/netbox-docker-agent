@@ -1,4 +1,4 @@
-FROM nodered/node-red
+FROM nodered/node-red:4.0-debian
 
 WORKDIR /data
 RUN openssl genrsa -out privkey.pem 2048
