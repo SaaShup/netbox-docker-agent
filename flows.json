@@ -3689,12 +3689,12 @@
             },
             {
                 "t": "eq",
-                "v": "restart",
+                "v": "stop",
                 "vt": "str"
             },
             {
                 "t": "eq",
-                "v": "stop",
+                "v": "restart",
                 "vt": "str"
             },
             {
@@ -3732,10 +3732,10 @@
                 "61221a3271f599d0"
             ],
             [
-                "abf33f3924f79790"
+                "962de83b529657a1"
             ],
             [
-                "962de83b529657a1"
+                "abf33f3924f79790"
             ],
             [
                 "2a9bfcb142dfe007"
@@ -3768,7 +3768,7 @@
         "to": "",
         "reg": false,
         "x": 710,
-        "y": 240,
+        "y": 280,
         "wires": [
             [
                 "a1b35447c74d2e5a"
@@ -3788,7 +3788,7 @@
         "oldrc": false,
         "name": "containers",
         "x": 950,
-        "y": 280,
+        "y": 300,
         "wires": [
             [
                 "b61b7a952b88459b"
@@ -3828,10 +3828,10 @@
         "to": "",
         "reg": false,
         "x": 710,
-        "y": 280,
+        "y": 240,
         "wires": [
             [
-                "a1b35447c74d2e5a"
+                "5de865e872e30739"
             ]
         ]
     },
@@ -3881,6 +3881,13 @@
                 "pt": "msg",
                 "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"info\",\t   \"comments\": \"operating \" & msg.input.data.operation & \": pending\"\t}",
                 "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "newinput",
+                "pt": "msg",
+                "to": "input.data.ContainerID",
+                "tot": "msg"
             }
         ],
         "action": "",
@@ -4528,8 +4535,8 @@
         "links": [
             "a12cfbe9ec7b317a"
         ],
-        "x": 1435,
-        "y": 220,
+        "x": 1585,
+        "y": 240,
         "wires": []
     },
     {
@@ -4538,7 +4545,7 @@
         "z": "8e85e8c54d776ddc",
         "name": "",
         "pauseType": "delay",
-        "timeout": "1",
+        "timeout": "3",
         "timeoutUnits": "seconds",
         "rate": "1",
         "nbRateUnits": "1",
@@ -4549,8 +4556,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 1300,
-        "y": 220,
+        "x": 1460,
+        "y": 240,
         "wires": [
             [
                 "ec4a365091d27e97"
@@ -4614,13 +4621,14 @@
         "repair": false,
         "outputs": 2,
         "x": 1130,
-        "y": 260,
+        "y": 300,
         "wires": [
             [
                 "29132a5a3f72e359"
             ],
             [
-                "2ca8bc5af87333b2"
+                "2ca8bc5af87333b2",
+                "29132a5a3f72e359"
             ]
         ]
     },
@@ -4629,8 +4637,8 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "8e85e8c54d776ddc",
         "name": "",
-        "x": 1630,
-        "y": 260,
+        "x": 1670,
+        "y": 300,
         "wires": []
     },
     {
@@ -4661,8 +4669,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1440,
-        "y": 260,
+        "x": 1500,
+        "y": 300,
         "wires": [
             [
                 "803bd832af0f5029"
@@ -5145,8 +5153,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1270,
-        "y": 260,
+        "x": 1330,
+        "y": 300,
         "wires": [
             [
                 "fd627a14335caef4"
@@ -5193,6 +5201,77 @@
         "x": 1395,
         "y": 480,
         "wires": []
+    },
+    {
+        "id": "68f8c6e5146c77db",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "wait",
+        "rules": [
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"http://localhost/containers/\" & $string(msg.input.data.ContainerID) & \"/wait -H 'content-type: application/json'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1090,
+        "y": 220,
+        "wires": [
+            [
+                "2bc6d6c58919b5d5"
+            ]
+        ]
+    },
+    {
+        "id": "2bc6d6c58919b5d5",
+        "type": "exec",
+        "z": "8e85e8c54d776ddc",
+        "command": "curl -s -X POST --unix-socket /var/run/docker.sock",
+        "addpay": "post",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "containers",
+        "x": 1250,
+        "y": 220,
+        "wires": [
+            [
+                "b61b7a952b88459b"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "5de865e872e30739",
+        "type": "exec",
+        "z": "8e85e8c54d776ddc",
+        "command": "curl -s -X POST --unix-socket /var/run/docker.sock",
+        "addpay": "post",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "containers",
+        "x": 930,
+        "y": 240,
+        "wires": [
+            [
+                "68f8c6e5146c77db"
+            ],
+            [],
+            []
+        ]
     },
     {
         "id": "3eb97ccb653722a0",
@@ -6531,7 +6610,7 @@
         "z": "3ee57a9d7dc5fae7",
         "name": "Log console",
         "active": true,
-        "tosidebar": false,
+        "tosidebar": true,
         "console": true,
         "tostatus": true,
         "complete": "payload",
