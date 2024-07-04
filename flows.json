@@ -3767,7 +3767,7 @@
                 "ec3fd4f5bb39373e"
             ],
             [
-                "789b51cd58a06f88"
+                "a879765250a26a46"
             ]
         ]
     },
@@ -3997,7 +3997,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 680,
+        "x": 700,
         "y": 420,
         "wires": [
             [
@@ -4417,7 +4417,8 @@
             "ec4a365091d27e97",
             "da26660c1af4c7c5",
             "40e69b6c258cf831",
-            "5d89d141056587f0"
+            "5d89d141056587f0",
+            "611338dc97d7bb91"
         ],
         "x": 165,
         "y": 760,
@@ -5295,6 +5296,50 @@
             [],
             []
         ]
+    },
+    {
+        "id": "a879765250a26a46",
+        "type": "switch",
+        "z": "8e85e8c54d776ddc",
+        "name": "recreate agent ?",
+        "property": "input.data.image.name",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "saashup/netbox-docker-agent",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 480,
+        "y": 380,
+        "wires": [
+            [
+                "789b51cd58a06f88"
+            ],
+            [
+                "611338dc97d7bb91"
+            ]
+        ]
+    },
+    {
+        "id": "611338dc97d7bb91",
+        "type": "link out",
+        "z": "8e85e8c54d776ddc",
+        "name": "link out 17",
+        "mode": "link",
+        "links": [
+            "a12cfbe9ec7b317a"
+        ],
+        "x": 455,
+        "y": 440,
+        "wires": []
     },
     {
         "id": "3eb97ccb653722a0",
