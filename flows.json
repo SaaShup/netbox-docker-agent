@@ -2749,7 +2749,7 @@
         "y": 480,
         "wires": [
             [
-                "84d8b152e92556ef"
+                "5c79a22a8f9ad79f"
             ],
             [],
             []
@@ -2813,7 +2813,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 780,
+        "x": 800,
         "y": 480,
         "wires": [
             [
@@ -2855,7 +2855,7 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 930,
+        "x": 1180,
         "y": 560,
         "wires": [
             [
@@ -2875,7 +2875,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "images",
-        "x": 760,
+        "x": 1010,
         "y": 560,
         "wires": [
             [
@@ -2904,7 +2904,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1390,
+        "x": 1640,
         "y": 500,
         "wires": [
             [
@@ -2966,7 +2966,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1120,
+        "x": 1370,
         "y": 560,
         "wires": [
             [
@@ -2991,7 +2991,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1330,
+        "x": 1580,
         "y": 600,
         "wires": [
             [
@@ -3550,7 +3550,7 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1485,
+        "x": 1735,
         "y": 600,
         "wires": []
     },
@@ -3568,7 +3568,7 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "3ea1a4b04d852f38",
         "name": "",
-        "x": 1350,
+        "x": 1900,
         "y": 560,
         "wires": []
     },
@@ -3577,24 +3577,20 @@
         "type": "switch",
         "z": "3ea1a4b04d852f38",
         "name": "",
-        "property": "$length(msg.payload)",
-        "propertyType": "jsonata",
+        "property": "payload",
+        "propertyType": "msg",
         "rules": [
             {
-                "t": "lte",
-                "v": "512",
-                "vt": "num"
+                "t": "false"
             },
             {
-                "t": "gt",
-                "v": "512",
-                "vt": "num"
+                "t": "true"
             }
         ],
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1170,
+        "x": 1420,
         "y": 480,
         "wires": [
             [
@@ -3624,7 +3620,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1380,
+        "x": 1630,
         "y": 460,
         "wires": [
             [
@@ -3640,6 +3636,33 @@
         "x": 1070,
         "y": 260,
         "wires": []
+    },
+    {
+        "id": "5c79a22a8f9ad79f",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "find image digest in output",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$count(\t    $filter(\t        $map(\t            $split(payload, \"\\n\"),\t            function($v) {\t                $v != \"\" ? $eval($v)\t            }\t        ),\t        function($v) {\t            $match(\t                $string($v.status),\t                /^Digest:/\t            )\t        }\t    )\t) > 0",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1210,
+        "y": 480,
+        "wires": [
+            [
+                "84d8b152e92556ef"
+            ]
+        ]
     },
     {
         "id": "dcf35b57666a30f9",
