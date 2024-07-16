@@ -2827,13 +2827,11 @@
         "type": "switch",
         "z": "3ea1a4b04d852f38",
         "name": "should we pull?",
-        "property": "payload.data.size",
-        "propertyType": "msg",
+        "property": "(\t    msg.payload.data.size <= 0\t    or msg.payload.data.force = true\t)\t",
+        "propertyType": "jsonata",
         "rules": [
             {
-                "t": "lte",
-                "v": "0",
-                "vt": "num"
+                "t": "true"
             }
         ],
         "checkall": "true",
