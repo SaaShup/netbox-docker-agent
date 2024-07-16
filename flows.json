@@ -2625,7 +2625,7 @@
         "method": "post",
         "upload": false,
         "swaggerDoc": "",
-        "x": 200,
+        "x": 130,
         "y": 200,
         "wires": [
             [
@@ -2638,7 +2638,7 @@
         "id": "5db8c0db8473ea8e",
         "type": "switch",
         "z": "3ea1a4b04d852f38",
-        "name": "",
+        "name": "route by :type",
         "property": "req.params.type",
         "propertyType": "msg",
         "rules": [
@@ -2671,7 +2671,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 5,
-        "x": 410,
+        "x": 360,
         "y": 200,
         "wires": [
             [
@@ -2744,9 +2744,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "images",
-        "x": 1000,
-        "y": 480,
+        "name": "docker api request: pull image",
+        "x": 1110,
+        "y": 580,
         "wires": [
             [
                 "5c79a22a8f9ad79f"
@@ -2762,7 +2762,7 @@
         "name": "",
         "statusCode": "202",
         "headers": {},
-        "x": 200,
+        "x": 130,
         "y": 260,
         "wires": []
     },
@@ -2770,7 +2770,7 @@
         "id": "7d0f6463ecfeeb50",
         "type": "change",
         "z": "3ea1a4b04d852f38",
-        "name": "",
+        "name": "prepare docker api request",
         "rules": [
             {
                 "t": "set",
@@ -2813,8 +2813,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 800,
-        "y": 480,
+        "x": 820,
+        "y": 580,
         "wires": [
             [
                 "b49c4832fc35827a",
@@ -2826,7 +2826,7 @@
         "id": "dfd9416e4f31ef88",
         "type": "switch",
         "z": "3ea1a4b04d852f38",
-        "name": "",
+        "name": "should we pull?",
         "property": "payload.data.size",
         "propertyType": "msg",
         "rules": [
@@ -2839,8 +2839,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 610,
-        "y": 480,
+        "x": 580,
+        "y": 580,
         "wires": [
             [
                 "7d0f6463ecfeeb50"
@@ -2855,8 +2855,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 1180,
-        "y": 560,
+        "x": 1360,
+        "y": 660,
         "wires": [
             [
                 "d375e2981f9fa4fb"
@@ -2874,9 +2874,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "images",
-        "x": 1010,
-        "y": 560,
+        "name": "docker api request: inspect image",
+        "x": 1100,
+        "y": 660,
         "wires": [
             [
                 "2eb2de8f9ca00a2b"
@@ -2889,7 +2889,7 @@
         "id": "3a845c367b89a50e",
         "type": "change",
         "z": "3ea1a4b04d852f38",
-        "name": "",
+        "name": "prepare docker api request",
         "rules": [
             {
                 "t": "set",
@@ -2904,8 +2904,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1640,
-        "y": 500,
+        "x": 1840,
+        "y": 600,
         "wires": [
             [
                 "cc3c1cea0eb84ca0"
@@ -2916,7 +2916,7 @@
         "id": "d375e2981f9fa4fb",
         "type": "change",
         "z": "3ea1a4b04d852f38",
-        "name": "",
+        "name": "prepare netbox request",
         "rules": [
             {
                 "t": "set",
@@ -2966,8 +2966,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1370,
-        "y": 560,
+        "x": 1560,
+        "y": 660,
         "wires": [
             [
                 "231e0a10bb5c0cac",
@@ -2979,7 +2979,7 @@
         "id": "231e0a10bb5c0cac",
         "type": "http request",
         "z": "3ea1a4b04d852f38",
-        "name": "",
+        "name": "netbox request: update image",
         "method": "use",
         "ret": "obj",
         "paytoqs": "ignore",
@@ -2991,8 +2991,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1580,
-        "y": 600,
+        "x": 1850,
+        "y": 700,
         "wires": [
             [
                 "829323373ce00e9e"
@@ -3550,8 +3550,8 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1735,
-        "y": 600,
+        "x": 2025,
+        "y": 700,
         "wires": []
     },
     {
@@ -3559,8 +3559,8 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "3ea1a4b04d852f38",
         "name": "",
-        "x": 810,
-        "y": 440,
+        "x": 870,
+        "y": 540,
         "wires": []
     },
     {
@@ -3568,15 +3568,15 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "3ea1a4b04d852f38",
         "name": "",
-        "x": 1900,
-        "y": 560,
+        "x": 2130,
+        "y": 660,
         "wires": []
     },
     {
         "id": "84d8b152e92556ef",
         "type": "switch",
         "z": "3ea1a4b04d852f38",
-        "name": "",
+        "name": "did it work?",
         "property": "payload",
         "propertyType": "msg",
         "rules": [
@@ -3590,8 +3590,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1420,
-        "y": 480,
+        "x": 1610,
+        "y": 580,
         "wires": [
             [
                 "dce108611cd0c5ba"
@@ -3605,7 +3605,7 @@
         "id": "dce108611cd0c5ba",
         "type": "change",
         "z": "3ea1a4b04d852f38",
-        "name": "",
+        "name": "set error message",
         "rules": [
             {
                 "t": "set",
@@ -3620,8 +3620,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1630,
-        "y": 460,
+        "x": 1870,
+        "y": 560,
         "wires": [
             [
                 "042f9d4dafa3cf3d"
@@ -3656,13 +3656,23 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1210,
-        "y": 480,
+        "x": 1390,
+        "y": 580,
         "wires": [
             [
                 "84d8b152e92556ef"
             ]
         ]
+    },
+    {
+        "id": "93e4927e83ed7795",
+        "type": "comment",
+        "z": "3ea1a4b04d852f38",
+        "name": "Images",
+        "info": "",
+        "x": 550,
+        "y": 500,
+        "wires": []
     },
     {
         "id": "dcf35b57666a30f9",
