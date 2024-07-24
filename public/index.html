@@ -201,7 +201,7 @@
             '<li class="nav-item"><a href="#cports_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cports-tab_' + id + '">Ports</a></li>' +
             '<li class="nav-item"><a href="#cvolumes_' + id +
-            '" class="nav-link px-2" data-bs-toggle="tab" id="cvolumes-tab_' + id + '">Volumes</a></li>' +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="cvolumes-tab_' + id + '">Storages</a></li>' +
             '<li class="nav-item"><a href="#cnetwork_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cnetwork-tab_' + id + '">Network</a></li>' +
             '<li class="nav-item"><a href="#cenv_' + id +
@@ -210,8 +210,12 @@
             '" class="nav-link px-2" data-bs-toggle="tab" id="clabels-tab_' + id + '">Labels</a></li>' +
             '<li class="nav-item"><a href="#crestart_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="crestart-tab_' + id + '">Restart</a></li>' +
+            '<li class="nav-item"><a href="#ccapabilities_' + id +
+              '" class="nav-link px-2" data-bs-toggle="tab" id="ccapabilities-tab_' + id + '">Capabilities</a></li>' +
             '<li class="nav-item"><a href="#cresources_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cresources-tab_' + id + '">Resources</a></li>' +
+            '<li class="nav-item"><a href="#cextras_' + id +
+              '" class="nav-link px-2" data-bs-toggle="tab" id="cextras-tab_' + id + '">Extras</a></li>' +
             '<li class="nav-item"><a href="#cexec_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cexec-tab_' + id + '">Exec</a></li>' +
             '<li class="nav-item"><a href="#clogs_' + id +
@@ -272,8 +276,8 @@
               vo.Name +
               '" disabled /></div></div><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">container</span><input class="form-control volume-destination" placeholder="value" type="text" value="' +
               vo.Destination +
-              '" disabled/></div></div><div class="col-2"><select class="form-control"><option>RW</option><option ' +
-              (vo.RW === true ? "" : "default") + '>R</option></select></div></div>'
+              '" disabled/></div></div><div class="col-2"><select class="form-control" disabled><option>Volume</option></select></div><div class="col-2"><select class="form-control" disabled><option>' +
+              (vo.RW === true ? "RW" : "RO") + '</option></select></div></div>'
           }
           for (const vo of c.Mounts) {
             if (vo.Type !== "volume") containers +=
@@ -281,8 +285,17 @@
               vo.Source +
               '" disabled/></div></div><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">container</span><input class="form-control volume-destination" placeholder="value" type="text" value="' +
               vo.Destination +
-              '" disabled/></div></div><div class="col-2"><select class="form-control"><option>RW</option><option ' +
-              (vo.RW === true ? "" : "default") + '>R</option></select></div></div>'
+              '" disabled/></div></div><div class="col-2"><select class="form-control" disabled><option>Bind</option></select></div><div class="col-2"><select class="form-control" disabled><option>' +
+              (vo.RW === true ? "RW" : "RO") + '</option></select></div></div>'
+          }
+          for (const vo of c.HostConfig.Devices) {
+            containers +=
+              '<div class="row m-2 devices"><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">host</span><input class="form-control volume-source" placeholder="name" type="text" value="' +
+              vo.PathInContainer +
+              '" disabled/></div></div><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">container</span><input class="form-control volume-destination" placeholder="value" type="text" value="' +
+              vo.PathOnHost +
+              '" disabled/></div></div><div class="col-2"><select class="form-control" disabled><option>Device</option></select></div><div class="col-2"><select class="form-control" disabled><option>' +
+              (vo.CgroupPermissions === "rwm" ? "RW" : "RO") + '</option></select></div></div>'
           }
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cnetwork_' + id + '"><div class="row m-3 align-items-center">' +
@@ -310,9 +323,21 @@
             (c.HostConfig.RestartPolicy.Name || 'no') + '" disabled>';
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cruntime_' + id + '"><p>Runtime tab content ...</p></div>' +
+            '<div class="tab-pane fade" id="ccapabilities_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="col-4"><label class="col-form-label">Capabilities Added:</label></div><div class="col-8"><input class="form-control" value="' +
+            ('CapAdd' in c.HostConfig ? c.HostConfig.CapAdd : "") + '" disabled/></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">Capabilities Dropped:</label></div><div class="col-8 mt-2"><input class="form-control" value="' +
+            ('CapDrop' in c.HostConfig ? c.HostConfig.CapDrop : "") + '" disabled/>';
+          containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cresources_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Memory limit (MB):</label></div><div class="col-8"><input class="form-control" value="' +
             ('Memory' in c.HostConfig ? parseInt(c.HostConfig.Memory) / 1024 / 1024 : "0") + '" disabled/>';
+          containers += '</div></div></div>' +
+          '<div class="tab-pane fade" id="cextras_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="col-4"><label class="col-form-label">Pid Mode:</label></div><div class="col-8"><input class="form-control" value="' +
+            ('PidMode' in c.HostConfig ? c.HostConfig.PidMode : "") + '" disabled/></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">Capabilities Dropped:</label></div><div class="col-8 mt-2"><input class="form-control" value="' +
+            ('ExtraHosts' in c.HostConfig ? c.HostConfig.ExtraHosts : "") + '" disabled/>';
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cexec_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Command:</label></div><div class="col-8">' +
@@ -324,8 +349,7 @@
             '<pre id="clogs_' + id +
             '_pre" class="p-2 text-light bg-dark overflow-scroll border border-dark-subtle"></pre>';
           containers += '</div></div>' +
-            '<div class="tab-pane fade" id="ccapabilities_' + id +
-            '"><p>Capabilities tab content ...</p></div></div></div>';
+            '</div></div>';
         }
         $('#containers-list').html(containers);
         $('.btn.exec').on('click', (event) => exec(
