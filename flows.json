@@ -2640,6 +2640,99 @@
         "wires": []
     },
     {
+        "id": "4a209458cc75aee0",
+        "type": "http in",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "url": "/system/usage",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 1250,
+        "y": 1040,
+        "wires": [
+            [
+                "4ebcf591c6c3e73b"
+            ]
+        ]
+    },
+    {
+        "id": "4ebcf591c6c3e73b",
+        "type": "exec",
+        "z": "a827fd671d6a227e",
+        "command": "curl -X GET --unix-socket /var/run/docker.sock http://localhost/system/df",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "docker api request: system df",
+        "x": 1280,
+        "y": 1100,
+        "wires": [
+            [
+                "cd85c0f71cd8a584"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "cd85c0f71cd8a584",
+        "type": "json",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 1470,
+        "y": 1100,
+        "wires": [
+            [
+                "e52d4ade08206e43"
+            ]
+        ]
+    },
+    {
+        "id": "dcb8324b28bd0fcd",
+        "type": "http response",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1850,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "e52d4ade08206e43",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "aggregate disk usage data",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t    \"layers_size\": msg.payload.LayersSize,\t    \"images\": {\t        \"shared_size\": $reduce(\t            msg.payload.Images,\t            function($acc, $img) {\t                $acc + $img.SharedSize\t            },\t            0\t        ),\t        \"size\": $reduce(\t            msg.payload.Images,\t            function($acc, $img) {\t                $acc + $img.Size\t            },\t            0\t        ),\t        \"virtual_size\": $reduce(\t            msg.payload.Images,\t            function($acc, $img) {\t                $acc + $img.VirtualSize\t            },\t            0\t        )\t\t    },\t    \"containers\": {\t        \"size_rootfs\": $reduce(\t            msg.payload.Containers,\t            function($acc, $container) {\t                $acc + $container.SizeRootFs\t            },\t            0\t        )\t    },\t    \"volumes\": $reduce(\t        msg.payload.Volumes,\t        function($acc, $vol) {\t            $acc + $vol.UsageData.Size\t        },\t        0\t    ),\t    \"build_cache\": $reduce(\t        msg.payload.BuildCache,\t        function($acc, $cache) {\t            $acc + $cache.Size\t        },\t        0\t    )\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1660,
+        "y": 1100,
+        "wires": [
+            [
+                "dcb8324b28bd0fcd"
+            ]
+        ]
+    },
+    {
         "id": "e974d3bd502f614f",
         "type": "http in",
         "z": "3ea1a4b04d852f38",
