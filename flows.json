@@ -791,8 +791,8 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 160,
-        "y": 220,
+        "x": 120,
+        "y": 460,
         "wires": [
             [
                 "53aaf7026e5a7cee",
@@ -804,7 +804,7 @@
         "id": "4f41f373f7947d21",
         "type": "switch",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "route by :type",
         "property": "req.params.type",
         "propertyType": "msg",
         "rules": [
@@ -842,8 +842,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 6,
-        "x": 570,
-        "y": 280,
+        "x": 800,
+        "y": 500,
         "wires": [
             [
                 "4de06d76878cdbd0"
@@ -879,9 +879,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "containers",
-        "x": 770,
-        "y": 120,
+        "name": "docker api request: list containers",
+        "x": 1300,
+        "y": 220,
         "wires": [
             [
                 "221cb4f11aa9b1dc"
@@ -901,9 +901,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "volumes",
-        "x": 780,
-        "y": 320,
+        "name": "docker api request: list volumes",
+        "x": 1290,
+        "y": 340,
         "wires": [
             [
                 "1a50c26c9c0a0708"
@@ -923,9 +923,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "networks",
-        "x": 780,
-        "y": 440,
+        "name": "docker api request: list networks",
+        "x": 1290,
+        "y": 460,
         "wires": [
             [
                 "13f3463f42580ff9"
@@ -945,9 +945,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "images",
-        "x": 780,
-        "y": 560,
+        "name": "docker api request: list images",
+        "x": 1290,
+        "y": 580,
         "wires": [
             [
                 "bf87cac23b3411d9"
@@ -963,15 +963,15 @@
         "name": "",
         "statusCode": "202",
         "headers": {},
-        "x": 160,
-        "y": 280,
+        "x": 320,
+        "y": 420,
         "wires": []
     },
     {
         "id": "2cc40b296062191e",
         "type": "change",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "prepare netbox request",
         "rules": [
             {
                 "t": "set",
@@ -1007,8 +1007,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1620,
-        "y": 560,
+        "x": 2750,
+        "y": 600,
         "wires": [
             [
                 "3cd883eb0ec5d869"
@@ -1019,7 +1019,7 @@
         "id": "1daea440d755f8c9",
         "type": "http request",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "netbox request: create images",
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
@@ -1031,8 +1031,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1910,
-        "y": 560,
+        "x": 3210,
+        "y": 600,
         "wires": [
             [
                 "05457d6efadc3737"
@@ -1043,7 +1043,7 @@
         "id": "521aa77a01fcea45",
         "type": "change",
         "z": "a827fd671d6a227e",
-        "name": "config",
+        "name": "configure netbox credentials",
         "rules": [
             {
                 "t": "set",
@@ -1079,8 +1079,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 470,
-        "y": 200,
+        "x": 580,
+        "y": 420,
         "wires": [
             [
                 "4f41f373f7947d21"
@@ -1098,8 +1098,8 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 1470,
-        "y": 560,
+        "x": 2570,
+        "y": 600,
         "wires": [
             [
                 "2cc40b296062191e"
@@ -1110,7 +1110,7 @@
         "id": "3cd883eb0ec5d869",
         "type": "switch",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "image has a name?",
         "property": "payload.name",
         "propertyType": "msg",
         "rules": [
@@ -1121,8 +1121,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 1770,
-        "y": 560,
+        "x": 2970,
+        "y": 600,
         "wires": [
             [
                 "1daea440d755f8c9"
@@ -1133,7 +1133,7 @@
         "id": "d1b84cfbb90de451",
         "type": "change",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "prepare netbox request",
         "rules": [
             {
                 "t": "set",
@@ -1176,7 +1176,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1440,
+        "x": 2030,
         "y": 480,
         "wires": [
             [
@@ -1188,7 +1188,7 @@
         "id": "d262d362c08337f4",
         "type": "http request",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "netbox request: create networks",
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
@@ -1200,7 +1200,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1650,
+        "x": 2290,
         "y": 480,
         "wires": [
             [
@@ -1216,7 +1216,7 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 950,
+        "x": 1490,
         "y": 460,
         "wires": [
             [
@@ -1235,7 +1235,7 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 1270,
+        "x": 1850,
         "y": 480,
         "wires": [
             [
@@ -1247,7 +1247,7 @@
         "id": "d0800a089eab13c2",
         "type": "change",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "prepare netbox request",
         "rules": [
             {
                 "t": "set",
@@ -1290,8 +1290,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1060,
-        "y": 400,
+        "x": 2230,
+        "y": 360,
         "wires": [
             [
                 "7d51fb2a4a8ebca5"
@@ -1302,7 +1302,7 @@
         "id": "7d51fb2a4a8ebca5",
         "type": "http request",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "netbox request: create volumes",
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
@@ -1314,8 +1314,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1270,
-        "y": 400,
+        "x": 2490,
+        "y": 360,
         "wires": [
             [
                 "2b11dfa028894e68"
@@ -1330,8 +1330,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 930,
-        "y": 320,
+        "x": 1490,
+        "y": 340,
         "wires": [
             [
                 "ff1efcf6edbac8aa"
@@ -1349,8 +1349,9 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 1470,
-        "y": 340,
+        "property": "payload",
+        "x": 2050,
+        "y": 360,
         "wires": [
             [
                 "d0800a089eab13c2"
@@ -1361,7 +1362,7 @@
         "id": "81887b8b8a629144",
         "type": "change",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "get volumes data",
         "rules": [
             {
                 "t": "set",
@@ -1376,8 +1377,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1300,
-        "y": 340,
+        "x": 1890,
+        "y": 360,
         "wires": [
             [
                 "e26b6e9ed2eaee27"
@@ -1395,8 +1396,9 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 1270,
-        "y": 140,
+        "property": "payload",
+        "x": 1830,
+        "y": 240,
         "wires": [
             [
                 "03079290b974e3ec"
@@ -1420,8 +1422,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 600,
-        "y": 120,
+        "x": 1040,
+        "y": 220,
         "wires": [
             [
                 "df268a4a9955ef48"
@@ -1432,7 +1434,7 @@
         "id": "f4ca91fa82b0cf42",
         "type": "change",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "prepare netbox request",
         "rules": [
             {
                 "t": "set",
@@ -1475,7 +1477,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1100,
+        "x": 2950,
         "y": 260,
         "wires": [
             [
@@ -1487,7 +1489,7 @@
         "id": "a02aa01b4760459f",
         "type": "http request",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "netbox request: create containers",
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
@@ -1499,7 +1501,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1330,
+        "x": 3220,
         "y": 260,
         "wires": [
             [
@@ -1518,9 +1520,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "containers",
-        "x": 1010,
-        "y": 200,
+        "name": "docker api request: inspect containers",
+        "x": 2310,
+        "y": 240,
         "wires": [
             [
                 "42827c9888e44fd1"
@@ -1533,7 +1535,7 @@
         "id": "03079290b974e3ec",
         "type": "change",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "prepare docker api request",
         "rules": [
             {
                 "t": "set",
@@ -1555,8 +1557,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 780,
-        "y": 200,
+        "x": 2020,
+        "y": 240,
         "wires": [
             [
                 "417ae7536ebebf6e"
@@ -1571,8 +1573,8 @@
         "property": "payload",
         "action": "obj",
         "pretty": false,
-        "x": 1170,
-        "y": 200,
+        "x": 2530,
+        "y": 240,
         "wires": [
             [
                 "a407f99fbc5717c1"
@@ -1590,9 +1592,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "version",
-        "x": 740,
-        "y": 820,
+        "name": "docker api request: get api version",
+        "x": 1300,
+        "y": 940,
         "wires": [
             [
                 "cdf0ca856701cd23"
@@ -1612,8 +1614,8 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 590,
-        "y": 60,
+        "x": 1250,
+        "y": 160,
         "wires": [
             [
                 "df268a4a9955ef48"
@@ -1627,15 +1629,15 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 1650,
-        "y": 200,
+        "x": 3010,
+        "y": 220,
         "wires": []
     },
     {
         "id": "a407f99fbc5717c1",
         "type": "switch",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "was netbox webhook?",
         "property": "req.url",
         "propertyType": "msg",
         "rules": [
@@ -1651,8 +1653,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1330,
-        "y": 200,
+        "x": 2700,
+        "y": 240,
         "wires": [
             [
                 "deec1424f8eaa469"
@@ -1674,6 +1676,7 @@
         "key": "topic",
         "joiner": "\\n",
         "joinerType": "str",
+        "useparts": true,
         "accumulate": true,
         "timeout": "",
         "count": "",
@@ -1682,8 +1685,8 @@
         "reduceInit": "",
         "reduceInitType": "",
         "reduceFixup": "",
-        "x": 1510,
-        "y": 200,
+        "x": 2890,
+        "y": 220,
         "wires": [
             [
                 "a23553e203eafd05"
@@ -1699,8 +1702,8 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 420,
-        "y": 820,
+        "x": 1220,
+        "y": 880,
         "wires": [
             [
                 "ed796f5589c864f7"
@@ -1714,8 +1717,8 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 1330,
-        "y": 820,
+        "x": 2010,
+        "y": 960,
         "wires": []
     },
     {
@@ -1751,8 +1754,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 590,
-        "y": 820,
+        "x": 1350,
+        "y": 880,
         "wires": [
             [
                 "7a4d9d8b863a0612"
@@ -1763,7 +1766,7 @@
         "id": "4acdf31cd717543f",
         "type": "switch",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "is type \"endpoint\"?",
         "property": "req.params.type",
         "propertyType": "msg",
         "rules": [
@@ -1779,8 +1782,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 390,
-        "y": 260,
+        "x": 350,
+        "y": 500,
         "wires": [
             [
                 "521aa77a01fcea45"
@@ -1794,7 +1797,7 @@
         "id": "7cd37714a247d0f3",
         "type": "http request",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "netbox request: update host",
         "method": "use",
         "ret": "obj",
         "paytoqs": "ignore",
@@ -1806,8 +1809,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 990,
-        "y": 720,
+        "x": 1540,
+        "y": 780,
         "wires": [
             [
                 "0f90d4602b562160"
@@ -1818,7 +1821,7 @@
         "id": "70c57a4688add144",
         "type": "change",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "prepare netbox request",
         "rules": [
             {
                 "t": "set",
@@ -1861,8 +1864,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 760,
-        "y": 720,
+        "x": 1270,
+        "y": 780,
         "wires": [
             [
                 "7cd37714a247d0f3"
@@ -1876,15 +1879,15 @@
         "name": "",
         "statusCode": "403",
         "headers": {},
-        "x": 1120,
-        "y": 60,
+        "x": 1720,
+        "y": 200,
         "wires": []
     },
     {
         "id": "221cb4f11aa9b1dc",
         "type": "switch",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "was empty?",
         "property": "payload",
         "propertyType": "msg",
         "rules": [
@@ -1898,8 +1901,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 950,
-        "y": 100,
+        "x": 1530,
+        "y": 220,
         "wires": [
             [
                 "e843e090678a61b9"
@@ -1917,8 +1920,8 @@
         "property": "payload",
         "action": "obj",
         "pretty": false,
-        "x": 1110,
-        "y": 120,
+        "x": 1710,
+        "y": 240,
         "wires": [
             [
                 "eead888045896e1a"
@@ -1934,8 +1937,8 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 780,
-        "y": 500,
+        "x": 1240,
+        "y": 520,
         "wires": [
             [
                 "840619e239d214aa"
@@ -1946,7 +1949,7 @@
         "id": "0900cd90c6af5e59",
         "type": "switch",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "was netbox webhook?",
         "property": "req.url",
         "propertyType": "msg",
         "rules": [
@@ -1962,8 +1965,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1050,
-        "y": 560,
+        "x": 1650,
+        "y": 580,
         "wires": [
             [
                 "39acafa9d2f2d6ba"
@@ -1980,8 +1983,8 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 1190,
-        "y": 520,
+        "x": 1830,
+        "y": 540,
         "wires": []
     },
     {
@@ -1992,8 +1995,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 930,
-        "y": 560,
+        "x": 1490,
+        "y": 580,
         "wires": [
             [
                 "0900cd90c6af5e59"
@@ -2009,8 +2012,8 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 790,
-        "y": 380,
+        "x": 1250,
+        "y": 400,
         "wires": [
             [
                 "2efc622d38ebd4aa"
@@ -2021,7 +2024,7 @@
         "id": "6ebef0d1eb0f7066",
         "type": "switch",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "was netbox webhook?",
         "property": "req.url",
         "propertyType": "msg",
         "rules": [
@@ -2037,7 +2040,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1090,
+        "x": 1660,
         "y": 460,
         "wires": [
             [
@@ -2055,7 +2058,7 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 1230,
+        "x": 1850,
         "y": 440,
         "wires": []
     },
@@ -2068,8 +2071,8 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 800,
-        "y": 260,
+        "x": 1240,
+        "y": 280,
         "wires": [
             [
                 "3c46077f2f10a641"
@@ -2080,7 +2083,7 @@
         "id": "ff1efcf6edbac8aa",
         "type": "switch",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "was netbox webhook?",
         "property": "req.url",
         "propertyType": "msg",
         "rules": [
@@ -2096,8 +2099,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1070,
-        "y": 320,
+        "x": 1660,
+        "y": 340,
         "wires": [
             [
                 "8c85e65c2bfecef8"
@@ -2114,8 +2117,8 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 1190,
-        "y": 300,
+        "x": 1850,
+        "y": 320,
         "wires": []
     },
     {
@@ -2126,8 +2129,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 890,
-        "y": 820,
+        "x": 1510,
+        "y": 920,
         "wires": [
             [
                 "f415bfcc211c0729"
@@ -2160,8 +2163,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1170,
-        "y": 820,
+        "x": 1870,
+        "y": 940,
         "wires": [
             [
                 "7581057e6d016ca9"
@@ -2172,7 +2175,7 @@
         "id": "f415bfcc211c0729",
         "type": "switch",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "was netbox webhook?",
         "property": "req.url",
         "propertyType": "msg",
         "rules": [
@@ -2190,8 +2193,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1030,
-        "y": 820,
+        "x": 1680,
+        "y": 920,
         "wires": [
             [
                 "5a07511ed7c011d2"
@@ -2210,7 +2213,7 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1465,
+        "x": 3395,
         "y": 260,
         "wires": []
     },
@@ -2223,8 +2226,8 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1415,
-        "y": 400,
+        "x": 2655,
+        "y": 360,
         "wires": []
     },
     {
@@ -2236,7 +2239,7 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1785,
+        "x": 2455,
         "y": 480,
         "wires": []
     },
@@ -2249,8 +2252,8 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1155,
-        "y": 720,
+        "x": 1695,
+        "y": 780,
         "wires": []
     },
     {
@@ -2262,15 +2265,15 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 2015,
-        "y": 560,
+        "x": 3375,
+        "y": 600,
         "wires": []
     },
     {
         "id": "5a07511ed7c011d2",
         "type": "change",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "prepare netbox request",
         "rules": [
             {
                 "t": "set",
@@ -2327,8 +2330,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1200,
-        "y": 780,
+        "x": 1930,
+        "y": 900,
         "wires": [
             [
                 "debd21ad874ab51b"
@@ -2339,7 +2342,7 @@
         "id": "debd21ad874ab51b",
         "type": "http request",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "netbox request: update host",
         "method": "use",
         "ret": "obj",
         "paytoqs": "ignore",
@@ -2351,8 +2354,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1390,
-        "y": 780,
+        "x": 2180,
+        "y": 900,
         "wires": [
             [
                 "466a424beeab3020"
@@ -2368,15 +2371,15 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1515,
-        "y": 780,
+        "x": 2335,
+        "y": 900,
         "wires": []
     },
     {
         "id": "53d68a4462e6d77e",
         "type": "change",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "prepare netbox request",
         "rules": [
             {
                 "t": "set",
@@ -2412,7 +2415,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1260,
+        "x": 1890,
         "y": 660,
         "wires": [
             [
@@ -2424,7 +2427,7 @@
         "id": "61288a7609631dc6",
         "type": "http request",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "netbox request: upsert registries",
         "method": "POST",
         "ret": "obj",
         "paytoqs": "ignore",
@@ -2436,7 +2439,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1450,
+        "x": 2150,
         "y": 660,
         "wires": [
             [
@@ -2448,7 +2451,7 @@
         "id": "5a72a6c552c36127",
         "type": "change",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "parse registry data",
         "rules": [
             {
                 "t": "set",
@@ -2470,8 +2473,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1660,
-        "y": 660,
+        "x": 2410,
+        "y": 600,
         "wires": [
             [
                 "6faf3827d41504fd"
@@ -2482,7 +2485,7 @@
         "id": "121ec6eb7cd9d1e3",
         "type": "change",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "prepare netbox request",
         "rules": [
             {
                 "t": "set",
@@ -2518,8 +2521,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 840,
-        "y": 660,
+        "x": 1890,
+        "y": 600,
         "wires": [
             [
                 "6a9c98bfa97f9c1e"
@@ -2530,7 +2533,7 @@
         "id": "6a9c98bfa97f9c1e",
         "type": "http request",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "netbox request: get registries",
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
@@ -2542,8 +2545,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1050,
-        "y": 660,
+        "x": 2140,
+        "y": 600,
         "wires": [
             [
                 "53d68a4462e6d77e"
@@ -2554,7 +2557,7 @@
         "id": "c9f9930a51ca8c8f",
         "type": "switch",
         "z": "a827fd671d6a227e",
-        "name": "",
+        "name": "failed to connect to host?",
         "property": "payload.code",
         "propertyType": "msg",
         "rules": [
@@ -2567,8 +2570,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 890,
-        "y": 880,
+        "x": 1570,
+        "y": 980,
         "wires": [
             [
                 "d3292e92a3507d2c"
@@ -2608,13 +2611,33 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1070,
-        "y": 880,
+        "x": 1870,
+        "y": 980,
         "wires": [
             [
                 "7581057e6d016ca9"
             ]
         ]
+    },
+    {
+        "id": "fdf2a9c83ec77858",
+        "type": "comment",
+        "z": "a827fd671d6a227e",
+        "name": "[get] /api/engine/endpoint",
+        "info": "",
+        "x": 1270,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "782f59368d76cbd8",
+        "type": "comment",
+        "z": "a827fd671d6a227e",
+        "name": "when `:type` is \"endpoint\", execute all routes to populate netbox",
+        "info": "",
+        "x": 650,
+        "y": 580,
+        "wires": []
     },
     {
         "id": "e974d3bd502f614f",
