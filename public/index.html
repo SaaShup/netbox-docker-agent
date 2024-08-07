@@ -407,9 +407,24 @@
       }).done(function (result) {
         const canvasElt = document.getElementById('system-usage-chart');
 
+        const humanize = (bytes) => {
+          if (bytes === 0) return '0 B'
+          const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+          const i = Math.floor(Math.log(bytes) / Math.log(1024))
+          const size = (bytes / Math.pow(1024, i)).toFixed(2)
+          return `${size} ${sizes[i]}`
+        }
+
+        const series = [
+          result.layers_size,
+          result.images.size,
+          result.containers.size_rootfs,
+          result.volumes,
+          result.build_cache,
+        ]
         const chart = new ApexCharts(canvasElt, {
           chart: {
-            type: 'pie',
+            type: 'donut',
           },
           labels: [
             'Layers',
@@ -418,19 +433,36 @@
             'Volumes',
             'Build Cache',
           ],
-          series: [
-            result.layers_size,
-            result.images.size,
-            result.containers.size_rootfs,
-            result.volumes,
-            result.build_cache,
-          ],
+          series,
           dataLabels: {
             enabled: true,
+            formatter: function(percentage, { seriesIndex }) {
+              const val = series[seriesIndex]
+              return humanize(val)
+            }
           },
+          tooltip: {
+            enabled: false
+          },
+          plotOptions: {
+            pie: {
+              donut: {
+                labels: {
+                  show: true,
+                  total: {
+                    show: true,
+                    showAlways: true,
+                    formatter: () => {
+                      const total = series.reduce((acc, val) => acc + val, 0)
+                      return humanize(total)
+                    }
+                  }
+                }
+              }
+            }
+          }
         })
         chart.render()
-        console.log('TR yohohohoho', result)
       })
     })
 
