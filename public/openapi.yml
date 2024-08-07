@@ -333,6 +333,17 @@ paths:
                     configured: nok
               schema:
                 $ref: '#/components/schemas/GetInfo200ResponseBody'
+  /system/usage:
+    get:
+      tags:
+        - metrics
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/GetSystemUsage200ResponseBody'
   /doc:
     get:
       tags:
@@ -1386,3 +1397,38 @@ components:
         - configured
         - version
         - docker
+    GetSystemUsage200ResponseBody:
+      type: object
+      properties:
+        layers_size:
+          type: integer
+        images:
+          type: object
+          properties:
+            shared_size:
+              type: integer
+            size:
+              type: integer
+            virtual_size:
+              type: integer
+          required:
+            - shared_size
+            - size
+            - virtual_size
+        containers:
+          type: object
+          properties:
+            size_rootfs:
+              type: integer
+          required:
+            - size_rootfs
+        volumes:
+          type: integer
+        build_cache:
+          type: integer
+      required:
+        - layers_size
+        - images
+        - containers
+        - volumes
+        - build_cache
