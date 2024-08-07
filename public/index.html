@@ -20,6 +20,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"
     integrity="sha512-pax4MlgXjHEPfCwcJLQhigY7+N8rt6bVvWLFyUMuxShv170X53TRzGPmPkZmGBhk+jikR8WBM4yl7A9WMHHqvg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.52.0/apexcharts.min.js"
+    integrity="sha512-piY4QAXPoG2xLdUZZbcc5klXzMxckrQKY9A2o6nKDRt9inolvvLbvGPC+z9IZ29b28UJlD05B7CjxxPaxh4bjQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body class="d-flex flex-column">
@@ -104,7 +107,26 @@
   <main class="container" id="app">
 
     <div class="row app" id="info">
-      <div class="col-12" id="info-list"></div>
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12" id="info-list"></div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header bg-white">
+                System Usage
+              </div>
+              <div class="card-body">
+                <div
+                  id="system-usage-chart"
+                  style="width: 33%; height: 300px; margin: auto;"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="row d-none app" id="containers">
@@ -378,6 +400,37 @@
           '</div><div class="col-sm-12 col-md-6 p-2"> <b>Api</b>: ' + result.docker.ApiVersion +
           '</div></div></div></div>';
         $('#info-list').html(info);
+      })
+
+      $.ajax({
+        url: '/system/usage'
+      }).done(function (result) {
+        const canvasElt = document.getElementById('system-usage-chart');
+
+        const chart = new ApexCharts(canvasElt, {
+          chart: {
+            type: 'pie',
+          },
+          labels: [
+            'Layers',
+            'Images',
+            'Containers',
+            'Volumes',
+            'Build Cache',
+          ],
+          series: [
+            result.layers_size,
+            result.images.size,
+            result.containers.size_rootfs,
+            result.volumes,
+            result.build_cache,
+          ],
+          dataLabels: {
+            enabled: true,
+          },
+        })
+        chart.render()
+        console.log('TR yohohohoho', result)
       })
     })
 
