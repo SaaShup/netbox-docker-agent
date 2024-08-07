@@ -449,6 +449,12 @@
               donut: {
                 labels: {
                   show: true,
+                  value: {
+                    show: true,
+                    formatter: function(val) {
+                      return humanize(val)
+                    }
+                  },
                   total: {
                     show: true,
                     showAlways: true,
