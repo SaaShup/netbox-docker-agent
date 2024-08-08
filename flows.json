@@ -4245,6 +4245,13 @@
                 "pt": "msg",
                 "to": "input.data.ContainerID",
                 "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"operation \" & msg.input.data.operation & \": ok\"\t}",
+                "tot": "jsonata"
             }
         ],
         "action": "",
@@ -4640,13 +4647,6 @@
                 "pt": "msg",
                 "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"operation\": \"none\",\t    \"state\": msg.result.State.Status,\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                    }\t                )\t          ],\t    \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                {\t                    \"var_name\": $substringBefore($v, \"=\"),\t                    \"value\": $substringAfter($v, \"=\")\t                }\t            }\t        )\t    ],\t    \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t    \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Destination,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ]\t}]",
                 "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "journal",
-                "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"operation \" & msg.input.data.operation & \": ok\"\t}",
-                "tot": "jsonata"
             }
         ],
         "action": "",
@@ -4678,7 +4678,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1130,
+        "x": 1230,
         "y": 760,
         "wires": [
             [
@@ -4695,8 +4695,8 @@
         "links": [
             "a12cfbe9ec7b317a"
         ],
-        "x": 1585,
-        "y": 240,
+        "x": 1685,
+        "y": 280,
         "wires": []
     },
     {
@@ -4716,8 +4716,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 1460,
-        "y": 240,
+        "x": 1560,
+        "y": 280,
         "wires": [
             [
                 "ec4a365091d27e97"
@@ -4758,7 +4758,7 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 1265,
+        "x": 1365,
         "y": 760,
         "wires": []
     },
@@ -4780,33 +4780,23 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1130,
+        "x": 1170,
         "y": 300,
         "wires": [
             [
-                "29132a5a3f72e359"
+                "10c0cff73a137bd8"
             ],
             [
-                "2ca8bc5af87333b2",
-                "29132a5a3f72e359"
+                "fd627a14335caef4"
             ]
         ]
-    },
-    {
-        "id": "803bd832af0f5029",
-        "type": "subflow:0455d311f0e53c09",
-        "z": "8e85e8c54d776ddc",
-        "name": "",
-        "x": 1670,
-        "y": 300,
-        "wires": []
     },
     {
         "id": "f97a2faad0f4275a",
         "type": "subflow:0455d311f0e53c09",
         "z": "8e85e8c54d776ddc",
         "name": "",
-        "x": 1130,
+        "x": 1230,
         "y": 820,
         "wires": []
     },
@@ -4829,11 +4819,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1500,
-        "y": 300,
+        "x": 1400,
+        "y": 320,
         "wires": [
             [
-                "803bd832af0f5029"
+                "29132a5a3f72e359"
             ]
         ]
     },
@@ -5285,39 +5275,12 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 930,
-        "y": 820,
+        "x": 1050,
+        "y": 760,
         "wires": [
             [
                 "f97a2faad0f4275a",
                 "c469b4b880927dc6"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "2ca8bc5af87333b2",
-        "type": "switch",
-        "z": "8e85e8c54d776ddc",
-        "name": "",
-        "property": "config.id",
-        "propertyType": "global",
-        "rules": [
-            {
-                "t": "nempty"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 1330,
-        "y": 300,
-        "wires": [
-            [
-                "fd627a14335caef4"
             ],
             []
         ]
@@ -5476,6 +5439,33 @@
         "x": 455,
         "y": 440,
         "wires": []
+    },
+    {
+        "id": "10c0cff73a137bd8",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"operation \" & msg.input.data.operation & \": ok\"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1360,
+        "y": 280,
+        "wires": [
+            [
+                "29132a5a3f72e359"
+            ]
+        ]
     },
     {
         "id": "3eb97ccb653722a0",
