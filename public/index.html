@@ -68,7 +68,7 @@
   <nav class="navbar navbar-expand-lg" id="navbar">
     <div class="container-fluid">
       <a class="navbar-brand" style="padding: 0 0 0 0;" href="https://saashup.com"><img
-          src="https://saashup.com/images/logo_saashup.png" height="64px" /></a>
+          src="https://saashup.com/images/saashup_logo_circle.svg" height="64px" /></a>
       <button class="navbar-toggler border-primary" type="button" data-bs-toggle="collapse"
         data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
         aria-label="Toggle navigation">
@@ -161,7 +161,7 @@
 
   <footer class="footer w-100 mt-auto py-2">
     <div class="w-100 p-1 text-center text-primary">
-      <img src="https://saashup.com/images/logo_saashup.png" class="rounded-circle" width="32" /> saashup © 2024
+      <img src="https://saashup.com/images/saashup_logo_circle.svg" class="rounded-circle" width="32" /> saashup © 2024
     </div>
   </footer>
 
@@ -310,14 +310,16 @@
               '" disabled/></div></div><div class="col-2"><select class="form-control" disabled><option>Bind</option></select></div><div class="col-2"><select class="form-control" disabled><option>' +
               (vo.RW === true ? "RW" : "RO") + '</option></select></div></div>'
           }
-          for (const vo of c.HostConfig.Devices) {
-            containers +=
-              '<div class="row m-2 devices"><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">host</span><input class="form-control volume-source" placeholder="name" type="text" value="' +
-              vo.PathInContainer +
-              '" disabled/></div></div><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">container</span><input class="form-control volume-destination" placeholder="value" type="text" value="' +
-              vo.PathOnHost +
-              '" disabled/></div></div><div class="col-2"><select class="form-control" disabled><option>Device</option></select></div><div class="col-2"><select class="form-control" disabled><option>' +
-              (vo.CgroupPermissions === "rwm" ? "RW" : "RO") + '</option></select></div></div>'
+          if (c.HostConfig.Devices !== null) {
+            for (const vo of c.HostConfig.Devices) {
+              containers +=
+                '<div class="row m-2 devices"><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">host</span><input class="form-control volume-source" placeholder="name" type="text" value="' +
+                vo.PathInContainer +
+                '" disabled/></div></div><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">container</span><input class="form-control volume-destination" placeholder="value" type="text" value="' +
+                vo.PathOnHost +
+                '" disabled/></div></div><div class="col-2"><select class="form-control" disabled><option>Device</option></select></div><div class="col-2"><select class="form-control" disabled><option>' +
+                (vo.CgroupPermissions === "rwm" ? "RW" : "RO") + '</option></select></div></div>'
+            }
           }
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cnetwork_' + id + '"><div class="row m-3 align-items-center">' +
