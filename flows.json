@@ -165,8 +165,8 @@
         "once": false,
         "onceDelay": "1",
         "topic": "",
-        "x": 280,
-        "y": 440,
+        "x": 300,
+        "y": 400,
         "wires": [
             [
                 "3f489e8a5d253765"
@@ -216,8 +216,8 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 630,
-        "y": 540,
+        "x": 650,
+        "y": 500,
         "wires": [
             []
         ]
@@ -239,8 +239,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 260,
-        "y": 540,
+        "x": 280,
+        "y": 500,
         "wires": [
             [
                 "55c03f8643b324ae"
@@ -258,8 +258,8 @@
         "syntax": "plain",
         "template": "data = require(\"./package.json\")\n\nmodule.exports = {\n    credentialSecret: \"saashup\",\n    flowFile: \"flows.json\",\n    flowFilePretty: true,\n    adminAuth: {\n        type: \"credentials\",\n        users: [{\n            username: process.env.ADMIN_USERNAME || \"admin\",\n            password: process.env.ADMIN_PASSWORD || \"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\",\n            permissions: \"*\"\n        }]\n    },\n    /*https: {\n      key: require(\"fs\").readFileSync('/data/privkey.pem'),\n      cert: require(\"fs\").readFileSync('/data/cert.pem')\n    },\n    requireHttps: true,*/\n    httpNodeAuth: {\n        user: process.env.API_USERNAME || \"admin\",\n        pass: process.env.API_PASSWORD || \"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\"\n    },\n    uiPort: process.env.PORT || 1880,\n    disableEditor: 'ENABLE_EDITOR' in process.env ? false : true,\n    httpStatic: [\n        { path: '/usr/src/node-red/public', root: '/' },\n        { path: '/usr/src/node-red/public/doc.html', root: '/doc' },\n        { path: '/usr/src/node-red/public/openapi.yml', root: '/openapi' }\n    ],\n    httpAdminRoot: '/nodered',\n    diagnostics: {\n        enabled: true,\n        ui: true,\n    },\n    runtimeState: {\n        enabled: false,\n        ui: false,\n    },\n    logging: {\n        console: {\n            level: \"info\",\n            metrics: false,\n            audit: false,\n            handler: function(settings) {\n                return function(msg) {\n                    const level = {\n                        20: 'error',\n                        30: 'warn',\n                        40: 'info'\n                    };\n                    const lvl = \"level\" in msg ? msg.level : \"40\";\n\n                    delete msg.type;\n                    delete msg.z;\n                    delete msg.path;\n                    delete msg.name;\n                    delete msg.id;\n\n                    let line = `${data.name} level=${level[lvl]} version=${data.version}`;\n\n                    if (typeof msg.msg === 'object') {\n                        for (const key of Object.keys(msg.msg)) {\n                            line += ` ${key}=${JSON.stringify(msg.msg[key])}`;\n                        }\n                    } else {\n                        line += ` msg=` + JSON.stringify(msg.msg);\n                    }\n\n                    if (lvl <= 20) {\n                        return console.error(line);\n                    }\n\n                    return console.log(line);\n                }\n            }\n        }\n    },\n    exportGlobalContextKeys: false,\n    externalModules: {\n    },\n    editorTheme: {\n        tours: false,\n        palette: {\n        },\n        projects: {\n            enabled: false,\n            workflow: {\n                mode: \"manual\"\n            }\n        },\n        codeEditor: {\n            lib: \"monaco\",\n            options: {\n            }\n        },\n        markdownEditor: {\n            mermaid: {\n                enabled: true\n            }\n        },\n    },\n    functionExternalModules: true,\n    functionTimeout: 0,\n    functionGlobalContext: {\n    },\n    debugMaxLength: 1000,\n    mqttReconnectTime: 15000,\n    serialReconnectTime: 15000\n}\n",
         "output": "str",
-        "x": 450,
-        "y": 540,
+        "x": 470,
+        "y": 500,
         "wires": [
             [
                 "deb89a9f64f32d7e"
@@ -278,8 +278,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "Events",
-        "x": 460,
-        "y": 640,
+        "x": 480,
+        "y": 600,
         "wires": [
             [
                 "7c210c45ea82059e"
@@ -305,8 +305,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 270,
-        "y": 640,
+        "x": 290,
+        "y": 600,
         "wires": [
             [
                 "b3814c680815a25b"
@@ -328,8 +328,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 760,
-        "y": 620,
+        "x": 780,
+        "y": 580,
         "wires": [
             [
                 "8e555efa2728d8b8"
@@ -347,8 +347,8 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 620,
-        "y": 620,
+        "x": 640,
+        "y": 580,
         "wires": [
             [
                 "06b0b14f4b337cfe"
@@ -385,8 +385,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 4,
-        "x": 1080,
-        "y": 620,
+        "x": 1100,
+        "y": 580,
         "wires": [
             [],
             [],
@@ -402,8 +402,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 920,
-        "y": 620,
+        "x": 940,
+        "y": 580,
         "wires": [
             [
                 "da696e53c1c7431f"
@@ -436,8 +436,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 490,
-        "y": 440,
+        "x": 510,
+        "y": 400,
         "wires": [
             [
                 "d216b6ee68a71932"
@@ -455,8 +455,8 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 680,
-        "y": 440,
+        "x": 700,
+        "y": 400,
         "wires": [
             []
         ]
@@ -619,93 +619,6 @@
         ]
     },
     {
-        "id": "5a9af6e1b6c7ae7e",
-        "type": "change",
-        "z": "216db6efc0df9bc0",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "package",
-                "pt": "msg",
-                "to": "package",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/hosts/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "PATCH",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "[{\t   \"id\": $number(msg.config.id ? msg.config.id : 0),\t   \"agent_version\": msg.package.version & \"-\" & msg.config.flows\t}]",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 500,
-        "y": 240,
-        "wires": [
-            [
-                "b96bd464463004a6"
-            ]
-        ]
-    },
-    {
-        "id": "ad523d94c584c18b",
-        "type": "http request",
-        "z": "216db6efc0df9bc0",
-        "name": "",
-        "method": "use",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 890,
-        "y": 240,
-        "wires": [
-            [
-                "5583ea959d42c0a6",
-                "9d463861f76ab37d"
-            ]
-        ]
-    },
-    {
         "id": "7994bdaf840414b4",
         "type": "inject",
         "z": "216db6efc0df9bc0",
@@ -720,7 +633,7 @@
         "y": 240,
         "wires": [
             [
-                "5a9af6e1b6c7ae7e"
+                "b96bd464463004a6"
             ]
         ]
     },
@@ -734,7 +647,7 @@
                 "t": "set",
                 "p": "journal",
                 "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": msg.config.id,\t   \"kind\": \"info\",\t   \"comments\": $string(\"agent restarted\")\t}",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": $globalContext(\"config\").id,\t   \"kind\": \"info\",\t   \"comments\": $string(\"agent restarted\")\t}",
                 "tot": "jsonata"
             }
         ],
@@ -743,8 +656,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1090,
-        "y": 240,
+        "x": 490,
+        "y": 300,
         "wires": [
             [
                 "af0f2ce79605a0a7"
@@ -756,32 +669,9 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "216db6efc0df9bc0",
         "name": "",
-        "x": 1290,
-        "y": 240,
+        "x": 690,
+        "y": 300,
         "wires": []
-    },
-    {
-        "id": "b96bd464463004a6",
-        "type": "switch",
-        "z": "216db6efc0df9bc0",
-        "name": "",
-        "property": "config.netbox_url",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "nempty"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 710,
-        "y": 240,
-        "wires": [
-            [
-                "ad523d94c584c18b"
-            ]
-        ]
     },
     {
         "id": "9d463861f76ab37d",
@@ -793,14 +683,14 @@
                 "t": "set",
                 "p": "url",
                 "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/hosts/'",
+                "to": "$globalContext(\"config\").netbox_url & '/api/plugins/docker/hosts/'",
                 "tot": "jsonata"
             },
             {
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -814,7 +704,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "[{\t   \"id\": $number(msg.config.id ? msg.config.id : 0),\t   \"operation\": \"refresh\"\t}]",
+                "to": "[{\t   \"id\": $number($globalContext(\"config\").id ? $globalContext(\"config\").id : 0),\t   \"agent_version\": $globalContext(\"package\").version & \"-\" & $globalContext(\"config\").flows,\t   \"operation\": \"refresh\"\t}]",
                 "tot": "jsonata"
             }
         ],
@@ -823,11 +713,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 500,
-        "y": 300,
+        "x": 1280,
+        "y": 240,
         "wires": [
             [
-                "3e4c9034613f315a"
+                "63761b3c0cd6b725"
             ]
         ]
     },
@@ -847,19 +737,19 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 890,
-        "y": 300,
+        "x": 1490,
+        "y": 240,
         "wires": [
             []
         ]
     },
     {
-        "id": "3e4c9034613f315a",
+        "id": "b96bd464463004a6",
         "type": "switch",
         "z": "216db6efc0df9bc0",
         "name": "",
         "property": "config.netbox_url",
-        "propertyType": "msg",
+        "propertyType": "global",
         "rules": [
             {
                 "t": "nempty"
@@ -868,11 +758,93 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 710,
-        "y": 300,
+        "x": 470,
+        "y": 240,
         "wires": [
             [
-                "63761b3c0cd6b725"
+                "53727c59b9fece10",
+                "5583ea959d42c0a6"
+            ]
+        ]
+    },
+    {
+        "id": "53727c59b9fece10",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "$globalContext(\"config\").netbox_url & '/api/plugins/docker/hosts/' & $globalContext(\"config\").id & '/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 680,
+        "y": 240,
+        "wires": [
+            [
+                "9c7b8352b86756cb"
+            ]
+        ]
+    },
+    {
+        "id": "9c7b8352b86756cb",
+        "type": "http request",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 890,
+        "y": 240,
+        "wires": [
+            [
+                "975ed88ff7efae09"
+            ]
+        ]
+    },
+    {
+        "id": "975ed88ff7efae09",
+        "type": "switch",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "property": "msg.payload.agent_version != ($globalContext(\"package\").version & \"-\" & $globalContext(\"config\").flows)",
+        "propertyType": "jsonata",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1070,
+        "y": 240,
+        "wires": [
+            [
+                "9d463861f76ab37d"
             ]
         ]
     },
