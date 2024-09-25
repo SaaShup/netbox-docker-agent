@@ -2159,8 +2159,8 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 2185,
-        "y": 580,
+        "x": 2505,
+        "y": 620,
         "wires": []
     },
     {
@@ -2569,7 +2569,7 @@
         "y": 580,
         "wires": [
             [
-                "f8527b8e07754b9f"
+                "ea0371b415301bb2"
             ]
         ]
     },
@@ -2606,8 +2606,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1710,
-        "y": 580,
+        "x": 1990,
+        "y": 620,
         "wires": [
             [
                 "7b79cb8eb9023f43"
@@ -2630,12 +2630,11 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1990,
-        "y": 580,
+        "x": 2270,
+        "y": 620,
         "wires": [
             [
-                "05457d6efadc3737",
-                "b846262d49ac8886"
+                "05457d6efadc3737"
             ]
         ]
     },
@@ -2646,9 +2645,40 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 2210,
-        "y": 540,
+        "x": 1930,
+        "y": 560,
         "wires": []
+    },
+    {
+        "id": "ea0371b415301bb2",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "was netbox webhook?",
+        "property": "req.url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "/api/images",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1720,
+        "y": 580,
+        "wires": [
+            [
+                "b846262d49ac8886"
+            ],
+            [
+                "f8527b8e07754b9f"
+            ]
+        ]
     },
     {
         "id": "e974d3bd502f614f",
