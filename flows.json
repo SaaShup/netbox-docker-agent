@@ -155,6 +155,28 @@
         "color": "#DDAA99"
     },
     {
+        "id": "cfcb87456a94816f",
+        "type": "subflow",
+        "name": "Unregister from Image-Registry Index",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 80,
+                "y": 220,
+                "wires": [
+                    {
+                        "id": "1107539f863aa6ba"
+                    }
+                ]
+            }
+        ],
+        "out": [],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
         "id": "6a7a0467075486e3",
         "type": "change",
         "z": "0455d311f0e53c09",
@@ -464,6 +486,102 @@
         "wires": [
             [
                 "6ee276a3cdd35972"
+            ]
+        ]
+    },
+    {
+        "id": "9f82f05bc713a75f",
+        "type": "json",
+        "z": "cfcb87456a94816f",
+        "name": "",
+        "property": "indexData",
+        "action": "obj",
+        "pretty": false,
+        "x": 350,
+        "y": 220,
+        "wires": [
+            [
+                "c2c9872b0b7d3415"
+            ]
+        ]
+    },
+    {
+        "id": "c2c9872b0b7d3415",
+        "type": "change",
+        "z": "cfcb87456a94816f",
+        "name": "insert image/registry pair",
+        "rules": [
+            {
+                "t": "set",
+                "p": "indexData",
+                "pt": "msg",
+                "to": "msg.indexData ~> |$|{}, [msg.image.name + \":\" + msg.image.version]|",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 550,
+        "y": 220,
+        "wires": [
+            [
+                "a5d41c9d626f69a8"
+            ]
+        ]
+    },
+    {
+        "id": "a5d41c9d626f69a8",
+        "type": "json",
+        "z": "cfcb87456a94816f",
+        "name": "",
+        "property": "payload",
+        "action": "str",
+        "pretty": false,
+        "x": 750,
+        "y": 220,
+        "wires": [
+            [
+                "9a4eebc10f0bfc9d"
+            ]
+        ]
+    },
+    {
+        "id": "9a4eebc10f0bfc9d",
+        "type": "file",
+        "z": "cfcb87456a94816f",
+        "name": "write index",
+        "filename": "$globalContext(\"imageRegsitryPath\")",
+        "filenameType": "jsonata",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 910,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1107539f863aa6ba",
+        "type": "file in",
+        "z": "cfcb87456a94816f",
+        "name": "read index",
+        "filename": "$globalContext(\"imageRegistryPath\")",
+        "filenameType": "jsonata",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 210,
+        "y": 220,
+        "wires": [
+            [
+                "9f82f05bc713a75f"
             ]
         ]
     },
@@ -7380,7 +7498,7 @@
         "to": "",
         "reg": false,
         "x": 850,
-        "y": 580,
+        "y": 640,
         "wires": [
             [
                 "53c71fbaf754a819"
@@ -7475,7 +7593,8 @@
         "y": 480,
         "wires": [
             [
-                "e1a1c4427886a1e6"
+                "e1a1c4427886a1e6",
+                "8ebc6d099c77582e"
             ]
         ]
     },
@@ -7489,7 +7608,7 @@
             "b0765338f9440bd2"
         ],
         "x": 985,
-        "y": 580,
+        "y": 640,
         "wires": []
     },
     {
@@ -7708,8 +7827,45 @@
         "name": "Hosts",
         "info": "",
         "x": 810,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "e09c89ae1ea3fc21",
+        "type": "subflow:cfcb87456a94816f",
+        "z": "177047e3d7a351be",
+        "name": "",
+        "x": 1310,
         "y": 540,
         "wires": []
+    },
+    {
+        "id": "8ebc6d099c77582e",
+        "type": "change",
+        "z": "177047e3d7a351be",
+        "name": "set msg.image",
+        "rules": [
+            {
+                "t": "set",
+                "p": "image",
+                "pt": "msg",
+                "to": "payload.data",
+                "tot": "msg",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1060,
+        "y": 540,
+        "wires": [
+            [
+                "e09c89ae1ea3fc21"
+            ]
+        ]
     },
     {
         "id": "305f23764ca23090",
