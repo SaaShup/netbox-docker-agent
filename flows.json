@@ -80,7 +80,7 @@
     {
         "id": "a483f01f35d23476",
         "type": "subflow",
-        "name": "Update Image-Registry Index",
+        "name": "Register to Image-Registry Index",
         "info": "",
         "category": "",
         "in": [
@@ -5363,7 +5363,7 @@
         "type": "subflow:a483f01f35d23476",
         "z": "3ea1a4b04d852f38",
         "name": "",
-        "x": 2080,
+        "x": 2090,
         "y": 580,
         "wires": []
     },
@@ -7085,7 +7085,7 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 130,
-        "y": 200,
+        "y": 380,
         "wires": [
             [
                 "0a57e0d1d1e7b853",
@@ -7097,7 +7097,7 @@
         "id": "4ee9334de2f7b337",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "route by :type",
         "property": "req.params.type",
         "propertyType": "msg",
         "rules": [
@@ -7130,8 +7130,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 5,
-        "x": 590,
-        "y": 200,
+        "x": 560,
+        "y": 380,
         "wires": [
             [
                 "6b8914321e269ff0"
@@ -7157,8 +7157,8 @@
         "name": "",
         "statusCode": "202",
         "headers": {},
-        "x": 100,
-        "y": 260,
+        "x": 340,
+        "y": 420,
         "wires": []
     },
     {
@@ -7172,9 +7172,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "images",
-        "x": 1360,
-        "y": 300,
+        "name": "docker api request: delete image",
+        "x": 1650,
+        "y": 480,
         "wires": [
             [
                 "b87eba8ac3329ce3"
@@ -7187,7 +7187,7 @@
         "id": "68ea572045adeda7",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "yes, remove by its ID",
         "rules": [
             {
                 "t": "set",
@@ -7209,8 +7209,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1160,
-        "y": 280,
+        "x": 1340,
+        "y": 460,
         "wires": [
             [
                 "489afa20fcdf043a"
@@ -7228,9 +7228,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "networks",
-        "x": 1140,
-        "y": 220,
+        "name": "docker api request: delete network",
+        "x": 1380,
+        "y": 380,
         "wires": [
             [],
             [],
@@ -7241,7 +7241,7 @@
         "id": "8f39826ad701f225",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "prepare docker api request",
         "rules": [
             {
                 "t": "set",
@@ -7256,8 +7256,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 950,
-        "y": 220,
+        "x": 1100,
+        "y": 380,
         "wires": [
             [
                 "f40ceca8b2fe91cf"
@@ -7275,9 +7275,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "volumes",
-        "x": 1140,
-        "y": 140,
+        "name": "docker api request: delete volume",
+        "x": 1380,
+        "y": 280,
         "wires": [
             [],
             [],
@@ -7288,7 +7288,7 @@
         "id": "059ff76a638ac4d6",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "prepare docker api request",
         "rules": [
             {
                 "t": "set",
@@ -7303,8 +7303,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 950,
-        "y": 140,
+        "x": 1100,
+        "y": 280,
         "wires": [
             [
                 "8dc73accdac55b3b"
@@ -7322,9 +7322,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "containers",
-        "x": 1150,
-        "y": 60,
+        "name": "docker api request: delete container",
+        "x": 1380,
+        "y": 180,
         "wires": [
             [
                 "47d05b450f712ec1"
@@ -7337,7 +7337,7 @@
         "id": "2475512b9999fc45",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "prepare docker api request",
         "rules": [
             {
                 "t": "set",
@@ -7352,8 +7352,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 950,
-        "y": 60,
+        "x": 1100,
+        "y": 180,
         "wires": [
             [
                 "551cf7f33257a9d3"
@@ -7364,7 +7364,7 @@
         "id": "00a7f64ecb58e0c8",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "reset configuration",
         "rules": [
             {
                 "t": "set",
@@ -7379,8 +7379,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 800,
-        "y": 380,
+        "x": 850,
+        "y": 580,
         "wires": [
             [
                 "53c71fbaf754a819"
@@ -7391,7 +7391,7 @@
         "id": "6b8914321e269ff0",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "should we delete it?",
         "property": "msg.payload.data.host.state in [\"deleted\", \"refreshing\"]",
         "propertyType": "jsonata",
         "rules": [
@@ -7402,8 +7402,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 750,
-        "y": 60,
+        "x": 860,
+        "y": 180,
         "wires": [
             [
                 "2475512b9999fc45"
@@ -7414,7 +7414,7 @@
         "id": "fbf3bcd631979ce5",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "should we delete it?",
         "property": "msg.payload.data.host.state in [\"deleted\", \"refreshing\"]",
         "propertyType": "jsonata",
         "rules": [
@@ -7425,8 +7425,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 770,
-        "y": 160,
+        "x": 860,
+        "y": 280,
         "wires": [
             [
                 "059ff76a638ac4d6"
@@ -7437,7 +7437,7 @@
         "id": "ba51cee0aa2ab895",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "should we delete it?",
         "property": "msg.payload.data.host.state in [\"deleted\", \"refreshing\"]",
         "propertyType": "jsonata",
         "rules": [
@@ -7448,8 +7448,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 770,
-        "y": 220,
+        "x": 860,
+        "y": 380,
         "wires": [
             [
                 "8f39826ad701f225"
@@ -7460,7 +7460,7 @@
         "id": "74282c37e59eb461",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "should we delete it?",
         "property": "msg.payload.data.host.state in [\"deleted\", \"refreshing\"]",
         "propertyType": "jsonata",
         "rules": [
@@ -7471,8 +7471,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 770,
-        "y": 280,
+        "x": 860,
+        "y": 480,
         "wires": [
             [
                 "e1a1c4427886a1e6"
@@ -7489,7 +7489,7 @@
             "b0765338f9440bd2"
         ],
         "x": 985,
-        "y": 380,
+        "y": 580,
         "wires": []
     },
     {
@@ -7497,15 +7497,15 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "177047e3d7a351be",
         "name": "",
-        "x": 1570,
-        "y": 200,
+        "x": 1870,
+        "y": 480,
         "wires": []
     },
     {
         "id": "e1a1c4427886a1e6",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "does the image have an ID?",
         "property": "msg.payload.data.ImageID",
         "propertyType": "msg",
         "rules": [
@@ -7519,8 +7519,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 950,
-        "y": 300,
+        "x": 1100,
+        "y": 480,
         "wires": [
             [
                 "68ea572045adeda7"
@@ -7534,7 +7534,7 @@
         "id": "231ec94d70cd3762",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "no, remove by name:version",
         "rules": [
             {
                 "t": "set",
@@ -7556,8 +7556,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1160,
-        "y": 320,
+        "x": 1360,
+        "y": 500,
         "wires": [
             [
                 "489afa20fcdf043a"
@@ -7568,7 +7568,7 @@
         "id": "def493fd34b215bc",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "inject configuration",
         "rules": [
             {
                 "t": "set",
@@ -7590,8 +7590,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 380,
-        "y": 200,
+        "x": 370,
+        "y": 380,
         "wires": [
             [
                 "4ee9334de2f7b337"
@@ -7602,7 +7602,7 @@
         "id": "c594da7accef66e1",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "notify host of removal",
         "rules": [
             {
                 "t": "set",
@@ -7617,11 +7617,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1530,
-        "y": 40,
+        "x": 1900,
+        "y": 180,
         "wires": [
             [
-                "b87eba8ac3329ce3"
+                "9c2f3e51602bad60"
             ]
         ]
     },
@@ -7629,7 +7629,7 @@
         "id": "47d05b450f712ec1",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "is host present in netbox?",
         "property": "config.id",
         "propertyType": "global",
         "rules": [
@@ -7643,14 +7643,73 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1330,
-        "y": 40,
+        "x": 1670,
+        "y": 180,
         "wires": [
             [
                 "c594da7accef66e1"
             ],
             []
         ]
+    },
+    {
+        "id": "df05998cbfab83d7",
+        "type": "comment",
+        "z": "177047e3d7a351be",
+        "name": "Containers",
+        "info": "",
+        "x": 820,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "9c2f3e51602bad60",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "177047e3d7a351be",
+        "name": "",
+        "x": 2090,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "654bcebbd315600e",
+        "type": "comment",
+        "z": "177047e3d7a351be",
+        "name": "Volumes",
+        "info": "",
+        "x": 820,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "eebcabef106ade5d",
+        "type": "comment",
+        "z": "177047e3d7a351be",
+        "name": "Networks",
+        "info": "",
+        "x": 820,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "4fcd43047da6f735",
+        "type": "comment",
+        "z": "177047e3d7a351be",
+        "name": "Images",
+        "info": "",
+        "x": 810,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "d586993af65a838b",
+        "type": "comment",
+        "z": "177047e3d7a351be",
+        "name": "Hosts",
+        "info": "",
+        "x": 810,
+        "y": 540,
+        "wires": []
     },
     {
         "id": "305f23764ca23090",
