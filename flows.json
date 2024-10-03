@@ -528,7 +528,7 @@
         "z": "216db6efc0df9bc0",
         "name": "reset config",
         "links": [
-            "0def7304bac10f61"
+            "53c71fbaf754a819"
         ],
         "x": 685,
         "y": 20,
@@ -5786,8 +5786,6 @@
         "links": [
             "87af9743f25dca82",
             "ec4a365091d27e97",
-            "da26660c1af4c7c5",
-            "40e69b6c258cf831",
             "5d89d141056587f0",
             "611338dc97d7bb91"
         ],
@@ -7282,7 +7280,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t  \"AttachStdin\": false,\t  \"AttachStdout\": true,\t  \"AttachStderr\": false,\t  \"Tty\": false,\t  \"Cmd\": msg.payload.cmd\t}",
+                "to": "{\t  \"AttachStdin\": false,\t  \"AttachStdout\": true,\t  \"AttachStderr\": true,\t  \"Tty\": false,\t  \"Cmd\": msg.payload.cmd\t}",
                 "tot": "jsonata"
             },
             {
