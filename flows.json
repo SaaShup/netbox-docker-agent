@@ -7282,7 +7282,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t  \"AttachStdin\": false,\t  \"AttachStdout\": true,\t  \"AttachStderr\": false,\t  \"Tty\": false,\t  \"Cmd\": msg.payload.cmd\t}",
+                "to": "{\t  \"AttachStdin\": false,\t  \"AttachStdout\": true,\t  \"AttachStderr\": true,\t  \"Tty\": false,\t  \"Cmd\": msg.payload.cmd\t}",
                 "tot": "jsonata"
             },
             {
