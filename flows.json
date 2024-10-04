@@ -78,6 +78,105 @@
         "color": "#DDAA99"
     },
     {
+        "id": "a483f01f35d23476",
+        "type": "subflow",
+        "name": "Register to Image-Registry Index",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 200,
+                "y": 240,
+                "wires": [
+                    {
+                        "id": "e194bd4be68ad903"
+                    }
+                ]
+            }
+        ],
+        "out": [],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
+        "id": "3aee58d1f23cebcc",
+        "type": "subflow",
+        "name": "Load Image/Registry Index",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 200,
+                "y": 240,
+                "wires": [
+                    {
+                        "id": "0c412afbf9a6f31a"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 600,
+                "y": 240,
+                "wires": [
+                    {
+                        "id": "60f3ea83ea29782b",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
+        "id": "6fa89e9e7fb3a9eb",
+        "type": "subflow",
+        "name": "Initialize Image/Registry Index",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 20,
+                "y": 120,
+                "wires": [
+                    {
+                        "id": "5ccd96e5379dfcfa"
+                    }
+                ]
+            }
+        ],
+        "out": [],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
+        "id": "cfcb87456a94816f",
+        "type": "subflow",
+        "name": "Unregister from Image-Registry Index",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 80,
+                "y": 220,
+                "wires": [
+                    {
+                        "id": "1107539f863aa6ba"
+                    }
+                ]
+            }
+        ],
+        "out": [],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
         "id": "6a7a0467075486e3",
         "type": "change",
         "z": "0455d311f0e53c09",
@@ -152,6 +251,338 @@
         "y": 220,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "97571f5dcf7a707d",
+        "type": "json",
+        "z": "a483f01f35d23476",
+        "name": "",
+        "property": "indexData",
+        "action": "obj",
+        "pretty": false,
+        "x": 470,
+        "y": 240,
+        "wires": [
+            [
+                "3ad2b63c4aae71da"
+            ]
+        ]
+    },
+    {
+        "id": "3ad2b63c4aae71da",
+        "type": "change",
+        "z": "a483f01f35d23476",
+        "name": "insert image/registry pair",
+        "rules": [
+            {
+                "t": "set",
+                "p": "indexData",
+                "pt": "msg",
+                "to": "$merge([msg.indexData, { (msg.image.name + \":\" + msg.image.version): msg.image.registry.id }])",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 670,
+        "y": 240,
+        "wires": [
+            [
+                "9abfaef759b26896"
+            ]
+        ]
+    },
+    {
+        "id": "9abfaef759b26896",
+        "type": "json",
+        "z": "a483f01f35d23476",
+        "name": "",
+        "property": "payload",
+        "action": "str",
+        "pretty": false,
+        "x": 870,
+        "y": 240,
+        "wires": [
+            [
+                "05eb8cc54157404c"
+            ]
+        ]
+    },
+    {
+        "id": "05eb8cc54157404c",
+        "type": "file",
+        "z": "a483f01f35d23476",
+        "name": "write index",
+        "filename": "$globalContext(\"imageRegsitryPath\")",
+        "filenameType": "jsonata",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1030,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e194bd4be68ad903",
+        "type": "file in",
+        "z": "a483f01f35d23476",
+        "name": "read index",
+        "filename": "$globalContext(\"imageRegistryPath\")",
+        "filenameType": "jsonata",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 330,
+        "y": 240,
+        "wires": [
+            [
+                "97571f5dcf7a707d"
+            ]
+        ]
+    },
+    {
+        "id": "60f3ea83ea29782b",
+        "type": "json",
+        "z": "3aee58d1f23cebcc",
+        "name": "",
+        "property": "indexData",
+        "action": "obj",
+        "pretty": false,
+        "x": 490,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0c412afbf9a6f31a",
+        "type": "file in",
+        "z": "3aee58d1f23cebcc",
+        "name": "read index",
+        "filename": "$globalContext(\"imageRegistryPath\")",
+        "filenameType": "jsonata",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 330,
+        "y": 240,
+        "wires": [
+            [
+                "60f3ea83ea29782b"
+            ]
+        ]
+    },
+    {
+        "id": "6ee276a3cdd35972",
+        "type": "file in",
+        "z": "6fa89e9e7fb3a9eb",
+        "name": "index exist?",
+        "filename": "imageRegistryPath",
+        "filenameType": "msg",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 390,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6a30b3288fed7353",
+        "type": "catch",
+        "z": "6fa89e9e7fb3a9eb",
+        "name": "it does not",
+        "scope": [
+            "6ee276a3cdd35972"
+        ],
+        "uncaught": false,
+        "x": 560,
+        "y": 120,
+        "wires": [
+            [
+                "f349ddb5354bd19c"
+            ]
+        ]
+    },
+    {
+        "id": "a408108c16ec5700",
+        "type": "file",
+        "z": "6fa89e9e7fb3a9eb",
+        "name": "write index",
+        "filename": "$globalContext(\"imageRegistryPath\")",
+        "filenameType": "jsonata",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 990,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f349ddb5354bd19c",
+        "type": "change",
+        "z": "6fa89e9e7fb3a9eb",
+        "name": "make default empty index",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 770,
+        "y": 120,
+        "wires": [
+            [
+                "a408108c16ec5700"
+            ]
+        ]
+    },
+    {
+        "id": "5ccd96e5379dfcfa",
+        "type": "change",
+        "z": "6fa89e9e7fb3a9eb",
+        "name": "set path to index globally",
+        "rules": [
+            {
+                "t": "set",
+                "p": "imageRegistryPath",
+                "pt": "global",
+                "to": "imageRegistryPath",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 190,
+        "y": 120,
+        "wires": [
+            [
+                "6ee276a3cdd35972"
+            ]
+        ]
+    },
+    {
+        "id": "9f82f05bc713a75f",
+        "type": "json",
+        "z": "cfcb87456a94816f",
+        "name": "",
+        "property": "indexData",
+        "action": "obj",
+        "pretty": false,
+        "x": 350,
+        "y": 220,
+        "wires": [
+            [
+                "c2c9872b0b7d3415"
+            ]
+        ]
+    },
+    {
+        "id": "c2c9872b0b7d3415",
+        "type": "change",
+        "z": "cfcb87456a94816f",
+        "name": "insert image/registry pair",
+        "rules": [
+            {
+                "t": "set",
+                "p": "indexData",
+                "pt": "msg",
+                "to": "msg.indexData ~> |$|{}, [msg.image.name + \":\" + msg.image.version]|",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 550,
+        "y": 220,
+        "wires": [
+            [
+                "a5d41c9d626f69a8"
+            ]
+        ]
+    },
+    {
+        "id": "a5d41c9d626f69a8",
+        "type": "json",
+        "z": "cfcb87456a94816f",
+        "name": "",
+        "property": "payload",
+        "action": "str",
+        "pretty": false,
+        "x": 750,
+        "y": 220,
+        "wires": [
+            [
+                "9a4eebc10f0bfc9d"
+            ]
+        ]
+    },
+    {
+        "id": "9a4eebc10f0bfc9d",
+        "type": "file",
+        "z": "cfcb87456a94816f",
+        "name": "write index",
+        "filename": "$globalContext(\"imageRegsitryPath\")",
+        "filenameType": "jsonata",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 910,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1107539f863aa6ba",
+        "type": "file in",
+        "z": "cfcb87456a94816f",
+        "name": "read index",
+        "filename": "$globalContext(\"imageRegistryPath\")",
+        "filenameType": "jsonata",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 210,
+        "y": 220,
+        "wires": [
+            [
+                "9f82f05bc713a75f"
+            ]
         ]
     },
     {
@@ -471,6 +902,11 @@
                 "p": "filename",
                 "v": "($env(\"DATAPATH\") ?  $env(\"DATAPATH\") : \"/data\") & \"/config.js\"",
                 "vt": "jsonata"
+            },
+            {
+                "p": "imageRegistryPath",
+                "v": "($env(\"DATAPATH\") ?  $env(\"DATAPATH\") : \"/data\") & \"/image-registry.index.json\"",
+                "vt": "jsonata"
             }
         ],
         "repeat": "",
@@ -482,7 +918,8 @@
         "y": 80,
         "wires": [
             [
-                "4f7dddf957ee0796"
+                "4f7dddf957ee0796",
+                "162f029010f61fde"
             ]
         ]
     },
@@ -849,6 +1286,15 @@
         ]
     },
     {
+        "id": "162f029010f61fde",
+        "type": "subflow:6fa89e9e7fb3a9eb",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "x": 540,
+        "y": 120,
+        "wires": []
+    },
+    {
         "id": "91e25dba31c28805",
         "type": "http in",
         "z": "a827fd671d6a227e",
@@ -1164,6 +1610,7 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
+        "property": "payload",
         "x": 2570,
         "y": 600,
         "wires": [
@@ -3781,7 +4228,8 @@
                 "dce108611cd0c5ba"
             ],
             [
-                "3a845c367b89a50e"
+                "3a845c367b89a50e",
+                "6dd9ae10b7c73365"
             ]
         ]
     },
@@ -4498,7 +4946,7 @@
         "y": 1240,
         "wires": [
             [
-                "a067e7cf23d9f893"
+                "b2fe6fb7fb288f0f"
             ]
         ]
     },
@@ -4526,7 +4974,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "$count(msg.payload) > 0 ? $map(msg.payload, function($item) {\t    {\t        \"host\": $globalContext(\"config\").id,\t        \"name\": $match($item.RepoTags[0], /(.*):/).groups[0] ? $match($item.RepoTags[0], /(.*):/).groups[0] : $substring($item.Id, 7, 12),\t        \"registry\": {\t            \"id\": $lookup(\t                msg.event.data.registries{name: id},\t                $count($split($item.RepoTags[0], '/' )) > 1 ?\t                (\t                    $contains($split($item.RepoTags[0], '/')[0], /([.:]|localhost)/) ?\t                    (   \t                        $match($item.RepoTags[0], /(.*):/).groups[0] in msg.event.data.registries.name ?\t                        $match($item.RepoTags[0], /(.*):/).groups[0] :\t                        $split($item.RepoTags[0], '/')[0]\t                    ) :\t                    \"dockerhub\"\t                ) :\t                \"dockerhub\"\t            )\t        },\t        \"version\": $split($split($item.RepoTags[0], \"/\")[-1], ':')[1] ? $split($split($item.RepoTags[0], \"/\")[-1], ':')[1] : $item.Id,\t        \"size\": $round($item.Size / 1024 / 1024),\t        \"ImageID\": $item.Id,\t        \"Digest\": $split($item.RepoDigests[0], \"@\")[-1]\t    }\t}) : []",
+                "to": "$count(msg.payload) > 0 ? $map(msg.payload, function($item) {\t    {\t        \"host\": $globalContext(\"config\").id,\t        \"name\": $match($item.RepoTags[0], /(.*):/).groups[0] ? $match($item.RepoTags[0], /(.*):/).groups[0] : $substring($item.Id, 7, 12),\t        \"registry\": {\t            \"id\": msg.indexData[$item.RepoTags[0]] != null ? msg.indexData[$item.RepoTags[0]] : $lookup(\t                msg.event.data.registries{name: id},\t                $count($split($item.RepoTags[0], '/' )) > 1 ?\t                (\t                    $contains($split($item.RepoTags[0], '/')[0], /([.:]|localhost)/) ?\t                    (   \t                        $match($item.RepoTags[0], /(.*):/).groups[0] in msg.event.data.registries.name ?\t                        $match($item.RepoTags[0], /(.*):/).groups[0] :\t                        $split($item.RepoTags[0], '/')[0]\t                    ) :\t                    \"dockerhub\"\t                ) :\t                \"dockerhub\"\t            )\t        },\t        \"version\": $split($split($item.RepoTags[0], \"/\")[-1], ':')[1] ? $split($split($item.RepoTags[0], \"/\")[-1], ':')[1] : $item.Id,\t        \"size\": $round($item.Size / 1024 / 1024),\t        \"ImageID\": $item.Id,\t        \"Digest\": $split($item.RepoDigests[0], \"@\")[-1]\t    }\t}) : []",
                 "tot": "jsonata"
             }
         ],
@@ -4535,7 +4983,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1290,
+        "x": 1550,
         "y": 1240,
         "wires": [
             [
@@ -4559,7 +5007,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1570,
+        "x": 1830,
         "y": 1240,
         "wires": [
             [
@@ -5027,6 +5475,56 @@
         "x": 1010,
         "y": 1720,
         "wires": []
+    },
+    {
+        "id": "dc656393787674ab",
+        "type": "subflow:a483f01f35d23476",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "x": 2090,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "6dd9ae10b7c73365",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "image",
+                "pt": "msg",
+                "to": "payload.data",
+                "tot": "msg",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1830,
+        "y": 580,
+        "wires": [
+            [
+                "dc656393787674ab"
+            ]
+        ]
+    },
+    {
+        "id": "b2fe6fb7fb288f0f",
+        "type": "subflow:3aee58d1f23cebcc",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "x": 1290,
+        "y": 1240,
+        "wires": [
+            [
+                "a067e7cf23d9f893"
+            ]
+        ]
     },
     {
         "id": "dcf35b57666a30f9",
@@ -6705,7 +7203,7 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 130,
-        "y": 200,
+        "y": 380,
         "wires": [
             [
                 "0a57e0d1d1e7b853",
@@ -6717,7 +7215,7 @@
         "id": "4ee9334de2f7b337",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "route by :type",
         "property": "req.params.type",
         "propertyType": "msg",
         "rules": [
@@ -6750,8 +7248,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 5,
-        "x": 590,
-        "y": 200,
+        "x": 560,
+        "y": 380,
         "wires": [
             [
                 "6b8914321e269ff0"
@@ -6777,8 +7275,8 @@
         "name": "",
         "statusCode": "202",
         "headers": {},
-        "x": 100,
-        "y": 260,
+        "x": 340,
+        "y": 420,
         "wires": []
     },
     {
@@ -6792,9 +7290,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "images",
-        "x": 1360,
-        "y": 300,
+        "name": "docker api request: delete image",
+        "x": 1650,
+        "y": 480,
         "wires": [
             [
                 "b87eba8ac3329ce3"
@@ -6807,7 +7305,7 @@
         "id": "68ea572045adeda7",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "yes, remove by its ID",
         "rules": [
             {
                 "t": "set",
@@ -6829,8 +7327,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1160,
-        "y": 280,
+        "x": 1340,
+        "y": 460,
         "wires": [
             [
                 "489afa20fcdf043a"
@@ -6848,9 +7346,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "networks",
-        "x": 1140,
-        "y": 220,
+        "name": "docker api request: delete network",
+        "x": 1380,
+        "y": 380,
         "wires": [
             [],
             [],
@@ -6861,7 +7359,7 @@
         "id": "8f39826ad701f225",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "prepare docker api request",
         "rules": [
             {
                 "t": "set",
@@ -6876,8 +7374,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 950,
-        "y": 220,
+        "x": 1100,
+        "y": 380,
         "wires": [
             [
                 "f40ceca8b2fe91cf"
@@ -6895,9 +7393,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "volumes",
-        "x": 1140,
-        "y": 140,
+        "name": "docker api request: delete volume",
+        "x": 1380,
+        "y": 280,
         "wires": [
             [],
             [],
@@ -6908,7 +7406,7 @@
         "id": "059ff76a638ac4d6",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "prepare docker api request",
         "rules": [
             {
                 "t": "set",
@@ -6923,8 +7421,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 950,
-        "y": 140,
+        "x": 1100,
+        "y": 280,
         "wires": [
             [
                 "8dc73accdac55b3b"
@@ -6942,9 +7440,9 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "containers",
-        "x": 1150,
-        "y": 60,
+        "name": "docker api request: delete container",
+        "x": 1380,
+        "y": 180,
         "wires": [
             [
                 "47d05b450f712ec1"
@@ -6957,7 +7455,7 @@
         "id": "2475512b9999fc45",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "prepare docker api request",
         "rules": [
             {
                 "t": "set",
@@ -6972,8 +7470,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 950,
-        "y": 60,
+        "x": 1100,
+        "y": 180,
         "wires": [
             [
                 "551cf7f33257a9d3"
@@ -6984,7 +7482,7 @@
         "id": "00a7f64ecb58e0c8",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "reset configuration",
         "rules": [
             {
                 "t": "set",
@@ -6999,8 +7497,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 800,
-        "y": 380,
+        "x": 850,
+        "y": 640,
         "wires": [
             [
                 "53c71fbaf754a819"
@@ -7011,7 +7509,7 @@
         "id": "6b8914321e269ff0",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "should we delete it?",
         "property": "msg.payload.data.host.state in [\"deleted\", \"refreshing\"]",
         "propertyType": "jsonata",
         "rules": [
@@ -7022,8 +7520,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 750,
-        "y": 60,
+        "x": 860,
+        "y": 180,
         "wires": [
             [
                 "2475512b9999fc45"
@@ -7034,7 +7532,7 @@
         "id": "fbf3bcd631979ce5",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "should we delete it?",
         "property": "msg.payload.data.host.state in [\"deleted\", \"refreshing\"]",
         "propertyType": "jsonata",
         "rules": [
@@ -7045,8 +7543,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 770,
-        "y": 160,
+        "x": 860,
+        "y": 280,
         "wires": [
             [
                 "059ff76a638ac4d6"
@@ -7057,7 +7555,7 @@
         "id": "ba51cee0aa2ab895",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "should we delete it?",
         "property": "msg.payload.data.host.state in [\"deleted\", \"refreshing\"]",
         "propertyType": "jsonata",
         "rules": [
@@ -7068,8 +7566,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 770,
-        "y": 220,
+        "x": 860,
+        "y": 380,
         "wires": [
             [
                 "8f39826ad701f225"
@@ -7080,7 +7578,7 @@
         "id": "74282c37e59eb461",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "should we delete it?",
         "property": "msg.payload.data.host.state in [\"deleted\", \"refreshing\"]",
         "propertyType": "jsonata",
         "rules": [
@@ -7091,11 +7589,12 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 770,
-        "y": 280,
+        "x": 860,
+        "y": 480,
         "wires": [
             [
-                "e1a1c4427886a1e6"
+                "e1a1c4427886a1e6",
+                "8ebc6d099c77582e"
             ]
         ]
     },
@@ -7109,7 +7608,7 @@
             "b0765338f9440bd2"
         ],
         "x": 985,
-        "y": 380,
+        "y": 640,
         "wires": []
     },
     {
@@ -7117,15 +7616,15 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "177047e3d7a351be",
         "name": "",
-        "x": 1570,
-        "y": 200,
+        "x": 1870,
+        "y": 480,
         "wires": []
     },
     {
         "id": "e1a1c4427886a1e6",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "does the image have an ID?",
         "property": "msg.payload.data.ImageID",
         "propertyType": "msg",
         "rules": [
@@ -7139,8 +7638,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 950,
-        "y": 300,
+        "x": 1100,
+        "y": 480,
         "wires": [
             [
                 "68ea572045adeda7"
@@ -7154,7 +7653,7 @@
         "id": "231ec94d70cd3762",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "no, remove by name:version",
         "rules": [
             {
                 "t": "set",
@@ -7176,8 +7675,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1160,
-        "y": 320,
+        "x": 1360,
+        "y": 500,
         "wires": [
             [
                 "489afa20fcdf043a"
@@ -7188,7 +7687,7 @@
         "id": "def493fd34b215bc",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "inject configuration",
         "rules": [
             {
                 "t": "set",
@@ -7210,8 +7709,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 380,
-        "y": 200,
+        "x": 370,
+        "y": 380,
         "wires": [
             [
                 "4ee9334de2f7b337"
@@ -7222,7 +7721,7 @@
         "id": "c594da7accef66e1",
         "type": "change",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "notify host of removal",
         "rules": [
             {
                 "t": "set",
@@ -7237,11 +7736,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1530,
-        "y": 40,
+        "x": 1900,
+        "y": 180,
         "wires": [
             [
-                "b87eba8ac3329ce3"
+                "9c2f3e51602bad60"
             ]
         ]
     },
@@ -7249,7 +7748,7 @@
         "id": "47d05b450f712ec1",
         "type": "switch",
         "z": "177047e3d7a351be",
-        "name": "",
+        "name": "is host present in netbox?",
         "property": "config.id",
         "propertyType": "global",
         "rules": [
@@ -7263,13 +7762,109 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1330,
-        "y": 40,
+        "x": 1670,
+        "y": 180,
         "wires": [
             [
                 "c594da7accef66e1"
             ],
             []
+        ]
+    },
+    {
+        "id": "df05998cbfab83d7",
+        "type": "comment",
+        "z": "177047e3d7a351be",
+        "name": "Containers",
+        "info": "",
+        "x": 820,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "9c2f3e51602bad60",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "177047e3d7a351be",
+        "name": "",
+        "x": 2090,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "654bcebbd315600e",
+        "type": "comment",
+        "z": "177047e3d7a351be",
+        "name": "Volumes",
+        "info": "",
+        "x": 820,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "eebcabef106ade5d",
+        "type": "comment",
+        "z": "177047e3d7a351be",
+        "name": "Networks",
+        "info": "",
+        "x": 820,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "4fcd43047da6f735",
+        "type": "comment",
+        "z": "177047e3d7a351be",
+        "name": "Images",
+        "info": "",
+        "x": 810,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "d586993af65a838b",
+        "type": "comment",
+        "z": "177047e3d7a351be",
+        "name": "Hosts",
+        "info": "",
+        "x": 810,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "e09c89ae1ea3fc21",
+        "type": "subflow:cfcb87456a94816f",
+        "z": "177047e3d7a351be",
+        "name": "",
+        "x": 1310,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "8ebc6d099c77582e",
+        "type": "change",
+        "z": "177047e3d7a351be",
+        "name": "set msg.image",
+        "rules": [
+            {
+                "t": "set",
+                "p": "image",
+                "pt": "msg",
+                "to": "payload.data",
+                "tot": "msg",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1060,
+        "y": 540,
+        "wires": [
+            [
+                "e09c89ae1ea3fc21"
+            ]
         ]
     },
     {
