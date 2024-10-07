@@ -1,1 +1,1 @@
-{"netbox_url":"","netbox_token":"","ui":1,"id":"","endpoint":"","flows":"0"}
+{"netbox_url":"http://192.168.1.65:8000","netbox_token":"03893fec524cd8e6587eabaa725299ff08921c86","ui":1,"id":"2","endpoint":"http://admin:saashup@debian.orb.local:1880","flows":"0"}
