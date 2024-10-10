@@ -1,6 +1,6 @@
 info:
   title: Netbox Docker Agent
-  version: 0.24.0
+  version: 0.36.0
 openapi: 3.0.0
 paths:
   /api/engine/endpoint:
@@ -306,6 +306,17 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/GetApiVolumes200ResponseBody'
+  /api/registries:
+    get:
+      tags:
+        - ui
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/GetApiRegistries200ResponseBody'
   /metrics:
     get:
       tags:
@@ -1297,16 +1308,16 @@ components:
       items:
         type: object
         properties:
-          name:
-            type: string
           id:
             type: number
-          username:
+          name:
             type: string
-          email:
+          serveraddress:
             type: string
-          server:
-            type: string
+          images:
+            type: array
+            items:
+              type: string
     GetInfo200ResponseBody:
       type: object
       properties:

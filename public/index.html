@@ -97,6 +97,10 @@
               data-bs-target="#navbarCollapse"><i class="fas fa-hdd"></i> Volumes</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#" id="nav-registries-btn" data-bs-toggle="collapse"
+              data-bs-target="#navbarCollapse"><i class="fas fa-cloud"></i> Registries</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/doc"><i class="fas fa-file-code"></i> Apidoc</a>
           </li>
         </ul>
@@ -155,6 +159,13 @@
         <span id="networks-count" class="text-primary fw-bold">0</span> network(s)
       </div>
       <div class="col-12" id="networks-list"></div>
+    </div>
+
+    <div class="row d-none app" id="registries">
+      <div class="col-6 text-center">
+        <span id="registries-count" class="text-primary fw-bold">0</span> registries
+      </div>
+      <div class="col-12" id="registries-list"></div>
     </div>
 
   </main>
@@ -645,6 +656,67 @@
         $("#clogs_" + containerId + "_pre").html(result.toString().replace(/(?:\r\n|\r|\n)/g, '<br>'))
       });
     }
+
+    $("#nav-registries-btn").on('click', function () {
+      cleanWindow();
+      $('#nav-registries-btn').addClass('active')
+      $('#registries').removeClass('d-none');
+      const list = document.getElementById("registries-list");
+      while (list.firstChild) {
+        list.removeChild(list.lastChild);
+      }
+
+      $.ajax({
+        url: "/api/registries",
+      }).done(function (result) {
+        console.log(result)
+        $("#registries-count").html(result.length);
+        for (const c of result) {
+          const card = document.createElement("div");
+          card.classList.add("card", "my-2");
+
+          const header = document.createElement("div");
+          header.appendChild(document.createTextNode(c.name));
+          header.classList.add("card-header", "bg-white", "text-primary");
+
+          card.appendChild(header);
+
+          const body = document.createElement("div");
+          body.classList.add("card-body", "row");
+
+          const serveraddress = document.createElement("div");
+          serveraddress.classList.add("col-md-12", "col-sm-12", "p-2");
+
+          const serveraddressHead = document.createElement("b");
+          serveraddressHead.appendChild(document.createTextNode("serveraddress: "));
+
+          const serveraddressContent = document.createElement("code");
+          serveraddressContent.appendChild(document.createTextNode(c.serveraddress));
+
+          serveraddress.appendChild(serveraddressHead)
+          serveraddress.appendChild(serveraddressContent);
+
+          body.appendChild(serveraddress);
+
+          const images = document.createElement("div");
+          images.classList.add("col-md-12", "col-sm-12", "p-2");
+
+          const imageHead = document.createElement("b");
+          imageHead.appendChild(document.createTextNode("Image(s) count: "));
+
+          const imageContent = document.createElement("span");
+          imageContent.appendChild(document.createTextNode(c.images.length));
+
+          images.appendChild(imageHead)
+          images.appendChild(imageContent);
+
+          body.appendChild(images);
+
+          card.appendChild(body);
+          list.appendChild(card);
+        }
+      })
+    });
   </script>
 
 </body>

@@ -210,3 +210,8 @@ GET {{host}}/metrics
 HTTP 200
 [Asserts]
 body isString
+
+GET {{host}}/api/registries
+HTTP 200
+[Asserts]
+jsonpath "$" isCollection
