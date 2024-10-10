@@ -1424,7 +1424,7 @@
         "wires": [
             [
                 "05457d6efadc3737",
-                "603bb6fcfb809fdb"
+                "6fbc7abe53c524c8"
             ]
         ]
     },
@@ -3297,6 +3297,31 @@
         "x": 3395,
         "y": 660,
         "wires": []
+    },
+    {
+        "id": "6fbc7abe53c524c8",
+        "type": "join",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "mode": "auto",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": "false",
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "x": 3290,
+        "y": 660,
+        "wires": [
+            [
+                "603bb6fcfb809fdb"
+            ]
+        ]
     },
     {
         "id": "e974d3bd502f614f",
