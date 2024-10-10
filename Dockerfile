@@ -16,4 +16,4 @@ ENV FLOWS=/usr/src/node-red/flows.json
 ENV DATAPATH=/data
 ENV APPPATH=/usr/src/node-red
 
-COPY --chown=node-red:node-red settings.js config.js /data
+COPY --chown=node-red:node-red settings.js config.js registries.js /data

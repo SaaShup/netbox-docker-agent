@@ -4,4 +4,3 @@ npm-debug.log*
 .npm
 node_modules
 .*.json*
-registry-index.js
