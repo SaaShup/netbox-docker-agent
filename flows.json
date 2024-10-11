@@ -923,7 +923,7 @@
                 "t": "set",
                 "p": "registries",
                 "pt": "global",
-                "to": "[msg.payload.results.{\t    \"id\": id,\t    \"name\": name,\t    \"serveraddress\": serveraddress,\t    \"images\": images.display\t}]",
+                "to": "[$filter(msg.payload.results.{\t    \"id\": id,\t    \"name\": name,\t    \"serveraddress\": serveraddress,\t    \"images\": [images.display]\t}, function($v) { $v.images != [] })]",
                 "tot": "jsonata"
             }
         ],
@@ -3702,7 +3702,8 @@
         "y": 520,
         "wires": [
             [
-                "829323373ce00e9e"
+                "829323373ce00e9e",
+                "34ea063b4d53a0a0"
             ]
         ]
     },
@@ -4230,8 +4231,8 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 3025,
-        "y": 520,
+        "x": 3045,
+        "y": 480,
         "wires": []
     },
     {
@@ -4787,6 +4788,31 @@
         "x": 1595,
         "y": 760,
         "wires": []
+    },
+    {
+        "id": "34ea063b4d53a0a0",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "registries",
+                "pt": "global",
+                "to": "(\t    $registry := {\t        \"id\": msg.input.data.registry.id,\t        \"name\": msg.input.data.registry.name,\t        \"serveraddress\": msg.input.data.registry.serveraddress,\t        \"images\": [msg.input.data.display]\t    };\t    $globalContext(\"registries\")[id=$registry.id] ? $globalContext(\"registries\") ~> |$[id=$registry.id]|{\"images\":$distinct([$append(images, $registry.images[0])])}| : $append($globalContext(\"registries\"), $registry)\t)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 3120,
+        "y": 540,
+        "wires": [
+            []
+        ]
     },
     {
         "id": "dcf35b57666a30f9",
@@ -6556,7 +6582,8 @@
         "y": 300,
         "wires": [
             [
-                "b87eba8ac3329ce3"
+                "b87eba8ac3329ce3",
+                "06d9e416e24ea04b"
             ],
             [],
             []
@@ -7070,6 +7097,31 @@
         "x": 945,
         "y": 440,
         "wires": []
+    },
+    {
+        "id": "06d9e416e24ea04b",
+        "type": "change",
+        "z": "177047e3d7a351be",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "registries",
+                "pt": "global",
+                "to": "(\t    $id := msg.input.data.registry.id;\t    $image := msg.input.data.display;\t    [$globalContext(\"registries\") ~> | $[id=$id] | {\"images\": [$filter(images, function($v) { $v != $image })]} | ~> $filter(function($v) { $v.images != [] })]\t)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1580,
+        "y": 300,
+        "wires": [
+            []
+        ]
     },
     {
         "id": "305f23764ca23090",
