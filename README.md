@@ -1,6 +1,8 @@
 # Netbox Docker Agent
 
-[![Github Issues](http://img.shields.io/github/issues/SaaShup/netbox-docker-agent)](https://github.com/SaaShup/netbox-docker-agent/issues)
+[![Code](https://img.shields.io/badge/code-nodered-aa4444)](https://nodered.org/)
+[![Github Issues](http://img.shields.io/github/issues/SaaShup/netbox-docker-agent?color=blue)](https://github.com/SaaShup/netbox-docker-agent/issues)
+[![Github Pull requests](https://img.shields.io/github/issues-pr/SaaShup/netbox-docker-agent?color=green)](https://github.com/SaaShup/netbox-docker-agent/pulls)
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
 ## Description
