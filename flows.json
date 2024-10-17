@@ -165,8 +165,8 @@
         "once": false,
         "onceDelay": "1",
         "topic": "",
-        "x": 160,
-        "y": 680,
+        "x": 170,
+        "y": 720,
         "wires": [
             [
                 "3f489e8a5d253765",
@@ -217,8 +217,8 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 510,
-        "y": 780,
+        "x": 520,
+        "y": 820,
         "wires": [
             []
         ]
@@ -240,8 +240,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 140,
-        "y": 780,
+        "x": 150,
+        "y": 820,
         "wires": [
             [
                 "55c03f8643b324ae"
@@ -259,8 +259,8 @@
         "syntax": "plain",
         "template": "data = require(\"./package.json\")\n\nmodule.exports = {\n    credentialSecret: \"saashup\",\n    flowFile: \"flows.json\",\n    flowFilePretty: true,\n    adminAuth: {\n        type: \"credentials\",\n        users: [{\n            username: process.env.ADMIN_USERNAME || \"admin\",\n            password: process.env.ADMIN_PASSWORD || \"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\",\n            permissions: \"*\"\n        }]\n    },\n    /*https: {\n      key: require(\"fs\").readFileSync('/data/privkey.pem'),\n      cert: require(\"fs\").readFileSync('/data/cert.pem')\n    },\n    requireHttps: true,*/\n    httpNodeAuth: {\n        user: process.env.API_USERNAME || \"admin\",\n        pass: process.env.API_PASSWORD || \"$2a$08$s.NFdSn4Gm4d7gHErya//e6O8RO1/3f7TZ7zflXJ9jfFV0cI6jGwK\"\n    },\n    uiPort: process.env.PORT || 1880,\n    disableEditor: 'ENABLE_EDITOR' in process.env ? false : true,\n    httpStatic: [\n        { path: '/usr/src/node-red/public', root: '/' },\n        { path: '/usr/src/node-red/public/doc.html', root: '/doc' },\n        { path: '/usr/src/node-red/public/openapi.yml', root: '/openapi' }\n    ],\n    httpAdminRoot: '/nodered',\n    diagnostics: {\n        enabled: true,\n        ui: true,\n    },\n    runtimeState: {\n        enabled: false,\n        ui: false,\n    },\n    logging: {\n        console: {\n            level: \"info\",\n            metrics: false,\n            audit: false,\n            handler: function(settings) {\n                return function(msg) {\n                    const level = {\n                        20: 'error',\n                        30: 'warn',\n                        40: 'info'\n                    };\n                    const lvl = \"level\" in msg ? msg.level : \"40\";\n\n                    delete msg.type;\n                    delete msg.z;\n                    delete msg.path;\n                    delete msg.name;\n                    delete msg.id;\n\n                    let line = `${data.name} level=${level[lvl]} version=${data.version}`;\n\n                    if (typeof msg.msg === 'object') {\n                        for (const key of Object.keys(msg.msg)) {\n                            line += ` ${key}=${JSON.stringify(msg.msg[key])}`;\n                        }\n                    } else {\n                        line += ` msg=` + JSON.stringify(msg.msg);\n                    }\n\n                    if (lvl <= 20) {\n                        return console.error(line);\n                    }\n\n                    return console.log(line);\n                }\n            }\n        }\n    },\n    exportGlobalContextKeys: false,\n    externalModules: {\n    },\n    editorTheme: {\n        tours: false,\n        palette: {\n        },\n        projects: {\n            enabled: false,\n            workflow: {\n                mode: \"manual\"\n            }\n        },\n        codeEditor: {\n            lib: \"monaco\",\n            options: {\n            }\n        },\n        markdownEditor: {\n            mermaid: {\n                enabled: true\n            }\n        },\n    },\n    functionExternalModules: true,\n    functionTimeout: 0,\n    functionGlobalContext: {\n    },\n    debugMaxLength: 1000,\n    mqttReconnectTime: 15000,\n    serialReconnectTime: 15000\n}\n",
         "output": "str",
-        "x": 330,
-        "y": 780,
+        "x": 340,
+        "y": 820,
         "wires": [
             [
                 "deb89a9f64f32d7e"
@@ -279,8 +279,8 @@
         "winHide": false,
         "oldrc": false,
         "name": "Events",
-        "x": 340,
-        "y": 880,
+        "x": 350,
+        "y": 920,
         "wires": [
             [
                 "7c210c45ea82059e"
@@ -306,8 +306,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 150,
-        "y": 880,
+        "x": 160,
+        "y": 920,
         "wires": [
             [
                 "b3814c680815a25b"
@@ -329,8 +329,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 640,
-        "y": 860,
+        "x": 650,
+        "y": 900,
         "wires": [
             [
                 "8e555efa2728d8b8"
@@ -348,8 +348,8 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 500,
-        "y": 860,
+        "x": 510,
+        "y": 900,
         "wires": [
             [
                 "06b0b14f4b337cfe"
@@ -386,8 +386,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 4,
-        "x": 960,
-        "y": 860,
+        "x": 970,
+        "y": 900,
         "wires": [
             [],
             [],
@@ -403,8 +403,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 800,
-        "y": 860,
+        "x": 810,
+        "y": 900,
         "wires": [
             [
                 "da696e53c1c7431f"
@@ -437,8 +437,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 380,
-        "y": 660,
+        "x": 390,
+        "y": 700,
         "wires": [
             [
                 "d216b6ee68a71932"
@@ -456,8 +456,8 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 570,
-        "y": 660,
+        "x": 580,
+        "y": 700,
         "wires": [
             []
         ]
@@ -621,7 +621,8 @@
         "y": 440,
         "wires": [
             [
-                "2b9a4a79e583d72a"
+                "2b9a4a79e583d72a",
+                "964f77c37875401b"
             ]
         ]
     },
@@ -636,8 +637,8 @@
         "once": true,
         "onceDelay": "5",
         "topic": "",
-        "x": 150,
-        "y": 520,
+        "x": 160,
+        "y": 560,
         "wires": [
             [
                 "b96bd464463004a6"
@@ -663,8 +664,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 350,
-        "y": 580,
+        "x": 360,
+        "y": 620,
         "wires": [
             [
                 "af0f2ce79605a0a7"
@@ -676,8 +677,8 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "216db6efc0df9bc0",
         "name": "",
-        "x": 550,
-        "y": 580,
+        "x": 560,
+        "y": 620,
         "wires": []
     },
     {
@@ -720,8 +721,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1140,
-        "y": 520,
+        "x": 1150,
+        "y": 560,
         "wires": [
             [
                 "63761b3c0cd6b725"
@@ -744,8 +745,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1350,
-        "y": 520,
+        "x": 1360,
+        "y": 560,
         "wires": [
             []
         ]
@@ -765,8 +766,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 330,
-        "y": 520,
+        "x": 340,
+        "y": 560,
         "wires": [
             [
                 "53727c59b9fece10",
@@ -800,8 +801,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 540,
-        "y": 520,
+        "x": 550,
+        "y": 560,
         "wires": [
             [
                 "9c7b8352b86756cb"
@@ -824,8 +825,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 750,
-        "y": 520,
+        "x": 760,
+        "y": 560,
         "wires": [
             [
                 "975ed88ff7efae09"
@@ -847,8 +848,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 930,
-        "y": 520,
+        "x": 940,
+        "y": 560,
         "wires": [
             [
                 "9d463861f76ab37d"
@@ -1145,8 +1146,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 380,
-        "y": 720,
+        "x": 390,
+        "y": 760,
         "wires": [
             [
                 "8d225e4335f4ab51"
@@ -1164,8 +1165,71 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 580,
-        "y": 720,
+        "x": 590,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "964f77c37875401b",
+        "type": "exec",
+        "z": "216db6efc0df9bc0",
+        "command": "curl -X GET --unix-socket /var/run/docker.sock http://localhost/info",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "docker api request: get api info",
+        "x": 430,
+        "y": 500,
+        "wires": [
+            [
+                "5d8c9841f540054a"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "5d8c9841f540054a",
+        "type": "json",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 670,
+        "y": 500,
+        "wires": [
+            [
+                "e8808ecee2ee7aba"
+            ]
+        ]
+    },
+    {
+        "id": "e8808ecee2ee7aba",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "dockerinfo",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 880,
+        "y": 500,
         "wires": [
             []
         ]
@@ -2541,6 +2605,13 @@
             },
             {
                 "t": "set",
+                "p": "output.dockerInfo",
+                "pt": "msg",
+                "to": "dockerinfo",
+                "tot": "global"
+            },
+            {
+                "t": "set",
                 "p": "payload",
                 "pt": "msg",
                 "to": "output",
@@ -3770,9 +3841,16 @@
             },
             {
                 "t": "set",
+                "p": "dockerDriver",
+                "pt": "msg",
+                "to": "dockerinfo.Driver",
+                "tot": "global"
+            },
+            {
+                "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t   \"Name\": msg.input.data.name,\t   \"Driver\": msg.input.data.driver\t}",
+                "to": "{\t   \"Name\": msg.input.data.name,\t   \"Driver\": msg.input.data.driver,\t   msg.dockerDriver != \"overlay2\" and $number(msg.input.data.max_size) > 0 ? \t      \"DriverOpts\": {\t         \"o\": \"size=\" & msg.input.data.max_size & \"m\"\t      } : \"\"\t}",
                 "tot": "jsonata"
             },
             {
