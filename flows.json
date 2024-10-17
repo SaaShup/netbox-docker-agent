@@ -3850,7 +3850,14 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t   \"Name\": msg.input.data.name,\t   \"Driver\": msg.input.data.driver,\t   msg.dockerDriver != \"overlay2\" and $number(msg.input.data.max_size) > 0 ? \t      \"DriverOpts\": {\t         \"o\": \"size=\" & msg.input.data.max_size & \"m\"\t      } : \"\"\t}",
+                "to": "{\t   \"Name\": msg.input.data.name,\t   \"Driver\": msg.input.data.driver\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.DriverOpts",
+                "pt": "msg",
+                "to": "msg.dockerDriver != \"overlay2\" and $number(msg.input.data.max_size) > 0 ? \t    {\t   \"o\": \"size=\" & msg.input.data.max_size & \"m\"\t}",
                 "tot": "jsonata"
             },
             {
