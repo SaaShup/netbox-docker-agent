@@ -799,7 +799,7 @@
                 "t": "set",
                 "p": "rejectUnauthorized",
                 "pt": "msg",
-                "to": "$env(\"ENABLE_SSL_CHECK\") ? $env(\"ENABLE_SSL_CHECK\") : true",
+                "to": "$env(\"DISABLE_SSL_CHECK\") ? false : true",
                 "tot": "jsonata"
             }
         ],
@@ -887,7 +887,7 @@
                 "t": "set",
                 "p": "rejectUnauthorized",
                 "pt": "msg",
-                "to": "$env(\"ENABLE_SSL_CHECK\") ? $env(\"ENABLE_SSL_CHECK\") : true",
+                "to": "$env(\"DISABLE_SSL_CHECK\") ? false : true",
                 "tot": "jsonata"
             }
         ],
@@ -3418,7 +3418,7 @@
                 "t": "set",
                 "p": "rejectUnauthorized",
                 "pt": "msg",
-                "to": "$env(\"ENABLE_SSL_CHECK\") ? $env(\"ENABLE_SSL_CHECK\") : true",
+                "to": "$env(\"DISABLE_SSL_CHECK\") ? false : true",
                 "tot": "jsonata"
             }
         ],
@@ -4950,7 +4950,7 @@
                 "t": "set",
                 "p": "rejectUnauthorized",
                 "pt": "msg",
-                "to": "$env(\"ENABLE_SSL_CHECK\") ? $env(\"ENABLE_SSL_CHECK\") : true",
+                "to": "$env(\"DISABLE_SSL_CHECK\") ? false : true",
                 "tot": "jsonata"
             }
         ],
@@ -5219,7 +5219,7 @@
                 "t": "set",
                 "p": "rejectUnauthorized",
                 "pt": "msg",
-                "to": "$env(\"ENABLE_SSL_CHECK\") ? $env(\"ENABLE_SSL_CHECK\") : true",
+                "to": "$env(\"DISABLE_SSL_CHECK\") ? false : true",
                 "tot": "jsonata"
             }
         ],
@@ -7162,7 +7162,7 @@
                 "t": "set",
                 "p": "rejectUnauthorized",
                 "pt": "msg",
-                "to": "$env(\"ENABLE_SSL_CHECK\") ? $env(\"ENABLE_SSL_CHECK\") : true",
+                "to": "$env(\"DISABLE_SSL_CHECK\") ? false : true",
                 "tot": "jsonata"
             }
         ],

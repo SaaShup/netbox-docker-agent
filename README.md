@@ -24,7 +24,7 @@ You can disable node-red editor by setting ENABLE_EDITOR to any value.
 
 You can disable docker exec command by setting DISABLE_EXEC to any value.
 
-You can disable SSL checking by setting ENABLE_SSL_CHECK=false.
+You can disable SSL checking by setting DISABLE_SSL_CHECK to any value.
 
 ## Clean
 ```
