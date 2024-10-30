@@ -22,7 +22,9 @@ You can define username and password via envionment variable:
 
 You can disable node-red editor by setting ENABLE_EDITOR to any value.
 
-You can disable docker exec command by settings DISABLE_EXEC to any value.
+You can disable docker exec command by setting DISABLE_EXEC to any value.
+
+You can disable SSL checking by setting ENABLE_SSL_CHECK=false
 
 ## Clean
 ```
@@ -40,6 +42,7 @@ docker build -t saashup/netbox-docker-agent .
 docker run -d -p 1880:1880 -v /var/run/docker.sock:/var/run/docker.sock:rw -v netbox-docker-agent:/data --name netbox-docker-agent saashup/netbox-docker-agent
 ```
 container must have **rw access to the docker unix socket** (/var/run/docker.sock)
+a quick and simple way to test is to run `chmod a+rw /var/run/docker.sock`
 
 Default access is *admin/saashup*
 
