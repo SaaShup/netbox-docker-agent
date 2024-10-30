@@ -794,6 +794,13 @@
                 "pt": "msg",
                 "to": "{\t    \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "rejectUnauthorized",
+                "pt": "msg",
+                "to": "$env(\"ENABLE_SSL_CHECK\") ? $env(\"ENABLE_SSL_CHECK\") : true",
+                "tot": "jsonata"
             }
         ],
         "action": "",
@@ -874,6 +881,13 @@
                 "p": "headers",
                 "pt": "msg",
                 "to": "{\t   \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "rejectUnauthorized",
+                "pt": "msg",
+                "to": "$env(\"ENABLE_SSL_CHECK\") ? $env(\"ENABLE_SSL_CHECK\") : true",
                 "tot": "jsonata"
             }
         ],
@@ -1248,7 +1262,7 @@
         "wires": [
             [
                 "53aaf7026e5a7cee",
-                "4acdf31cd717543f"
+                "ae9074b49ecc1248"
             ]
         ]
     },
@@ -2235,7 +2249,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 350,
+        "x": 610,
         "y": 500,
         "wires": [
             [
@@ -3395,6 +3409,33 @@
         ]
     },
     {
+        "id": "ae9074b49ecc1248",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "set rejectUnauthorized",
+        "rules": [
+            {
+                "t": "set",
+                "p": "rejectUnauthorized",
+                "pt": "msg",
+                "to": "$env(\"ENABLE_SSL_CHECK\") ? $env(\"ENABLE_SSL_CHECK\") : true",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 360,
+        "y": 500,
+        "wires": [
+            [
+                "4acdf31cd717543f"
+            ]
+        ]
+    },
+    {
         "id": "e974d3bd502f614f",
         "type": "http in",
         "z": "3ea1a4b04d852f38",
@@ -3403,12 +3444,12 @@
         "method": "post",
         "upload": false,
         "swaggerDoc": "",
-        "x": 130,
-        "y": 320,
+        "x": 140,
+        "y": 260,
         "wires": [
             [
-                "5db8c0db8473ea8e",
-                "ea738534a1b15332"
+                "ea738534a1b15332",
+                "3508df86bd32474e"
             ]
         ]
     },
@@ -3542,8 +3583,8 @@
         "name": "",
         "statusCode": "202",
         "headers": {},
-        "x": 340,
-        "y": 400,
+        "x": 360,
+        "y": 240,
         "wires": []
     },
     {
@@ -4900,6 +4941,33 @@
         ]
     },
     {
+        "id": "3508df86bd32474e",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "set rejectUnauthorized",
+        "rules": [
+            {
+                "t": "set",
+                "p": "rejectUnauthorized",
+                "pt": "msg",
+                "to": "$env(\"ENABLE_SSL_CHECK\") ? $env(\"ENABLE_SSL_CHECK\") : true",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 160,
+        "y": 320,
+        "wires": [
+            [
+                "5db8c0db8473ea8e"
+            ]
+        ]
+    },
+    {
         "id": "dcf35b57666a30f9",
         "type": "http in",
         "z": "8e85e8c54d776ddc",
@@ -5146,6 +5214,13 @@
                 "pt": "msg",
                 "to": "input.data.ContainerID",
                 "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "rejectUnauthorized",
+                "pt": "msg",
+                "to": "$env(\"ENABLE_SSL_CHECK\") ? $env(\"ENABLE_SSL_CHECK\") : true",
+                "tot": "jsonata"
             }
         ],
         "action": "",
@@ -7082,6 +7157,13 @@
                 "pt": "msg",
                 "to": "payload",
                 "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "rejectUnauthorized",
+                "pt": "msg",
+                "to": "$env(\"ENABLE_SSL_CHECK\") ? $env(\"ENABLE_SSL_CHECK\") : true",
+                "tot": "jsonata"
             }
         ],
         "action": "",
