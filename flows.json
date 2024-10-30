@@ -3607,7 +3607,7 @@
         "type": "switch",
         "z": "3ea1a4b04d852f38",
         "name": "should we pull?",
-        "property": "(\t    msg.payload.data.size <= 0\t    or msg.payload.data.force = true\t)\t",
+        "property": "(\t    (msg.payload.data.size <= 0 \t    and msg.payload.data.ImageID = null)\t    or msg.payload.data.force = true\t)\t",
         "propertyType": "jsonata",
         "rules": [
             {
