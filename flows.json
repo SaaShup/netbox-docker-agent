@@ -900,8 +900,7 @@
         "y": 300,
         "wires": [
             [
-                "7a03ca99dfebe08f",
-                "81160911084464ed"
+                "7a03ca99dfebe08f"
             ]
         ]
     },
@@ -925,8 +924,7 @@
         "y": 300,
         "wires": [
             [
-                "af2aeed6d2f70ef5",
-                "db34ba4907c0e1fc"
+                "af2aeed6d2f70ef5"
             ]
         ]
     },
@@ -1126,7 +1124,8 @@
         "z": "216db6efc0df9bc0",
         "name": "link in 3",
         "links": [
-            "603bb6fcfb809fdb"
+            "603bb6fcfb809fdb",
+            "b9716dee5f25776a"
         ],
         "x": 455,
         "y": 360,
@@ -1249,40 +1248,6 @@
         "wires": [
             []
         ]
-    },
-    {
-        "id": "81160911084464ed",
-        "type": "debug",
-        "z": "216db6efc0df9bc0",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 780,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "db34ba4907c0e1fc",
-        "type": "debug",
-        "z": "216db6efc0df9bc0",
-        "name": "debug 2",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 980,
-        "y": 360,
-        "wires": []
     },
     {
         "id": "91e25dba31c28805",
@@ -2382,8 +2347,8 @@
         "name": "",
         "statusCode": "403",
         "headers": {},
-        "x": 1700,
-        "y": 180,
+        "x": 1920,
+        "y": 80,
         "wires": []
     },
     {
@@ -2408,7 +2373,7 @@
         "y": 220,
         "wires": [
             [
-                "e843e090678a61b9"
+                "9ada2017c825de2d"
             ],
             [
                 "4b4af488cdc44caf"
@@ -3264,7 +3229,7 @@
         "y": 160,
         "wires": [
             [
-                "a23553e203eafd05"
+                "98e3ba2ab2c192d7"
             ],
             [
                 "eead888045896e1a"
@@ -3468,6 +3433,56 @@
         "wires": [
             [
                 "4acdf31cd717543f"
+            ]
+        ]
+    },
+    {
+        "id": "9ada2017c825de2d",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "was netbox webhook?",
+        "property": "req.url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "/api/containers",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1720,
+        "y": 80,
+        "wires": [
+            [
+                "e843e090678a61b9"
+            ]
+        ]
+    },
+    {
+        "id": "98e3ba2ab2c192d7",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "was netbox webhook?",
+        "property": "req.url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "/api/containers",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 2780,
+        "y": 140,
+        "wires": [
+            [
+                "a23553e203eafd05"
             ]
         ]
     },
