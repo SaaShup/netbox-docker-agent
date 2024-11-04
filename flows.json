@@ -873,7 +873,7 @@
                 "t": "set",
                 "p": "url",
                 "pt": "msg",
-                "to": "$globalContext(\"config\").netbox_url & \"/api/plugins/docker/registries/\"",
+                "to": "$globalContext(\"config\").netbox_url & \"/api/plugins/docker/registries/?host_id=\" & $globalContext(\"config\").id",
                 "tot": "jsonata"
             },
             {
@@ -1124,7 +1124,8 @@
         "z": "216db6efc0df9bc0",
         "name": "link in 3",
         "links": [
-            "603bb6fcfb809fdb"
+            "603bb6fcfb809fdb",
+            "b9716dee5f25776a"
         ],
         "x": 455,
         "y": 360,
@@ -2346,8 +2347,8 @@
         "name": "",
         "statusCode": "403",
         "headers": {},
-        "x": 1700,
-        "y": 180,
+        "x": 1920,
+        "y": 80,
         "wires": []
     },
     {
@@ -2372,7 +2373,7 @@
         "y": 220,
         "wires": [
             [
-                "e843e090678a61b9"
+                "9ada2017c825de2d"
             ],
             [
                 "4b4af488cdc44caf"
@@ -3228,7 +3229,7 @@
         "y": 160,
         "wires": [
             [
-                "a23553e203eafd05"
+                "98e3ba2ab2c192d7"
             ],
             [
                 "eead888045896e1a"
@@ -3432,6 +3433,56 @@
         "wires": [
             [
                 "4acdf31cd717543f"
+            ]
+        ]
+    },
+    {
+        "id": "9ada2017c825de2d",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "was netbox webhook?",
+        "property": "req.url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "/api/containers",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1720,
+        "y": 80,
+        "wires": [
+            [
+                "e843e090678a61b9"
+            ]
+        ]
+    },
+    {
+        "id": "98e3ba2ab2c192d7",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "was netbox webhook?",
+        "property": "req.url",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "/api/containers",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 2780,
+        "y": 140,
+        "wires": [
+            [
+                "a23553e203eafd05"
             ]
         ]
     },
