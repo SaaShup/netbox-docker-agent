@@ -1119,23 +1119,6 @@
         ]
     },
     {
-        "id": "98ba6e554d17eb95",
-        "type": "link in",
-        "z": "216db6efc0df9bc0",
-        "name": "link in 3",
-        "links": [
-            "603bb6fcfb809fdb",
-            "b9716dee5f25776a"
-        ],
-        "x": 455,
-        "y": 360,
-        "wires": [
-            [
-                "2fd1cfc270927e8d"
-            ]
-        ]
-    },
-    {
         "id": "59fbfa36f8ac2c8b",
         "type": "change",
         "z": "216db6efc0df9bc0",
@@ -1435,79 +1418,6 @@
         "wires": []
     },
     {
-        "id": "2cc40b296062191e",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "prepare netbox request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/images/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "result",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] ? $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] : $substring(msg.result[0].Id,7,12),\t    \"registry\": {\t        \"id\": $lookup(\t            msg.registryresponse,\t            $count($split(msg.result[0].RepoTags[0], '/' )) > 1 ?\t            (\t                $contains($split(msg.result[0].RepoTags[0], '/')[0], /([.:]|localhost)/) ?\t                (   \t                    $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] in $keys(msg.registryresponse) ?\t                    $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] :\t                    $split(msg.result[0].RepoTags[0], '/')[0]\t                ) :\t                \"dockerhub\"\t            ) :\t            \"dockerhub\"\t        )\t    },\t    \"version\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] : msg.result[0].Id,\t    \"size\": $round(msg.result[0].Size / 1024 / 1024),\t    \"ImageID\": msg.result[0].Id,\t    \"Digest\": $split(msg.result[0].RepoDigests[0], \"@\")[-1]\t}",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 2750,
-        "y": 600,
-        "wires": [
-            [
-                "3cd883eb0ec5d869"
-            ]
-        ]
-    },
-    {
-        "id": "1daea440d755f8c9",
-        "type": "http request",
-        "z": "a827fd671d6a227e",
-        "name": "netbox request: create images",
-        "method": "POST",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 3210,
-        "y": 600,
-        "wires": [
-            [
-                "05457d6efadc3737",
-                "6fbc7abe53c524c8"
-            ]
-        ]
-    },
-    {
         "id": "521aa77a01fcea45",
         "type": "change",
         "z": "a827fd671d6a227e",
@@ -1552,48 +1462,6 @@
         "wires": [
             [
                 "4f41f373f7947d21"
-            ]
-        ]
-    },
-    {
-        "id": "6faf3827d41504fd",
-        "type": "split",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "",
-        "x": 2570,
-        "y": 600,
-        "wires": [
-            [
-                "2cc40b296062191e"
-            ]
-        ]
-    },
-    {
-        "id": "3cd883eb0ec5d869",
-        "type": "switch",
-        "z": "a827fd671d6a227e",
-        "name": "image has a name?",
-        "property": "payload.name",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "nempty"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 2970,
-        "y": 600,
-        "wires": [
-            [
-                "1daea440d755f8c9"
             ]
         ]
     },
@@ -2440,7 +2308,7 @@
                 "39acafa9d2f2d6ba"
             ],
             [
-                "121ec6eb7cd9d1e3"
+                "f0f956ba31c5c2ef"
             ]
         ]
     },
@@ -2732,19 +2600,6 @@
         "wires": []
     },
     {
-        "id": "05457d6efadc3737",
-        "type": "link out",
-        "z": "a827fd671d6a227e",
-        "name": "link out 7",
-        "mode": "link",
-        "links": [
-            "36f439d2ba0ac71a"
-        ],
-        "x": 3395,
-        "y": 600,
-        "wires": []
-    },
-    {
         "id": "5a07511ed7c011d2",
         "type": "change",
         "z": "a827fd671d6a227e",
@@ -2849,184 +2704,6 @@
         "x": 2355,
         "y": 1060,
         "wires": []
-    },
-    {
-        "id": "53d68a4462e6d77e",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "prepare netbox request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "netboxregistryresult",
-                "pt": "msg",
-                "to": "$merge(msg.payload.results.{         name : id     })",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "$distinct([msg.oldpayload.(\t    $address := $count($split(RepoTags[0], '/' )) > 1 ? $contains($split(RepoTags[0], '/')[0], /([.:]|localhost)/) ? $split(RepoTags[0], '/')[0] : \"dockerhub\" : \"dockerhub\";\t    $address in $keys($$.msg.netboxregistryresult) ? continue : { \"name\" : $address, \"host\": $$.msg.config.id, \"serveraddress\": \"https://\" & $address & \"/v2/\" }) \t])\t",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/registries/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1890,
-        "y": 660,
-        "wires": [
-            [
-                "61288a7609631dc6"
-            ]
-        ]
-    },
-    {
-        "id": "61288a7609631dc6",
-        "type": "http request",
-        "z": "a827fd671d6a227e",
-        "name": "netbox request: upsert registries",
-        "method": "POST",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 2150,
-        "y": 660,
-        "wires": [
-            [
-                "5a72a6c552c36127"
-            ]
-        ]
-    },
-    {
-        "id": "5a72a6c552c36127",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "parse registry data",
-        "rules": [
-            {
-                "t": "set",
-                "p": "registryresponse",
-                "pt": "msg",
-                "to": "$merge($append(msg.payload.{name : id}, msg.netboxregistryresult))",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "oldpayload",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 2410,
-        "y": 600,
-        "wires": [
-            [
-                "6faf3827d41504fd"
-            ]
-        ]
-    },
-    {
-        "id": "121ec6eb7cd9d1e3",
-        "type": "change",
-        "z": "a827fd671d6a227e",
-        "name": "prepare netbox request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "oldpayload",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/registries/?host_id=' & msg.config.id",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1890,
-        "y": 600,
-        "wires": [
-            [
-                "6a9c98bfa97f9c1e"
-            ]
-        ]
-    },
-    {
-        "id": "6a9c98bfa97f9c1e",
-        "type": "http request",
-        "z": "a827fd671d6a227e",
-        "name": "netbox request: get registries",
-        "method": "GET",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 2140,
-        "y": 600,
-        "wires": [
-            [
-                "53d68a4462e6d77e"
-            ]
-        ]
     },
     {
         "id": "c9f9930a51ca8c8f",
@@ -3372,44 +3049,6 @@
         ]
     },
     {
-        "id": "603bb6fcfb809fdb",
-        "type": "link out",
-        "z": "a827fd671d6a227e",
-        "name": "link out 19",
-        "mode": "link",
-        "links": [
-            "98ba6e554d17eb95"
-        ],
-        "x": 3395,
-        "y": 660,
-        "wires": []
-    },
-    {
-        "id": "6fbc7abe53c524c8",
-        "type": "join",
-        "z": "a827fd671d6a227e",
-        "name": "",
-        "mode": "auto",
-        "build": "object",
-        "property": "payload",
-        "propertyType": "msg",
-        "key": "topic",
-        "joiner": "\\n",
-        "joinerType": "str",
-        "useparts": false,
-        "accumulate": "false",
-        "timeout": "",
-        "count": "",
-        "reduceRight": false,
-        "x": 3290,
-        "y": 660,
-        "wires": [
-            [
-                "603bb6fcfb809fdb"
-            ]
-        ]
-    },
-    {
         "id": "ae9074b49ecc1248",
         "type": "change",
         "z": "a827fd671d6a227e",
@@ -3483,6 +3122,466 @@
         "wires": [
             [
                 "a23553e203eafd05"
+            ]
+        ]
+    },
+    {
+        "id": "fb53700420b1f1d2",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "Is global registries empty?",
+        "property": "registries",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "empty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 2120,
+        "y": 620,
+        "wires": [
+            [
+                "edbcc8a9290d5c03"
+            ],
+            [
+                "b5922280a62846d7"
+            ]
+        ]
+    },
+    {
+        "id": "b5922280a62846d7",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "image2registry",
+                "pt": "msg",
+                "to": "$merge($map($globalContext(\"registries\"), function($reg) {(\t    $reg.images{$: $reg.id}\t)}))",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2400,
+        "y": 700,
+        "wires": [
+            [
+                "9cdf672e9401005e"
+            ]
+        ]
+    },
+    {
+        "id": "edbcc8a9290d5c03",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "prepare netbox request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "$globalContext(\"config\").netbox_url & '/api/plugins/docker/registries/?host_id=' & $globalContext(\"config\").id",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2390,
+        "y": 580,
+        "wires": [
+            [
+                "bf71022495e51bd5"
+            ]
+        ]
+    },
+    {
+        "id": "bf71022495e51bd5",
+        "type": "http request",
+        "z": "a827fd671d6a227e",
+        "name": "netbox request: get registries",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 2660,
+        "y": 580,
+        "wires": [
+            [
+                "06a9840e033cf9a9"
+            ]
+        ]
+    },
+    {
+        "id": "9cdf672e9401005e",
+        "type": "split",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "property": "images",
+        "x": 2610,
+        "y": 700,
+        "wires": [
+            [
+                "0385e6c197d6a6f8"
+            ]
+        ]
+    },
+    {
+        "id": "0385e6c197d6a6f8",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "prepare netbox request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "$globalContext(\"config\").netbox_url & '/api/plugins/docker/images/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "result",
+                "pt": "msg",
+                "to": "images",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t    \"host\": $globalContext(\"config\").id,\t    \"name\": $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] ? $match(msg.result[0].RepoTags[0], /(.*):/).groups[0] : $substring(msg.result[0].Id,7,12),\t    \"registry\": {\t        \"id\": $lookup(msg.image2registry, msg.result[0].RepoTags[0])\t    },\t    \"version\": $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] ? $split($split(msg.result[0].RepoTags[0], \"/\")[-1], ':')[1] : msg.result[0].Id,\t    \"size\": $round(msg.result[0].Size / 1024 / 1024),\t    \"ImageID\": msg.result[0].Id,\t    \"Digest\": $split(msg.result[0].RepoDigests[0], \"@\")[-1]\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2810,
+        "y": 700,
+        "wires": [
+            [
+                "acb0670187da27e5"
+            ]
+        ]
+    },
+    {
+        "id": "acb0670187da27e5",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "image has a name?",
+        "property": "payload.name",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 3050,
+        "y": 700,
+        "wires": [
+            [
+                "6357171922d6950d"
+            ]
+        ]
+    },
+    {
+        "id": "6357171922d6950d",
+        "type": "http request",
+        "z": "a827fd671d6a227e",
+        "name": "netbox request: create images",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 3310,
+        "y": 700,
+        "wires": [
+            [
+                "fd472ae11b597a19"
+            ]
+        ]
+    },
+    {
+        "id": "fd472ae11b597a19",
+        "type": "link out",
+        "z": "a827fd671d6a227e",
+        "name": "link out 7",
+        "mode": "link",
+        "links": [
+            "36f439d2ba0ac71a"
+        ],
+        "x": 3485,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "06a9840e033cf9a9",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "local_registries",
+                "pt": "msg",
+                "to": "[\t    [\t        msg.images.RepoTags[0]\t            ~> $filter(function($item) {(\t                $fragments := $split($item, '/' );\t                $count($fragments) > 1 and $contains($fragments[0], /([.:]|localhost)/)                 \t            )})\t            ~> $map(function($item){\t                {\t                    \"image\": $item,\t                    \"registry\": $split($item, '/' )[0]\t                }\t            })\t    ]{\t        registry: {\t            \"name\": $distinct(registry),\t            \"serveraddress\": \"https://\" & $distinct(registry) & \"/v2/\",\t            \"images\": [image]\t        }\t    } ~> $each(function ($k, $v) { $k })\t]",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "local_registries",
+                "pt": "msg",
+                "to": "$append(msg.local_registries, [\t    [\t        msg.images.RepoTags[0]\t            ~> $filter(function($item) {(\t                $fragments := $split($item, '/' );\t                $count($fragments) <= 1 or $not($contains($fragments[0], /([.:]|localhost)/))                 \t            )})\t            ~> $map(function($item){\t                {\t                    \"image\": $item,\t                    \"registry\": \"dockerhub\"\t                }\t            })\t    ]{\t        registry: {\t            \"name\": \"dockerhub\",\t            \"images\": [image]\t        }\t    } ~> $each(function ($k, $v) { $k })\t])",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "local_registries",
+                "pt": "msg",
+                "to": "$map(msg.payload.results, function($item) {\t    msg.local_registries ~> | $[name = $item.name] | { \"id\": $item.id, \"serveraddress\": $item.serveraddress } |\t})",
+                "tot": "jsonata",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2920,
+        "y": 580,
+        "wires": [
+            [
+                "94bd890ae0316735"
+            ]
+        ]
+    },
+    {
+        "id": "e077bc651c250e41",
+        "type": "http request",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 3570,
+        "y": 540,
+        "wires": [
+            [
+                "af88dac05c0843b2"
+            ]
+        ]
+    },
+    {
+        "id": "94bd890ae0316735",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "property": "[msg.local_registries[name != \"dockerhub\"]]",
+        "propertyType": "jsonata",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 3130,
+        "y": 580,
+        "wires": [
+            [
+                "fda84d84e044b3c8"
+            ],
+            [
+                "381d1aeea08dd0f1"
+            ]
+        ]
+    },
+    {
+        "id": "fda84d84e044b3c8",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "[msg.local_registries[name != \"dockerhub\"].{\t    \"host\": $globalContext(\"config\").id,\t    \"name\": name,\t    \"serveraddress\": serveraddress\t}]",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "$globalContext(\"config\").netbox_url & '/api/plugins/docker/registries/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 3340,
+        "y": 540,
+        "wires": [
+            [
+                "e077bc651c250e41"
+            ]
+        ]
+    },
+    {
+        "id": "f0f956ba31c5c2ef",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "images",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1870,
+        "y": 620,
+        "wires": [
+            [
+                "fb53700420b1f1d2"
+            ]
+        ]
+    },
+    {
+        "id": "af88dac05c0843b2",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "registries",
+                "pt": "global",
+                "to": "$map(msg.payload, function($item) {\t    msg.local_registries ~> | $[name = $item.name] | { \"id\": $item.id } |\t})",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 3600,
+        "y": 620,
+        "wires": [
+            [
+                "b5922280a62846d7"
+            ]
+        ]
+    },
+    {
+        "id": "381d1aeea08dd0f1",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "registries",
+                "pt": "global",
+                "to": "local_registries",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 3340,
+        "y": 620,
+        "wires": [
+            [
+                "b5922280a62846d7"
             ]
         ]
     },
@@ -8154,7 +8253,8 @@
             "829323373ce00e9e",
             "85576a332e06d405",
             "d10c0e59950649aa",
-            "eac6a267ba1d8eaf"
+            "eac6a267ba1d8eaf",
+            "fd472ae11b597a19"
         ],
         "x": 425,
         "y": 420,
