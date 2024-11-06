@@ -2308,7 +2308,7 @@
                 "39acafa9d2f2d6ba"
             ],
             [
-                "f0f956ba31c5c2ef"
+                "74eb127a6ad3fbdd"
             ]
         ]
     },
@@ -3143,8 +3143,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 2120,
-        "y": 620,
+        "x": 2060,
+        "y": 640,
         "wires": [
             [
                 "edbcc8a9290d5c03"
@@ -3523,8 +3523,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1870,
-        "y": 620,
+        "x": 1770,
+        "y": 700,
         "wires": [
             [
                 "fb53700420b1f1d2"
@@ -3582,6 +3582,29 @@
         "wires": [
             [
                 "b5922280a62846d7"
+            ]
+        ]
+    },
+    {
+        "id": "74eb127a6ad3fbdd",
+        "type": "switch",
+        "z": "a827fd671d6a227e",
+        "name": "",
+        "property": "$globalContext(\"config\").id != \"\" and $globalContext(\"config\").id != null",
+        "propertyType": "jsonata",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1750,
+        "y": 640,
+        "wires": [
+            [
+                "f0f956ba31c5c2ef"
             ]
         ]
     },
@@ -6865,7 +6888,7 @@
                 "ba51cee0aa2ab895"
             ],
             [
-                "74282c37e59eb461"
+                "12e8ba367b6e0a48"
             ],
             [
                 "00a7f64ecb58e0c8",
@@ -6896,7 +6919,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "images",
-        "x": 1360,
+        "x": 1540,
         "y": 300,
         "wires": [
             [
@@ -6933,7 +6956,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1160,
+        "x": 1340,
         "y": 280,
         "wires": [
             [
@@ -7195,8 +7218,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 770,
-        "y": 280,
+        "x": 950,
+        "y": 300,
         "wires": [
             [
                 "e1a1c4427886a1e6"
@@ -7243,7 +7266,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 950,
+        "x": 1130,
         "y": 300,
         "wires": [
             [
@@ -7280,7 +7303,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1160,
+        "x": 1340,
         "y": 320,
         "wires": [
             [
@@ -7442,10 +7465,33 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1580,
+        "x": 1760,
         "y": 300,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "12e8ba367b6e0a48",
+        "type": "switch",
+        "z": "177047e3d7a351be",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 770,
+        "y": 300,
+        "wires": [
+            [
+                "74282c37e59eb461"
+            ]
         ]
     },
     {
@@ -8244,7 +8290,6 @@
         "z": "3ee57a9d7dc5fae7",
         "name": "log cb",
         "links": [
-            "05457d6efadc3737",
             "0f90d4602b562160",
             "14ee8c9739857e6c",
             "2b11dfa028894e68",
