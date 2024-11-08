@@ -177,6 +177,13 @@
   </footer>
 
   <script>
+    var globalContainers = [];
+    $.ajax({
+        url: "/api/containers"
+      }).done(function (result) {
+        globalContainers = result;
+      });
+
     function cleanWindow() {
       $(".app").each(function () {
         $(this).addClass('d-none');
@@ -193,6 +200,7 @@
       $.ajax({
         url: "/api/containers"
       }).done(function (result) {
+        globalContainers = result;
         $("#containers-count").html(result.length)
         let containers = '';
         for (const c of result) {
@@ -407,8 +415,7 @@
           result.message + '</div><div class="col-3"><span class="badge rounded-pill bg-' + (
             result.configured === "ok" ? "success" : "danger") + '">' + result.configured +
           '</span></div></div></div><div class="card-body row">' +
-          '<div class="col-sm-12 col-md-6 p-2"> <b>Flow</b>:  ' + result.flows +
-          '</div><div class="col-sm-12 col-md-6 p-2"> <b>Kernel</b>: ' + result.docker.KernelVersion +
+          '<div class="col-sm-12 col-md-6 p-2"> <b>Kernel</b>: ' + result.docker.KernelVersion +
           '</div><div class="col-sm-12 col-md-6 p-2"> <b>Version</b>: ' + result.version +
           '</div><div class="col-sm-12 col-md-6 p-2"> <b>Api</b>: ' + result.docker.ApiVersion +
           '</div><div class="col-sm-12 col-md-6 p-2"> <b>Storage Driver</b>: ' + result.dockerInfo.Driver +
@@ -496,6 +503,11 @@
         $("#volumes-count").html(result.Volumes.length)
         let vols = '';
         for (const c of result.Volumes) {
+          let used_by = "";
+          for (gc in globalContainers) {
+             for (const m of globalContainers[gc].Mounts)
+                  if (m.Name === c.Name) used_by += globalContainers[gc].Name.replace('/', '') + " "
+          }
           vols +=
             '<div class="col-12"><div class="card my-3"><div class="card-header bg-white"><div class="row"><div class="col-9 text-primary">' +
             c.Name +
@@ -503,7 +515,11 @@
             c.CreatedAt.replace('T', ' ').replace('Z', '').substring(0, 19) +
             '</div><div class="col-sm-12 col-md-6 p-2"> <b>Driver</b>: ' + c.Driver +
             '</div><div class="col-sm-12 col-md-12 p-2"> <b>Mountpoint</b>: ' + c.Mountpoint +
-            '</div></div></div></div>';
+            '</div>'+
+            '<div class="col-sm-12 col-md-12 p-2"> <b>Used By</b>: <span class="badge rounded-pill bg-primary">' + (used_by.split(' ').length - 1) + '</span> ' + used_by + '</div>' +
+            '<div class="col-sm-12 col-md-12 p-2"><button class="btn btn-sm btn-danger m-2 ' + (used_by.length > 0 ? "disabled" : "") + '" onclick="deleteVolume(\'' + c.Name +
+            '\');"><i class="fas fa-trash-alt"></i> Remove</button></div></div>'+ 
+            '</div></div></div>';
         }
         $('#volumes-list').html(vols);
       })
@@ -519,6 +535,10 @@
         $("#networks-count").html(result.length)
         let networks = ''
         for (const c of result) {
+          let used_by = "";
+          for (gc in globalContainers) {
+            if (c.Name in globalContainers[gc].NetworkSettings.Networks) used_by += globalContainers[gc].Name.replace('/', '') + " "
+          }
           networks +=
             '<div class="col-12"><div class="card my-3"><div class="card-header bg-white"><div class="row"><div class="col-9 text-primary">' +
             c.Name +
@@ -528,7 +548,10 @@
           if (c.IPAM.Config !== null && c.IPAM.Config.length > 0) networks +=
             '<div class="col-sm-12 col-md-6 p-2"> <b>IPv4 Subnet</b>: ' + c.IPAM.Config[0].Subnet +
             '</div><div class="col-sm-12 col-md-6 p-2">  <b>IPv4 Subnet</b>: ' + c.IPAM.Config[0].Gateway +
-            '</div>'
+            '</div>' + 
+            '<div class="col-sm-12 col-md-12 p-2"> <b>Used By</b>: <span class="badge rounded-pill bg-primary">' + (used_by.split(' ').length - 1) + '</span> ' + used_by + '</div>' +
+            '<div class="col-sm-12 col-md-12 p-2"><button class="btn btn-sm btn-danger m-2 ' + (used_by.length > 0 ? "disabled" : "") + '" onclick="deleteNetwork(\'' + c.Name +
+            '\');"><i class="fas fa-trash-alt"></i> Remove</button></div></div>'
           networks += '</div></div></div>';
         }
         $('#networks-list').html(networks);
@@ -545,6 +568,10 @@
         $("#images-count").html(result.length)
         let images = ''
         for (const c of result) {
+          let used_by = "";
+          for (gc in globalContainers) {
+            if (globalContainers[gc].Image === c.Id) used_by += globalContainers[gc].Name.replace('/', '') + " "
+          }
           images +=
             '<div class="col-12"><div class="card my-2"><div class="card-header bg-white"><div class="row"><div class="col-10 row"><div class="col-9 text-primary">' +
             (c.RepoTags === null || c.RepoTags.length === 0 || c.RepoTags.toString().includes('<none>') ? c.Id :
@@ -552,15 +579,82 @@
             '</div></div></div></div><div class="card-body row"><div class="col-sm-12 col-md-6 p-2"> <b>Created</b>: ' +
             new Date(c.Created * 1000).toISOString().substring(0, 19).replace('T', ' ') +
             '</div><div class="col-sm-12 col-md-6 p-2"> <b>Size</b>: ' + (c.Size / 1024 / 1024).toFixed(2) +
-            'MB</div><div class="col-sm-12 col-md-12 p-2"> <b>Id</b>: ' + c.Id + '</div></div></div></div>'
+            'MB</div><div class="col-sm-12 col-md-12 p-2"> <b>Id</b>: ' + c.Id + '</div>' +
+            '<div class="col-sm-12 col-md-12 p-2"> <b>Used By</b>: <span class="badge rounded-pill bg-primary">' + (used_by.split(' ').length - 1) + '</span> ' + used_by + '</div>' +
+            '<div class="col-sm-12 col-md-12 p-2"><button class="btn btn-sm btn-danger m-2 ' + (used_by.length > 0 ? "disabled" : "") + '" onclick="deleteImage(\'' + c.Id +
+            '\');"><i class="fas fa-trash-alt"></i> Remove</button></div></div>'+           
+            '</div></div></div>'
         }
         $('#images-list').html(images);
       })
     })
     $("#nav-home-btn").click();
 
+    function deleteNetwork(id) {
+      $("#modalNotificationTitle").html("Delete network");
+      $("#modalNotificationContent").html('Pls wait ! Deletion is ongoing.... ');
+      $("#modalNotification").modal("show");
+      $.ajax({
+        url: "/api/engine/networks",
+        method: "DELETE",
+        data: {
+          "data": {
+            "name": id
+          }
+        },
+        dataType: "json"
+      }).done(function (result) {
+        setTimeout(function () {
+          $("#modalNotification").modal("hide");
+          $("#nav-networks-btn").click();
+        }, 2000)
+      })
+    }
+
+    function deleteVolume(id) {
+      $("#modalNotificationTitle").html("Delete volume");
+      $("#modalNotificationContent").html('Pls wait ! Deletion is ongoing.... ');
+      $("#modalNotification").modal("show");
+      $.ajax({
+        url: "/api/engine/volumes",
+        method: "DELETE",
+        data: {
+          "data": {
+            "name": id
+          }
+        },
+        dataType: "json"
+      }).done(function (result) {
+        setTimeout(function () {
+          $("#modalNotification").modal("hide");
+          $("#nav-volumes-btn").click();
+        }, 2000)
+      })
+    }
+
+    function deleteImage(id) {
+      $("#modalNotificationTitle").html("Delete image");
+      $("#modalNotificationContent").html('Pls wait ! Deletion is ongoing.... ');
+      $("#modalNotification").modal("show");
+      $.ajax({
+        url: "/api/engine/images",
+        method: "DELETE",
+        data: {
+          "data": {
+            "ImageID": id
+          }
+        },
+        dataType: "json"
+      }).done(function (result) {
+        setTimeout(function () {
+          $("#modalNotification").modal("hide");
+          $("#nav-images-btn").click();
+        }, 2000)
+      })
+    }
+
     function actionContainer(id, action) {
-      $("#modalNotificationTitle").html("operation " + action);
+      $("#modalNotificationTitle").html("Operation " + action);
       $("#modalNotificationContent").html('Pls wait ! ' + action + ' is ongoing.... ');
       $("#modalNotification").modal("show");
       $.ajax({
