@@ -896,7 +896,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 600,
+        "x": 740,
         "y": 300,
         "wires": [
             [
@@ -920,7 +920,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 810,
+        "x": 950,
         "y": 300,
         "wires": [
             [
@@ -947,7 +947,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1020,
+        "x": 1160,
         "y": 300,
         "wires": [
             []
@@ -1114,7 +1114,7 @@
         "y": 300,
         "wires": [
             [
-                "2fd1cfc270927e8d"
+                "4b6dba9f0b7031fc"
             ]
         ]
     },
@@ -1230,6 +1230,29 @@
         "y": 500,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "4b6dba9f0b7031fc",
+        "type": "switch",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "property": "config.netbox_url",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "nempty"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 550,
+        "y": 300,
+        "wires": [
+            [
+                "2fd1cfc270927e8d"
+            ]
         ]
     },
     {
