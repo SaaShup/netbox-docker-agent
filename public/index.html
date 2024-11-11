@@ -77,31 +77,31 @@
       <div class="collapse navbar-collapse no-transition" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#" id="nav-home-btn" data-bs-toggle="collapse"
+            <a class="nav-link" aria-current="page" href="#home" id="nav-home-btn" data-bs-toggle="collapse"
               data-bs-target="#navbarCollapse"><i class="fas fa-home"></i> Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#" id="nav-containers-btn" data-bs-toggle="collapse"
+            <a class="nav-link" aria-current="page" href="#containers" id="nav-containers-btn" data-bs-toggle="collapse"
               data-bs-target="#navbarCollapse"><i class="fab fa-docker"></i> Containers</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#" id="nav-images-btn" data-bs-toggle="collapse"
+            <a class="nav-link" aria-current="page" href="#images" id="nav-images-btn" data-bs-toggle="collapse"
               data-bs-target="#navbarCollapse"><i class="fas fa-clone"></i> Images</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#" id="nav-networks-btn" data-bs-toggle="collapse"
+            <a class="nav-link" aria-current="page" href="#networks" id="nav-networks-btn" data-bs-toggle="collapse"
               data-bs-target="#navbarCollapse"><i class="fas fa-network-wired"></i> Networks</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#" id="nav-volumes-btn" data-bs-toggle="collapse"
+            <a class="nav-link" aria-current="page" href="#volumes" id="nav-volumes-btn" data-bs-toggle="collapse"
               data-bs-target="#navbarCollapse"><i class="fas fa-hdd"></i> Volumes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#" id="nav-registries-btn" data-bs-toggle="collapse"
+            <a class="nav-link" aria-current="page" href="#registries" id="nav-registries-btn" data-bs-toggle="collapse"
               data-bs-target="#navbarCollapse"><i class="fas fa-cloud"></i> Registries</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/doc"><i class="fas fa-file-code"></i> Apidoc</a>
+            <a class="nav-link" aria-current="page" href="/doc" target="_blank"><i class="fas fa-file-code"></i> Apidoc</a>
           </li>
         </ul>
       </div>
@@ -110,7 +110,7 @@
 
   <main class="container" id="app">
 
-    <div class="row app" id="info">
+    <div class="row d-none app" id="info">
       <div class="col-12">
         <div class="row">
           <div class="col-12" id="info-list"></div>
@@ -197,6 +197,7 @@
       cleanWindow();
       $('#containers').removeClass('d-none');
       $('#nav-containers-btn').addClass('active');
+      location.hash = 'containers';
       $.ajax({
         url: "/api/containers"
       }).done(function (result) {
@@ -407,6 +408,7 @@
       cleanWindow();
       $('#info').removeClass('d-none');
       $('#nav-home-btn').addClass('active')
+      location.hash = 'home';
       $.ajax({
         url: "/info",
       }).done(function (result) {
@@ -497,6 +499,7 @@
       cleanWindow();
       $('#nav-volumes-btn').addClass('active')
       $('#volumes').removeClass('d-none');
+      location.hash = 'volumes';
       $.ajax({
         url: "/api/volumes",
       }).done(function (result) {
@@ -528,7 +531,8 @@
     $("#nav-networks-btn").on('click', function () {
       cleanWindow();
       $('#networks').removeClass('d-none');
-      $('#nav-networks-btn').addClass('active')
+      $('#nav-networks-btn').addClass('active');
+      location.hash = 'networks';
       $.ajax({
         url: "/api/networks",
       }).done(function (result) {
@@ -561,7 +565,8 @@
     $("#nav-images-btn").on('click', function () {
       cleanWindow();
       $('#images').removeClass('d-none');
-      $('#nav-images-btn').addClass('active')
+      $('#nav-images-btn').addClass('active');
+      location.hash = 'images';
       $.ajax({
         url: "/api/images",
       }).done(function (result) {
@@ -588,7 +593,6 @@
         $('#images-list').html(images);
       })
     })
-    $("#nav-home-btn").click();
 
     function deleteNetwork(id) {
       $("#modalNotificationTitle").html("Delete network");
@@ -756,6 +760,7 @@
       cleanWindow();
       $('#nav-registries-btn').addClass('active')
       $('#registries').removeClass('d-none');
+      location.hash = 'registries';
       const list = document.getElementById("registries-list");
       while (list.firstChild) {
         list.removeChild(list.lastChild);
@@ -812,6 +817,25 @@
         }
       })
     });
+
+    switch(window.location.hash) {
+      case '#containers': 
+        $("#nav-containers-btn").click();
+        break;
+      case '#volumes': 
+        $("#nav-volumes-btn").click();
+        break;
+      case '#networks': 
+        $("#nav-networks-btn").click();
+        break;
+      case '#images':
+        $("#nav-images-btn").click();
+        break;
+      case '#registries':
+        $("#nav-registries-btn").click();
+        break;
+      default: $("#nav-home-btn").click();
+    }
   </script>
 
 </body>
