@@ -67,7 +67,7 @@
                 "y": 220,
                 "wires": [
                     {
-                        "id": "6a7a0467075486e3"
+                        "id": "6edbcda2ae25e3e9"
                     }
                 ]
             }
@@ -124,7 +124,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 440,
+        "x": 700,
         "y": 220,
         "wires": [
             [
@@ -136,7 +136,7 @@
         "id": "3547e249e2f4244a",
         "type": "http request",
         "z": "0455d311f0e53c09",
-        "name": "",
+        "name": "Create entry",
         "method": "use",
         "ret": "obj",
         "paytoqs": "ignore",
@@ -148,10 +148,33 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 650,
+        "x": 910,
         "y": 220,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "6edbcda2ae25e3e9",
+        "type": "switch",
+        "z": "0455d311f0e53c09",
+        "name": "has netbox url ?",
+        "property": "config.netbox_url",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "nempty"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 420,
+        "y": 220,
+        "wires": [
+            [
+                "6a7a0467075486e3"
+            ]
         ]
     },
     {
@@ -5406,7 +5429,7 @@
         "wires": [
             [
                 "e19033703f460489",
-                "3fb24016d76424c3"
+                "8a7f167c07eca98c"
             ]
         ]
     },
@@ -6639,33 +6662,6 @@
         ]
     },
     {
-        "id": "3fb24016d76424c3",
-        "type": "switch",
-        "z": "8e85e8c54d776ddc",
-        "name": "",
-        "property": "config.id",
-        "propertyType": "global",
-        "rules": [
-            {
-                "t": "nempty"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 350,
-        "y": 100,
-        "wires": [
-            [
-                "8a7f167c07eca98c"
-            ],
-            []
-        ]
-    },
-    {
         "id": "5d89d141056587f0",
         "type": "link out",
         "z": "8e85e8c54d776ddc",
@@ -6924,7 +6920,7 @@
         "wires": [
             [
                 "06d9e416e24ea04b",
-                "4b6dba9f0b7031fc"
+                "b87eba8ac3329ce3"
             ],
             [],
             []
@@ -7074,7 +7070,7 @@
         "y": 60,
         "wires": [
             [
-                "c594da7accef66e1"
+                "b87eba8ac3329ce3"
             ],
             [],
             []
@@ -7092,6 +7088,13 @@
                 "pt": "msg",
                 "to": "'\\\"http://localhost/containers/' & msg.payload.data.ContainerID  & '\\\"'",
                 "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": msg.config.id,\t   \"kind\": \"info\",\t   \"comments\": msg.input.data.name & \" removed - \" & $string(msg.payload)\t}",
+                "tot": "jsonata"
             }
         ],
         "action": "",
@@ -7099,7 +7102,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 950,
+        "x": 960,
         "y": 60,
         "wires": [
             [
@@ -7244,7 +7247,7 @@
         "type": "subflow:0455d311f0e53c09",
         "z": "177047e3d7a351be",
         "name": "",
-        "x": 1690,
+        "x": 1430,
         "y": 180,
         "wires": []
     },
@@ -7353,33 +7356,6 @@
         ]
     },
     {
-        "id": "c594da7accef66e1",
-        "type": "change",
-        "z": "177047e3d7a351be",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "journal",
-                "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": msg.config.id,\t   \"kind\": \"info\",\t   \"comments\": msg.input.data.name & \" removed - \" & $string(msg.payload)\t}",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1360,
-        "y": 60,
-        "wires": [
-            [
-                "4b6dba9f0b7031fc"
-            ]
-        ]
-    },
-    {
         "id": "b5f089d7532c24d8",
         "type": "change",
         "z": "177047e3d7a351be",
@@ -7464,29 +7440,6 @@
         "wires": [
             [
                 "74282c37e59eb461"
-            ]
-        ]
-    },
-    {
-        "id": "4b6dba9f0b7031fc",
-        "type": "switch",
-        "z": "177047e3d7a351be",
-        "name": "",
-        "property": "config.netbox_url",
-        "propertyType": "global",
-        "rules": [
-            {
-                "t": "nempty"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 1490,
-        "y": 180,
-        "wires": [
-            [
-                "b87eba8ac3329ce3"
             ]
         ]
     },
