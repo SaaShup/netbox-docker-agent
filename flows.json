@@ -3870,11 +3870,11 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 2370,
+        "x": 2390,
         "y": 520,
         "wires": [
             [
-                "d375e2981f9fa4fb"
+                "9c92ef06fefd5f00"
             ]
         ]
     },
@@ -3967,13 +3967,6 @@
                 "pt": "msg",
                 "to": "[{\t   \"id\": msg.input.data.id,\t   \"size\": $round(msg.payload.Size / 1024 / 1024),\t   \"ImageID\":  msg.payload.Id,\t   \"Digest\": $split(msg.result[0].RepoDigests[0], \"@\")[-1]\t}]",
                 "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "journal",
-                "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.image\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"pulled image\"\t}",
-                "tot": "jsonata"
             }
         ],
         "action": "",
@@ -3981,12 +3974,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 2570,
-        "y": 520,
+        "x": 2810,
+        "y": 580,
         "wires": [
             [
-                "231e0a10bb5c0cac",
-                "042f9d4dafa3cf3d"
+                "231e0a10bb5c0cac"
             ]
         ]
     },
@@ -4006,12 +3998,13 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 2850,
-        "y": 520,
+        "x": 3090,
+        "y": 580,
         "wires": [
             [
                 "829323373ce00e9e",
-                "34ea063b4d53a0a0"
+                "34ea063b4d53a0a0",
+                "7599bd4551c41d60"
             ]
         ]
     },
@@ -4553,8 +4546,8 @@
         "links": [
             "36f439d2ba0ac71a"
         ],
-        "x": 3045,
-        "y": 480,
+        "x": 3285,
+        "y": 540,
         "wires": []
     },
     {
@@ -4564,15 +4557,6 @@
         "name": "",
         "x": 1070,
         "y": 540,
-        "wires": []
-    },
-    {
-        "id": "042f9d4dafa3cf3d",
-        "type": "subflow:0455d311f0e53c09",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "x": 2790,
-        "y": 480,
         "wires": []
     },
     {
@@ -5130,8 +5114,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 3120,
-        "y": 540,
+        "x": 3380,
+        "y": 580,
         "wires": [
             []
         ]
@@ -5160,6 +5144,222 @@
         "wires": [
             [
                 "5db8c0db8473ea8e"
+            ]
+        ]
+    },
+    {
+        "id": "9c92ef06fefd5f00",
+        "type": "switch",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "property": "msg.input.data.force = true and ($split(msg.payload.RepoDigests[0], \"@\")[-1] != msg.input.data.Digest or msg.payload.Id != msg.input.data.ImageID)",
+        "propertyType": "jsonata",
+        "rules": [
+            {
+                "t": "true"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 2550,
+        "y": 520,
+        "wires": [
+            [
+                "20fb85d25c7725c5"
+            ],
+            [
+                "d375e2981f9fa4fb"
+            ]
+        ]
+    },
+    {
+        "id": "7599bd4551c41d60",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.image\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"pulled image\"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 3890,
+        "y": 520,
+        "wires": [
+            [
+                "6dc394adcc5bd2e9"
+            ]
+        ]
+    },
+    {
+        "id": "6dc394adcc5bd2e9",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "x": 4090,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "20fb85d25c7725c5",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "prepare netbox request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/images/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "PATCH",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "result",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "(\t   [{\t      \"id\": msg.input.data.id,\t      \"version\": $substring($split(msg.input.data.ImageID, \":\")[-1], 0, 12)\t   }]\t)\t",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2790,
+        "y": 460,
+        "wires": [
+            [
+                "6aaf5213853617c2"
+            ]
+        ]
+    },
+    {
+        "id": "6aaf5213853617c2",
+        "type": "http request",
+        "z": "3ea1a4b04d852f38",
+        "name": "netbox request: update image",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 3070,
+        "y": 460,
+        "wires": [
+            [
+                "ebd5345b2ad339da"
+            ]
+        ]
+    },
+    {
+        "id": "ebd5345b2ad339da",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "prepare netbox request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "$globalContext(\"config\").netbox_url & '/api/plugins/docker/images/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t    \"host\": $globalContext(\"config\").id,\t    \"name\": msg.input.data.name,\t    \"registry\": {\t        \"id\": msg.input.data.registry.id\t    },\t    \"version\": msg.input.data.version,\t    \"size\": $round(msg.result.Size / 1024 / 1024),\t    \"ImageID\": msg.result.Id,\t    \"Digest\": $split(msg.result.RepoDigests[0], \"@\")[-1]\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "POST",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 3350,
+        "y": 460,
+        "wires": [
+            [
+                "bcaafd9689539646"
+            ]
+        ]
+    },
+    {
+        "id": "bcaafd9689539646",
+        "type": "http request",
+        "z": "3ea1a4b04d852f38",
+        "name": "netbox request: create images",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 3630,
+        "y": 460,
+        "wires": [
+            [
+                "7599bd4551c41d60"
             ]
         ]
     },
