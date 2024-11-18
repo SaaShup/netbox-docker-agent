@@ -585,8 +585,10 @@
             new Date(c.Created * 1000).toISOString().substring(0, 19).replace('T', ' ') +
             '</div><div class="col-sm-12 col-md-6 p-2"> <b>Size</b>: ' + (c.Size / 1024 / 1024).toFixed(2) +
             'MB</div><div class="col-sm-12 col-md-12 p-2"> <b>Id</b>: ' + c.Id + '</div>' +
+            '<div class="col-sm-12 col-md-12 p-2"> <b>Digest</b>: ' + (c.RepoDigests[0] ? c.RepoDigests[0].split("@")[0] : "none") + '</div>' +
             '<div class="col-sm-12 col-md-12 p-2"> <b>Used By</b>: <span class="badge rounded-pill bg-primary">' + (used_by.split(' ').length - 1) + '</span> ' + used_by + '</div>' +
-            '<div class="col-sm-12 col-md-12 p-2"><button class="btn btn-sm btn-danger m-2 ' + (used_by.length > 0 ? "disabled" : "") + '" onclick="deleteImage(\'' + c.Id +
+            '<div class="col-sm-12 col-md-12 p-2"><button class="btn btn-sm btn-warning m-2 ' + (c.RepoTags[0] ? "":"disabled") + '" onclick="pullImage(\'' + c.Id +
+            '\', \'' + (c.RepoTags[0] ? c.RepoTags[0].split(':')[0]:"") + '\', \'' + (c.RepoTags[0] ? c.RepoTags[0].split(':')[1]:"") + '\', \'' + Math.ceil(c.Size / 1024 / 1024) + '\');"><i class="fas fa-arrow-down"></i> Pull</button><button class="btn btn-sm btn-danger m-2 ' + (used_by.length > 0 ? "disabled" : "") + '" onclick="deleteImage(\'' + c.Id +
             '\');"><i class="fas fa-trash-alt"></i> Remove</button></div></div>'+           
             '</div></div></div>'
         }
@@ -633,6 +635,32 @@
           $("#modalNotification").modal("hide");
           $("#nav-volumes-btn").click();
         }, 2000)
+      })
+    }
+
+    function pullImage(id, name, version, size) {
+      $("#modalNotificationTitle").html("Pulling image");
+      $("#modalNotificationContent").html('Pls wait ! Image is being pulled.... ');
+      $("#modalNotification").modal("show");
+      $.ajax({
+        url: "/api/engine/images",
+        method: "POST",
+        data: JSON.stringify({
+          "data": {
+            "name": name,
+            "version": version,
+            "size": parseInt(size),
+            "ImageID": id,
+            "force": true
+          }
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
+      }).done(function (result) {
+        setTimeout(function () {
+          $("#modalNotification").modal("hide");
+          $("#nav-images-btn").click();
+        }, 5000)
       })
     }
 
