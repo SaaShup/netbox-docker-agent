@@ -587,7 +587,7 @@
             'MB</div><div class="col-sm-12 col-md-12 p-2"> <b>Id</b>: ' + c.Id + '</div>' +
             '<div class="col-sm-12 col-md-12 p-2"> <b>Digest</b>: ' + (c.RepoDigests[0] ? c.RepoDigests[0].split("@")[0] : "none") + '</div>' +
             '<div class="col-sm-12 col-md-12 p-2"> <b>Used By</b>: <span class="badge rounded-pill bg-primary">' + (used_by.split(' ').length - 1) + '</span> ' + used_by + '</div>' +
-            '<div class="col-sm-12 col-md-12 p-2"><button class="btn btn-sm btn-warning m-2 ' + (c.RepoTags[0] ? "":"disabled") + '" onclick="pullImage(\'' + c.Id +
+            '<div class="col-sm-12 col-md-12 p-2"><button class="btn btn-sm btn-warning m-2 ' + (c.RepoTags[0] && c.RepoDigests[0] ? "":"disabled") + '" onclick="pullImage(\'' + c.Id +
             '\', \'' + (c.RepoTags[0] ? c.RepoTags[0].split(':')[0]:"") + '\', \'' + (c.RepoTags[0] ? c.RepoTags[0].split(':')[1]:"") + '\', \'' + Math.ceil(c.Size / 1024 / 1024) + '\');"><i class="fas fa-arrow-down"></i> Pull</button><button class="btn btn-sm btn-danger m-2 ' + (used_by.length > 0 ? "disabled" : "") + '" onclick="deleteImage(\'' + c.Id +
             '\');"><i class="fas fa-trash-alt"></i> Remove</button></div></div>'+           
             '</div></div></div>'
