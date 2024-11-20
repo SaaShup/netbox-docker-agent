@@ -1,1 +1,1 @@
-{"images":["nginx-foss:latest","sha256:42f24e5f49de0a9fbc3fbb7f242db17f770d9c75a2e37b1b618af433afa1d948","fanshan/dummy:latest","fanshan/dummy@sha256:c3284f6aefb257df21ad6f506014ebb9fd58ec80fa430f78cc389897c41e4cab","saashup/netbox-docker-agent-test:latest","saashup/netbox-docker-agent:latest","postgres:latest"],"name":"dockerhub","serveraddress":"https://registry.hub.docker.com/v2/","id":3}
+[]
