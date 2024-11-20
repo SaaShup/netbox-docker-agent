@@ -3549,7 +3549,7 @@
                 "t": "set",
                 "p": "registries",
                 "pt": "global",
-                "to": "$map(msg.payload, function($item) {\t    msg.local_registries ~> | $[name = $item.name] | { \"id\": $item.id } |\t})",
+                "to": "$map(msg.local_registries, function($item) {\t    $merge([$item, {\"id\": msg.payload[name = $item.name].id}])\t})",
                 "tot": "jsonata"
             }
         ],
