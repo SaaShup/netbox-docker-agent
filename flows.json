@@ -3400,7 +3400,7 @@
                 "t": "set",
                 "p": "local_registries",
                 "pt": "msg",
-                "to": "(\t    $local_registries := (\t        $getRepo := function($repo) {(\t            $fragments := $split($repo, '/' );\t            $count($fragments) > 1 and $contains($fragments[0], /([.:]|localhost)/)\t                ? {\t                    \"images\": [$repo],\t                    \"name\": $fragments[0]\t                }\t                : {\t                    \"images\": [$repo],\t                    \"name\": \"dockerhub\"\t                }\t        )};\t        [\t            msg.images ~> $map(function($image) {\t                $count($image.RepoDigests) = 0 and $count($image.RepoTags) = 0\t                    ? {\t                        \"images\": [$image.Id],\t                        \"name\": \"dockerhub\"\t                    }\t                    : [(\t                        $count($image.RepoDigests) > 0 and $count($image.RepoTags) = 0\t                            ? $map($image.RepoDigests, function($digest) { $getRepo($digest) })\t                            : $map($image.RepoTags, function($tag) { $getRepo($tag) })\t                    )] {\t                        name: {\t                            \"images\": [images],\t                            \"name\": $distinct(name)\t                        }\t                    } ~> $each(function ($k, $v) { $k })\t            })\t        ]\t    ) {\t        name: {\t            \"images\": [images],\t            \"name\": $distinct(name),\t            \"serveraddress\": \"https://\" & $distinct(name) & \"/v2/\"\t        }\t    }  ~> $each(function ($k, $v) { $k });\t    \t    $map(msg.payload.results, function($item) {\t        $local_registries ~> | $[name = $item.name] | { \"id\": $item.id, \"serveraddress\": $item.serveraddress } |\t    })\t)",
+                "to": "(\t    $local_registries := (\t        $getRepo := function($repo) {(\t            $fragments := $split($repo, '/' );\t            $count($fragments) > 1 and $contains($fragments[0], /([.:]|localhost)/)\t                ? {\t                    \"images\": [$repo],\t                    \"name\": $fragments[0]\t                }\t                : {\t                    \"images\": [$repo],\t                    \"name\": \"dockerhub\"\t                }\t        )};\t        [\t            msg.images ~> $map(function($image) {\t                $count($image.RepoDigests) = 0 and $count($image.RepoTags) = 0\t                    ? {\t                        \"images\": [$image.Id],\t                        \"name\": \"dockerhub\"\t                    }\t                    : [(\t                        $count($image.RepoDigests) > 0 and $count($image.RepoTags) = 0\t                            ? $map($image.RepoDigests, function($digest) { $getRepo($digest) })\t                            : $map($image.RepoTags, function($tag) { $getRepo($tag) })\t                    )] {\t                        name: {\t                            \"images\": [images],\t                            \"name\": $distinct(name)\t                        }\t                    } ~> $each(function ($k, $v) { $k })\t            })\t        ]\t    ) {\t        name: {\t            \"images\": [images],\t            \"name\": $distinct(name),\t            \"serveraddress\": \"https://\" & $distinct(name) & \"/v2/\"\t        }\t    }  ~> $each(function ($k, $v) { $k });\t    \t    [$map(msg.payload.results, function($item) {\t        $local_registries ~> | $[name = $item.name] | { \"id\": $item.id, \"serveraddress\": $item.serveraddress } |\t    })]\t)",
                 "tot": "jsonata"
             }
         ],
@@ -3549,7 +3549,7 @@
                 "t": "set",
                 "p": "registries",
                 "pt": "global",
-                "to": "$map(msg.local_registries, function($item) {\t    $merge([$item, {\"id\": msg.payload[name = $item.name].id}])\t})",
+                "to": "[$map(msg.local_registries, function($item) {\t    $merge([$item, {\"id\": msg.payload[name = $item.name].id}])\t})]",
                 "tot": "jsonata"
             }
         ],
@@ -5374,28 +5374,22 @@
         "type": "switch",
         "z": "3ea1a4b04d852f38",
         "name": "was netbox webhook?",
-        "property": "req.url",
-        "propertyType": "msg",
+        "property": "config.netbox_url",
+        "propertyType": "global",
         "rules": [
             {
-                "t": "eq",
-                "v": "/api/containers",
-                "vt": "str"
-            },
-            {
-                "t": "else"
+                "t": "nempty"
             }
         ],
         "checkall": "true",
         "repair": false,
-        "outputs": 2,
+        "outputs": 1,
         "x": 1380,
         "y": 520,
         "wires": [
             [
                 "5c79a22a8f9ad79f"
-            ],
-            []
+            ]
         ]
     },
     {
