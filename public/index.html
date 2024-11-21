@@ -82,23 +82,23 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#containers" id="nav-containers-btn" data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse"><i class="fab fa-docker"></i> Containers</a>
+              data-bs-target="#navbarCollapse"><i class="fab fa-docker"></i> Containers <span class="badge rounded-pill bg-primary" id="containers_num">?</span></a> 
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#images" id="nav-images-btn" data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse"><i class="fas fa-clone"></i> Images</a>
+              data-bs-target="#navbarCollapse"><i class="fas fa-clone"></i> Images <span class="badge rounded-pill bg-primary" id="images_num">?</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#networks" id="nav-networks-btn" data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse"><i class="fas fa-network-wired"></i> Networks</a>
+              data-bs-target="#navbarCollapse"><i class="fas fa-network-wired"></i> Networks <span class="badge rounded-pill bg-primary" id="networks_num">?</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#volumes" id="nav-volumes-btn" data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse"><i class="fas fa-hdd"></i> Volumes</a>
+              data-bs-target="#navbarCollapse"><i class="fas fa-hdd"></i> Volumes <span class="badge rounded-pill bg-primary" id="volumes_num">?</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#registries" id="nav-registries-btn" data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse"><i class="fas fa-cloud"></i> Registries</a>
+              data-bs-target="#navbarCollapse"><i class="fas fa-cloud"></i> Registries <span class="badge rounded-pill bg-primary" id="registries_num">?</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/doc" target="_blank"><i class="fas fa-file-code"></i> Apidoc</a>
@@ -182,6 +182,7 @@
         url: "/api/containers"
       }).done(function (result) {
         globalContainers = result;
+        $("#containers_num").text(globalContainers.length);
       });
 
     function cleanWindow() {
@@ -202,7 +203,8 @@
         url: "/api/containers"
       }).done(function (result) {
         globalContainers = result;
-        $("#containers-count").html(result.length)
+        $("#containers_num").text(globalContainers.length);
+        $("#containers-count").html(globalContainers.length);
         let containers = '';
         for (const c of result) {
           let id = c.Id
@@ -417,9 +419,9 @@
           result.message + '</div><div class="col-3"><span class="badge rounded-pill bg-' + (
             result.configured === "ok" ? "success" : "danger") + '">' + result.configured +
           '</span></div></div></div><div class="card-body row">' +
-          '<div class="col-sm-12 col-md-6 p-2"> <b>Kernel</b>: ' + result.docker.KernelVersion +
-          '</div><div class="col-sm-12 col-md-6 p-2"> <b>Version</b>: ' + result.version +
-          '</div><div class="col-sm-12 col-md-6 p-2"> <b>Api</b>: ' + result.docker.ApiVersion +
+          '<div class="col-sm-12 col-md-6 p-2"> <b>OS Kernel</b>: ' + result.docker.KernelVersion +
+          '</div><div class="col-sm-12 col-md-6 p-2"> <b>Agent Version</b>: ' + result.version +
+          '</div><div class="col-sm-12 col-md-6 p-2"> <b>Docker Api</b>: ' + result.docker.ApiVersion +
           '</div><div class="col-sm-12 col-md-6 p-2"> <b>Storage Driver</b>: ' + result.dockerInfo.Driver +
           '</div></div></div></div>';
         $('#info-list').html(info);
@@ -503,7 +505,8 @@
       $.ajax({
         url: "/api/volumes",
       }).done(function (result) {
-        $("#volumes-count").html(result.Volumes.length)
+        $("#volumes-count").html(result.Volumes.length);
+        $("#volumes_num").text(result.Volumes.length);
         let vols = '';
         for (const c of result.Volumes) {
           let used_by = "";
@@ -537,6 +540,7 @@
         url: "/api/networks",
       }).done(function (result) {
         $("#networks-count").html(result.length)
+        $("#networks_num").text(result.length);
         let networks = ''
         for (const c of result) {
           let used_by = "";
@@ -571,6 +575,7 @@
         url: "/api/images",
       }).done(function (result) {
         $("#images-count").html(result.length)
+        $("#images_num").text(result.length);
         let images = ''
         for (const c of result) {
           let used_by = "";
@@ -797,8 +802,8 @@
       $.ajax({
         url: "/api/registries",
       }).done(function (result) {
-        console.log(result)
         $("#registries-count").html(result.length);
+        $("#registries_num").text(result.length);
         for (const c of result) {
           const card = document.createElement("div");
           card.classList.add("card", "my-2");
