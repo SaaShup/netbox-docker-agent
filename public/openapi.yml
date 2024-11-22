@@ -472,6 +472,18 @@ components:
               type: string
             ContainerID:
               type: string
+            restart_policy:
+              type: "string"
+              enum:
+                - "no"
+                - "on-failure"
+                - always
+                - unless-stopped
+            extra_hosts:
+              type: array
+              items:
+                type: string
+                example: host.local:10.11.12.13
             operation:
               type: string
               enum:

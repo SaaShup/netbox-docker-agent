@@ -5828,7 +5828,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t   \"Image\": msg.input.data.image.name & \":\" & msg.input.data.image.version,\t   \"Hostname\": msg.input.data.hostname,\t   \"Env\": [\t       $map(\t           msg.input.data.env,\t           function($v, $k) {\t               $v.var_name &\"=\" & $v.value\t            }\t        )\t    ],\t   \"Labels\": $merge(\t       $map(\t           msg.input.data.labels,\t           function($v, $k) {\t               { $v.key: $v.value }\t            }\t        )\t    ),\t   \"ExposedPorts\": $merge(\t       $map(\t           msg.input.data.ports,\t           function($v, $k) {\t               {\t                   $v.private_port & \"/\" & $v.type: {} \t                } \t            }\t        )\t    ),\t    \"NetworkingConfig\": {\t       \"EndpointsConfig\": $merge(\t           $map(\t               msg.input.data.network_settings,\t               function($v, $k) {\t                   $k = 0 ? {\t                       $v.network.name : { \"NetworkID\": $v.network.NetworkID } \t                   }\t                }\t            )\t        )\t    },\t   \"HostConfig\": {\t        \"CapAdd\": msg.input.data.cap_add,\t        \"CapDrop\": msg.input.data.cap_drop,\t        \"PidMode\": msg.input.data.pid_mode,\t        \"ExtraHosts\": msg.input.data.extra_hosts,       \t        \"PortBindings\": $merge(\t            $map(\t                msg.input.data.ports,\t                function($v, $k){\t                    {\t                        $v.private_port & \"/\" & $v.type: $v.public_port\t                        ? [\t                            {\t                                \"HostIp\": \"\",\t                                \"HostPort\" : $string($v.public_port) \t                            }\t                        ]\t                            : [] \t                    } \t                }\t            )\t        ),\t        \"Devices\": [\t            $map(\t                msg.input.data.devices,\t                function($v, $k) {\t                    {\t                        \"PathInContainer\": $v.container_path,\t                        \"PathOnHost\": $v.host_path,\t                        \"CgroupPermissions\": \"rwm\"\t                    }\t                }\t            )\t        ],\t        \"Mounts\": [\t            $map(\t                msg.input.data.mounts,\t                function($v, $k) {\t                    {\t                        \"Target\": $v.source,\t                        \"Name\": $v.volume.name,\t                        \"Type\": \"volume\",\t                        \"Destination\": $v.source,\t                        \"ReadOnly\": $v.read_only,\t                        \"Source\": $v.volume.name,\t                        \"Driver\": $v.volume.driver\t                    }\t                }\t            ),\t            $map(\t                msg.input.data.binds,\t                function($v, $k) {\t                    {\t                        \"Target\": $v.container_path,\t                        \"Type\": \"bind\",\t                        \"Destination\": $v.container_path,\t                        \"ReadOnly\": $v.read_only,\t                        \"Source\": $v.host_path,\t                        \"BindOptions\": {\t                           \"CreateMountpoint\": true\t                        }\t                    }\t               }\t            )\t        ],\t       \"RestartPolicy\": {\t           \"Name\": msg.input.data.restart_policy\t        }\t    }\t}\t",
+                "to": "{\t   \"Image\": msg.input.data.image.name & \":\" & msg.input.data.image.version,\t   \"Hostname\": msg.input.data.hostname,\t   \"Env\": [\t       $map(\t           msg.input.data.env,\t           function($v, $k) {\t               $v.var_name &\"=\" & $v.value\t            }\t        )\t    ],\t   \"Labels\": $merge(\t       $map(\t           msg.input.data.labels,\t           function($v, $k) {\t               { $v.key: $v.value }\t            }\t        )\t    ),\t   \"ExposedPorts\": $merge(\t       $map(\t           msg.input.data.ports,\t           function($v, $k) {\t               {\t                   $v.private_port & \"/\" & $v.type: {} \t                } \t            }\t        )\t    ),\t    \"NetworkingConfig\": {\t       \"EndpointsConfig\": $merge(\t           $map(\t               msg.input.data.network_settings,\t               function($v, $k) {\t                   $k = 0 ? {\t                       $v.network.name : { \"NetworkID\": $v.network.NetworkID } \t                   }\t                }\t            )\t        )\t    },\t   \"HostConfig\": {\t        \"CapAdd\": msg.input.data.cap_add,\t        \"CapDrop\": msg.input.data.cap_drop,\t        \"PidMode\": msg.input.data.pid_mode,\t        \"ExtraHosts\": msg.input.data.extra_hosts,       \t        \"PortBindings\": $merge(\t            $map(\t                msg.input.data.ports,\t                function($v, $k){\t                    {\t                        $v.private_port & \"/\" & $v.type: $v.public_port\t                        ? [\t                            {\t                                \"HostIp\": \"\",\t                                \"HostPort\" : $string($v.public_port) \t                            }\t                        ]\t                            : [] \t                    } \t                }\t            )\t        ),\t        \"Devices\": [\t            $map(\t                msg.input.data.devices,\t                function($v, $k) {\t                    {\t                        \"PathInContainer\": $v.container_path,\t                        \"PathOnHost\": $v.host_path,\t                        \"CgroupPermissions\": \"rwm\"\t                    }\t                }\t            )\t        ],\t        \"Mounts\": [\t            $map(\t                msg.input.data.mounts,\t                function($v, $k) {\t                    {\t                        \"Target\": $v.source,\t                        \"Name\": $v.volume.name,\t                        \"Type\": \"volume\",\t                        \"Destination\": $v.source,\t                        \"ReadOnly\": $v.read_only,\t                        \"Source\": $v.volume.name,\t                        \"Driver\": $v.volume.driver\t                    }\t                }\t            ),\t            $map(\t                msg.input.data.binds,\t                function($v, $k) {\t                    {\t                        \"Target\": $v.container_path,\t                        \"Type\": \"bind\",\t                        \"Destination\": $v.container_path,\t                        \"ReadOnly\": $v.read_only,\t                        \"Source\": $v.host_path,\t                        \"BindOptions\": {\t                           \"CreateMountpoint\": true\t                        }\t                    }\t               }\t            )\t        ],\t        \"RestartPolicy\": {\t           \"Name\": msg.input.data.restart_policy\t        }\t    }\t}\t",
                 "tot": "jsonata"
             },
             {
@@ -6051,7 +6051,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "connect network",
-        "x": 1130,
+        "x": 1150,
         "y": 680,
         "wires": [
             [],
@@ -6119,7 +6119,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 340,
+        "x": 320,
         "y": 760,
         "wires": [
             [
@@ -6242,7 +6242,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"operation\": \"none\",\t    \"state\": msg.result.State.Status,\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                    }\t                )\t          ],\t    \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                {\t                    \"var_name\": $substringBefore($v, \"=\"),\t                    \"value\": $substringAfter($v, \"=\")\t                }\t            }\t        )\t    ],\t    \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t    \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Destination,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ]\t}]",
+                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"operation\": \"none\",\t    \"state\": msg.result.State.Status,\t    \"extra_hosts\": msg.result.HostConfig.ExtraHosts,\t    \"restart_policy\": msg.result.HostConfig.RestartPolicy.Name = \"\" ? \"no\" : msg.result.HostConfig.RestartPolicy.Name,\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                    }\t                )\t          ],\t    \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                {\t                    \"var_name\": $substringBefore($v, \"=\"),\t                    \"value\": $substringAfter($v, \"=\")\t                }\t            }\t        )\t    ],\t    \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t    \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Destination,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ]\t}]",
                 "tot": "jsonata"
             }
         ],
@@ -6255,7 +6255,8 @@
         "y": 760,
         "wires": [
             [
-                "2386f957b4f1a646"
+                "2386f957b4f1a646",
+                "3a5bdb2c55e0c8e7"
             ]
         ]
     },
@@ -6279,7 +6280,8 @@
         "y": 760,
         "wires": [
             [
-                "d10c0e59950649aa"
+                "d10c0e59950649aa",
+                "f8966df136c19cca"
             ]
         ]
     },
@@ -7044,6 +7046,40 @@
                 "29132a5a3f72e359"
             ]
         ]
+    },
+    {
+        "id": "3a5bdb2c55e0c8e7",
+        "type": "debug",
+        "z": "8e85e8c54d776ddc",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 960,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "f8966df136c19cca",
+        "type": "debug",
+        "z": "8e85e8c54d776ddc",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1360,
+        "y": 700,
+        "wires": []
     },
     {
         "id": "3eb97ccb653722a0",
