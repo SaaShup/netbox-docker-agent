@@ -183,6 +183,26 @@
       }).done(function (result) {
         globalContainers = result;
         $("#containers_num").text(globalContainers.length);
+        $.ajax({
+          url: "/api/volumes",
+        }).done(function (result) {
+          $("#volumes_num").text(result.Volumes.length);
+        });
+        $.ajax({
+          url: "/api/images",
+        }).done(function (result) {
+          $("#images_num").text(result.length);
+        });
+        $.ajax({
+          url: "/api/networks",
+        }).done(function (result) {
+          $("#networks_num").text(result.length);
+        });
+        $.ajax({
+          url: "/api/registries",
+        }).done(function (result) {
+          $("#registries_num").text(result.length);
+        });
       });
 
     function cleanWindow() {
