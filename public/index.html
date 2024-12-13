@@ -28,6 +28,18 @@
 <body class="d-flex flex-column">
 
   <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
     .nav-link {
       border-bottom: 3px solid transparent;
     }
@@ -82,26 +94,32 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#containers" id="nav-containers-btn" data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse"><i class="fab fa-docker"></i> Containers <span class="badge rounded-pill bg-primary" id="containers_num">?</span></a> 
+              data-bs-target="#navbarCollapse"><i class="fab fa-docker"></i> Containers <span
+                class="badge rounded-pill bg-primary" id="containers_num">?</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#images" id="nav-images-btn" data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse"><i class="fas fa-clone"></i> Images <span class="badge rounded-pill bg-primary" id="images_num">?</span></a>
+              data-bs-target="#navbarCollapse"><i class="fas fa-clone"></i> Images <span
+                class="badge rounded-pill bg-primary" id="images_num">?</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#networks" id="nav-networks-btn" data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse"><i class="fas fa-network-wired"></i> Networks <span class="badge rounded-pill bg-primary" id="networks_num">?</span></a>
+              data-bs-target="#navbarCollapse"><i class="fas fa-network-wired"></i> Networks <span
+                class="badge rounded-pill bg-primary" id="networks_num">?</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#volumes" id="nav-volumes-btn" data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse"><i class="fas fa-hdd"></i> Volumes <span class="badge rounded-pill bg-primary" id="volumes_num">?</span></a>
+              data-bs-target="#navbarCollapse"><i class="fas fa-hdd"></i> Volumes <span
+                class="badge rounded-pill bg-primary" id="volumes_num">?</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#registries" id="nav-registries-btn" data-bs-toggle="collapse"
-              data-bs-target="#navbarCollapse"><i class="fas fa-cloud"></i> Registries <span class="badge rounded-pill bg-primary" id="registries_num">?</span></a>
+              data-bs-target="#navbarCollapse"><i class="fas fa-cloud"></i> Registries <span
+                class="badge rounded-pill bg-primary" id="registries_num">?</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/doc" target="_blank"><i class="fas fa-file-code"></i> Apidoc</a>
+            <a class="nav-link" aria-current="page" href="/doc" target="_blank"><i class="fas fa-file-code"></i>
+              Apidoc</a>
           </li>
         </ul>
       </div>
@@ -122,10 +140,7 @@
                 System Usage
               </div>
               <div class="card-body">
-                <div
-                  id="system-usage-chart"
-                  style="width: 33%; margin: auto;"
-                ></div>
+                <div id="system-usage-chart" style="width: 33%; margin: auto;"></div>
               </div>
             </div>
           </div>
@@ -179,31 +194,31 @@
   <script>
     var globalContainers = [];
     $.ajax({
-        url: "/api/containers"
+      url: "/api/containers"
+    }).done(function (result) {
+      globalContainers = result;
+      $("#containers_num").text(globalContainers.length);
+      $.ajax({
+        url: "/api/volumes",
       }).done(function (result) {
-        globalContainers = result;
-        $("#containers_num").text(globalContainers.length);
-        $.ajax({
-          url: "/api/volumes",
-        }).done(function (result) {
-          $("#volumes_num").text(result.Volumes.length);
-        });
-        $.ajax({
-          url: "/api/images",
-        }).done(function (result) {
-          $("#images_num").text(result.length);
-        });
-        $.ajax({
-          url: "/api/networks",
-        }).done(function (result) {
-          $("#networks_num").text(result.length);
-        });
-        $.ajax({
-          url: "/api/registries",
-        }).done(function (result) {
-          $("#registries_num").text(result.length);
-        });
+        $("#volumes_num").text(result.Volumes.length);
       });
+      $.ajax({
+        url: "/api/images",
+      }).done(function (result) {
+        $("#images_num").text(result.length);
+      });
+      $.ajax({
+        url: "/api/networks",
+      }).done(function (result) {
+        $("#networks_num").text(result.length);
+      });
+      $.ajax({
+        url: "/api/registries",
+      }).done(function (result) {
+        $("#registries_num").text(result.length);
+      });
+    });
 
     function cleanWindow() {
       $(".app").each(function () {
@@ -236,16 +251,19 @@
             '<div class="col-sm-12 col-md-6 text-center">' + c.Id +
             '</div><div class="col-sm-6 col-md-3 text-center">' + c.Created.substring(0, 19).replace('T',
               ' ') +
-            '</div><div class="col-sm-6 col-md-3 text-center">' + c.State.StartedAt.substring(0, 19).replace('T',
+            '</div><div class="col-sm-6 col-md-3 text-center">' + c.State.StartedAt.substring(0, 19).replace(
+              'T',
               ' ') +
             '</div></div><div class="col-12 px-5 text-end"><button class="btn btn-sm btn-success m-2 ' + (c
-              .State.Running === false || c.State.Paused === true ? "" : "disabled") + '" onclick="startContainer(\'' + id +
+              .State.Running === false || c.State.Paused === true ? "" : "disabled") +
+            '" onclick="startContainer(\'' + id +
             '\');"><i class="fas fa-play"></i> Start</button>' +
             '<button class="btn btn-sm btn-danger m-2 ' + (c.State
               .Running === true ? "" : "disabled") + '" onclick="stopContainer(\'' + id +
             '\');"><i class="fas fa-stop"></i> Stop</button>' +
             '<button class="btn btn-sm btn-info m-2 text-white ' + (c.State
-              .Running === true && c.State.Paused === false ? "" : "disabled") + '" onclick="pauseContainer(\'' + id +
+              .Running === true && c.State.Paused === false ? "" : "disabled") +
+            '" onclick="pauseContainer(\'' + id +
             '\');"><i class="fas fa-pause"></i> Pause</button>' +
             '<button class="btn btn-sm btn-info m-2 text-white ' + (c.State
               .Paused === true ? "" : "disabled") + '" onclick="unpauseContainer(\'' + id +
@@ -275,11 +293,12 @@
             '<li class="nav-item"><a href="#crestart_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="crestart-tab_' + id + '">Restart</a></li>' +
             '<li class="nav-item"><a href="#ccapabilities_' + id +
-              '" class="nav-link px-2" data-bs-toggle="tab" id="ccapabilities-tab_' + id + '">Capabilities</a></li>' +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="ccapabilities-tab_' + id +
+            '">Capabilities</a></li>' +
             '<li class="nav-item"><a href="#cresources_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cresources-tab_' + id + '">Resources</a></li>' +
             '<li class="nav-item"><a href="#cextras_' + id +
-              '" class="nav-link px-2" data-bs-toggle="tab" id="cextras-tab_' + id + '">Extras</a></li>' +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="cextras-tab_' + id + '">Extras</a></li>' +
             '<li class="nav-item"><a href="#cexec_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cexec-tab_' + id + '">Exec</a></li>' +
             '<li class="nav-item"><a href="#clogs_' + id +
@@ -389,7 +408,8 @@
             (c.HostConfig.RestartPolicy.Name || 'no') + '" disabled>';
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cruntime_' + id + '"><p>Runtime tab content ...</p></div>' +
-            '<div class="tab-pane fade" id="ccapabilities_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="tab-pane fade" id="ccapabilities_' + id +
+            '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Capabilities Added:</label></div><div class="col-8"><input class="form-control" value="' +
             ('CapAdd' in c.HostConfig ? c.HostConfig.CapAdd : "") + '" disabled/></div>' +
             '<div class="col-4 mt-2"><label class="col-form-label">Capabilities Dropped:</label></div><div class="col-8 mt-2"><input class="form-control" value="' +
@@ -399,7 +419,7 @@
             '<div class="col-4"><label class="col-form-label">Memory limit (MB):</label></div><div class="col-8"><input class="form-control" value="' +
             ('Memory' in c.HostConfig ? parseInt(c.HostConfig.Memory) / 1024 / 1024 : "0") + '" disabled/>';
           containers += '</div></div></div>' +
-          '<div class="tab-pane fade" id="cextras_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="tab-pane fade" id="cextras_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Pid Mode:</label></div><div class="col-8"><input class="form-control" value="' +
             ('PidMode' in c.HostConfig ? c.HostConfig.PidMode : "") + '" disabled/></div>' +
             '<div class="col-4 mt-2"><label class="col-form-label">Capabilities Dropped:</label></div><div class="col-8 mt-2"><input class="form-control" value="' +
@@ -481,7 +501,9 @@
           series,
           dataLabels: {
             enabled: true,
-            formatter: function(percentage, { seriesIndex }) {
+            formatter: function (percentage, {
+              seriesIndex
+            }) {
               const val = series[seriesIndex]
               return humanize(val)
             }
@@ -496,7 +518,7 @@
                   show: true,
                   value: {
                     show: true,
-                    formatter: function(val) {
+                    formatter: function (val) {
                       return humanize(val)
                     }
                   },
@@ -531,8 +553,8 @@
         for (const c of result.Volumes) {
           let used_by = "";
           for (gc in globalContainers) {
-             for (const m of globalContainers[gc].Mounts)
-                  if (m.Name === c.Name) used_by += globalContainers[gc].Name.replace('/', '') + " "
+            for (const m of globalContainers[gc].Mounts)
+              if (m.Name === c.Name) used_by += globalContainers[gc].Name.replace('/', '') + " "
           }
           vols +=
             '<div class="col-12"><div class="card my-3"><div class="card-header bg-white"><div class="row"><div class="col-9 text-primary">' +
@@ -541,10 +563,12 @@
             c.CreatedAt.replace('T', ' ').replace('Z', '').substring(0, 19) +
             '</div><div class="col-sm-12 col-md-6 p-2"> <b>Driver</b>: ' + c.Driver +
             '</div><div class="col-sm-12 col-md-12 p-2"> <b>Mountpoint</b>: ' + c.Mountpoint +
-            '</div>'+
-            '<div class="col-sm-12 col-md-12 p-2"> <b>Used By</b>: <span class="badge rounded-pill bg-primary">' + (used_by.split(' ').length - 1) + '</span> ' + used_by + '</div>' +
-            '<div class="col-sm-12 col-md-12 p-2"><button class="btn btn-sm btn-danger m-2 ' + (used_by.length > 0 ? "disabled" : "") + '" onclick="deleteVolume(\'' + c.Name +
-            '\');"><i class="fas fa-trash-alt"></i> Remove</button></div></div>'+ 
+            '</div>' +
+            '<div class="col-sm-12 col-md-12 p-2"> <b>Used By</b>: <span class="badge rounded-pill bg-primary">' +
+            (used_by.split(' ').length - 1) + '</span> ' + used_by + '</div>' +
+            '<div class="col-sm-12 col-md-12 p-2"><button class="btn btn-sm btn-danger m-2 ' + (used_by.length >
+              0 ? "disabled" : "") + '" onclick="deleteVolume(\'' + c.Name +
+            '\');"><i class="fas fa-trash-alt"></i> Remove</button></div></div>' +
             '</div></div></div>';
         }
         $('#volumes-list').html(vols);
@@ -565,7 +589,8 @@
         for (const c of result) {
           let used_by = "";
           for (gc in globalContainers) {
-            if (c.Name in globalContainers[gc].NetworkSettings.Networks) used_by += globalContainers[gc].Name.replace('/', '') + " "
+            if (c.Name in globalContainers[gc].NetworkSettings.Networks) used_by += globalContainers[gc].Name
+              .replace('/', '') + " "
           }
           networks +=
             '<div class="col-12"><div class="card my-3"><div class="card-header bg-white"><div class="row"><div class="col-9 text-primary">' +
@@ -576,9 +601,11 @@
           if (c.IPAM.Config !== null && c.IPAM.Config.length > 0) networks +=
             '<div class="col-sm-12 col-md-6 p-2"> <b>IPv4 Subnet</b>: ' + c.IPAM.Config[0].Subnet +
             '</div><div class="col-sm-12 col-md-6 p-2">  <b>IPv4 Subnet</b>: ' + c.IPAM.Config[0].Gateway +
-            '</div>' + 
-            '<div class="col-sm-12 col-md-12 p-2"> <b>Used By</b>: <span class="badge rounded-pill bg-primary">' + (used_by.split(' ').length - 1) + '</span> ' + used_by + '</div>' +
-            '<div class="col-sm-12 col-md-12 p-2"><button class="btn btn-sm btn-danger m-2 ' + (used_by.length > 0 ? "disabled" : "") + '" onclick="deleteNetwork(\'' + c.Name +
+            '</div>' +
+            '<div class="col-sm-12 col-md-12 p-2"> <b>Used By</b>: <span class="badge rounded-pill bg-primary">' +
+            (used_by.split(' ').length - 1) + '</span> ' + used_by + '</div>' +
+            '<div class="col-sm-12 col-md-12 p-2"><button class="btn btn-sm btn-danger m-2 ' + (used_by.length >
+              0 ? "disabled" : "") + '" onclick="deleteNetwork(\'' + c.Name +
             '\');"><i class="fas fa-trash-alt"></i> Remove</button></div></div>'
           networks += '</div></div></div>';
         }
@@ -610,11 +637,17 @@
             new Date(c.Created * 1000).toISOString().substring(0, 19).replace('T', ' ') +
             '</div><div class="col-sm-12 col-md-6 p-2"> <b>Size</b>: ' + (c.Size / 1024 / 1024).toFixed(2) +
             'MB</div><div class="col-sm-12 col-md-12 p-2"> <b>Id</b>: ' + c.Id + '</div>' +
-            '<div class="col-sm-12 col-md-12 p-2"> <b>Digest</b>: ' + (c.RepoDigests[0] ? c.RepoDigests[0].split("@")[0] : "none") + '</div>' +
-            '<div class="col-sm-12 col-md-12 p-2"> <b>Used By</b>: <span class="badge rounded-pill bg-primary">' + (used_by.split(' ').length - 1) + '</span> ' + used_by + '</div>' +
-            '<div class="col-sm-12 col-md-12 p-2"><button class="btn btn-sm btn-warning m-2 ' + (c.RepoTags[0] && c.RepoDigests[0] ? "":"disabled") + '" onclick="pullImage(\'' + c.Id +
-            '\', \'' + (c.RepoTags[0] ? c.RepoTags[0].split(':')[0]:"") + '\', \'' + (c.RepoTags[0] ? c.RepoTags[0].split(':')[1]:"") + '\', \'' + Math.ceil(c.Size / 1024 / 1024) + '\');"><i class="fas fa-arrow-down"></i> Pull</button><button class="btn btn-sm btn-danger m-2 ' + (used_by.length > 0 ? "disabled" : "") + '" onclick="deleteImage(\'' + c.Id +
-            '\');"><i class="fas fa-trash-alt"></i> Remove</button></div></div>'+           
+            '<div class="col-sm-12 col-md-12 p-2"> <b>Digest</b>: ' + (c.RepoDigests[0] ? c.RepoDigests[0]
+              .split("@")[0] : "none") + '</div>' +
+            '<div class="col-sm-12 col-md-12 p-2"> <b>Used By</b>: <span class="badge rounded-pill bg-primary">' +
+            (used_by.split(' ').length - 1) + '</span> ' + used_by + '</div>' +
+            '<div class="col-sm-12 col-md-12 p-2"><button class="btn btn-sm btn-warning m-2 ' + (c.RepoTags[
+              0] && c.RepoDigests[0] ? "" : "disabled") + '" onclick="pullImage(\'' + c.Id +
+            '\', \'' + (c.RepoTags[0] ? c.RepoTags[0].split(':')[0] : "") + '\', \'' + (c.RepoTags[0] ? c
+              .RepoTags[0].split(':')[1] : "") + '\', \'' + Math.ceil(c.Size / 1024 / 1024) +
+            '\');"><i class="fas fa-arrow-down"></i> Pull</button><button class="btn btn-sm btn-danger m-2 ' + (
+              used_by.length > 0 ? "disabled" : "") + '" onclick="deleteImage(\'' + c.Id +
+            '\');"><i class="fas fa-trash-alt"></i> Remove</button></div></div>' +
             '</div></div></div>'
         }
         $('#images-list').html(images);
@@ -871,14 +904,14 @@
       })
     });
 
-    switch(window.location.hash) {
-      case '#containers': 
+    switch (window.location.hash) {
+      case '#containers':
         $("#nav-containers-btn").click();
         break;
-      case '#volumes': 
+      case '#volumes':
         $("#nav-volumes-btn").click();
         break;
-      case '#networks': 
+      case '#networks':
         $("#nav-networks-btn").click();
         break;
       case '#images':
@@ -887,7 +920,8 @@
       case '#registries':
         $("#nav-registries-btn").click();
         break;
-      default: $("#nav-home-btn").click();
+      default:
+        $("#nav-home-btn").click();
     }
   </script>
 
