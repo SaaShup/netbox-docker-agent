@@ -80,6 +80,11 @@ log into [ui page](http://localhost:1880) to see your docker assets
 
 ![Screenshot from 2024-01-30 18-40-14](https://github.com/SaaShup/netbox-docker-agent/assets/17571692/2437410b-734d-4601-bbd1-745041e08529)
 
+## Upgrading the agent
+
+To upgrade the agent you have no specific jobs to run. Pull the latest version, stop and rm your container and run it with the same settings (**same config volumes**).
+The agent has a mechanism to update netbox if it has been upgraded. After an agent upgrade you should see the new agent version on host information page.
+
 ## Monitoring
 The application has a '/metrics' endpoint which can be used with prometheus to monitor if the access on the docker daemon socket is working and if all the containers are up and running.
 
