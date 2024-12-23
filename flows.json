@@ -1264,7 +1264,7 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 120,
+        "x": 100,
         "y": 460,
         "wires": [
             [
@@ -1315,7 +1315,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 6,
-        "x": 800,
+        "x": 980,
         "y": 500,
         "wires": [
             [
@@ -1448,13 +1448,6 @@
         "rules": [
             {
                 "t": "set",
-                "p": "config.netbox_url",
-                "pt": "global",
-                "to": "$boolean($env('NETBOX_URL')) ? $env('NETBOX_URL') : req.query.url",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
                 "p": "config.id",
                 "pt": "global",
                 "to": "req.query.id",
@@ -1480,7 +1473,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 580,
+        "x": 840,
         "y": 420,
         "wires": [
             [
@@ -2141,8 +2134,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 610,
-        "y": 500,
+        "x": 750,
+        "y": 540,
         "wires": [
             [
                 "521aa77a01fcea45"
@@ -3090,11 +3083,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 360,
-        "y": 500,
+        "x": 220,
+        "y": 540,
         "wires": [
             [
-                "4acdf31cd717543f"
+                "09f6087cf1cecc23"
             ]
         ]
     },
@@ -3613,6 +3606,33 @@
         "wires": [
             [
                 "f0f956ba31c5c2ef"
+            ]
+        ]
+    },
+    {
+        "id": "09f6087cf1cecc23",
+        "type": "change",
+        "z": "a827fd671d6a227e",
+        "name": "configure netbox url",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config.netbox_url",
+                "pt": "global",
+                "to": "$boolean($env('NETBOX_URL')) ? $env('NETBOX_URL') : req.query.url",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 490,
+        "y": 540,
+        "wires": [
+            [
+                "4acdf31cd717543f"
             ]
         ]
     },
@@ -5145,11 +5165,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 160,
+        "x": 100,
         "y": 320,
         "wires": [
             [
-                "5db8c0db8473ea8e"
+                "c48b4bf9eca3e90a"
             ]
         ]
     },
@@ -5393,6 +5413,33 @@
         ]
     },
     {
+        "id": "c48b4bf9eca3e90a",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "configure netbox url",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config.netbox_url",
+                "pt": "global",
+                "to": "$boolean($env('NETBOX_URL')) ? $env('NETBOX_URL') : req.query.url",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 190,
+        "y": 400,
+        "wires": [
+            [
+                "5db8c0db8473ea8e"
+            ]
+        ]
+    },
+    {
         "id": "dcf35b57666a30f9",
         "type": "http in",
         "z": "8e85e8c54d776ddc",
@@ -5406,7 +5453,7 @@
         "wires": [
             [
                 "5fb5be1ef90b0e1b",
-                "07c699b4b1965ea3"
+                "268b55197bf3fa97"
             ]
         ]
     },
@@ -7046,6 +7093,33 @@
         ]
     },
     {
+        "id": "268b55197bf3fa97",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "configure netbox url",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config.netbox_url",
+                "pt": "global",
+                "to": "$boolean($env('NETBOX_URL')) ? $env('NETBOX_URL') : req.query.url",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 90,
+        "y": 160,
+        "wires": [
+            [
+                "07c699b4b1965ea3"
+            ]
+        ]
+    },
+    {
         "id": "3eb97ccb653722a0",
         "type": "http in",
         "z": "177047e3d7a351be",
@@ -7059,7 +7133,7 @@
         "wires": [
             [
                 "0a57e0d1d1e7b853",
-                "def493fd34b215bc"
+                "2053b4714f5af73e"
             ]
         ]
     },
@@ -7576,7 +7650,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 380,
+        "x": 440,
         "y": 200,
         "wires": [
             [
@@ -7669,6 +7743,33 @@
         "wires": [
             [
                 "74282c37e59eb461"
+            ]
+        ]
+    },
+    {
+        "id": "2053b4714f5af73e",
+        "type": "change",
+        "z": "177047e3d7a351be",
+        "name": "configure netbox url",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config.netbox_url",
+                "pt": "global",
+                "to": "$boolean($env('NETBOX_URL')) ? $env('NETBOX_URL') : req.query.url",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 350,
+        "y": 320,
+        "wires": [
+            [
+                "def493fd34b215bc"
             ]
         ]
     },
@@ -8087,8 +8188,8 @@
         "headers": {
             "content-type": "text/plain; charset=utf-8"
         },
-        "x": 910,
-        "y": 320,
+        "x": 1090,
+        "y": 380,
         "wires": []
     },
     {
