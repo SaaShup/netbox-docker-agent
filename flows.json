@@ -2518,6 +2518,13 @@
             },
             {
                 "t": "set",
+                "p": "output.config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
                 "p": "payload",
                 "pt": "msg",
                 "to": "output",

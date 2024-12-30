@@ -193,35 +193,38 @@
 
   <script>
     var globalContainers = [];
+    var globalConfig = {};
+
     $.ajax({
-      url: "/api/containers"
-    }).done(function (result) {
-      globalContainers = result;
-      $("#containers_num").text(globalContainers.length);
-      $.ajax({
-        url: "/api/volumes",
+        url: "/api/containers"
       }).done(function (result) {
-        $("#volumes_num").text(result.Volumes.length);
+        globalContainers = result;
+        $("#containers_num").text(globalContainers.length);
+        $.ajax({
+          url: "/api/volumes",
+        }).done(function (result) {
+          $("#volumes_num").text(result.Volumes.length);
+        });
+        $.ajax({
+          url: "/api/images",
+        }).done(function (result) {
+          $("#images_num").text(result.length);
+        });
+        $.ajax({
+          url: "/api/networks",
+        }).done(function (result) {
+          $("#networks_num").text(result.length);
+        });
+        $.ajax({
+          url: "/api/registries",
+        }).done(function (result) {
+          $("#registries_num").text(result.length);
+        });
+      })
+      .fail(function (result) {
+        if (result.status == 403) $('#system-usage-chart').html(
+        '<span class="badge bg-danger"><h3>Error</h3></span>');
       });
-      $.ajax({
-        url: "/api/images",
-      }).done(function (result) {
-        $("#images_num").text(result.length);
-      });
-      $.ajax({
-        url: "/api/networks",
-      }).done(function (result) {
-        $("#networks_num").text(result.length);
-      });
-      $.ajax({
-        url: "/api/registries",
-      }).done(function (result) {
-        $("#registries_num").text(result.length);
-      });
-    })
-    .fail(function (result) {
-      if (result.status == 403) $('#system-usage-chart').html('<span class="badge bg-danger"><h3>Error</h3></span>');
-    });
 
     function cleanWindow() {
       $(".app").each(function () {
@@ -276,7 +279,7 @@
             '\');"><i class="fas fa-skull"></i> Kill</button>' +
             '<button class="btn btn-sm btn-primary m-2" onclick="restartContainer(\'' + id +
             '\');"><i class="fas fa-redo"></i> Restart</button>' +
-            '<button class="btn btn-sm btn-warning m-2 text-white disabled" onclick="recreateContainer();"><i class="fas fa-upload"></i> Recreate</button>' +
+            '<button class="btn btn-sm btn-warning m-2 text-white ' + (Object.keys(globalConfig).length > 0 ? "" : "disabled") + '" onclick="recreateContainer();"><i class="fas fa-upload"></i> Recreate</button>' +
             '<button class="btn btn-sm btn-danger m-2 ' + (c.State
               .Running === true ? "disabled" : "") + '" onclick="deleteContainer(\'' + id +
             '\');"><i class="fas fa-trash-alt"></i> Remove</button></div>' +
@@ -457,6 +460,7 @@
       $.ajax({
         url: "/info",
       }).done(function (result) {
+        globalConfig = result;
         info =
           '<div class="col-12"><div class="card my-3"><div class="card-header bg-white"><div class="row"><div class="col-9 text-primary">' +
           result.message + '</div><div class="col-3"><span class="badge rounded-pill bg-' + (
@@ -465,8 +469,9 @@
           '<div class="col-sm-12 col-md-6 p-2"> <b>OS Kernel</b>: ' + result.docker.KernelVersion +
           '</div><div class="col-sm-12 col-md-6 p-2"> <b>Agent Version</b>: ' + result.version +
           '</div><div class="col-sm-12 col-md-6 p-2"> <b>Docker Api</b>: ' + result.docker.ApiVersion +
-          '</div><div class="col-sm-12 col-md-6 p-2"> <b>Storage Driver</b>: ' + ('dockerInfo' in result ? result.dockerInfo.Driver : "undefined")
-          '</div></div></div></div>';
+          '</div><div class="col-sm-12 col-md-6 p-2"> <b>Storage Driver</b>: ' + ('dockerInfo' in result ?
+            result.dockerInfo.Driver : "undefined")
+        '</div></div></div></div>';
         $('#info-list').html(info);
       })
 
@@ -757,6 +762,88 @@
           "data": {
             "operation": action,
             "ContainerID": id
+          }
+        },
+        dataType: "json"
+      }).done(function (result) {
+        setTimeout(function () {
+          $("#modalNotification").modal("hide");
+          $("#nav-containers-btn").click();
+        }, 5000)
+      })
+    }
+
+    function recreateContainer(id) {
+      //on going work
+      return;
+      $("#modalNotificationTitle").html("operation recreate");
+      $("#modalNotificationContent").html('Pls wait ! recreate is ongoing.... ');
+      $("#modalNotification").modal("show");
+      let container = {}
+      for ( const c of globalContainers) {
+        if (c.Id = id) {
+          container = c;
+          break;
+        }
+      }
+      $.ajax({
+        url: "/api/engine/containers",
+        method: "PUT",
+        data: {
+          "data": {
+            "id": id,
+            "host": {
+              "id": globalConfig.config.id,
+            },
+            "image": {
+              "ImageID": c.Image
+            },
+            "name": c.Name.replace("/",""),
+            "operation": "recreate",
+            "ContainerID": c.Id,
+            "hostname": c.Config.Hostname,
+            "restart_policy": c.HostConfig.RestartPolicy.Name,
+            "cap_add": c.HostConfig.CapAdd,
+            "cap_drop": c.HostConfig.CapDrop,
+            "ports": [{
+              "public_port": 0,
+              "private_port": 1880,
+              "type": "tcp"
+            }],
+            "env": [{
+              "var_name": "NODE_VERSION",
+              "value": "18.18.0"
+            }, {
+              "var_name": "PATH",
+              "value": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            }, {
+              "var_name": "PORT",
+              "value": "1880"
+            }, {
+              "var_name": "YARN_VERSION",
+              "value": "1.22.19"
+            }],
+            "labels": [{
+              "key": "test",
+              "value": "test"
+            }],
+            "mounts": [],
+            "binds": [],
+            "network_settings": [{
+              "network": {
+                "id": 279,
+                "url": "/api/plugins/docker/networks/279/",
+                "display": "bridge",
+                "name": "bridge",
+                "driver": "bridge",
+                "NetworkID": "9583f95bf910908823d06dfe48e7585a8a2fcceced0e3a61133f6f4e43198e28",
+                "state": "created"
+              }
+            }],
+            "devices": [{
+              "host_path": "/dev/net/tun",
+              "container_path": "/dev/net/tun"
+            }]
           }
         },
         dataType: "json"
