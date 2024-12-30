@@ -895,11 +895,32 @@
 
           const imageContent = document.createElement("span");
           imageContent.appendChild(document.createTextNode(c.images.length));
+          imageContent.classList.add("badge", "rounded-pill", "bg-primary");
 
           images.appendChild(imageHead)
           images.appendChild(imageContent);
 
           body.appendChild(images);
+
+          const imagesList = document.createElement("div");
+          imagesList.classList.add("col-md-12", "col-sm-12", "p-2");
+
+          const imagesListHead = document.createElement("b");
+          imagesListHead.appendChild(document.createTextNode("Image(s) list: "));
+
+          const imagesListContent = document.createElement("span");
+
+          let s = "";
+          for (const i of c.images) {
+            s += '<br>' + i;
+          }
+          imagesListContent.innerHTML = s;
+
+          imagesList.appendChild(imagesListHead)
+          imagesList.appendChild(imagesListContent);
+          imagesList.appendChild(imagesListContent);
+
+          body.appendChild(imagesList);
 
           card.appendChild(body);
           list.appendChild(card);
