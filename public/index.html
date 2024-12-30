@@ -218,6 +218,9 @@
       }).done(function (result) {
         $("#registries_num").text(result.length);
       });
+    })
+    .fail(function (result) {
+      if (result.status == 403) $('#system-usage-chart').html('<span class="badge bg-danger"><h3>Error</h3></span>');
     });
 
     function cleanWindow() {
@@ -462,7 +465,7 @@
           '<div class="col-sm-12 col-md-6 p-2"> <b>OS Kernel</b>: ' + result.docker.KernelVersion +
           '</div><div class="col-sm-12 col-md-6 p-2"> <b>Agent Version</b>: ' + result.version +
           '</div><div class="col-sm-12 col-md-6 p-2"> <b>Docker Api</b>: ' + result.docker.ApiVersion +
-          '</div><div class="col-sm-12 col-md-6 p-2"> <b>Storage Driver</b>: ' + result.dockerInfo.Driver +
+          '</div><div class="col-sm-12 col-md-6 p-2"> <b>Storage Driver</b>: ' + ('dockerInfo' in result ? result.dockerInfo.Driver : "undefined")
           '</div></div></div></div>';
         $('#info-list').html(info);
       })
