@@ -279,7 +279,7 @@
             '\');"><i class="fas fa-skull"></i> Kill</button>' +
             '<button class="btn btn-sm btn-primary m-2" onclick="restartContainer(\'' + id +
             '\');"><i class="fas fa-redo"></i> Restart</button>' +
-            '<button class="btn btn-sm btn-warning m-2 text-white ' + (Object.keys(globalConfig).length > 0 ? "" : "disabled") + '" onclick="recreateContainer();"><i class="fas fa-upload"></i> Recreate</button>' +
+            '<button class="btn btn-sm btn-warning m-2 text-white ' + (Object.keys(globalConfig).length > 0 ? "disabled" : "disabled") + '" onclick="recreateContainer();"><i class="fas fa-upload"></i> Recreate</button>' +
             '<button class="btn btn-sm btn-danger m-2 ' + (c.State
               .Running === true ? "disabled" : "") + '" onclick="deleteContainer(\'' + id +
             '\');"><i class="fas fa-trash-alt"></i> Remove</button></div>' +
