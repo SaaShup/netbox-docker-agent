@@ -7784,8 +7784,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 600,
-        "y": 120,
+        "x": 560,
+        "y": 140,
         "wires": [
             [
                 "298e6c9fd2249160"
@@ -7949,7 +7949,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1140,
+        "x": 1180,
         "y": 220,
         "wires": [
             [
@@ -7968,7 +7968,7 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 950,
+        "x": 1030,
         "y": 220,
         "wires": [
             [
@@ -7995,7 +7995,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1060,
+        "x": 1100,
         "y": 280,
         "wires": [
             [
@@ -8019,7 +8019,7 @@
         "timeout": "",
         "count": "",
         "reduceRight": false,
-        "x": 1230,
+        "x": 1270,
         "y": 280,
         "wires": [
             [
@@ -8074,7 +8074,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 830,
+        "x": 870,
         "y": 220,
         "wires": [
             [
@@ -8094,8 +8094,8 @@
         "headers": {
             "content-type": "text/plain; charset=utf-8"
         },
-        "x": 910,
-        "y": 320,
+        "x": 1070,
+        "y": 340,
         "wires": []
     },
     {
@@ -8117,11 +8117,233 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 860,
+        "x": 900,
         "y": 280,
         "wires": [
             [
                 "7da9a83d74d9daed"
+            ]
+        ]
+    },
+    {
+        "id": "dbf8c893e93119b9",
+        "type": "http in",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "url": "/api/engine/containers/:id/ws",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 460,
+        "wires": [
+            [
+                "70ec8f010cb4a214"
+            ]
+        ]
+    },
+    {
+        "id": "8fc07750af85e689",
+        "type": "function",
+        "z": "1d08205d001d337b",
+        "name": "Create WS Server",
+        "func": "if (global.get(\"ws-exec-\" + msg.container[0].Id) == undefined) {\n    const dockerServer = new dockerExecWebsocketServer.DockerExecServer({\n        path: \"/ws/engine/containers/\" + msg.container[0].Id + \"/exec\",\n        containerId: msg.container[0].Id,\n        server: global.get(\"server\")\n    });\n\n    global.set(\"ws-exec-\" + msg.container[0].Id, dockerServer);\n}\n\nmsg.payload = {\n    \"path\": \"/ws/engine/containers/\" + msg.container[0].Id + \"/exec\"\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "// Le code ajouté ici sera exécuté une fois\n// à chaque démarrage du noeud.\nvar app = express();\nvar server = http.createServer(app);\n\nserver.listen(8081);\n\nglobal.set(\"server\", server);",
+        "finalize": "// Le code ajouté ici sera exécuté lorsque le\n// noeud sera arrêté ou redéployé.\n\nconst server = global.get(\"server\");\nserver.close();",
+        "libs": [
+            {
+                "var": "dockerExecWebsocketServer",
+                "module": "docker-exec-websocket-server"
+            },
+            {
+                "var": "http",
+                "module": "http"
+            },
+            {
+                "var": "express",
+                "module": "express"
+            }
+        ],
+        "x": 1590,
+        "y": 460,
+        "wires": [
+            [
+                "8683fef636b6e773"
+            ]
+        ]
+    },
+    {
+        "id": "8683fef636b6e773",
+        "type": "http response",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1770,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "70ec8f010cb4a214",
+        "type": "exec",
+        "z": "1d08205d001d337b",
+        "command": "curl -s -X GET --unix-socket /var/run/docker.sock http://localhost/containers/json?all=1",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "docker api request: list containers",
+        "x": 520,
+        "y": 460,
+        "wires": [
+            [
+                "2e88661a09227185"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "2ccb8dbfe6dd2d47",
+        "type": "json",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 970,
+        "y": 460,
+        "wires": [
+            [
+                "44ebf726913a96b0"
+            ]
+        ]
+    },
+    {
+        "id": "2e88661a09227185",
+        "type": "switch",
+        "z": "1d08205d001d337b",
+        "name": "was empty?",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 790,
+        "y": 460,
+        "wires": [
+            [
+                "2ccb8dbfe6dd2d47"
+            ],
+            [
+                "0ce667b2a93e4f57"
+            ]
+        ]
+    },
+    {
+        "id": "97c480e462012275",
+        "type": "http response",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "statusCode": "404",
+        "headers": {},
+        "x": 1200,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "0ce667b2a93e4f57",
+        "type": "change",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"code\":404,\"message\":\"Containers not found\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1010,
+        "y": 540,
+        "wires": [
+            [
+                "97c480e462012275"
+            ]
+        ]
+    },
+    {
+        "id": "44ebf726913a96b0",
+        "type": "change",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "container",
+                "pt": "msg",
+                "to": "(\t    $id := msg.req.params.id;\t    [msg.payload[Id=$id and State=\"running\"]]\t)\t",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1160,
+        "y": 460,
+        "wires": [
+            [
+                "507e1b66be399978"
+            ]
+        ]
+    },
+    {
+        "id": "507e1b66be399978",
+        "type": "switch",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "property": "container",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1370,
+        "y": 460,
+        "wires": [
+            [
+                "8fc07750af85e689"
+            ],
+            [
+                "0ce667b2a93e4f57"
             ]
         ]
     },
