@@ -8400,7 +8400,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\"code\":403,\"message\":\"Exec command is disabled\"}",
+                "to": "{\"code\":403,\"message\":\"Exec stream is disabled\"}",
                 "tot": "json"
             }
         ],

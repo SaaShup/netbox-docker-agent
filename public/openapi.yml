@@ -273,6 +273,37 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ExecApiContainers200ResponseBody'
+  /api/engine/containers/{containerId}/ws:
+    post:
+      summary: Start an exec stream on a given started container
+      tags:
+        - ui
+      parameters:
+        - in: path
+          name: containerId
+          schema:
+            type: string
+          required: true
+          description: The Container unique identifier
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/WsApiContainers200ResponseBody'
+        '404':
+          description: Started container not found
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/WsApiContainers404ResponseBody'
+        '403':
+          description: Exec stream is disable on this agent
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/WsApiContainers403ResponseBody'
   /api/images:
     get:
       tags:
@@ -1150,6 +1181,46 @@ components:
           2024-05-10T11:42:08.530171933Z 2024/05/10 11:42:08 [notice] 28#28: start worker process 30
           2024-05-10T11:42:08.532813004Z 2024/05/10 11:42:08 [notice] 28#28: start worker process 31
           2024-05-10T11:42:08.532852562Z 2024/05/10 11:42:08 [notice] 28#28: start worker process 32
+    WsApiContainers200ResponseBody:
+      type: object
+      properties:
+        path:
+          type: string
+          description: the path of the started exec websocket server
+      required:
+        - path
+      example:
+        path: "/ws/engine/containers/114d30ae0de8653351a295f5bbdd2226ee7086cf96253e01b835ead464ebd3c8/exec"
+    WsApiContainers404ResponseBody:
+      type: object
+      properties:
+        code:
+          type: number
+          description: Error code number
+        message:
+          type: string
+          description: The error message
+      required:
+        - code
+        - message
+      example:
+        code: 404
+        message: "Containers not found"
+    WsApiContainers403ResponseBody:
+      type: object
+      properties:
+        code:
+          type: number
+          description: Error code number
+        message:
+          type: string
+          description: The error message
+      required:
+        - code
+        - message
+      example:
+        code: 403
+        message: "Exec stream is disabled"
     GetApiEngine202ResponseBody:
       type: object
     GetApiImages200ResponseBody:
