@@ -944,17 +944,12 @@
     }
 
     const terminal = (containerId, cmd, elemTerminal) => {
-      console.log(containerId);
-      console.log(cmd);
-      console.log(elemTerminal);
       $.ajax({
         method: "POST",
         url: `/api/engine/containers/${containerId}/ws`,
         dataType: "json"
       }).done(result => {
-        //console.log(result);
         const url = new URL(window.location.origin);
-        url.port = 8081;
         url.protocol = url.protocol == "https" ? "wss" : "ws";
 
         var client = new DockerExecWebsocketClient({

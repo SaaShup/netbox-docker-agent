@@ -8138,7 +8138,7 @@
         "y": 460,
         "wires": [
             [
-                "70ec8f010cb4a214"
+                "af0f1afa35748ba2"
             ]
         ]
     },
@@ -8147,27 +8147,14 @@
         "type": "function",
         "z": "1d08205d001d337b",
         "name": "Create WS Server",
-        "func": "if (global.get(\"ws-exec-\" + msg.container[0].Id) == undefined) {\n    const dockerServer = new dockerExecWebsocketServer.DockerExecServer({\n        path: \"/ws/engine/containers/\" + msg.container[0].Id + \"/exec\",\n        containerId: msg.container[0].Id,\n        server: global.get(\"server\")\n    });\n\n    global.set(\"ws-exec-\" + msg.container[0].Id, dockerServer);\n}\n\nmsg.payload = {\n    \"path\": \"/ws/engine/containers/\" + msg.container[0].Id + \"/exec\"\n};\n\nreturn msg;",
+        "func": "if (global.get(\"dockerExecWebsocket\") == undefined) {\n    msg.payload = {\n        error: 500,\n        message: \"Docker Exec Websocket lib is not loaded.\"\n    }\n\n    msg.statusCode = 500;\n\n    return msg;\n}\n\n\nif (global.get(\"ws-exec-\" + msg.container[0].Id) == undefined) {\n    const server = global.get(\"dockerExecWebsocket\").create(msg.container[0].Id);\n\n    global.set(\"ws-exec-\" + msg.container[0].Id, server);\n\n    msg.payload = {\n        \"path\": server.options.path\n    };\n\n    return msg\n}\n\nmsg.payload = {\n    path: global.get(\"ws-exec-\" + msg.container[0].Id).options.path\n}\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
-        "initialize": "// Le code ajouté ici sera exécuté une fois\n// à chaque démarrage du noeud.\nvar app = express();\nvar server = http.createServer(app);\n\nserver.listen(8081);\n\nglobal.set(\"server\", server);",
-        "finalize": "// Le code ajouté ici sera exécuté lorsque le\n// noeud sera arrêté ou redéployé.\n\nconst server = global.get(\"server\");\nserver.close();",
-        "libs": [
-            {
-                "var": "dockerExecWebsocketServer",
-                "module": "docker-exec-websocket-server"
-            },
-            {
-                "var": "http",
-                "module": "http"
-            },
-            {
-                "var": "express",
-                "module": "express"
-            }
-        ],
-        "x": 1590,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2010,
         "y": 460,
         "wires": [
             [
@@ -8182,7 +8169,7 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 1770,
+        "x": 2190,
         "y": 460,
         "wires": []
     },
@@ -8198,7 +8185,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "docker api request: list containers",
-        "x": 520,
+        "x": 980,
         "y": 460,
         "wires": [
             [
@@ -8216,7 +8203,7 @@
         "property": "payload",
         "action": "obj",
         "pretty": false,
-        "x": 970,
+        "x": 1390,
         "y": 460,
         "wires": [
             [
@@ -8242,7 +8229,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 790,
+        "x": 1230,
         "y": 460,
         "wires": [
             [
@@ -8260,7 +8247,7 @@
         "name": "",
         "statusCode": "404",
         "headers": {},
-        "x": 1200,
+        "x": 1620,
         "y": 540,
         "wires": []
     },
@@ -8283,7 +8270,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1010,
+        "x": 1430,
         "y": 540,
         "wires": [
             [
@@ -8310,7 +8297,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1160,
+        "x": 1580,
         "y": 460,
         "wires": [
             [
@@ -8336,7 +8323,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1370,
+        "x": 1790,
         "y": 460,
         "wires": [
             [
@@ -8346,6 +8333,100 @@
                 "0ce667b2a93e4f57"
             ]
         ]
+    },
+    {
+        "id": "af0f1afa35748ba2",
+        "type": "change",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "disable_exec",
+                "pt": "msg",
+                "to": "DISABLE_EXEC",
+                "tot": "env"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 490,
+        "y": 460,
+        "wires": [
+            [
+                "e1eac86e802f27ac"
+            ]
+        ]
+    },
+    {
+        "id": "e1eac86e802f27ac",
+        "type": "switch",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "property": "disable_exec",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "empty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 710,
+        "y": 460,
+        "wires": [
+            [
+                "70ec8f010cb4a214"
+            ],
+            [
+                "dd5fdd208479850d"
+            ]
+        ]
+    },
+    {
+        "id": "dd5fdd208479850d",
+        "type": "change",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"code\":403,\"message\":\"Exec command is disabled\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 890,
+        "y": 560,
+        "wires": [
+            [
+                "02ca72a4400d37e5"
+            ]
+        ]
+    },
+    {
+        "id": "02ca72a4400d37e5",
+        "type": "http response",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "statusCode": "403",
+        "headers": {},
+        "x": 1080,
+        "y": 560,
+        "wires": []
     },
     {
         "id": "788067a8780c7835",
