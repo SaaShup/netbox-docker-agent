@@ -103,7 +103,7 @@ module.exports = {
     functionExternalModules: true,
     functionTimeout: 0,
     functionGlobalContext: {
-        dockerExecWebsocket: require('./lib/docker-exec-websocket.js')
+        dockerExecWebsocket: require('/usr/src/node-red/lib/docker-exec-websocket.js')
     },
     debugMaxLength: 1000,
     mqttReconnectTime: 15000,
