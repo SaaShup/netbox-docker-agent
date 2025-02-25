@@ -8147,7 +8147,7 @@
         "type": "function",
         "z": "1d08205d001d337b",
         "name": "Create WS Server",
-        "func": "if (global.get(\"dockerExecWebsocket\") == undefined) {\n    msg.payload = {\n        error: 500,\n        message: \"Docker Exec Websocket lib is not loaded.\"\n    }\n\n    msg.statusCode = 500;\n\n    return msg;\n}\n\n\nif (global.get(\"ws-exec-\" + msg.container[0].Id) == undefined) {\n    const server = global.get(\"dockerExecWebsocket\").create(msg.container[0].Id);\n\n    global.set(\"ws-exec-\" + msg.container[0].Id, server);\n\n    msg.payload = {\n        \"path\": server.options.path\n    };\n\n    return msg\n}\n\nmsg.payload = {\n    path: global.get(\"ws-exec-\" + msg.container[0].Id).options.path\n}\n\nreturn msg;",
+        "func": "if (global.get(\"dockerExecWebsocket\") == undefined) {\n    msg.payload = {\n        error: 500,\n        message: \"Docker Exec Websocket lib is not loaded.\"\n    }\n\n    msg.statusCode = 500;\n\n    return msg;\n}\n\nif (global.get(\"ws-exec\") != undefined) {\n    const server = global.get(\"ws-exec\");\n    server.close();\n}\n\nconst server = global.get(\"dockerExecWebsocket\").create(msg.container[0].Id);\n\nglobal.set(\"ws-exec\", server);\n\nmsg.payload = {\n    \"path\": server.options.path\n};\n\nreturn msg",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,

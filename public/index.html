@@ -944,6 +944,11 @@
     }
 
     const terminal = (containerId, cmd, elemTerminal) => {
+      let alert = elemTerminal.nextElementSibling;
+      if (alert !== null) {
+        alert.remove();
+      }
+
       if (elemTerminal.children.length > 0) {
         return;
       }
@@ -953,10 +958,10 @@
         url: `/api/engine/containers/${containerId}/ws`,
         dataType: "json"
       }).done(result => {
-        const url = new URL(window.location.origin);
+        let url = new URL(window.location.origin);
         url.protocol = url.protocol == "https" ? "wss" : "ws";
 
-        var client = new DockerExecWebsocketClient({
+        let client = new DockerExecWebsocketClient({
           url: url.toString().slice(0, -1) + result.path,
           tty: true,
           command: [cmd],
@@ -967,7 +972,7 @@
         elemTerminal.style.backgroundColor = "#2D2E2C";
         elemTerminal.style.borderRadius = "0 0 .25rem .25rem"
 
-        var baseTheme = {
+        let baseTheme = {
           foreground: '#F8F8F8',
           background: '#2D2E2C',
           selection: '#5DA5D533',
@@ -989,7 +994,7 @@
           brightWhite: '#FFFFFF'
         };
 
-        var term = new Terminal({
+        let term = new Terminal({
           theme: baseTheme,
           cursorBlink: true
         });
@@ -1015,7 +1020,12 @@
         client.on("shutdown", e => {
           destroyTerminal(term, elemTerminal);
         });
-      })
+      }).fail(error => {
+        let div = document.createElement("div");
+        div.classList.add("alert", "alert-danger", "row", "m-4");
+        div.appendChild(document.createTextNode(error.responseJSON.message));
+        elemTerminal.after(div);
+      });
     }
 
     const destroyTerminal = (term, elemTerminal) => {
