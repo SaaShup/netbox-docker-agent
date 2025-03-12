@@ -1,6 +1,6 @@
 {
   "name": "netbox-docker-agent",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "description": "Saashup agent for netbox manager",
   "main": "index.js",
   "scripts": {
