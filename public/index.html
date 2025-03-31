@@ -14,6 +14,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/5.5.0/xterm.min.css"
+    integrity="sha512-XpXUuzg5afNt1bsgnrOesXP70TLH8tXYYK5sK+Y0UV+YBvJn9EfRFYWy4HT3TVDfH0nl1CO0lwOxIrt2gk9qjg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -23,6 +26,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.52.0/apexcharts.min.js"
     integrity="sha512-piY4QAXPoG2xLdUZZbcc5klXzMxckrQKY9A2o6nKDRt9inolvvLbvGPC+z9IZ29b28UJlD05B7CjxxPaxh4bjQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/5.5.0/xterm.js"
+    integrity="sha512-Gujw5GajF5is3nMoGv9X+tCMqePLL/60qvAv1LofUZTV9jK8ENbM9L+maGmOsNzuZaiuyc/fpph1KT9uR5w3CQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/js/docker-exec-client.js"></script>
 </head>
 
 <body class="d-flex flex-column">
@@ -223,7 +230,7 @@
       })
       .fail(function (result) {
         if (result.status == 403) $('#system-usage-chart').html(
-        '<span class="badge bg-danger"><h3>Error</h3></span>');
+          '<span class="badge bg-danger"><h3>Error</h3></span>');
       });
 
     function cleanWindow() {
@@ -279,7 +286,9 @@
             '\');"><i class="fas fa-skull"></i> Kill</button>' +
             '<button class="btn btn-sm btn-primary m-2" onclick="restartContainer(\'' + id +
             '\');"><i class="fas fa-redo"></i> Restart</button>' +
-            '<button class="btn btn-sm btn-warning m-2 text-white ' + (Object.keys(globalConfig).length > 0 ? "disabled" : "disabled") + '" onclick="recreateContainer();"><i class="fas fa-upload"></i> Recreate</button>' +
+            '<button class="btn btn-sm btn-warning m-2 text-white ' + (Object.keys(globalConfig).length > 0 ?
+              "disabled" : "disabled") +
+            '" onclick="recreateContainer();"><i class="fas fa-upload"></i> Recreate</button>' +
             '<button class="btn btn-sm btn-danger m-2 ' + (c.State
               .Running === true ? "disabled" : "") + '" onclick="deleteContainer(\'' + id +
             '\');"><i class="fas fa-trash-alt"></i> Remove</button></div>' +
@@ -304,11 +313,14 @@
             '<li class="nav-item"><a href="#cresources_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cresources-tab_' + id + '">Resources</a></li>' +
             '<li class="nav-item"><a href="#chealthcheck_' + id +
-              '" class="nav-link px-2" data-bs-toggle="tab" id="chealthcheck-tab_' + id + '">Healthcheck</a></li>' +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="chealthcheck-tab_' + id +
+            '">Healthcheck</a></li>' +
             '<li class="nav-item"><a href="#cextras_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cextras-tab_' + id + '">Extras</a></li>' +
             '<li class="nav-item"><a href="#cexec_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cexec-tab_' + id + '">Exec</a></li>' +
+            '<li class="nav-item"><a href="#cterminal_' + id +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="clogs-tab_' + id + '">Terminal</a></li>' +
             '<li class="nav-item"><a href="#clogs_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="clogs-tab_' + id + '" onclick="logs(\'' + id +
             '\');">Logs</a></li>' +
@@ -439,7 +451,8 @@
             '<div class="col-4"><label class="col-form-label">Pid Mode:</label></div><div class="col-8"><input class="form-control" value="' +
             ('PidMode' in c.HostConfig ? c.HostConfig.PidMode : "") + '" disabled/></div>' +
             '<div class="col-4 mt-2"><label class="col-form-label">Capabilities Dropped:</label></div><div class="col-8 mt-2"><input class="form-control" value="' +
-            ('ExtraHosts' in c.HostConfig && c.HostConfig.ExtraHosts != null ? c.HostConfig.ExtraHosts : "") + '" disabled/>';
+            ('ExtraHosts' in c.HostConfig && c.HostConfig.ExtraHosts != null ? c.HostConfig.ExtraHosts : "") +
+            '" disabled/>';
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cexec_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Command:</label></div><div class="col-8">' +
@@ -447,6 +460,14 @@
               "disabled") + '/><button type="button" class="btn btn-primary exec" ' +
             (c.State.Running === true ? "" : "disabled") + '>Exec</button></div>';
           containers += '</div></div></div>' +
+            '<div class="tab-pane fade" id="cterminal_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="col-4"><label class="col-form-label">Shell:</label></div><div class="col-8">' +
+            '<div class="input-group"><select class="form-control" ' + (c.State.Running === true ? "" :
+              "disabled") +
+            '><option value="/bin/bash"/><code>/bin/bash</code></option><option value="/bin/sh"><code>/bin/sh</code></option></select><button type="button" class="btn btn-primary openterm" ' +
+            (c.State.Running === true ? "" : "disabled") +
+            '>Open</button></div></div></div><div class="terminal"></div>';
+          containers += '</div>' +
             '<div class="tab-pane fade" id="clogs_' + id + '"><div class="row m-3 align-items-center">' +
             '<pre id="clogs_' + id +
             '_pre" class="p-2 text-light bg-dark overflow-scroll border border-dark-subtle"></pre>';
@@ -458,6 +479,11 @@
           $(event.target).parents('.tab-pane').attr('id').split('_')[1],
           event.target.previousElementSibling.value.split(' '),
           $(event.target).parents('.tab-pane')[0],
+        ));
+        $('.btn.openterm').on('click', (event) => terminal(
+          $(event.target).parents('.tab-pane').attr('id').split('_')[1],
+          event.target.previousElementSibling.value,
+          $(event.target).parent().parent().parent().next().get(0),
         ));
       })
     })
@@ -790,7 +816,7 @@
       $("#modalNotificationContent").html('Pls wait ! recreate is ongoing.... ');
       $("#modalNotification").modal("show");
       let container = {}
-      for ( const c of globalContainers) {
+      for (const c of globalContainers) {
         if (c.Id = id) {
           container = c;
           break;
@@ -808,7 +834,7 @@
             "image": {
               "ImageID": c.Image
             },
-            "name": c.Name.replace("/",""),
+            "name": c.Name.replace("/", ""),
             "operation": "recreate",
             "ContainerID": c.Id,
             "hostname": c.Config.Hostname,
@@ -931,6 +957,97 @@
           elemOutput.appendChild(pre);
         });
       }
+    }
+
+    const terminal = (containerId, cmd, elemTerminal) => {
+      let alert = elemTerminal.nextElementSibling;
+      if (alert !== null) {
+        alert.remove();
+      }
+
+      if (elemTerminal.children.length > 0) {
+        return;
+      }
+
+      $.ajax({
+        method: "POST",
+        url: `/api/engine/containers/${containerId}/ws`,
+        dataType: "json"
+      }).done(result => {
+        let url = new URL(window.location.origin);
+        url.protocol = url.protocol == "https" ? "wss" : "ws";
+
+        let client = new DockerExecWebsocketClient({
+          url: url.toString().slice(0, -1) + result.path,
+          tty: true,
+          command: [cmd],
+        });
+        client.execute();
+
+        elemTerminal.classList.add("p-2");
+        elemTerminal.style.backgroundColor = "#2D2E2C";
+        elemTerminal.style.borderRadius = "0 0 .25rem .25rem"
+
+        let baseTheme = {
+          foreground: '#F8F8F8',
+          background: '#2D2E2C',
+          selection: '#5DA5D533',
+          black: '#1E1E1D',
+          brightBlack: '#262625',
+          red: '#CE5C5C',
+          brightRed: '#FF7272',
+          green: '#5BCC5B',
+          brightGreen: '#72FF72',
+          yellow: '#CCCC5B',
+          brightYellow: '#FFFF72',
+          blue: '#5D5DD3',
+          brightBlue: '#7279FF',
+          magenta: '#BC5ED1',
+          brightMagenta: '#E572FF',
+          cyan: '#5DA5D5',
+          brightCyan: '#72F0FF',
+          white: '#F8F8F8',
+          brightWhite: '#FFFFFF'
+        };
+
+        let term = new Terminal({
+          theme: baseTheme,
+          cursorBlink: true
+        });
+
+        term.open(elemTerminal);
+
+        term.onData(e => {
+          client.stdin.write(e);
+        });
+
+        client.stdout.on('data', function (data) {
+          term.write(String.fromCharCode.apply(null, data));
+        });
+
+        client.stderr.on('data', function (data) {
+          term.write(String.fromCharCode.apply(null, data));
+        });
+
+        client.on("exit", e => {
+          destroyTerminal(term, elemTerminal);
+        });
+
+        client.on("shutdown", e => {
+          destroyTerminal(term, elemTerminal);
+        });
+      }).fail(error => {
+        let div = document.createElement("div");
+        div.classList.add("alert", "alert-danger", "row", "m-4");
+        div.appendChild(document.createTextNode(error.responseJSON.message));
+        elemTerminal.after(div);
+      });
+    }
+
+    const destroyTerminal = (term, elemTerminal) => {
+      elemTerminal.classList.remove("p-2");
+      elemTerminal.style = null;
+      term.dispose();
     }
 
     const logs = (containerId) => {
