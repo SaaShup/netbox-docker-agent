@@ -230,7 +230,7 @@
       })
       .fail(function (result) {
         if (result.status == 403) $('#system-usage-chart').html(
-        '<span class="badge bg-danger"><h3>Error</h3></span>');
+          '<span class="badge bg-danger"><h3>Error</h3></span>');
       });
 
     function cleanWindow() {
@@ -286,7 +286,9 @@
             '\');"><i class="fas fa-skull"></i> Kill</button>' +
             '<button class="btn btn-sm btn-primary m-2" onclick="restartContainer(\'' + id +
             '\');"><i class="fas fa-redo"></i> Restart</button>' +
-            '<button class="btn btn-sm btn-warning m-2 text-white ' + (Object.keys(globalConfig).length > 0 ? "disabled" : "disabled") + '" onclick="recreateContainer();"><i class="fas fa-upload"></i> Recreate</button>' +
+            '<button class="btn btn-sm btn-warning m-2 text-white ' + (Object.keys(globalConfig).length > 0 ?
+              "disabled" : "disabled") +
+            '" onclick="recreateContainer();"><i class="fas fa-upload"></i> Recreate</button>' +
             '<button class="btn btn-sm btn-danger m-2 ' + (c.State
               .Running === true ? "disabled" : "") + '" onclick="deleteContainer(\'' + id +
             '\');"><i class="fas fa-trash-alt"></i> Remove</button></div>' +
@@ -310,6 +312,9 @@
             '">Capabilities</a></li>' +
             '<li class="nav-item"><a href="#cresources_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cresources-tab_' + id + '">Resources</a></li>' +
+            '<li class="nav-item"><a href="#chealthcheck_' + id +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="chealthcheck-tab_' + id +
+            '">Healthcheck</a></li>' +
             '<li class="nav-item"><a href="#cextras_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cextras-tab_' + id + '">Extras</a></li>' +
             '<li class="nav-item"><a href="#cexec_' + id +
@@ -434,11 +439,20 @@
             '<div class="col-4"><label class="col-form-label">Memory limit (MB):</label></div><div class="col-8"><input class="form-control" value="' +
             ('Memory' in c.HostConfig ? parseInt(c.HostConfig.Memory) / 1024 / 1024 : "0") + '" disabled/>';
           containers += '</div></div></div>' +
+            '<div class="tab-pane fade" id="chealthcheck_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="col-4 mt-2"><label class="col-form-label">Test:</label></div><div class="col-8"><input class="form-control" value="' + ('Healthcheck' in c.Config ? c.Config.Healthcheck.Test : "") + '" disabled/></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">Interval (ns):</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config && 'Interval' in c.Config.Healthcheck ? c.Config.Healthcheck.Interval : "0") + '" disabled /></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">Timeout (ns):</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config && 'Timeout' in c.Config.Healthcheck ? c.Config.Healthcheck.Timeout : "0") + '" disabled /></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">Retries (count):</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config && 'Retries' in c.Config.Healthcheck ? c.Config.Healthcheck.Retries : "0") + '" disabled /></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">StartPeriod (ns):</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config && 'StartPeriod' in c.Config.Healthcheck ? c.Config.Healthcheck.StartPeriod : "0") + '" disabled /></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">StartInterval (ns):</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config && 'StartInterval' in c.Config.Healthcheck ? c.Config.Healthcheck.StartInterval : "0") + '" disabled /></div>';
+          containers += '</div></div>' +
             '<div class="tab-pane fade" id="cextras_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Pid Mode:</label></div><div class="col-8"><input class="form-control" value="' +
             ('PidMode' in c.HostConfig ? c.HostConfig.PidMode : "") + '" disabled/></div>' +
             '<div class="col-4 mt-2"><label class="col-form-label">Capabilities Dropped:</label></div><div class="col-8 mt-2"><input class="form-control" value="' +
-            ('ExtraHosts' in c.HostConfig ? c.HostConfig.ExtraHosts : "") + '" disabled/>';
+            ('ExtraHosts' in c.HostConfig && c.HostConfig.ExtraHosts != null ? c.HostConfig.ExtraHosts : "") +
+            '" disabled/>';
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cexec_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Command:</label></div><div class="col-8">' +
@@ -449,8 +463,10 @@
             '<div class="tab-pane fade" id="cterminal_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Shell:</label></div><div class="col-8">' +
             '<div class="input-group"><select class="form-control" ' + (c.State.Running === true ? "" :
-              "disabled") + '><option value="/bin/bash"/><code>/bin/bash</code></option><option value="/bin/sh"><code>/bin/sh</code></option></select><button type="button" class="btn btn-primary openterm" ' +
-            (c.State.Running === true ? "" : "disabled") + '>Open</button></div></div></div><div class="terminal"></div>';
+              "disabled") +
+            '><option value="/bin/bash"/><code>/bin/bash</code></option><option value="/bin/sh"><code>/bin/sh</code></option></select><button type="button" class="btn btn-primary openterm" ' +
+            (c.State.Running === true ? "" : "disabled") +
+            '>Open</button></div></div></div><div class="terminal"></div>';
           containers += '</div>' +
             '<div class="tab-pane fade" id="clogs_' + id + '"><div class="row m-3 align-items-center">' +
             '<pre id="clogs_' + id +
@@ -800,7 +816,7 @@
       $("#modalNotificationContent").html('Pls wait ! recreate is ongoing.... ');
       $("#modalNotification").modal("show");
       let container = {}
-      for ( const c of globalContainers) {
+      for (const c of globalContainers) {
         if (c.Id = id) {
           container = c;
           break;
@@ -818,7 +834,7 @@
             "image": {
               "ImageID": c.Image
             },
-            "name": c.Name.replace("/",""),
+            "name": c.Name.replace("/", ""),
             "operation": "recreate",
             "ContainerID": c.Id,
             "hostname": c.Config.Hostname,
