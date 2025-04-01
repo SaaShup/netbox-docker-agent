@@ -440,12 +440,12 @@
             ('Memory' in c.HostConfig ? parseInt(c.HostConfig.Memory) / 1024 / 1024 : "0") + '" disabled/>';
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="chealthcheck_' + id + '"><div class="row m-3 align-items-center">' +
-            '<div class="col-4 mt-2"><label class="col-form-label">Test:</label></div><div class="col-8"><input class="form-control" value="" disabled/></div>' +
-            '<div class="col-4 mt-2"><label class="col-form-label">Interval:</label></div><div class="col-8"><input class="form-control" type="number" value="0" disabled /></div>' +
-            '<div class="col-4 mt-2"><label class="col-form-label">Timeout:</label></div><div class="col-8"><input class="form-control" type="number" value="0" disabled /></div>' +
-            '<div class="col-4 mt-2"><label class="col-form-label">Retries:</label></div><div class="col-8"><input class="form-control" type="number" value="0" disabled /></div>' +
-            '<div class="col-4 mt-2"><label class="col-form-label">StartPeriod:</label></div><div class="col-8"><input class="form-control" type="number" value="0" disabled /></div>' +
-            '<div class="col-4 mt-2"><label class="col-form-label">StartInterval:</label></div><div class="col-8"><input class="form-control" type="number" value="0" disabled /></div>';
+            '<div class="col-4 mt-2"><label class="col-form-label">Test:</label></div><div class="col-8"><input class="form-control" value="' + ('Healthcheck' in c.Config ? c.Config.Healthcheck.Test : "") + '" disabled/></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">Interval:</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config ? c.Config.Healthcheck.Interval : "0") + '" disabled /></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">Timeout:</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config ? c.Config.Healthcheck.Timeout : "0") + '" disabled /></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">Retries:</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config ? c.Config.Healthcheck.Retries : "0") + '" disabled /></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">StartPeriod:</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config ? c.Config.Healthcheck.StartPeriod : "0") + '" disabled /></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">StartInterval:</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config ? c.Config.Healthcheck.StartInterval : "0") + '" disabled /></div>';
           containers += '</div></div>' +
             '<div class="tab-pane fade" id="cextras_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Pid Mode:</label></div><div class="col-8"><input class="form-control" value="' +
