@@ -7358,6 +7358,13 @@
                 "pt": "msg",
                 "to": "{\"netbox_url\":\"\",\"netbox_token\":\"\",\"ui\":1}",
                 "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "registries",
+                "pt": "global",
+                "to": "[]",
+                "tot": "json"
             }
         ],
         "action": "",
