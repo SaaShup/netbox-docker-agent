@@ -341,7 +341,7 @@
         "id": "06b0b14f4b337cfe",
         "type": "switch",
         "z": "216db6efc0df9bc0",
-        "name": "",
+        "name": "is not empty?",
         "property": "payload",
         "propertyType": "msg",
         "rules": [
@@ -352,7 +352,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 650,
+        "x": 670,
         "y": 900,
         "wires": [
             [
@@ -364,14 +364,15 @@
         "id": "7c210c45ea82059e",
         "type": "split",
         "z": "216db6efc0df9bc0",
-        "name": "",
+        "name": "split lines",
         "splt": "\\n",
         "spltType": "str",
         "arraySplt": 1,
         "arraySpltType": "len",
         "stream": false,
         "addname": "",
-        "x": 510,
+        "property": "payload",
+        "x": 520,
         "y": 900,
         "wires": [
             [
@@ -383,27 +384,29 @@
         "id": "da696e53c1c7431f",
         "type": "switch",
         "z": "216db6efc0df9bc0",
-        "name": "",
-        "property": "payload.status",
+        "name": "By Type",
+        "property": "payload.Type",
         "propertyType": "msg",
         "rules": [
             {
                 "t": "eq",
-                "v": "exec_create: /bin/sh -c node /healthcheck.js",
+                "v": "container",
                 "vt": "str"
             },
             {
                 "t": "eq",
-                "v": "exec_start: /bin/sh -c node /healthcheck.js",
+                "v": "image",
                 "vt": "str"
             },
             {
                 "t": "eq",
-                "v": "exec_die",
+                "v": "volume",
                 "vt": "str"
             },
             {
-                "t": "else"
+                "t": "eq",
+                "v": "network",
+                "vt": "str"
             }
         ],
         "checkall": "true",
@@ -412,7 +415,9 @@
         "x": 970,
         "y": 900,
         "wires": [
-            [],
+            [
+                "51936b50831b2ece"
+            ],
             [],
             [],
             []
@@ -1253,6 +1258,380 @@
         "y": 500,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "6157de11b904d371",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "prepare docker api request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "\"http://localhost/containers/\" & msg.payload.id & \"/json -H 'content-type: application/json'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1420,
+        "y": 880,
+        "wires": [
+            [
+                "637b229198506a5c"
+            ]
+        ]
+    },
+    {
+        "id": "637b229198506a5c",
+        "type": "exec",
+        "z": "216db6efc0df9bc0",
+        "command": "curl -s -X GET --unix-socket /var/run/docker.sock",
+        "addpay": "url",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "docker api request: inspect containers",
+        "x": 1730,
+        "y": 880,
+        "wires": [
+            [
+                "938bd20b313ef359"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "938bd20b313ef359",
+        "type": "json",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 1950,
+        "y": 880,
+        "wires": [
+            [
+                "d5efead39665e676"
+            ]
+        ]
+    },
+    {
+        "id": "f28d427636884ae9",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "prepare netbox request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/containers/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"state\": msg.result.State.Status,\t    \"operation\": \"none\",\t    \"restart_policy\": msg.result.HostConfig.RestartPolicy.Name = \"\" ? \"no\" : msg.result.HostConfig.RestartPolicy.Name,\t    \"image\": {\t        \"host\": msg.config.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"HealthCheck\": msg.result.Config.Healthcheck,\t    \"ContainerID\": msg.result.Id,\t    \"cap_add\": msg.result.HostConfig.CapAdd,\t    \"cap_drop\": msg.result.HostConfig.CapDrop,\t    \"extra_hosts\": msg.result.HostConfig.ExtraHosts,\t    \"pid_mode\": msg.result.HostConfig.PidMode,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"host\": msg.config.id, \"name\": $k } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null or $length($v[0].HostPort) = 0 ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : msg.result.HostConfig.PortBindings ? [\t            $each(\t                msg.result.HostConfig.PortBindings,\t                function($v, $k) {\t                    {\t                        \"public_port\": $count($v) = 0 or $v[0] = null or $length($v[0].HostPort) = 0 ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ] : [],\t    \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                {\t                    \"var_name\": $substringBefore($v, \"=\"),\t                    \"value\": $substringAfter($v, \"=\")\t                }\t            }\t        )\t    ],\t    \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t    \"devices\": msg.result.HostConfig.Devices\t        ? [\t        $map(\t            msg.result.HostConfig.Devices,\t            function($v, $k) {\t               {\t                    \"container_path\": $v.PathInContainer,\t                    \"host_path\": $v.PathOnHost\t                }\t            }\t        )\t    ],\t    \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Destination,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ]\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2370,
+        "y": 880,
+        "wires": [
+            [
+                "54b665fab6649cfe"
+            ]
+        ]
+    },
+    {
+        "id": "54b665fab6649cfe",
+        "type": "http request",
+        "z": "216db6efc0df9bc0",
+        "name": "netbox request: list containers",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 2650,
+        "y": 880,
+        "wires": [
+            [
+                "c6d649272e52d4e8"
+            ]
+        ]
+    },
+    {
+        "id": "c6d649272e52d4e8",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "find by ContainerID",
+        "rules": [
+            {
+                "t": "set",
+                "p": "netbox_container_id",
+                "pt": "msg",
+                "to": "$filter(msg.payload.results, function($v) {\t    $v.ContainerID = msg.container_info.Id\t}).id",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2350,
+        "y": 940,
+        "wires": [
+            [
+                "6021f753e1831d36"
+            ]
+        ]
+    },
+    {
+        "id": "414653028bcbc955",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "prepare netbox request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "PATCH",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/containers/' & $string(msg.netbox_container_id)",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t    \"state\": msg.container_info.State.Status,\t    \"ContainerID\": msg.patyload.Id,\t    \"status\": msg.container_info.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.container_info.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2370,
+        "y": 1000,
+        "wires": [
+            [
+                "d8839cfa921a2951"
+            ]
+        ]
+    },
+    {
+        "id": "6021f753e1831d36",
+        "type": "switch",
+        "z": "216db6efc0df9bc0",
+        "name": "exists?",
+        "property": "netbox_container_id",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "istype",
+                "v": "number",
+                "vt": "number"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 2560,
+        "y": 940,
+        "wires": [
+            [
+                "414653028bcbc955"
+            ]
+        ]
+    },
+    {
+        "id": "d5efead39665e676",
+        "type": "change",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "container_info",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2130,
+        "y": 880,
+        "wires": [
+            [
+                "f28d427636884ae9"
+            ]
+        ]
+    },
+    {
+        "id": "d8839cfa921a2951",
+        "type": "http request",
+        "z": "216db6efc0df9bc0",
+        "name": "netbox request: update container",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 2660,
+        "y": 1000,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "51936b50831b2ece",
+        "type": "switch",
+        "z": "216db6efc0df9bc0",
+        "name": "By Container Action",
+        "property": "payload.Action",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "start",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "restart",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "stop",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "kill",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "oom",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "die",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "pause",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "unpause",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 8,
+        "x": 1170,
+        "y": 880,
+        "wires": [
+            [
+                "6157de11b904d371"
+            ],
+            [
+                "6157de11b904d371"
+            ],
+            [
+                "6157de11b904d371"
+            ],
+            [
+                "6157de11b904d371"
+            ],
+            [
+                "6157de11b904d371"
+            ],
+            [
+                "6157de11b904d371"
+            ],
+            [
+                "6157de11b904d371"
+            ],
+            [
+                "6157de11b904d371"
+            ]
         ]
     },
     {
@@ -6162,10 +6541,11 @@
         "z": "8e85e8c54d776ddc",
         "name": "fetch container",
         "links": [
+            "5d89d141056587f0",
+            "611338dc97d7bb91",
             "87af9743f25dca82",
             "ec4a365091d27e97",
-            "5d89d141056587f0",
-            "611338dc97d7bb91"
+            "22afe2b0a51068a0"
         ],
         "x": 165,
         "y": 760,
