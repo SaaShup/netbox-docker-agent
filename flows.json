@@ -216,6 +216,13 @@
                 "pt": "global",
                 "to": "payload",
                 "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "docker_event",
+                "pt": "msg",
+                "to": "true",
+                "tot": "bool"
             }
         ],
         "action": "",
@@ -416,7 +423,7 @@
         "y": 900,
         "wires": [
             [
-                "51936b50831b2ece"
+                "c654683a97368601"
             ],
             [],
             [],
@@ -1279,7 +1286,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1420,
+        "x": 1600,
         "y": 880,
         "wires": [
             [
@@ -1299,7 +1306,7 @@
         "winHide": false,
         "oldrc": false,
         "name": "docker api request: inspect containers",
-        "x": 1730,
+        "x": 1910,
         "y": 880,
         "wires": [
             [
@@ -1317,7 +1324,7 @@
         "property": "payload",
         "action": "obj",
         "pretty": false,
-        "x": 1950,
+        "x": 2150,
         "y": 880,
         "wires": [
             [
@@ -1365,7 +1372,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 2370,
+        "x": 2570,
         "y": 880,
         "wires": [
             [
@@ -1389,7 +1396,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 2650,
+        "x": 2850,
         "y": 880,
         "wires": [
             [
@@ -1416,7 +1423,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 2350,
+        "x": 2550,
         "y": 940,
         "wires": [
             [
@@ -1471,7 +1478,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 2370,
+        "x": 2570,
         "y": 1000,
         "wires": [
             [
@@ -1496,7 +1503,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 2560,
+        "x": 2760,
         "y": 940,
         "wires": [
             [
@@ -1523,7 +1530,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 2130,
+        "x": 2330,
         "y": 880,
         "wires": [
             [
@@ -1547,7 +1554,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 2660,
+        "x": 2860,
         "y": 1000,
         "wires": [
             []
@@ -1605,7 +1612,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 8,
-        "x": 1170,
+        "x": 1350,
         "y": 880,
         "wires": [
             [
@@ -1631,6 +1638,29 @@
             ],
             [
                 "6157de11b904d371"
+            ]
+        ]
+    },
+    {
+        "id": "c654683a97368601",
+        "type": "switch",
+        "z": "216db6efc0df9bc0",
+        "name": "Events Enabled ?",
+        "property": "docker_event",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1150,
+        "y": 880,
+        "wires": [
+            [
+                "51936b50831b2ece"
             ]
         ]
     },
@@ -6032,6 +6062,13 @@
                 "pt": "msg",
                 "to": "$env(\"DISABLE_SSL_CHECK\") ? false : true",
                 "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "docker_event",
+                "pt": "msg",
+                "to": "false",
+                "tot": "bool"
             }
         ],
         "action": "",
@@ -6544,8 +6581,7 @@
             "5d89d141056587f0",
             "611338dc97d7bb91",
             "87af9743f25dca82",
-            "ec4a365091d27e97",
-            "22afe2b0a51068a0"
+            "ec4a365091d27e97"
         ],
         "x": 165,
         "y": 760,
@@ -7272,7 +7308,8 @@
         "wires": [
             [
                 "f97a2faad0f4275a",
-                "c469b4b880927dc6"
+                "c469b4b880927dc6",
+                "a97b672b9bc9201e"
             ],
             []
         ]
@@ -7430,6 +7467,56 @@
             [
                 "29132a5a3f72e359"
             ]
+        ]
+    },
+    {
+        "id": "a97b672b9bc9201e",
+        "type": "delay",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 860,
+        "y": 820,
+        "wires": [
+            [
+                "1783fde0e8fe01c1"
+            ]
+        ]
+    },
+    {
+        "id": "1783fde0e8fe01c1",
+        "type": "change",
+        "z": "8e85e8c54d776ddc",
+        "name": "Reenable events",
+        "rules": [
+            {
+                "t": "set",
+                "p": "docker_event",
+                "pt": "global",
+                "to": "true",
+                "tot": "bool"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1050,
+        "y": 820,
+        "wires": [
+            []
         ]
     },
     {
