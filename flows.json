@@ -1455,7 +1455,7 @@
                 "t": "set",
                 "p": "url",
                 "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/containers/' & $string(msg.netbox_container_id)",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/containers/' & $string(msg.netbox_container_id) & '/'",
                 "tot": "jsonata"
             },
             {
