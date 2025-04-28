@@ -220,7 +220,7 @@
             {
                 "t": "set",
                 "p": "docker_event",
-                "pt": "msg",
+                "pt": "global",
                 "to": "true",
                 "tot": "bool"
             }
@@ -1647,7 +1647,7 @@
         "z": "216db6efc0df9bc0",
         "name": "Events Enabled ?",
         "property": "docker_event",
-        "propertyType": "msg",
+        "propertyType": "global",
         "rules": [
             {
                 "t": "true"
@@ -6066,7 +6066,7 @@
             {
                 "t": "set",
                 "p": "docker_event",
-                "pt": "msg",
+                "pt": "global",
                 "to": "false",
                 "tot": "bool"
             }
