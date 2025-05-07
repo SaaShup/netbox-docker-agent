@@ -442,7 +442,7 @@
             '<div class="col-4 mt-2"><label class="col-form-label">Capabilities Dropped:</label></div><div class="col-8 mt-2"><input class="form-control" value="' +
             ('CapDrop' in c.HostConfig ? c.HostConfig.CapDrop : "") + '" disabled/>';
           containers += '</div></div></div>' +
-          '<div class="tab-pane fade" id="csyslog_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="tab-pane fade" id="csyslog_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Log Type:</label></div><div class="col-8"><input class="form-control" value="' +
             ('LogConfig' in c.HostConfig ? c.HostConfig.LogConfig.Type : "") + '" disabled/></div></div>' +
             '<div class="row m-3 align-items-center"><div class="col-4"><label class="col-form-label">Log Config:</label></div><div class="col-8"><input class="form-control" value="' +
@@ -1100,6 +1100,11 @@
       }).done(function (result) {
         $("#registries-count").html(result.length);
         $("#registries_num").text(result.length);
+        if (dockerAgent["images"]) {
+          for (const d of dockerAgent["images"]) {
+            d.registry = false;
+          }
+        }
         for (const c of result) {
           const card = document.createElement("div");
           card.classList.add("card", "my-2");
@@ -1151,11 +1156,6 @@
           const imagesListContent = document.createElement("span");
 
           let s = "";
-          if (dockerAgent["images"]) {
-            for (const d of dockerAgent["images"]) {
-              d.registry = false;
-            }
-          }
           for (const i of c.images) {
             let valid = '<span class="badge rounded-pill bg-danger">failed</span>';
             if (dockerAgent["images"]) {
