@@ -1160,7 +1160,6 @@
             let valid = '<span class="badge rounded-pill bg-danger">failed</span>';
             if (dockerAgent["images"]) {
               for (const d of dockerAgent["images"]) {
-                //console.log(d.RepoTags)
                 if (d.RepoTags[0] === i) {
                   valid = '<span class="badge rounded-pill bg-success">success</span>';
                   d.registry = true;
@@ -1192,7 +1191,8 @@
         if (dockerAgent["images"]) {
           for (const d of dockerAgent["images"]) {
             if (d.registry === false) {
-              s += '<br><span class="badge rounded-pill bg-danger">error</span> ' + d.RepoTags[0];
+              if (d.RepoTags.length >0) s += '<br><span class="badge rounded-pill bg-danger">error</span> ' + d.RepoTags[0];
+              else s += '<br><span class="badge rounded-pill bg-danger">error</span> ' + d.RepoDigests[0];
               count++;
             }
           }
