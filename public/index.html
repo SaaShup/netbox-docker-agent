@@ -1165,6 +1165,11 @@
                   d.registry = true;
                   break;
                 }
+                if (d.RepoDigests[0] === i) {
+                  valid = '<span class="badge rounded-pill bg-success">success</span>';
+                  d.registry = true;
+                  break;
+                }
                 if (d.Id === i.split("@")[1]) {
                   valid = '<span class="badge rounded-pill bg-success">success</span>';
                   d.registry = true;
