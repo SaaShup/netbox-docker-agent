@@ -1192,7 +1192,7 @@
         if (dockerAgent["images"]) {
           for (const d of dockerAgent["images"]) {
             if (d.registry === false) {
-              s += '<br><span class="badge rounded-pill bg-danger">error</span>' + d.RepoTags[0];
+              s += '<br><span class="badge rounded-pill bg-danger">error</span> ' + d.RepoTags[0];
               count++;
             }
           }
