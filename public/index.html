@@ -319,6 +319,9 @@
             '<li class="nav-item"><a href="#chealthcheck_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="chealthcheck-tab_' + id +
             '">Healthcheck</a></li>' +
+            '<li class="nav-item"><a href="#csyslog_' + id +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="csyslog-tab_' + id +
+            '">Syslog</a></li>' +
             '<li class="nav-item"><a href="#cextras_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cextras-tab_' + id + '">Extras</a></li>' +
             '<li class="nav-item"><a href="#cexec_' + id +
@@ -438,6 +441,12 @@
             ('CapAdd' in c.HostConfig ? c.HostConfig.CapAdd : "") + '" disabled/></div>' +
             '<div class="col-4 mt-2"><label class="col-form-label">Capabilities Dropped:</label></div><div class="col-8 mt-2"><input class="form-control" value="' +
             ('CapDrop' in c.HostConfig ? c.HostConfig.CapDrop : "") + '" disabled/>';
+          containers += '</div></div></div>' +
+          '<div class="tab-pane fade" id="csyslog_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="col-4"><label class="col-form-label">Log Type:</label></div><div class="col-8"><input class="form-control" value="' +
+            ('LogConfig' in c.HostConfig ? c.HostConfig.LogConfig.Type : "") + '" disabled/></div></div>' +
+            '<div class="row m-3 align-items-center"><div class="col-4"><label class="col-form-label">Log Config:</label></div><div class="col-8"><input class="form-control" value="' +
+            ('LogConfig' in c.HostConfig ? JSON.stringify(c.HostConfig.LogConfig.Config) : "") + '" disabled/>';
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cresources_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Memory limit (MB):</label></div><div class="col-8"><input class="form-control" value="' +
