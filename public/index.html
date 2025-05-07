@@ -1157,22 +1157,22 @@
             }
           }
           for (const i of c.images) {
-            let valid = '<span class="badge rounded-pill bg-danger">!</span>';
+            let valid = '<span class="badge rounded-pill bg-danger">failed</span>';
             if (dockerAgent["images"]) {
               for (const d of dockerAgent["images"]) {
                 //console.log(d.RepoTags)
                 if (d.RepoTags[0] === i) {
-                  valid = '<span class="badge rounded-pill bg-success">!</span>';
+                  valid = '<span class="badge rounded-pill bg-success">success</span>';
                   d.registry = true;
                   break;
                 }
                 if (d.Id === i.split("@")[1]) {
-                  valid = '<span class="badge rounded-pill bg-success">!</span>';
+                  valid = '<span class="badge rounded-pill bg-success">success</span>';
                   d.registry = true;
                   break;
                 }
               }
-            } else valid = '<span class="badge rounded-pill bg-warning">?</span>';
+            } else valid = '<span class="badge rounded-pill bg-warning">unknown</span>';
             s += '<br>' + valid + " " + i;
           }
           imagesListContent.innerHTML = s;
@@ -1192,7 +1192,7 @@
         if (dockerAgent["images"]) {
           for (const d of dockerAgent["images"]) {
             if (d.registry === false) {
-              s += '<br>' + d.RepoTags[0];
+              s += '<br><span class="badge rounded-pill bg-danger">error</span>' + d.RepoTags[0];
               count++;
             }
           }
