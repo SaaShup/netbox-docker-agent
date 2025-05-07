@@ -445,8 +445,8 @@
             '<div class="tab-pane fade" id="csyslog_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Log Type:</label></div><div class="col-8"><input class="form-control" value="' +
             ('LogConfig' in c.HostConfig ? c.HostConfig.LogConfig.Type : "") + '" disabled/></div></div>' +
-            '<div class="row m-3 align-items-center"><div class="col-4"><label class="col-form-label">Log Config:</label></div><div class="col-8"><input class="form-control" value="' +
-            ('LogConfig' in c.HostConfig ? JSON.stringify(c.HostConfig.LogConfig.Config) : "") + '" disabled/>';
+            '<div class="row m-3 align-items-center"><div class="col-4"><label class="col-form-label">Log Config:</label></div><div class="col-8"><textarea class="form-control" rows="1" disabled>' +
+            ('LogConfig' in c.HostConfig ? JSON.stringify(c.HostConfig.LogConfig.Config) : "") + '</textarea>';
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cresources_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Memory limit (MB):</label></div><div class="col-8"><input class="form-control" value="' +
