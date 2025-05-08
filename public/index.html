@@ -199,32 +199,36 @@
   </footer>
 
   <script>
-    var globalContainers = [];
     var globalConfig = {};
+    var dockerAgent = [];
 
     $.ajax({
         url: "/api/containers"
       }).done(function (result) {
-        globalContainers = result;
-        $("#containers_num").text(globalContainers.length);
+        dockerAgent["containers"] = result;
+        $("#containers_num").text(result.length);
         $.ajax({
           url: "/api/volumes",
         }).done(function (result) {
+          dockerAgent["volumes"] = result;
           $("#volumes_num").text(result.Volumes.length);
         });
         $.ajax({
           url: "/api/images",
         }).done(function (result) {
+          dockerAgent["images"] = result;
           $("#images_num").text(result.length);
         });
         $.ajax({
           url: "/api/networks",
         }).done(function (result) {
+          dockerAgent["networks"] = result;
           $("#networks_num").text(result.length);
         });
         $.ajax({
           url: "/api/registries",
         }).done(function (result) {
+          dockerAgent["registries"] = result;
           $("#registries_num").text(result.length);
         });
       })
@@ -250,9 +254,9 @@
       $.ajax({
         url: "/api/containers"
       }).done(function (result) {
-        globalContainers = result;
-        $("#containers_num").text(globalContainers.length);
-        $("#containers-count").html(globalContainers.length);
+        dockerAgent["containers"] = result;
+        $("#containers_num").text(dockerAgent["containers"].length);
+        $("#containers-count").html(dockerAgent["containers"].length);
         let containers = '';
         for (const c of result) {
           let id = c.Id
@@ -315,6 +319,9 @@
             '<li class="nav-item"><a href="#chealthcheck_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="chealthcheck-tab_' + id +
             '">Healthcheck</a></li>' +
+            '<li class="nav-item"><a href="#csyslog_' + id +
+            '" class="nav-link px-2" data-bs-toggle="tab" id="csyslog-tab_' + id +
+            '">Logging driver</a></li>' +
             '<li class="nav-item"><a href="#cextras_' + id +
             '" class="nav-link px-2" data-bs-toggle="tab" id="cextras-tab_' + id + '">Extras</a></li>' +
             '<li class="nav-item"><a href="#cexec_' + id +
@@ -435,17 +442,34 @@
             '<div class="col-4 mt-2"><label class="col-form-label">Capabilities Dropped:</label></div><div class="col-8 mt-2"><input class="form-control" value="' +
             ('CapDrop' in c.HostConfig ? c.HostConfig.CapDrop : "") + '" disabled/>';
           containers += '</div></div></div>' +
+            '<div class="tab-pane fade" id="csyslog_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="col-4"><label class="col-form-label">Log Type:</label></div><div class="col-8"><input class="form-control" value="' +
+            ('LogConfig' in c.HostConfig ? c.HostConfig.LogConfig.Type : "") + '" disabled/></div></div>' +
+            '<div class="row m-3 align-items-center"><div class="col-4"><label class="col-form-label">Log Config:</label></div><div class="col-8"><textarea class="form-control" rows="1" disabled>' +
+            ('LogConfig' in c.HostConfig ? JSON.stringify(c.HostConfig.LogConfig.Config) : "") + '</textarea>';
+          containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="cresources_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Memory limit (MB):</label></div><div class="col-8"><input class="form-control" value="' +
             ('Memory' in c.HostConfig ? parseInt(c.HostConfig.Memory) / 1024 / 1024 : "0") + '" disabled/>';
           containers += '</div></div></div>' +
             '<div class="tab-pane fade" id="chealthcheck_' + id + '"><div class="row m-3 align-items-center">' +
-            '<div class="col-4 mt-2"><label class="col-form-label">Test:</label></div><div class="col-8"><input class="form-control" value="' + ('Healthcheck' in c.Config ? c.Config.Healthcheck.Test : "") + '" disabled/></div>' +
-            '<div class="col-4 mt-2"><label class="col-form-label">Interval (ns):</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config && 'Interval' in c.Config.Healthcheck ? c.Config.Healthcheck.Interval : "0") + '" disabled /></div>' +
-            '<div class="col-4 mt-2"><label class="col-form-label">Timeout (ns):</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config && 'Timeout' in c.Config.Healthcheck ? c.Config.Healthcheck.Timeout : "0") + '" disabled /></div>' +
-            '<div class="col-4 mt-2"><label class="col-form-label">Retries (count):</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config && 'Retries' in c.Config.Healthcheck ? c.Config.Healthcheck.Retries : "0") + '" disabled /></div>' +
-            '<div class="col-4 mt-2"><label class="col-form-label">StartPeriod (ns):</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config && 'StartPeriod' in c.Config.Healthcheck ? c.Config.Healthcheck.StartPeriod : "0") + '" disabled /></div>' +
-            '<div class="col-4 mt-2"><label class="col-form-label">StartInterval (ns):</label></div><div class="col-8"><input class="form-control" type="number" value="' + ('Healthcheck' in c.Config && 'StartInterval' in c.Config.Healthcheck ? c.Config.Healthcheck.StartInterval : "0") + '" disabled /></div>';
+            '<div class="col-4 mt-2"><label class="col-form-label">Test:</label></div><div class="col-8"><input class="form-control" value="' +
+            ('Healthcheck' in c.Config ? c.Config.Healthcheck.Test : "") + '" disabled/></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">Interval (ns):</label></div><div class="col-8"><input class="form-control" type="number" value="' +
+            ('Healthcheck' in c.Config && 'Interval' in c.Config.Healthcheck ? c.Config.Healthcheck.Interval :
+              "0") + '" disabled /></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">Timeout (ns):</label></div><div class="col-8"><input class="form-control" type="number" value="' +
+            ('Healthcheck' in c.Config && 'Timeout' in c.Config.Healthcheck ? c.Config.Healthcheck.Timeout :
+              "0") + '" disabled /></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">Retries (count):</label></div><div class="col-8"><input class="form-control" type="number" value="' +
+            ('Healthcheck' in c.Config && 'Retries' in c.Config.Healthcheck ? c.Config.Healthcheck.Retries :
+              "0") + '" disabled /></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">StartPeriod (ns):</label></div><div class="col-8"><input class="form-control" type="number" value="' +
+            ('Healthcheck' in c.Config && 'StartPeriod' in c.Config.Healthcheck ? c.Config.Healthcheck
+              .StartPeriod : "0") + '" disabled /></div>' +
+            '<div class="col-4 mt-2"><label class="col-form-label">StartInterval (ns):</label></div><div class="col-8"><input class="form-control" type="number" value="' +
+            ('Healthcheck' in c.Config && 'StartInterval' in c.Config.Healthcheck ? c.Config.Healthcheck
+              .StartInterval : "0") + '" disabled /></div>';
           containers += '</div></div>' +
             '<div class="tab-pane fade" id="cextras_' + id + '"><div class="row m-3 align-items-center">' +
             '<div class="col-4"><label class="col-form-label">Pid Mode:</label></div><div class="col-8"><input class="form-control" value="' +
@@ -596,9 +620,9 @@
         let vols = '';
         for (const c of result.Volumes) {
           let used_by = "";
-          for (gc in globalContainers) {
-            for (const m of globalContainers[gc].Mounts)
-              if (m.Name === c.Name) used_by += globalContainers[gc].Name.replace('/', '') + " "
+          for (gc in dockerAgent["containers"]) {
+            for (const m of dockerAgent["containers"][gc].Mounts)
+              if (m.Name === c.Name) used_by += dockerAgent["containers"][gc].Name.replace('/', '') + " "
           }
           vols +=
             '<div class="col-12"><div class="card my-3"><div class="card-header bg-white"><div class="row"><div class="col-9 text-primary">' +
@@ -632,8 +656,9 @@
         let networks = ''
         for (const c of result) {
           let used_by = "";
-          for (gc in globalContainers) {
-            if (c.Name in globalContainers[gc].NetworkSettings.Networks) used_by += globalContainers[gc].Name
+          for (gc in dockerAgent["containers"]) {
+            if (c.Name in dockerAgent["containers"][gc].NetworkSettings.Networks) used_by += dockerAgent[
+                "containers"][gc].Name
               .replace('/', '') + " "
           }
           networks +=
@@ -670,8 +695,9 @@
         let images = ''
         for (const c of result) {
           let used_by = "";
-          for (gc in globalContainers) {
-            if (globalContainers[gc].Image === c.Id) used_by += globalContainers[gc].Name.replace('/', '') + " "
+          for (gc in dockerAgent["containers"]) {
+            if (dockerAgent["containers"][gc].Image === c.Id) used_by += dockerAgent["containers"][gc].Name
+              .replace('/', '') + " "
           }
           images +=
             '<div class="col-12"><div class="card my-2"><div class="card-header bg-white"><div class="row"><div class="col-10 row"><div class="col-9 text-primary">' +
@@ -816,7 +842,7 @@
       $("#modalNotificationContent").html('Pls wait ! recreate is ongoing.... ');
       $("#modalNotification").modal("show");
       let container = {}
-      for (const c of globalContainers) {
+      for (const c of dockerAgent["containers"]) {
         if (c.Id = id) {
           container = c;
           break;
@@ -1074,6 +1100,11 @@
       }).done(function (result) {
         $("#registries-count").html(result.length);
         $("#registries_num").text(result.length);
+        if (dockerAgent["images"]) {
+          for (const d of dockerAgent["images"]) {
+            d.registry = false;
+          }
+        }
         for (const c of result) {
           const card = document.createElement("div");
           card.classList.add("card", "my-2");
@@ -1126,7 +1157,27 @@
 
           let s = "";
           for (const i of c.images) {
-            s += '<br>' + i;
+            let valid = '<span class="badge rounded-pill bg-danger">failed</span>';
+            if (dockerAgent["images"]) {
+              for (const d of dockerAgent["images"]) {
+                if (d.RepoTags[0] === i) {
+                  valid = '<span class="badge rounded-pill bg-success">success</span>';
+                  d.registry = true;
+                  break;
+                }
+                if (d.RepoDigests[0] === i) {
+                  valid = '<span class="badge rounded-pill bg-success">success</span>';
+                  d.registry = true;
+                  break;
+                }
+                if (d.Id === i.split("@")[1]) {
+                  valid = '<span class="badge rounded-pill bg-success">success</span>';
+                  d.registry = true;
+                  break;
+                }
+              }
+            } else valid = '<span class="badge rounded-pill bg-warning">unknown</span>';
+            s += '<br>' + valid + " " + i;
           }
           imagesListContent.innerHTML = s;
 
@@ -1139,6 +1190,62 @@
           card.appendChild(body);
           list.appendChild(card);
         }
+
+        let s = "";
+        let count = 0;
+        if (dockerAgent["images"]) {
+          for (const d of dockerAgent["images"]) {
+            if (d.registry === false) {
+              if (d.RepoTags.length >0) s += '<br><span class="badge rounded-pill bg-danger">error</span> ' + d.RepoTags[0];
+              else s += '<br><span class="badge rounded-pill bg-danger">error</span> ' + d.RepoDigests[0];
+              count++;
+            }
+          }
+        }
+
+        const card = document.createElement("div");
+        card.classList.add("card", "my-2");
+
+        const header = document.createElement("div");
+        header.appendChild(document.createTextNode("no registry"));
+        header.classList.add("card-header", "bg-white", "text-primary");
+
+        card.appendChild(header);
+
+        const body = document.createElement("div");
+        body.classList.add("card-body", "row");
+
+        const images = document.createElement("div");
+        images.classList.add("col-md-12", "col-sm-12", "p-2");
+
+        const imageHead = document.createElement("b");
+        imageHead.appendChild(document.createTextNode("Image(s) count: "));
+
+        const imageContent = document.createElement("span");
+        imageContent.appendChild(document.createTextNode(count));
+        if (count > 0) imageContent.classList.add("badge", "rounded-pill", "bg-danger");
+        else imageContent.classList.add("badge", "rounded-pill", "bg-primary");
+
+        images.appendChild(imageHead)
+        images.appendChild(imageContent);
+
+        body.appendChild(images);
+
+        const imagesList = document.createElement("div");
+        imagesList.classList.add("col-md-12", "col-sm-12", "p-2");
+
+        const imagesListHead = document.createElement("b");
+        imagesListHead.appendChild(document.createTextNode("Image(s) list: "));
+
+        const imagesListContent = document.createElement("span");
+
+        imagesListContent.innerHTML = s;
+        imagesList.appendChild(imagesListHead)
+        imagesList.appendChild(imagesListContent);
+        imagesList.appendChild(imagesListContent);
+        body.appendChild(imagesList);
+        card.appendChild(body);
+        list.appendChild(card);
       })
     });
 
