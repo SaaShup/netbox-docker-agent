@@ -6492,14 +6492,7 @@
                 "t": "set",
                 "p": "post",
                 "pt": "msg",
-                "to": "'\\\"http://localhost/networks/' & msg.payload.network.name & '/connect\\\"'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{ \"Container\": msg.newinput }",
+                "to": "\"http://localhost/networks/\" & msg.payload.network.name & \"/connect\" & \" -H 'content-type: application/json' -d '{ \\\"Container\\\": \\\"\" & msg.newinput & \"\\\"}'\"",
                 "tot": "jsonata"
             }
         ],
@@ -6508,7 +6501,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 930,
+        "x": 910,
         "y": 680,
         "wires": [
             [
