@@ -378,8 +378,9 @@
             }
           }
           containers += '</div></div></div>' +
-            '<div class="tab-pane fade" id="ccommand_' + id + '"><p>Command tab content ...</p></div>' +
-            '<div class="tab-pane fade" id="clogging_' + id + '"><p>Logging tab content ...</p></div>' +
+            '<div class="tab-pane fade" id="ccommand_' + id + '"><div class="row m-3 align-items-center">' +
+            '<div class="col-4"><label class="col-form-label">Command:</label></div><div class="col-8"><input class="form-control" value="' +
+            c.Config.Cmd + '" disabled/></div></div></div>' +
             '<div class="tab-pane fade" id="cvolumes_' + id + '"><div class="row align-items-center">' +
             '<div class="col-12">';
           for (const vo of c.Mounts) {
