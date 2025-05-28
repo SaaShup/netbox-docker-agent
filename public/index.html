@@ -246,6 +246,11 @@
       })
     }
 
+    function topFunction() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }
+
     $("#nav-containers-btn").on('click', function () {
       cleanWindow();
       $('#containers').removeClass('d-none');
@@ -513,6 +518,7 @@
           $(event.target).parent().parent().parent().next().get(0),
         ));
       })
+      topFunction();
     })
 
     $("#nav-home-btn").on('click', function () {
@@ -618,6 +624,7 @@
       $.ajax({
         url: "/api/volumes",
       }).done(function (result) {
+        dockerAgent["volumes"] = result;
         $("#volumes-count").html(result.Volumes.length);
         $("#volumes_num").text(result.Volumes.length);
         let vols = '';
@@ -644,6 +651,7 @@
         }
         $('#volumes-list').html(vols);
       })
+      topFunction();
     })
 
     $("#nav-networks-btn").on('click', function () {
@@ -654,6 +662,7 @@
       $.ajax({
         url: "/api/networks",
       }).done(function (result) {
+        dockerAgent["networks"] = result;
         $("#networks-count").html(result.length)
         $("#networks_num").text(result.length);
         let networks = ''
@@ -683,6 +692,7 @@
         }
         $('#networks-list').html(networks);
       })
+      topFunction();
     })
 
     $("#nav-images-btn").on('click', function () {
@@ -693,6 +703,7 @@
       $.ajax({
         url: "/api/images",
       }).done(function (result) {
+        dockerAgent["images"] = result;
         $("#images-count").html(result.length)
         $("#images_num").text(result.length);
         let images = ''
@@ -725,6 +736,7 @@
         }
         $('#images-list').html(images);
       })
+      topFunction();
     })
 
     function deleteNetwork(id) {
@@ -1101,6 +1113,7 @@
       $.ajax({
         url: "/api/registries",
       }).done(function (result) {
+        dockerAgent["registries"] = result;
         $("#registries-count").html(result.length);
         $("#registries_num").text(result.length);
         if (dockerAgent["images"]) {
