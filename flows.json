@@ -4091,7 +4091,8 @@
         "y": 320,
         "wires": [
             [
-                "163b02482bbd751b"
+                "163b02482bbd751b",
+                "f863599a6ddb1c38"
             ],
             [
                 "060ac7e41c2e9d20"
@@ -4563,7 +4564,8 @@
         "y": 140,
         "wires": [
             [
-                "12cecd82c1d9f476"
+                "12cecd82c1d9f476",
+                "6622d519b6e825b6"
             ]
         ]
     },
@@ -4635,7 +4637,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"state\": \"created\",\t    \"operation\": \"none\",\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null or $length($v[0].HostPort) = 0 ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : msg.result.Config.ExposedPorts ? [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort and $length($v.PublicPort) > 0 ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                }\t            )\t          ] : [],\t   \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                {\t                    \"var_name\": $substringBefore($v, \"=\"),\t                    \"value\": $substringAfter($v, \"=\")\t                }\t            }\t        )\t    ],\t   \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t   \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Destination,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ]\t}]",
+                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"state\": \"created\",\t    \"operation\": \"none\",\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null or $length($v[0].HostPort) = 0 ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : msg.result.Config.ExposedPorts ? [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort and $length($v.PublicPort) > 0 ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                }\t            )\t          ] : [],\t   \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                {\t                    \"var_name\": $substringBefore($v, \"=\"),\t                    \"value\": $substringAfter($v, \"=\")\t                }\t            }\t        )\t    ],\t   \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t   \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Destination,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ],\t    \"log_driver\": msg.result.HostConfig.LogConfig.Type,\t    \"log_driver_options\": [$each(msg.result.HostConfig.LogConfig.Config, function($v, $k) {\t        {\t            \"option_name\": $k,\t            \"value\": $v\t        }\t    })]\t}]",
                 "tot": "jsonata"
             },
             {
@@ -4656,7 +4658,8 @@
         "wires": [
             [
                 "a363e235a4fda0b0",
-                "4b0b315e5dbc14f1"
+                "4b0b315e5dbc14f1",
+                "40aba822fb26cf2b"
             ]
         ]
     },
@@ -4680,7 +4683,8 @@
         "y": 140,
         "wires": [
             [
-                "14ee8c9739857e6c"
+                "14ee8c9739857e6c",
+                "28674aa80c1aa8fc"
             ]
         ]
     },
@@ -4696,7 +4700,8 @@
         "y": 140,
         "wires": [
             [
-                "8689e16407e06796"
+                "8689e16407e06796",
+                "8f53d4c47a66aa4a"
             ]
         ]
     },
@@ -4752,7 +4757,8 @@
         "y": 140,
         "wires": [
             [
-                "23ca2c7db549468c"
+                "23ca2c7db549468c",
+                "e38cf4b583897aca"
             ]
         ]
     },
@@ -4768,7 +4774,8 @@
         "y": 140,
         "wires": [
             [
-                "836f86ac79995686"
+                "836f86ac79995686",
+                "51dfe569216be60b"
             ]
         ]
     },
@@ -5807,6 +5814,125 @@
                 "5c79a22a8f9ad79f"
             ]
         ]
+    },
+    {
+        "id": "f863599a6ddb1c38",
+        "type": "debug",
+        "z": "3ea1a4b04d852f38",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "6622d519b6e825b6",
+        "type": "debug",
+        "z": "3ea1a4b04d852f38",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "8f53d4c47a66aa4a",
+        "type": "debug",
+        "z": "3ea1a4b04d852f38",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1520,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "e38cf4b583897aca",
+        "type": "debug",
+        "z": "3ea1a4b04d852f38",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1820,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "51dfe569216be60b",
+        "type": "debug",
+        "z": "3ea1a4b04d852f38",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2260,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "40aba822fb26cf2b",
+        "type": "debug",
+        "z": "3ea1a4b04d852f38",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2560,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "28674aa80c1aa8fc",
+        "type": "debug",
+        "z": "3ea1a4b04d852f38",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2860,
+        "y": 100,
+        "wires": []
     },
     {
         "id": "dcf35b57666a30f9",
