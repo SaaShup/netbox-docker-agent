@@ -7399,7 +7399,9 @@
         "x": 950,
         "y": 160,
         "wires": [
-            [],
+            [
+                "d31117993df12234"
+            ],
             [],
             []
         ]
@@ -7636,6 +7638,39 @@
         "y": 820,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "d31117993df12234",
+        "type": "switch",
+        "z": "8e85e8c54d776ddc",
+        "name": "",
+        "property": "input.data.operation",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "pause",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "unpause",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1150,
+        "y": 140,
+        "wires": [
+            [
+                "b61b7a952b88459b"
+            ],
+            [
+                "b61b7a952b88459b"
+            ]
         ]
     },
     {
