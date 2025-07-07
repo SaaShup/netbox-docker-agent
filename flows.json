@@ -379,7 +379,7 @@
         "stream": false,
         "addname": "",
         "property": "payload",
-        "x": 520,
+        "x": 500,
         "y": 900,
         "wires": [
             [
@@ -438,7 +438,7 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 810,
+        "x": 830,
         "y": 900,
         "wires": [
             [
@@ -989,23 +989,6 @@
         ]
     },
     {
-        "id": "9e00089e9a1d8c44",
-        "type": "file",
-        "z": "216db6efc0df9bc0",
-        "name": "",
-        "filename": "registry_index_path",
-        "filenameType": "msg",
-        "appendNewline": true,
-        "createDir": false,
-        "overwriteFile": "true",
-        "encoding": "none",
-        "x": 2160,
-        "y": 320,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "e963d43832071ad1",
         "type": "switch",
         "z": "216db6efc0df9bc0",
@@ -1286,7 +1269,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1600,
+        "x": 1620,
         "y": 880,
         "wires": [
             [
@@ -1469,7 +1452,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t    \"state\": msg.container_info.State.Status,\t    \"ContainerID\": msg.patyload.Id,\t    \"status\": msg.container_info.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.container_info.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\"\t}",
+                "to": "{\t    \"state\": msg.container_info.State.Status,\t    \"ContainerID\": msg.patyload.Id,\t    \"operation\": \"none\",\t    \"status\": msg.container_info.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.container_info.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\"\t}",
                 "tot": "jsonata"
             }
         ],
@@ -1612,7 +1595,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 8,
-        "x": 1350,
+        "x": 1360,
         "y": 880,
         "wires": [
             [
@@ -1646,8 +1629,8 @@
         "type": "switch",
         "z": "216db6efc0df9bc0",
         "name": "Events Enabled ?",
-        "property": "docker_event",
-        "propertyType": "global",
+        "property": "$globalContext(\"docker_event\") = true or msg.payload.Action = \"pause\" or msg.payload.Action = \"unpause\"",
+        "propertyType": "jsonata",
         "rules": [
             {
                 "t": "true"
@@ -4091,8 +4074,7 @@
         "y": 320,
         "wires": [
             [
-                "163b02482bbd751b",
-                "f863599a6ddb1c38"
+                "163b02482bbd751b"
             ],
             [
                 "060ac7e41c2e9d20"
@@ -4564,8 +4546,7 @@
         "y": 140,
         "wires": [
             [
-                "12cecd82c1d9f476",
-                "6622d519b6e825b6"
+                "12cecd82c1d9f476"
             ]
         ]
     },
@@ -4658,8 +4639,7 @@
         "wires": [
             [
                 "a363e235a4fda0b0",
-                "4b0b315e5dbc14f1",
-                "40aba822fb26cf2b"
+                "4b0b315e5dbc14f1"
             ]
         ]
     },
@@ -4683,8 +4663,7 @@
         "y": 140,
         "wires": [
             [
-                "14ee8c9739857e6c",
-                "28674aa80c1aa8fc"
+                "14ee8c9739857e6c"
             ]
         ]
     },
@@ -4700,8 +4679,7 @@
         "y": 140,
         "wires": [
             [
-                "8689e16407e06796",
-                "8f53d4c47a66aa4a"
+                "8689e16407e06796"
             ]
         ]
     },
@@ -4757,8 +4735,7 @@
         "y": 140,
         "wires": [
             [
-                "23ca2c7db549468c",
-                "e38cf4b583897aca"
+                "23ca2c7db549468c"
             ]
         ]
     },
@@ -4774,8 +4751,7 @@
         "y": 140,
         "wires": [
             [
-                "836f86ac79995686",
-                "51dfe569216be60b"
+                "836f86ac79995686"
             ]
         ]
     },
@@ -5814,125 +5790,6 @@
                 "5c79a22a8f9ad79f"
             ]
         ]
-    },
-    {
-        "id": "f863599a6ddb1c38",
-        "type": "debug",
-        "z": "3ea1a4b04d852f38",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 420,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "6622d519b6e825b6",
-        "type": "debug",
-        "z": "3ea1a4b04d852f38",
-        "name": "debug 2",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1040,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "8f53d4c47a66aa4a",
-        "type": "debug",
-        "z": "3ea1a4b04d852f38",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1520,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "e38cf4b583897aca",
-        "type": "debug",
-        "z": "3ea1a4b04d852f38",
-        "name": "debug 4",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1820,
-        "y": 60,
-        "wires": []
-    },
-    {
-        "id": "51dfe569216be60b",
-        "type": "debug",
-        "z": "3ea1a4b04d852f38",
-        "name": "debug 5",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 2260,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "40aba822fb26cf2b",
-        "type": "debug",
-        "z": "3ea1a4b04d852f38",
-        "name": "debug 6",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 2560,
-        "y": 80,
-        "wires": []
-    },
-    {
-        "id": "28674aa80c1aa8fc",
-        "type": "debug",
-        "z": "3ea1a4b04d852f38",
-        "name": "debug 7",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 2860,
-        "y": 100,
-        "wires": []
     },
     {
         "id": "dcf35b57666a30f9",
@@ -7400,7 +7257,7 @@
         "y": 160,
         "wires": [
             [
-                "d31117993df12234"
+                "2315cf2354e9b18b"
             ],
             [],
             []
@@ -7641,36 +7498,28 @@
         ]
     },
     {
-        "id": "d31117993df12234",
-        "type": "switch",
+        "id": "2315cf2354e9b18b",
+        "type": "change",
         "z": "8e85e8c54d776ddc",
-        "name": "",
-        "property": "input.data.operation",
-        "propertyType": "msg",
+        "name": "Reenable events",
         "rules": [
             {
-                "t": "eq",
-                "v": "pause",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "unpause",
-                "vt": "str"
+                "t": "set",
+                "p": "docker_event",
+                "pt": "global",
+                "to": "true",
+                "tot": "bool"
             }
         ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
         "x": 1150,
         "y": 140,
         "wires": [
-            [
-                "b61b7a952b88459b"
-            ],
-            [
-                "b61b7a952b88459b"
-            ]
+            []
         ]
     },
     {
