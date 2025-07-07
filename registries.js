@@ -1,1 +1,1 @@
-[{"images":["saashup/netbox-docker-agent:latest","valkey/valkey:8","linksociety/flowg:latest","postgres:17"],"name":"dockerhub","serveraddress":"https://registry.hub.docker.com/v2/","id":3},{"images":["registry.sdlc.webcloud.ec.europa.eu/c4/shared/cmdb/netbox-distributions:v4.3.2-easynet-latest"],"name":"registry.sdlc.webcloud.ec.europa.eu","serveraddress":"https://registry.sdlc.webcloud.ec.europa.eu/v2/","id":4}]
+[]
