@@ -1,1 +1,1 @@
-[]
+[{"images":["saashup/netbox-docker-agent:latest","saashup/netbox-docker-agent@sha256:7f46147f525bc1c9eec7a3d09933284caa030365bbdf608c0797889af016a0f0","curioocityapi-api:latest","postgis/postgis:17-3.5","nginx:latest","nodered/node-red:latest","postgrest/postgrest:v12.2.11"],"name":"dockerhub","serveraddress":"https://registry.hub.docker.com/v2/","id":8},{"images":["ghcr.io/orange-opensource/hurl:latest"],"name":"ghcr.io","serveraddress":"https://ghcr.io/v2/","id":9}]
