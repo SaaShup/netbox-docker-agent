@@ -1,1 +1,0 @@
-{"netbox_url":"http://127.0.0.1:8000","netbox_token":"9cd0e9e207a90ce85a80ec4c6ddbedf492b778e3","ui":1,"flows":"0","id":"6","endpoint":"http://admin:saashup@127.0.0.1:1880/"}
