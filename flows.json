@@ -2162,7 +2162,7 @@
         "z": "a827fd671d6a227e",
         "name": "",
         "pauseType": "delay",
-        "timeout": "3",
+        "timeout": "10",
         "timeoutUnits": "seconds",
         "rate": "1",
         "nbRateUnits": "1",
