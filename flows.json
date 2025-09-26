@@ -8924,6 +8924,163 @@
         "wires": []
     },
     {
+        "id": "11bd132498210f7b",
+        "type": "http in",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "url": "/api/engine/containers/:id/stats",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 700,
+        "wires": [
+            [
+                "79376358328efa88"
+            ]
+        ]
+    },
+    {
+        "id": "79376358328efa88",
+        "type": "change",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"'http://localhost/containers/\" & msg.req.params.id & \"/stats?stream=0'\" & \" -H 'content-type: application/json'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 700,
+        "wires": [
+            [
+                "8c2512858e370368"
+            ]
+        ]
+    },
+    {
+        "id": "8c2512858e370368",
+        "type": "exec",
+        "z": "1d08205d001d337b",
+        "command": "curl -s -X GET --unix-socket /var/run/docker.sock",
+        "addpay": "post",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "containers",
+        "x": 690,
+        "y": 700,
+        "wires": [
+            [
+                "975593b4d1cd6a3a"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "975593b4d1cd6a3a",
+        "type": "switch",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nempty"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 870,
+        "y": 700,
+        "wires": [
+            [
+                "24e4e2ccb4d52ac8"
+            ],
+            [
+                "57e9a5b3af5d5dc0"
+            ]
+        ]
+    },
+    {
+        "id": "4ee037752bbf60b8",
+        "type": "http response",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1190,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "57e9a5b3af5d5dc0",
+        "type": "change",
+        "z": "1d08205d001d337b",
+        "name": "no stats",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1020,
+        "y": 760,
+        "wires": [
+            [
+                "4ee037752bbf60b8"
+            ]
+        ]
+    },
+    {
+        "id": "24e4e2ccb4d52ac8",
+        "type": "json",
+        "z": "1d08205d001d337b",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 1030,
+        "y": 700,
+        "wires": [
+            [
+                "4ee037752bbf60b8"
+            ]
+        ]
+    },
+    {
         "id": "788067a8780c7835",
         "type": "http in",
         "z": "3ee57a9d7dc5fae7",
