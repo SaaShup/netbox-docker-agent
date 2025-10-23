@@ -203,35 +203,35 @@
     var dockerAgent = [];
 
     $.ajax({
-        url: "/api/containers"
+      url: "/api/containers"
+    }).done(function (result) {
+      dockerAgent["containers"] = result;
+      $("#containers_num").text(result.length);
+      $.ajax({
+        url: "/api/volumes",
       }).done(function (result) {
-        dockerAgent["containers"] = result;
-        $("#containers_num").text(result.length);
-        $.ajax({
-          url: "/api/volumes",
-        }).done(function (result) {
-          dockerAgent["volumes"] = result;
-          $("#volumes_num").text(result.Volumes.length);
-        });
-        $.ajax({
-          url: "/api/images",
-        }).done(function (result) {
-          dockerAgent["images"] = result;
-          $("#images_num").text(result.length);
-        });
-        $.ajax({
-          url: "/api/networks",
-        }).done(function (result) {
-          dockerAgent["networks"] = result;
-          $("#networks_num").text(result.length);
-        });
-        $.ajax({
-          url: "/api/registries",
-        }).done(function (result) {
-          dockerAgent["registries"] = result;
-          $("#registries_num").text(result.length);
-        });
-      })
+        dockerAgent["volumes"] = result;
+        $("#volumes_num").text(result.Volumes.length);
+      });
+      $.ajax({
+        url: "/api/images",
+      }).done(function (result) {
+        dockerAgent["images"] = result;
+        $("#images_num").text(result.length);
+      });
+      $.ajax({
+        url: "/api/networks",
+      }).done(function (result) {
+        dockerAgent["networks"] = result;
+        $("#networks_num").text(result.length);
+      });
+      $.ajax({
+        url: "/api/registries",
+      }).done(function (result) {
+        dockerAgent["registries"] = result;
+        $("#registries_num").text(result.length);
+      });
+    })
       .fail(function (result) {
         if (result.status == 403) $('#system-usage-chart').html(
           '<span class="badge bg-danger"><h3>Error</h3></span>');
@@ -353,11 +353,11 @@
                 '" disabled/></div></div><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">container</span><input class="form-control" value="' +
                 po.split('/')[0] +
                 '" disabled/></div></div><div class="col-2"><input class="form-control" disabled value="' + po
-                .split('/')[1] + '"></div></div>'
+                  .split('/')[1] + '"></div></div>'
             }
           } else {
             if ('PortBindings' in c.HostConfig && c.HostConfig.PortBindings !== null && Object.keys(c.HostConfig
-                .PortBindings).length > 0) {
+              .PortBindings).length > 0) {
               for (const po of Object.keys(c.HostConfig.PortBindings)) {
                 containers +=
                   '<div class="row m-2 ports"><div class="col-4"><div class="input-group flex-nowrap"><span class="input-group-text bg-white text-primary">host</span><input class="form-control ports-host" placeholder="name" value="' +
@@ -670,7 +670,7 @@
           let used_by = "";
           for (gc in dockerAgent["containers"]) {
             if (c.Name in dockerAgent["containers"][gc].NetworkSettings.Networks) used_by += dockerAgent[
-                "containers"][gc].Name
+              "containers"][gc].Name
               .replace('/', '') + " "
           }
           networks +=
@@ -1016,7 +1016,7 @@
         dataType: "json"
       }).done(result => {
         let url = new URL(window.location.origin);
-        url.protocol = url.protocol == "https" ? "wss" : "ws";
+        url.protocol = url.protocol.startsWith("https") ? "wss" : "ws";
 
         let client = new DockerExecWebsocketClient({
           url: url.toString().slice(0, -1) + result.path,
@@ -1212,7 +1212,7 @@
         if (dockerAgent["images"]) {
           for (const d of dockerAgent["images"]) {
             if (d.registry === false) {
-              if (d.RepoTags.length >0) s += '<br><span class="badge rounded-pill bg-danger">error</span> ' + d.RepoTags[0];
+              if (d.RepoTags.length > 0) s += '<br><span class="badge rounded-pill bg-danger">error</span> ' + d.RepoTags[0];
               else s += '<br><span class="badge rounded-pill bg-danger">error</span> ' + d.RepoDigests[0];
               count++;
             }
