@@ -1332,7 +1332,7 @@
                 "t": "set",
                 "p": "url",
                 "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/containers/'",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/containers/?host_id=' & msg.config.id & \"&name=\" & $replace(msg.container_info.Name,'/','')",
                 "tot": "jsonata"
             },
             {
@@ -1346,8 +1346,8 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t    \"host\": msg.config.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"exitCode\": msg.result.State.ExitCode,\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"state\": msg.result.State.Status,\t    \"operation\": \"none\",\t    \"restart_policy\": msg.result.HostConfig.RestartPolicy.Name = \"\" ? \"no\" : msg.result.HostConfig.RestartPolicy.Name,\t    \"image\": {\t        \"host\": msg.config.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"HealthCheck\": msg.result.Config.Healthcheck,\t    \"ContainerID\": msg.result.Id,\t    \"cap_add\": msg.result.HostConfig.CapAdd,\t    \"cap_drop\": msg.result.HostConfig.CapDrop,\t    \"extra_hosts\": msg.result.HostConfig.ExtraHosts,\t    \"pid_mode\": msg.result.HostConfig.PidMode,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"host\": msg.config.id, \"name\": $k } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null or $length($v[0].HostPort) = 0 ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : msg.result.HostConfig.PortBindings ? [\t            $each(\t                msg.result.HostConfig.PortBindings,\t                function($v, $k) {\t                    {\t                        \"public_port\": $count($v) = 0 or $v[0] = null or $length($v[0].HostPort) = 0 ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ] : [],\t    \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                {\t                    \"var_name\": $substringBefore($v, \"=\"),\t                    \"value\": $substringAfter($v, \"=\")\t                }\t            }\t        )\t    ],\t    \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t    \"devices\": msg.result.HostConfig.Devices\t        ? [\t        $map(\t            msg.result.HostConfig.Devices,\t            function($v, $k) {\t               {\t                    \"container_path\": $v.PathInContainer,\t                    \"host_path\": $v.PathOnHost\t                }\t            }\t        )\t    ],\t    \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Destination,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $not($v.RW)\t                    }\t            }\t        )\t    ],\t    \"log_driver\": msg.result.HostConfig.LogConfig.Type,\t    \"log_driver_options\": [$each(msg.result.HostConfig.LogConfig.Config, function($v, $k) {\t        {\t            \"option_name\": $k,\t            \"value\": $v\t        }\t    })],\t    \"secOpt\": msg.result.HostConfig.SecurityOpt,\t    \"Cmd\": msg.result.Config.Cmd,\t    \"sysctls\": [\t        $each(\t            msg.result.HostConfig.Sysctls,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ]\t}",
-                "tot": "jsonata"
+                "to": "{}",
+                "tot": "json"
             }
         ],
         "action": "",
@@ -1383,33 +1383,6 @@
         "y": 880,
         "wires": [
             [
-                "c6d649272e52d4e8"
-            ]
-        ]
-    },
-    {
-        "id": "c6d649272e52d4e8",
-        "type": "change",
-        "z": "216db6efc0df9bc0",
-        "name": "find by ContainerID",
-        "rules": [
-            {
-                "t": "set",
-                "p": "netbox_container_id",
-                "pt": "msg",
-                "to": "$filter(msg.payload.results, function($v) {\t    $v.ContainerID = msg.container_info.Id\t}).id",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 2550,
-        "y": 940,
-        "wires": [
-            [
                 "6021f753e1831d36"
             ]
         ]
@@ -1438,7 +1411,7 @@
                 "t": "set",
                 "p": "url",
                 "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/containers/' & $string(msg.netbox_container_id) & '/'",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/containers/' & $string(msg.payload.results[0].id) & '/'",
                 "tot": "jsonata"
             },
             {
@@ -1452,7 +1425,7 @@
                 "t": "set",
                 "p": "payload",
                 "pt": "msg",
-                "to": "{\t    \"state\": msg.container_info.State.Status,\t    \"ContainerID\": msg.patyload.Id,\t    \"operation\": \"none\",\t    \"exitCode\": msg.container_info.State.ExitCode,\t    \"status\": msg.container_info.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.container_info.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\"\t}",
+                "to": "{\t    \"state\": msg.container_info.State.Status,\t    \"ContainerID\": msg.container_info.Id,\t    \"operation\": \"none\",\t    \"exitCode\": msg.container_info.State.ExitCode,\t    \"status\": msg.container_info.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.container_info.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\"\t}",
                 "tot": "jsonata"
             }
         ],
@@ -1461,8 +1434,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 2570,
-        "y": 1000,
+        "x": 2490,
+        "y": 940,
         "wires": [
             [
                 "d8839cfa921a2951"
@@ -1473,20 +1446,20 @@
         "id": "6021f753e1831d36",
         "type": "switch",
         "z": "216db6efc0df9bc0",
-        "name": "exists?",
-        "property": "netbox_container_id",
+        "name": "count",
+        "property": "payload.count",
         "propertyType": "msg",
         "rules": [
             {
-                "t": "istype",
-                "v": "number",
-                "vt": "number"
+                "t": "eq",
+                "v": "1",
+                "vt": "num"
             }
         ],
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 2760,
+        "x": 2250,
         "y": 940,
         "wires": [
             [
@@ -1537,8 +1510,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 2860,
-        "y": 1000,
+        "x": 2820,
+        "y": 940,
         "wires": [
             []
         ]
