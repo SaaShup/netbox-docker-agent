@@ -4474,7 +4474,7 @@
                 "t": "set",
                 "p": "payload.DriverOpts",
                 "pt": "msg",
-                "to": "msg.dockerDriver != \"overlay2\" and $number(msg.input.data.max_size) > 0 ? \t    {\t   \"o\": \"size=\" & msg.input.data.max_size & \"m\"\t}",
+                "to": "msg.dockerDriver != \"overlay2\" and msg.input.data.max_size != null and $number(msg.input.data.max_size) > 0 ? \t    {\t   \"o\": \"size=\" & msg.input.data.max_size & \"m\"\t}",
                 "tot": "jsonata"
             },
             {
