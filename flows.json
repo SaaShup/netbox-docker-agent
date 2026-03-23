@@ -2533,8 +2533,7 @@
         "y": 500,
         "wires": [
             [
-                "521aa77a01fcea45",
-                "02f262c243f96625"
+                "521aa77a01fcea45"
             ],
             [
                 "4f41f373f7947d21"
@@ -2561,8 +2560,7 @@
         "y": 940,
         "wires": [
             [
-                "0f90d4602b562160",
-                "4ddd2787ee747913"
+                "0f90d4602b562160"
             ]
         ]
     },
@@ -2617,8 +2615,7 @@
         "y": 940,
         "wires": [
             [
-                "7cd37714a247d0f3",
-                "b55209b2240f1e29"
+                "7cd37714a247d0f3"
             ]
         ]
     },
@@ -4013,57 +4010,6 @@
                 "f0f956ba31c5c2ef"
             ]
         ]
-    },
-    {
-        "id": "02f262c243f96625",
-        "type": "debug",
-        "z": "a827fd671d6a227e",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 520,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "b55209b2240f1e29",
-        "type": "debug",
-        "z": "a827fd671d6a227e",
-        "name": "debug 2",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1500,
-        "y": 880,
-        "wires": []
-    },
-    {
-        "id": "4ddd2787ee747913",
-        "type": "debug",
-        "z": "a827fd671d6a227e",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1700,
-        "y": 860,
-        "wires": []
     },
     {
         "id": "e974d3bd502f614f",
