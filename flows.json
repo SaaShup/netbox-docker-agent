@@ -101,7 +101,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -733,7 +733,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -827,7 +827,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -915,7 +915,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t   \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
+                "to": "{\t   \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
                 "tot": "jsonata"
             },
             {
@@ -1339,7 +1339,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -1418,7 +1418,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -1900,7 +1900,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -2014,7 +2014,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -2201,7 +2201,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -2529,7 +2529,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 610,
+        "x": 570,
         "y": 500,
         "wires": [
             [
@@ -2588,7 +2588,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -3048,7 +3048,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -3616,7 +3616,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             }
         ],
@@ -3694,7 +3694,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -3889,7 +3889,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t\t}",
+                "to": "{\t    \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t\t}",
                 "tot": "jsonata"
             }
         ],
@@ -4338,7 +4338,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -4600,7 +4600,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -4798,7 +4798,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -5159,7 +5159,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t   \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
+                "to": "{\t   \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
                 "tot": "jsonata"
             },
             {
@@ -5258,7 +5258,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t   \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
+                "to": "{\t   \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
                 "tot": "jsonata"
             },
             {
@@ -5333,7 +5333,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t   \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
+                "to": "{\t   \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
                 "tot": "jsonata"
             },
             {
@@ -5409,7 +5409,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t   \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
+                "to": "{\t   \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
                 "tot": "jsonata"
             },
             {
@@ -5637,7 +5637,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -5709,7 +5709,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
@@ -6623,7 +6623,7 @@
                 "t": "set",
                 "p": "headers",
                 "pt": "msg",
-                "to": "{\t    \"Authorization\": \"Token \" & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
                 "tot": "jsonata"
             },
             {
