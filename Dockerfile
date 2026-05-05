@@ -1,4 +1,4 @@
-FROM nodered/node-red:4.1.7-minimal
+FROM nodered/node-red:4.1.8-minimal
 
 WORKDIR /data
 RUN openssl genrsa -out privkey.pem 2048
@@ -19,3 +19,6 @@ ENV DATAPATH=/data
 ENV APPPATH=/usr/src/node-red
 
 COPY --chown=node-red:node-red settings.js config.js registries.js /data
+
+LABEL prometheus_scrape_agent="true"
+LABEL prometheus_address="netbox-docker-agent:1880"

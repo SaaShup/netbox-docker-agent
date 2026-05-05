@@ -127,6 +127,13 @@ Example of prometheus configuration:
       username: 'admin'
       password: 'saashup'
 ```
+You can configure Prometheus using Docker service discovery with the following labels:
+
+- `prometheus_scrape_agent`: `true` / `false`  
+  Indicates whether the container should be scraped by Prometheus.
+
+- `prometheus_address`: e.g. `netbox-docker-agent:1880`  
+  The target address (host:port) that Prometheus will use to scrape metrics.
 
 ## Logs
 Currently all logs are send to stdout, if netbox send an error message to the agent.
