@@ -4,3 +4,5 @@
 # Lines starting with `#` and blank lines are ignored.
 # To support a new version: add it here and open a PR.
 29.5.2
+28.5.2
+27.5.1
