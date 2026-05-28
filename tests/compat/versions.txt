@@ -1,0 +1,6 @@
+# Supported dockerd versions, one per line.
+# Each version is tested by spinning up `docker:<version>-dind` and running
+# the full hurl suite against the agent connected to that daemon.
+# Lines starting with `#` and blank lines are ignored.
+# To support a new version: add it here and open a PR.
+29.5.2

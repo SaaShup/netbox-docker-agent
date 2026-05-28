@@ -1,0 +1,67 @@
+# Compatibility test stack: pins the dockerd version the agent talks to.
+#
+#   dind   -> runs the chosen dockerd version, exposes its unix socket on a
+#             shared volume at /var/run/docker.sock
+#   agent  -> the netbox-docker-agent image, with that same volume mounted at
+#             /var/run, so its hardcoded /var/run/docker.sock points at dind
+#   tester -> hurl, runs the existing suite against the agent
+#
+# Driven by run.sh; set DOCKER_VERSION to pick the dockerd version.
+name: nda-compat
+
+services:
+  dind:
+    image: docker:${DOCKER_VERSION:?set DOCKER_VERSION (e.g. 29.5.2)}-dind
+    privileged: true
+    environment:
+      # Empty cert dir disables TLS, so dockerd serves a plain unix socket.
+      DOCKER_TLS_CERTDIR: ""
+    volumes:
+      - docker-run:/var/run
+    healthcheck:
+      test: ["CMD", "docker", "version"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
+
+  agent:
+    build:
+      context: ../..
+    image: saashup/netbox-docker-agent:compat
+    # The image runs as the unprivileged node-red user, but the dind socket is
+    # owned by root. Override to root for tests so curl can reach the socket.
+    user: root
+    depends_on:
+      dind:
+        condition: service_healthy
+    volumes:
+      # Shares dind's /var/run, so /var/run/docker.sock is the dind daemon.
+      - docker-run:/var/run
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-u", "admin:saashup", "http://localhost:1880/"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  tester:
+    image: ghcr.io/orange-opensource/hurl:latest
+    profiles: ["test"]
+    depends_on:
+      agent:
+        condition: service_healthy
+    volumes:
+      - ../hurl:/tests:ro
+    entrypoint: ["hurl"]
+    command:
+      - "--test"
+      - "--color"
+      - "--variable"
+      - "host=http://agent:1880"
+      - "-u"
+      - "admin:saashup"
+      - "/tests/tests.hurl"
+
+volumes:
+  docker-run:
