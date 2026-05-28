@@ -18,7 +18,32 @@ daemon's *default* API version. To pin the version under test we use
 3. `tester` (hurl) runs [`../hurl/tests.hurl`](../hurl/tests.hurl) against the
    agent.
 
-See [docker-compose.yml](docker-compose.yml).
+See [docker-compose.yml](docker-compose.yml). The stack also includes a
+`netbox` service (a [wiremock](https://wiremock.org/) stand-in) so the
+agent->netbox callbacks can be exercised; the agent's `netbox_url` is pointed
+at it via [fixtures/config.netbox.js](fixtures/config.netbox.js).
+
+## What gets tested
+
+For each version `run.sh` runs three things against the standing stack:
+
+1. **The hurl suite** ([../hurl](../hurl)):
+   - `tests.hurl` — the original HTTP smoke tests.
+   - `read.hurl` — field-level assertions on the synchronous read endpoints
+     (`/api/networks`, `/api/containers`, `/api/images`, `/api/volumes`,
+     `/system/usage`). Where dockerd field drift shows up first.
+   - `version.hurl` — asserts `/info` reports the exact dockerd version
+     under test (requires the `docker_version` variable).
+   - `lifecycle.hurl` — a real container lifecycle against the daemon:
+     pull -> create -> start -> logs -> stats -> exec -> stop -> delete,
+     polling the read endpoints for each async side effect.
+2. **The websocket-exec test** ([ws-exec-test.mjs](ws-exec-test.mjs)) — drives
+   the interactive `/ws` exec channel using the agent's own bundled client lib
+   (can't be expressed in hurl). Runs inside the agent container.
+3. **The netbox-contract test** (`netbox.hurl`) — asserts the agent actually
+   sends the expected callbacks to netbox after a write, by inspecting the
+   wiremock request journal. Run against a freshly restarted agent so the
+   agent's own config-persistence during the suite can't interfere.
 
 ## Supported versions
 
