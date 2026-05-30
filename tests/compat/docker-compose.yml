@@ -1,0 +1,98 @@
+# Compatibility test stack: pins the dockerd version the agent talks to.
+#
+#   dind   -> runs the chosen dockerd version, exposes its unix socket on a
+#             shared volume at /var/run/docker.sock
+#   agent  -> the netbox-docker-agent image, with that same volume mounted at
+#             /var/run, so its hardcoded /var/run/docker.sock points at dind
+#   tester -> hurl, runs the existing suite against the agent
+#
+# Driven by run.sh; set DOCKER_VERSION to pick the dockerd version.
+name: nda-compat
+
+services:
+  dind:
+    image: docker:${DOCKER_VERSION:?set DOCKER_VERSION (e.g. 29.5.2)}-dind
+    privileged: true
+    environment:
+      # Empty cert dir disables TLS, so dockerd serves a plain unix socket.
+      DOCKER_TLS_CERTDIR: ""
+    volumes:
+      - docker-run:/var/run
+    healthcheck:
+      test: ["CMD", "docker", "version"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
+
+  # Stand-in for netbox: records the callbacks the agent makes after write ops
+  # (catch-all returns empty results so flows that read netbox first don't choke).
+  netbox:
+    image: wiremock/wiremock:3.9.1
+    command: ["--port", "8080", "--disable-banner"]
+    volumes:
+      - ./fixtures/wiremock/mappings:/home/wiremock/mappings:ro
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/__admin/health"]
+      interval: 3s
+      timeout: 5s
+      retries: 20
+      start_period: 3s
+
+  agent:
+    build:
+      context: ../..
+    image: saashup/netbox-docker-agent:compat
+    # The image runs as the unprivileged node-red user, but the dind socket is
+    # owned by root. Override to root for tests so curl can reach the socket.
+    user: root
+    depends_on:
+      dind:
+        condition: service_healthy
+      netbox:
+        condition: service_healthy
+    volumes:
+      # Shares dind's /var/run, so /var/run/docker.sock is the dind daemon.
+      - docker-run:/var/run
+      # Seed (read-only) the netbox config; the entrypoint copies it to a
+      # writable /data/config.js so the agent can rewrite it (it persists
+      # config after netbox interactions; a :ro mount there would EROFS).
+      - ./fixtures/config.netbox.js:/seed/config.js:ro
+    entrypoint: ["sh", "-c", "cp /seed/config.js /data/config.js && exec ./entrypoint.sh"]
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "-u", "admin:saashup", "http://localhost:1880/"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  # Runs the hurl suite. run.sh overrides the command to inject the per-version
+  # docker_version variable; the default below mirrors it for a manual
+  # `docker compose run --rm tester`.
+  tester:
+    image: ghcr.io/orange-opensource/hurl:latest
+    profiles: ["test"]
+    depends_on:
+      agent:
+        condition: service_healthy
+      netbox:
+        condition: service_healthy
+    volumes:
+      - ../hurl:/tests:ro
+    entrypoint: ["hurl"]
+    command:
+      - "--test"
+      - "--color"
+      - "--variable"
+      - "host=http://agent:1880"
+      - "--variable"
+      - "netbox=http://netbox:8080"
+      - "-u"
+      - "admin:saashup"
+      - "/tests/tests.hurl"
+      - "/tests/read.hurl"
+      - "/tests/lifecycle.hurl"
+      - "/tests/netbox.hurl"
+
+volumes:
+  docker-run:
