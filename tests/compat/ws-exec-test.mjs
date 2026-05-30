@@ -8,10 +8,9 @@
 // Designed to run INSIDE the agent container (node + the lib are present there):
 //   docker compose exec -T agent node --input-type=module - < ws-exec-test.mjs
 //
-// Self-contained: creates a throwaway nginx:alpine container, runs `echo` over
-// the ws exec channel, asserts the output, and cleans up. Requires nginx:alpine
-// to already be present in the daemon (the hurl lifecycle test pulls it first;
-// run.sh also guards by pulling it).
+// Self-contained: pulls nginx:alpine through the agent, creates a throwaway
+// container from it, runs `echo` over the ws exec channel, asserts the output,
+// and cleans up.
 //
 // Env: BASE_URL (default http://localhost:1880), WS_USER, WS_PASS.
 
@@ -75,6 +74,19 @@ async function cleanup() {
 
 async function main() {
   await cleanup();
+
+  // Pull the image through the agent and wait until it lands in the daemon.
+  await api("POST", "/api/engine/images", {
+    data: { id: 7, name: "nginx", version: "alpine", size: 0, ImageID: null },
+  });
+  let pulled = false;
+  for (let i = 0; i < 90 && !pulled; i++) {
+    await sleep(2000);
+    const res = await api("GET", "/api/images");
+    const imgs = JSON.parse(res.body);
+    pulled = Array.isArray(imgs) && imgs.some((im) => (im.RepoTags || []).includes("nginx:alpine"));
+  }
+  if (!pulled) throw new Error("nginx:alpine was not pulled");
 
   // Create + start a throwaway container.
   await api("POST", "/api/engine/containers", {

@@ -11,7 +11,8 @@
 # Image: nginx:alpine (small, and stays running so logs/stats/exec are valid).
 
 # === 1. Pull the image through the agent ==================================
-# size<=0 AND ImageID=null is the "not yet pulled" signal the pull path keys on.
+# Request a pull of nginx:alpine. size:0 + ImageID:null are the field values
+# that make the agent's "should we pull?" condition true, so it pulls.
 POST {{host}}/api/engine/images
 ```json
 { "data": { "id": 1, "name": "nginx", "version": "alpine", "size": 0, "ImageID": null } }
@@ -79,17 +80,17 @@ HTTP 200
 [Asserts]
 jsonpath "$" exists
 
-# === 9. Exec a command (synchronous) ======================================
-# The endpoint runs exec-create + exec-start against the daemon and returns a
-# {stdout} envelope. We assert the round-trip works; the agent's stream reader
-# returns an empty body for short commands, so output content is not asserted.
+# === 9. Exec a command and read its output (synchronous) ==================
+# The endpoint builds the exec from `cmd`, runs it against the daemon, and
+# returns the output in a {stdout} envelope (carrying Docker's stream-
+# multiplexing header bytes), so we assert the output contains our marker.
 PUT {{host}}/api/engine/containers/compat-lifecycle/exec
 ```json
-{ "AttachStdout": true, "AttachStderr": true, "Cmd": ["echo", "hello-compat"] }
+{ "cmd": ["echo", "hello-compat"] }
 ```
 HTTP 200
 [Asserts]
-jsonpath "$.stdout" exists
+jsonpath "$.stdout" contains "hello-compat"
 
 # === 10. Stop it ==========================================================
 PUT {{host}}/api/engine/containers

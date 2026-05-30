@@ -84,9 +84,7 @@ for v in "${versions[@]}"; do
   hurl "${HURL_MAIN[@]}" || { echo "!!! hurl suite failed for $v"; step_fail=1; }
 
   # --- 2. websocket exec (F): not expressible in hurl -----------------------
-  # Belt-and-braces: make sure the image the ws test uses is present (the hurl
-  # lifecycle test pulls it via the agent; guard in case that step changes).
-  "${COMPOSE[@]}" exec -T dind docker pull nginx:alpine >/dev/null 2>&1 || true
+  # Self-contained: it pulls nginx:alpine through the agent itself.
   "${COMPOSE[@]}" exec -T agent node --input-type=module - < ws-exec-test.mjs \
     || { echo "!!! websocket-exec test failed for $v"; step_fail=1; }
 

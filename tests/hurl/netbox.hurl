@@ -24,32 +24,40 @@ POST {{host}}/api/engine/containers
 ```
 HTTP 202
 
-# === The agent must PATCH the container back to netbox =====================
-# Poll the mock's journal until the callback (carrying our container) arrives.
+# === The agent must PATCH the container back to netbox, with correct content
+# Poll the mock's journal until a PATCH whose body carries our container has
+# arrived, matched on structured fields (not substrings): the container name,
+# its state, and the real ImageID the agent read from the daemon.
 POST {{netbox}}/__admin/requests/count
 [Options]
 retry: 30
 retry-interval: 1000
 ```json
-{ "method": "PATCH", "urlPath": "/api/plugins/docker/containers/", "bodyPatterns": [{ "contains": "compat-netbox-cb" }] }
+{
+  "method": "PATCH",
+  "urlPath": "/api/plugins/docker/containers/",
+  "bodyPatterns": [
+    { "matchesJsonPath": "$[?(@.name == 'compat-netbox-cb')]" },
+    { "matchesJsonPath": "$[?(@.state == 'created')]" },
+    { "matchesJsonPath": "$[?(@.image.ImageID =~ /sha256:.*/)]" }
+  ]
+}
 ```
 HTTP 200
 [Asserts]
 jsonpath "$.count" >= 1
 
-# === ...and the PATCH must carry the real ImageID read from the daemon ====
+# === ...and a success journal entry must be recorded for our container ====
 POST {{netbox}}/__admin/requests/count
 ```json
-{ "method": "PATCH", "urlPath": "/api/plugins/docker/containers/", "bodyPatterns": [{ "contains": "\"ImageID\":\"sha256:" }] }
-```
-HTTP 200
-[Asserts]
-jsonpath "$.count" >= 1
-
-# === ...and a success journal entry must be recorded ======================
-POST {{netbox}}/__admin/requests/count
-```json
-{ "method": "POST", "urlPath": "/api/extras/journal-entries/", "bodyPatterns": [{ "contains": "container created" }] }
+{
+  "method": "POST",
+  "urlPath": "/api/extras/journal-entries/",
+  "bodyPatterns": [
+    { "matchesJsonPath": "$[?(@.assigned_object_id == 4242)]" },
+    { "matchesJsonPath": "$[?(@.kind == 'success')]" }
+  ]
+}
 ```
 HTTP 200
 [Asserts]
