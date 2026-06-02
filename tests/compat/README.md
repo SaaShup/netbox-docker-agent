@@ -37,7 +37,11 @@ For each version `run.sh` runs three things against the standing stack:
    - `lifecycle.hurl` — a real container lifecycle against the daemon:
      pull -> create -> start -> logs -> stats -> exec -> stop -> delete,
      polling the read endpoints for each async side effect.
+   - `container-ops.hurl` — the remaining container operations beyond
+     start/stop: kill, restart, rename, asserting each state transition.
    - `volumes.hurl` — a real volume lifecycle: create -> verify -> delete.
+   - `networks.hurl` — a real network lifecycle: create -> verify -> delete
+     (the network create path is gated on state "creating").
    - `images.hurl` — a real image pull -> verify -> remove.
    - `metrics.hurl` — asserts the Prometheus `/metrics` content (the
      daemon-connectivity gauge and the netbox error counter), not just that

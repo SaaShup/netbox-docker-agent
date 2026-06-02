@@ -27,7 +27,9 @@ HURL_MAIN=(
   /tests/read.hurl
   /tests/version.hurl
   /tests/lifecycle.hurl
+  /tests/container-ops.hurl
   /tests/volumes.hurl
+  /tests/networks.hurl
   /tests/images.hurl
   /tests/metrics.hurl
   /tests/errors.hurl
