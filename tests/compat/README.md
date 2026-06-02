@@ -37,6 +37,13 @@ For each version `run.sh` runs three things against the standing stack:
    - `lifecycle.hurl` — a real container lifecycle against the daemon:
      pull -> create -> start -> logs -> stats -> exec -> stop -> delete,
      polling the read endpoints for each async side effect.
+   - `volumes.hurl` — a real volume lifecycle: create -> verify -> delete.
+   - `images.hurl` — a real image pull -> verify -> remove.
+   - `metrics.hurl` — asserts the Prometheus `/metrics` content (the
+     daemon-connectivity gauge and the netbox error counter), not just that
+     it is a string.
+   - `errors.hurl` — negative paths: a bad-credentials request is rejected
+     (401), and an unknown resource type is handled gracefully.
 2. **The websocket-exec test** ([ws-exec-test.mjs](ws-exec-test.mjs)) — drives
    the interactive `/ws` exec channel using the agent's own bundled client lib
    (can't be expressed in hurl). Runs inside the agent container.

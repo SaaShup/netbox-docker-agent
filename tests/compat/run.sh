@@ -27,6 +27,10 @@ HURL_MAIN=(
   /tests/read.hurl
   /tests/version.hurl
   /tests/lifecycle.hurl
+  /tests/volumes.hurl
+  /tests/images.hurl
+  /tests/metrics.hurl
+  /tests/errors.hurl
 )
 # Agent->netbox contract: run in isolation (see below).
 HURL_NETBOX=(/tests/netbox.hurl)
