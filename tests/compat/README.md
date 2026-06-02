@@ -37,13 +37,28 @@ For each version `run.sh` runs three things against the standing stack:
    - `lifecycle.hurl` — a real container lifecycle against the daemon:
      pull -> create -> start -> logs -> stats -> exec -> stop -> delete,
      polling the read endpoints for each async side effect.
+   - `container-ops.hurl` — the remaining container operations beyond
+     start/stop: kill, restart, rename, asserting each state transition.
+   - `volumes.hurl` — a real volume lifecycle: create -> verify -> delete.
+   - `networks.hurl` — a real network lifecycle: create -> verify -> delete
+     (the network create path is gated on state "creating").
+   - `images.hurl` — a real image pull -> verify -> remove.
+   - `metrics.hurl` — asserts the Prometheus `/metrics` content (the
+     daemon-connectivity gauge and the netbox error counter), not just that
+     it is a string.
+   - `errors.hurl` — negative paths: a bad-credentials request is rejected
+     (401), and an unknown resource type is handled gracefully.
 2. **The websocket-exec test** ([ws-exec-test.mjs](ws-exec-test.mjs)) — drives
    the interactive `/ws` exec channel using the agent's own bundled client lib
    (can't be expressed in hurl). Runs inside the agent container.
-3. **The netbox-contract test** (`netbox.hurl`) — asserts the agent actually
-   sends the expected callbacks to netbox after a write, by inspecting the
-   wiremock request journal. Run against a freshly restarted agent so the
-   agent's own config-persistence during the suite can't interfere.
+3. **The netbox-facing tests** (`netbox.hurl`, `events.hurl`) — run against a
+   freshly restarted agent so the agent's own config-persistence during the
+   suite can't interfere:
+   - `netbox.hurl` asserts the agent sends the expected callbacks to netbox
+     after a write, by inspecting the wiremock request journal.
+   - `events.hurl` pauses a container directly on the daemon (over its TCP
+     endpoint, out-of-band) and asserts the agent's dockerd event watcher
+     syncs the new state to netbox.
 
 ## Supported versions
 

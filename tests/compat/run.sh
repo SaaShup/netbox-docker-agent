@@ -27,9 +27,16 @@ HURL_MAIN=(
   /tests/read.hurl
   /tests/version.hurl
   /tests/lifecycle.hurl
+  /tests/container-ops.hurl
+  /tests/volumes.hurl
+  /tests/networks.hurl
+  /tests/images.hurl
+  /tests/metrics.hurl
+  /tests/errors.hurl
 )
-# Agent->netbox contract: run in isolation (see below).
-HURL_NETBOX=(/tests/netbox.hurl)
+# Agent->netbox tests: run in isolation (see below) — the contract callback
+# and the dockerd event watcher, both of which depend on a clean netbox config.
+HURL_NETBOX=(/tests/netbox.hurl /tests/events.hurl)
 
 if [ "$#" -gt 0 ]; then
   versions=("$@")
@@ -60,6 +67,7 @@ hurl() { # remaining args: hurl files
     --test --color \
     --variable host=http://agent:1880 \
     --variable netbox=http://netbox:8080 \
+    --variable dind=http://dind:2375 \
     --variable docker_version="$DOCKER_VERSION" \
     -u admin:saashup "$@"
 }

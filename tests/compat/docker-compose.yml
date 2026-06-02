@@ -87,12 +87,21 @@ services:
       - "host=http://agent:1880"
       - "--variable"
       - "netbox=http://netbox:8080"
+      - "--variable"
+      - "dind=http://dind:2375"
       - "-u"
       - "admin:saashup"
       - "/tests/tests.hurl"
       - "/tests/read.hurl"
       - "/tests/lifecycle.hurl"
+      - "/tests/container-ops.hurl"
+      - "/tests/volumes.hurl"
+      - "/tests/networks.hurl"
+      - "/tests/images.hurl"
+      - "/tests/metrics.hurl"
+      - "/tests/errors.hurl"
       - "/tests/netbox.hurl"
+      - "/tests/events.hurl"
 
 volumes:
   docker-run:
