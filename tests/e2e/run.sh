@@ -18,6 +18,7 @@ IMAGE="mcr.microsoft.com/playwright:v1.49.1-noble"
 docker run --rm --network "$NETWORK" \
   -v "$PWD:/e2e" -w /e2e \
   -e BASE_URL="$BASE_URL" \
+  -e DIND_URL="${DIND_URL:-http://dind:2375}" \
   -e CI=1 \
   "$IMAGE" \
   sh -c "npm install --no-audit --no-fund --silent && npx playwright test"

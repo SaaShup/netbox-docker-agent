@@ -21,6 +21,26 @@ export async function pullNginx(request: APIRequestContext): Promise<void> {
     .toBe(true);
 }
 
+export async function pullImage(request: APIRequestContext, name: string, version: string): Promise<void> {
+  await request.post("/api/engine/images", {
+    data: { data: { id: 1, name, version, size: 0, ImageID: null } },
+  });
+  await expect
+    .poll(
+      async () => {
+        const imgs = await (await request.get("/api/images")).json();
+        return imgs.some((i: any) => (i.RepoTags || []).includes(`${name}:${version}`));
+      },
+      { timeout: 120_000, intervals: [2000] }
+    )
+    .toBe(true);
+}
+
+export async function hasImage(request: APIRequestContext, repoTag: string): Promise<boolean> {
+  const imgs = await (await request.get("/api/images")).json();
+  return imgs.some((i: any) => (i.RepoTags || []).includes(repoTag));
+}
+
 export async function listContainers(request: APIRequestContext): Promise<any[]> {
   return (await request.get("/api/containers")).json();
 }
@@ -55,8 +75,15 @@ export async function startContainer(request: APIRequestContext, name: string): 
   await waitForState(request, name, "running");
 }
 
+const DIND_URL = process.env.DIND_URL || "http://dind:2375";
+
 export async function removeContainer(request: APIRequestContext, name: string): Promise<void> {
-  await request.delete("/api/engine/containers", {
-    data: { data: { id: 1, ContainerID: name, name } },
-  });
+  // Best-effort cleanup: force-remove straight on the daemon so it works even
+  // for a running container (the agent's delete has no force), and never throw
+  // (a timed-out test may have disposed the context) so it can't mask failures.
+  try {
+    await request.delete(`${DIND_URL}/containers/${name}?force=true`);
+  } catch {
+    /* ignore */
+  }
 }

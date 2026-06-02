@@ -4,7 +4,9 @@ import { defineConfig } from "@playwright/test";
 // BASE_URL at the running agent (http://agent:1880 on the compose network).
 export default defineConfig({
   testDir: "./tests",
-  timeout: 60_000,
+  // Generous: tests seed real containers/images and drive a browser, so steps
+  // can be slow when the daemon is busy.
+  timeout: 90_000,
   expect: { timeout: 15_000 },
   fullyParallel: false,
   workers: 1,
