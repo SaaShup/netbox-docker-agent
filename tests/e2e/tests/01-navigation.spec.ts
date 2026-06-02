@@ -11,10 +11,10 @@ test.describe("navigation & load", () => {
     await page.goto("/");
     await expect(page).toHaveTitle(/Netbox Docker Agent/i);
 
-    // KNOWN ISSUE: ApexCharts intermittently throws this from inside its own
-    // create() while the system-usage chart is being drawn (the chart still
-    // renders). Tolerated here so the smoke check still flags any *new*
-    // uncaught errors. TODO: revisit the chart setup in public/index.html.
+    // KNOWN ISSUE (#249): ApexCharts intermittently throws this from inside its
+    // own create() while the system-usage chart is being drawn (the chart still
+    // renders). Tolerated here so the smoke check still flags any *new* uncaught
+    // errors. Remove this once #249 is fixed in public/index.html.
     const KNOWN = [/Cannot read properties of undefined \(reading 'type'\)/];
     const unexpected = errors.filter((e) => !KNOWN.some((re) => re.test(e)));
     expect(unexpected, "no unexpected JS errors on load").toEqual([]);
