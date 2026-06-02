@@ -40,3 +40,38 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run test suite
         run: tests/compat/run.sh "${{ matrix.docker_version }}"
+
+  # Playwright end-to-end tests for the web UI. The UI talks to the agent API,
+  # so it is version-agnostic — run it once, against the first pinned version.
+  ui:
+    name: Web UI (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start agent stack
+        working-directory: tests/compat
+        run: |
+          version=$(grep -vE '^[[:space:]]*(#|$)' versions.txt | head -1)
+          echo "Using dockerd $version"
+          DOCKER_VERSION="$version" docker compose -p nda-compat up -d --build dind netbox agent
+      - name: Wait for the agent to be healthy
+        run: |
+          for _ in $(seq 1 60); do
+            [ "$(docker inspect -f '{{.State.Health.Status}}' nda-compat-agent-1 2>/dev/null)" = healthy ] && exit 0
+            sleep 2
+          done
+          echo "agent did not become healthy"; docker logs nda-compat-agent-1 || true; exit 1
+      - name: Run Playwright UI tests
+        working-directory: tests/e2e
+        run: NETWORK=nda-compat_default BASE_URL=http://agent:1880 ./run.sh
+      - name: Upload Playwright artifacts on failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: tests/e2e/test-results/
+          if-no-files-found: ignore
+      - name: Tear down
+        if: ${{ always() }}
+        working-directory: tests/compat
+        run: docker compose -p nda-compat down -v --remove-orphans || true
