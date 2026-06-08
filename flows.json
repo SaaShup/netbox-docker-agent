@@ -8,17 +8,17 @@
         "env": []
     },
     {
-        "id": "a827fd671d6a227e",
+        "id": "3ea1a4b04d852f38",
         "type": "tab",
-        "label": "API - GET",
+        "label": "API - POST",
         "disabled": false,
         "info": "",
         "env": []
     },
     {
-        "id": "3ea1a4b04d852f38",
+        "id": "a827fd671d6a227e",
         "type": "tab",
-        "label": "API - POST",
+        "label": "API - GET",
         "disabled": false,
         "info": "",
         "env": []
@@ -309,14 +309,17 @@
         "winHide": false,
         "oldrc": false,
         "name": "Events",
-        "x": 510,
+        "x": 490,
         "y": 920,
         "wires": [
             [
-                "7c210c45ea82059e"
+                "7c210c45ea82059e",
+                "7a8244b04415816f"
             ],
             [],
-            []
+            [
+                "e7d00addfa2ccf16"
+            ]
         ]
     },
     {
@@ -1359,7 +1362,8 @@
         "y": 880,
         "wires": [
             [
-                "54b665fab6649cfe"
+                "54b665fab6649cfe",
+                "c0f0f8389fad7797"
             ]
         ]
     },
@@ -1438,7 +1442,8 @@
         "y": 940,
         "wires": [
             [
-                "d8839cfa921a2951"
+                "d8839cfa921a2951",
+                "ec9bdd1b913b15b9"
             ]
         ]
     },
@@ -1463,7 +1468,8 @@
         "y": 940,
         "wires": [
             [
-                "414653028bcbc955"
+                "414653028bcbc955",
+                "d039752f81629f79"
             ]
         ]
     },
@@ -1640,6 +1646,1891 @@
         "wires": [
             [
                 "b3814c680815a25b"
+            ]
+        ]
+    },
+    {
+        "id": "e7d00addfa2ccf16",
+        "type": "delay",
+        "z": "216db6efc0df9bc0",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 460,
+        "y": 1020,
+        "wires": [
+            [
+                "b3814c680815a25b"
+            ]
+        ]
+    },
+    {
+        "id": "60762f95ac69a674",
+        "type": "link in",
+        "z": "216db6efc0df9bc0",
+        "name": "link in 1",
+        "links": [
+            "c55b7692cfe65921"
+        ],
+        "x": 185,
+        "y": 1000,
+        "wires": [
+            [
+                "46148a6db99e8a8e"
+            ]
+        ]
+    },
+    {
+        "id": "ec9bdd1b913b15b9",
+        "type": "debug",
+        "z": "216db6efc0df9bc0",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2680,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "d039752f81629f79",
+        "type": "debug",
+        "z": "216db6efc0df9bc0",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2380,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "7a8244b04415816f",
+        "type": "debug",
+        "z": "216db6efc0df9bc0",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "c0f0f8389fad7797",
+        "type": "debug",
+        "z": "216db6efc0df9bc0",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2720,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "e974d3bd502f614f",
+        "type": "http in",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "url": "/api/engine/:type",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 260,
+        "wires": [
+            [
+                "ea738534a1b15332",
+                "3508df86bd32474e"
+            ]
+        ]
+    },
+    {
+        "id": "5db8c0db8473ea8e",
+        "type": "switch",
+        "z": "3ea1a4b04d852f38",
+        "name": "route by :type",
+        "property": "req.params.type",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "containers",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "volumes",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "networks",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "images",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "endpoint",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 5,
+        "x": 360,
+        "y": 320,
+        "wires": [
+            [
+                "163b02482bbd751b"
+            ],
+            [
+                "060ac7e41c2e9d20"
+            ],
+            [
+                "1be042b22cf71230"
+            ],
+            [
+                "dfd9416e4f31ef88"
+            ],
+            [
+                "3584215a923021af"
+            ]
+        ]
+    },
+    {
+        "id": "12cecd82c1d9f476",
+        "type": "exec",
+        "z": "3ea1a4b04d852f38",
+        "command": "curl -X POST --unix-socket /var/run/docker.sock",
+        "addpay": "post",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "docker api request: create container",
+        "x": 1190,
+        "y": 140,
+        "wires": [
+            [
+                "7b6bbc39f8d6a88e"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "0e4b8086449ddd56",
+        "type": "exec",
+        "z": "3ea1a4b04d852f38",
+        "command": "curl -X POST --unix-socket /var/run/docker.sock",
+        "addpay": "post",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "docker api request: create network",
+        "x": 1140,
+        "y": 380,
+        "wires": [
+            [
+                "fe7f9567d081d8a7"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "b49c4832fc35827a",
+        "type": "exec",
+        "z": "3ea1a4b04d852f38",
+        "command": "curl -s -X POST --unix-socket /var/run/docker.sock",
+        "addpay": "post",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "docker api request: pull image",
+        "x": 1130,
+        "y": 500,
+        "wires": [
+            [
+                "0b12e4e0c5591d31"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "ea738534a1b15332",
+        "type": "http response",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "statusCode": "202",
+        "headers": {},
+        "x": 360,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "7d0f6463ecfeeb50",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "prepare docker api request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "registries",
+                "pt": "msg",
+                "to": "payload.data.registry",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "input",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "'\\\"http://localhost/images/create?fromImage=' & msg.input.data.name  & '&tag=' & msg.input.data.version & '\\\"' & \" -H 'X-Registry-Auth: \" & $base64encode($string(msg.registries)) & \"'\"",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.image\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"info\",\t   \"comments\": \"pulling image\"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 840,
+        "y": 500,
+        "wires": [
+            [
+                "b49c4832fc35827a",
+                "cedc032cfa072c59"
+            ]
+        ]
+    },
+    {
+        "id": "dfd9416e4f31ef88",
+        "type": "switch",
+        "z": "3ea1a4b04d852f38",
+        "name": "should we pull?",
+        "property": "(\t    (msg.payload.data.size <= 0 \t    and msg.payload.data.ImageID = null)\t    or msg.payload.data.force = true\t)\t",
+        "propertyType": "jsonata",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 600,
+        "y": 500,
+        "wires": [
+            [
+                "7d0f6463ecfeeb50"
+            ]
+        ]
+    },
+    {
+        "id": "2eb2de8f9ca00a2b",
+        "type": "json",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 2390,
+        "y": 520,
+        "wires": [
+            [
+                "9c92ef06fefd5f00"
+            ]
+        ]
+    },
+    {
+        "id": "cc3c1cea0eb84ca0",
+        "type": "exec",
+        "z": "3ea1a4b04d852f38",
+        "command": "curl -X GET --unix-socket /var/run/docker.sock ",
+        "addpay": "post",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "docker api request: inspect image",
+        "x": 2160,
+        "y": 520,
+        "wires": [
+            [
+                "2eb2de8f9ca00a2b"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "3a845c367b89a50e",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "prepare docker api request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "'\\\"http://localhost/images/' & msg.input.data.name  & ':' & msg.input.data.version & '/json\\\"'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.image\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"pulled image\"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1860,
+        "y": 520,
+        "wires": [
+            [
+                "cc3c1cea0eb84ca0"
+            ]
+        ]
+    },
+    {
+        "id": "d375e2981f9fa4fb",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "prepare netbox request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/images/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "PATCH",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "result",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "[{\t   \"id\": msg.input.data.id,\t   \"size\": $round(msg.payload.Size / 1024 / 1024),\t   \"ImageID\":  msg.payload.Id,\t   \"Digest\": $split(msg.result[0].RepoDigests[0], \"@\")[-1]\t}]",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2810,
+        "y": 580,
+        "wires": [
+            [
+                "231e0a10bb5c0cac"
+            ]
+        ]
+    },
+    {
+        "id": "231e0a10bb5c0cac",
+        "type": "http request",
+        "z": "3ea1a4b04d852f38",
+        "name": "netbox request: update image",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 3090,
+        "y": 580,
+        "wires": [
+            [
+                "829323373ce00e9e",
+                "34ea063b4d53a0a0",
+                "7599bd4551c41d60"
+            ]
+        ]
+    },
+    {
+        "id": "98985cb45ca68974",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "prepare docker api request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "input",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "'\\\"http://localhost/networks/create\\\" -H \\\"content-type: application/json\\\" -d { \\\"Name\\\":\\\"' & msg.input.data.name  & '\\\",\\\"Driver\\\":\\\"' & msg.input.data.driver & '\\\" }'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t   \"Name\": msg.input.data.name,\t   \"Driver\": msg.input.data.driver\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"http://localhost/networks/create -H 'content-type: application/json' -d '\" & $string(msg.payload) & \"'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 860,
+        "y": 380,
+        "wires": [
+            [
+                "0e4b8086449ddd56"
+            ]
+        ]
+    },
+    {
+        "id": "060ac7e41c2e9d20",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "prepare docker api request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "input",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "dockerDriver",
+                "pt": "msg",
+                "to": "dockerinfo.Driver",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t   \"Name\": msg.input.data.name,\t   \"Driver\": msg.input.data.driver\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.DriverOpts",
+                "pt": "msg",
+                "to": "msg.dockerDriver != \"overlay2\" and msg.input.data.max_size != null and $number(msg.input.data.max_size) > 0 ? \t    {\t   \"o\": \"size=\" & msg.input.data.max_size & \"m\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"http://localhost/volumes/create -H 'content-type: application/json' -d '\" & $string(msg.payload) & \"'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 260,
+        "wires": [
+            [
+                "40036eabb47532d6"
+            ]
+        ]
+    },
+    {
+        "id": "ecc3d13695524e12",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "prepare docker api request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "input",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t    \"Image\": msg.input.data.image.name & \":\" & msg.input.data.image.version,\t    \"Hostname\": msg.input.data.hostname,\t    \"HostConfig\": {\t        \"CapAdd\": msg.input.data.cap_add,\t        \"CapDrop\": msg.input.data.cap_drop\t    }\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"http://localhost/containers/create?name=\" & $string(msg.input.data.name) & \" -H 'content-type: application/json' -d '\" & $string(msg.payload) & \"'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 880,
+        "y": 140,
+        "wires": [
+            [
+                "12cecd82c1d9f476"
+            ]
+        ]
+    },
+    {
+        "id": "163b02482bbd751b",
+        "type": "switch",
+        "z": "3ea1a4b04d852f38",
+        "name": "should we create it?",
+        "property": "(\t    $boolean(msg.payload.data.name)\t    and msg.payload.data.state = \"none\"\t)",
+        "propertyType": "jsonata",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 620,
+        "y": 140,
+        "wires": [
+            [
+                "ecc3d13695524e12"
+            ]
+        ]
+    },
+    {
+        "id": "836f86ac79995686",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "prepare netbox request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "PATCH",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/containers/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "result",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"state\": \"created\",\t    \"operation\": \"none\",\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null or $length($v[0].HostPort) = 0 ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : msg.result.Config.ExposedPorts ? [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort and $length($v.PublicPort) > 0 ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                }\t            )\t          ] : [],\t   \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                {\t                    \"var_name\": $substringBefore($v, \"=\"),\t                    \"value\": $substringAfter($v, \"=\")\t                }\t            }\t        )\t    ],\t   \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t   \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Destination,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ],\t    \"log_driver\": msg.result.HostConfig.LogConfig.Type,\t    \"log_driver_options\": [$each(msg.result.HostConfig.LogConfig.Config, function($v, $k) {\t        {\t            \"option_name\": $k,\t            \"value\": $v\t        }\t    })],\t    \"sysctls\": [\t        $each(\t            msg.result.HostConfig.Sysctls,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ]\t}]",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"container created\"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2350,
+        "y": 140,
+        "wires": [
+            [
+                "a363e235a4fda0b0",
+                "4b0b315e5dbc14f1"
+            ]
+        ]
+    },
+    {
+        "id": "a363e235a4fda0b0",
+        "type": "http request",
+        "z": "3ea1a4b04d852f38",
+        "name": "netbox request: update container",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 2640,
+        "y": 140,
+        "wires": [
+            [
+                "14ee8c9739857e6c"
+            ]
+        ]
+    },
+    {
+        "id": "7b6bbc39f8d6a88e",
+        "type": "json",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 1410,
+        "y": 140,
+        "wires": [
+            [
+                "8689e16407e06796"
+            ]
+        ]
+    },
+    {
+        "id": "23ca2c7db549468c",
+        "type": "exec",
+        "z": "3ea1a4b04d852f38",
+        "command": "curl -X GET --unix-socket /var/run/docker.sock",
+        "addpay": "post",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "docker api request: inspect container",
+        "x": 1930,
+        "y": 140,
+        "wires": [
+            [
+                "2f564349b35d306d"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "8689e16407e06796",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "prepare docker api request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "result",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "post",
+                "pt": "msg",
+                "to": "\"http://localhost/containers/\" & $string(msg.result.Id) & \"/json -H 'content-type: application/json'\"",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1620,
+        "y": 140,
+        "wires": [
+            [
+                "23ca2c7db549468c"
+            ]
+        ]
+    },
+    {
+        "id": "2f564349b35d306d",
+        "type": "json",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 2150,
+        "y": 140,
+        "wires": [
+            [
+                "836f86ac79995686"
+            ]
+        ]
+    },
+    {
+        "id": "fe7f9567d081d8a7",
+        "type": "json",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 1350,
+        "y": 380,
+        "wires": [
+            [
+                "3032a954e533689f"
+            ]
+        ]
+    },
+    {
+        "id": "3032a954e533689f",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "prepare netbox request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "config",
+                "pt": "msg",
+                "to": "config",
+                "tot": "global"
+            },
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/networks/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "PATCH",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "result",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "[{\t   \"id\": msg.input.data.id,\t   \"NetworkID\":  msg.payload.Id,\t   \"state\": \"created\"\t}]",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1550,
+        "y": 380,
+        "wires": [
+            [
+                "01899c0865cdbdd7"
+            ]
+        ]
+    },
+    {
+        "id": "01899c0865cdbdd7",
+        "type": "http request",
+        "z": "3ea1a4b04d852f38",
+        "name": "netbox request: update network",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1830,
+        "y": 380,
+        "wires": [
+            [
+                "310b29964dbaaca6"
+            ]
+        ]
+    },
+    {
+        "id": "40036eabb47532d6",
+        "type": "exec",
+        "z": "3ea1a4b04d852f38",
+        "command": "curl -X POST --unix-socket /var/run/docker.sock",
+        "addpay": "post",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "docker api request: create volume",
+        "x": 960,
+        "y": 260,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "1be042b22cf71230",
+        "type": "switch",
+        "z": "3ea1a4b04d852f38",
+        "name": "should we create it?",
+        "property": "payload.data.state",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "creating",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 620,
+        "y": 380,
+        "wires": [
+            [
+                "98985cb45ca68974"
+            ]
+        ]
+    },
+    {
+        "id": "14ee8c9739857e6c",
+        "type": "link out",
+        "z": "3ea1a4b04d852f38",
+        "name": "link out 8",
+        "mode": "link",
+        "links": [
+            "36f439d2ba0ac71a"
+        ],
+        "x": 2825,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "310b29964dbaaca6",
+        "type": "link out",
+        "z": "3ea1a4b04d852f38",
+        "name": "link out 9",
+        "mode": "link",
+        "links": [
+            "36f439d2ba0ac71a"
+        ],
+        "x": 2005,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "829323373ce00e9e",
+        "type": "link out",
+        "z": "3ea1a4b04d852f38",
+        "name": "link out 10",
+        "mode": "link",
+        "links": [
+            "36f439d2ba0ac71a"
+        ],
+        "x": 3285,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "cedc032cfa072c59",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "x": 1070,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "84d8b152e92556ef",
+        "type": "switch",
+        "z": "3ea1a4b04d852f38",
+        "name": "did it work?",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "false"
+            },
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1630,
+        "y": 520,
+        "wires": [
+            [
+                "dce108611cd0c5ba"
+            ],
+            [
+                "3a845c367b89a50e"
+            ]
+        ]
+    },
+    {
+        "id": "dce108611cd0c5ba",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "set error message",
+        "rules": [
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.image\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"danger\",\t   \"comments\": \"not pulled image\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "journal.comments",
+                "pt": "msg",
+                "to": "$string($map(\t            $split(resultPull, \"\\n\"),\t            function($v) {\t                $v != \"\" ? $eval($v)\t            }\t        ))",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1830,
+        "y": 460,
+        "wires": [
+            [
+                "4d5d170a3b67d702"
+            ]
+        ]
+    },
+    {
+        "id": "4b0b315e5dbc14f1",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "x": 2570,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "5c79a22a8f9ad79f",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "find image digest in output",
+        "rules": [
+            {
+                "t": "set",
+                "p": "resultPull",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$count(\t    $filter(\t        $map(\t            $split(payload, \"\\n\"),\t            function($v) {\t                $v != \"\" ? $eval($v)\t            }\t        ),\t        function($v) {\t            $match(\t                $string($v.status),\t                /^Digest:/\t            )\t        }\t    )\t) > 0",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1570,
+        "y": 460,
+        "wires": [
+            [
+                "84d8b152e92556ef"
+            ]
+        ]
+    },
+    {
+        "id": "93e4927e83ed7795",
+        "type": "comment",
+        "z": "3ea1a4b04d852f38",
+        "name": "Images",
+        "info": "",
+        "x": 570,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "f3223f1c59aae2b0",
+        "type": "comment",
+        "z": "3ea1a4b04d852f38",
+        "name": "Networks",
+        "info": "",
+        "x": 580,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "a63cdf11f5086bd8",
+        "type": "comment",
+        "z": "3ea1a4b04d852f38",
+        "name": "Volumes",
+        "info": "",
+        "x": 580,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "6a5da2a0bc5f3b01",
+        "type": "comment",
+        "z": "3ea1a4b04d852f38",
+        "name": "Containers",
+        "info": "",
+        "x": 580,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "4d5d170a3b67d702",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "x": 2010,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "3584215a923021af",
+        "type": "switch",
+        "z": "3ea1a4b04d852f38",
+        "name": "should we refresh?",
+        "property": "(\t    msg.payload.data.operation = \"refresh\"\t    and msg.payload.data.state = \"refreshing\"\t)\t",
+        "propertyType": "jsonata",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 610,
+        "y": 660,
+        "wires": [
+            [
+                "253ff620fcf27838"
+            ]
+        ]
+    },
+    {
+        "id": "955a79aa03666065",
+        "type": "comment",
+        "z": "3ea1a4b04d852f38",
+        "name": "Hosts",
+        "info": "",
+        "x": 570,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "253ff620fcf27838",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "event",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg",
+                "dc": true
+            },
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "$globalContext(\"config\").netbox_url & \"/api/plugins/docker/containers/\"",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t   \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$count(msg.event.data.containers) > 0 ? msg.event.data.containers[].{\"id\": id} : []",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 840,
+        "y": 660,
+        "wires": [
+            [
+                "8608528812c1323a"
+            ]
+        ]
+    },
+    {
+        "id": "61421eadf150332d",
+        "type": "comment",
+        "z": "3ea1a4b04d852f38",
+        "name": "Delete Containers",
+        "info": "",
+        "x": 830,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "8608528812c1323a",
+        "type": "http request",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "method": "DELETE",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1050,
+        "y": 660,
+        "wires": [
+            [
+                "ade639ed2b7b63be"
+            ]
+        ]
+    },
+    {
+        "id": "40ef8d60a7da219e",
+        "type": "http request",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "method": "DELETE",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1470,
+        "y": 660,
+        "wires": [
+            [
+                "d3173782d1b51a58"
+            ]
+        ]
+    },
+    {
+        "id": "ade639ed2b7b63be",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "$globalContext(\"config\").netbox_url & \"/api/plugins/docker/images/\"",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t   \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$count(msg.event.data.images) > 0 ? msg.event.data.images[].{\"id\": id} : []",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1260,
+        "y": 660,
+        "wires": [
+            [
+                "40ef8d60a7da219e"
+            ]
+        ]
+    },
+    {
+        "id": "04f8498eacf96425",
+        "type": "comment",
+        "z": "3ea1a4b04d852f38",
+        "name": "Delete Images",
+        "info": "",
+        "x": 1230,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "755e723a449b9ee2",
+        "type": "http request",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "method": "DELETE",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1050,
+        "y": 760,
+        "wires": [
+            [
+                "15f257e9999a2b1a"
+            ]
+        ]
+    },
+    {
+        "id": "d3173782d1b51a58",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "$globalContext(\"config\").netbox_url & \"/api/plugins/docker/volumes/\"",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t   \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$count(msg.event.data.volumes) > 0 ? msg.event.data.volumes[].{\"id\": id} : []",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 840,
+        "y": 760,
+        "wires": [
+            [
+                "755e723a449b9ee2"
+            ]
+        ]
+    },
+    {
+        "id": "94f8ddb2615a789d",
+        "type": "comment",
+        "z": "3ea1a4b04d852f38",
+        "name": "Delete Volumes",
+        "info": "",
+        "x": 820,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "d9bb22467e819b00",
+        "type": "http request",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "method": "DELETE",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1470,
+        "y": 760,
+        "wires": [
+            [
+                "86e79ca6ba19c6d7",
+                "8c66ea0e871d7690"
+            ]
+        ]
+    },
+    {
+        "id": "15f257e9999a2b1a",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "$globalContext(\"config\").netbox_url & \"/api/plugins/docker/networks/\"",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t   \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$count(msg.event.data.networks) > 0 ? msg.event.data.networks[].{\"id\": id} : []",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1260,
+        "y": 760,
+        "wires": [
+            [
+                "d9bb22467e819b00"
+            ]
+        ]
+    },
+    {
+        "id": "23e75a4b1c409c83",
+        "type": "comment",
+        "z": "3ea1a4b04d852f38",
+        "name": "Delete Network",
+        "info": "",
+        "x": 1240,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "8c66ea0e871d7690",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": $globalContext(\"config\").id,\t   \"kind\": \"info\",\t   \"comments\": $string(\"agent refreshed\")\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 830,
+        "y": 840,
+        "wires": [
+            [
+                "208cf12955858ec0"
+            ]
+        ]
+    },
+    {
+        "id": "208cf12955858ec0",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "x": 1010,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "86e79ca6ba19c6d7",
+        "type": "link out",
+        "z": "3ea1a4b04d852f38",
+        "name": "After refresh",
+        "mode": "link",
+        "links": [
+            "000871bc55201301",
+            "279f02a6712c7399",
+            "4d752b3ed43f85c0",
+            "e4bc72db316a3ba0",
+            "fca744c188c37382"
+        ],
+        "x": 1595,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "34ea063b4d53a0a0",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "registries",
+                "pt": "global",
+                "to": "(\t    $registry := {\t        \"id\": msg.input.data.registry.id,\t        \"name\": msg.input.data.registry.name,\t        \"serveraddress\": msg.input.data.registry.serveraddress,\t        \"images\": [msg.input.data.display]\t    };\t    $globalContext(\"registries\")[id=$registry.id] ? $globalContext(\"registries\") ~> |$[id=$registry.id]|{\"images\":$distinct([$append(images, $registry.images[0])])}| : $append($globalContext(\"registries\"), $registry)\t)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 3330,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3508df86bd32474e",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "set rejectUnauthorized",
+        "rules": [
+            {
+                "t": "set",
+                "p": "rejectUnauthorized",
+                "pt": "msg",
+                "to": "$env(\"DISABLE_SSL_CHECK\") ? false : true",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 160,
+        "y": 320,
+        "wires": [
+            [
+                "5db8c0db8473ea8e"
+            ]
+        ]
+    },
+    {
+        "id": "9c92ef06fefd5f00",
+        "type": "switch",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "property": "msg.input.data.force = true and ($split(msg.payload.RepoDigests[0], \"@\")[-1] != msg.input.data.Digest or msg.payload.Id != msg.input.data.ImageID)",
+        "propertyType": "jsonata",
+        "rules": [
+            {
+                "t": "true"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 2550,
+        "y": 520,
+        "wires": [
+            [
+                "20fb85d25c7725c5"
+            ],
+            [
+                "d375e2981f9fa4fb"
+            ]
+        ]
+    },
+    {
+        "id": "7599bd4551c41d60",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "journal",
+                "pt": "msg",
+                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.image\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"pulled image\"\t}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 3890,
+        "y": 520,
+        "wires": [
+            [
+                "6dc394adcc5bd2e9"
+            ]
+        ]
+    },
+    {
+        "id": "6dc394adcc5bd2e9",
+        "type": "subflow:0455d311f0e53c09",
+        "z": "3ea1a4b04d852f38",
+        "name": "",
+        "x": 4090,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "20fb85d25c7725c5",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "prepare netbox request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "msg.config.netbox_url & '/api/plugins/docker/images/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "PATCH",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "result",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "(\t   [{\t      \"id\": msg.input.data.id,\t      \"version\": $substring($split(msg.input.data.ImageID, \":\")[-1], 0, 12)\t   }]\t)\t",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2790,
+        "y": 460,
+        "wires": [
+            [
+                "6aaf5213853617c2"
+            ]
+        ]
+    },
+    {
+        "id": "6aaf5213853617c2",
+        "type": "http request",
+        "z": "3ea1a4b04d852f38",
+        "name": "netbox request: update image",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 3070,
+        "y": 460,
+        "wires": [
+            [
+                "ebd5345b2ad339da"
+            ]
+        ]
+    },
+    {
+        "id": "ebd5345b2ad339da",
+        "type": "change",
+        "z": "3ea1a4b04d852f38",
+        "name": "prepare netbox request",
+        "rules": [
+            {
+                "t": "set",
+                "p": "url",
+                "pt": "msg",
+                "to": "$globalContext(\"config\").netbox_url & '/api/plugins/docker/images/'",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\t    \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\t    \"host\": $globalContext(\"config\").id,\t    \"name\": msg.input.data.name,\t    \"registry\": {\t        \"id\": msg.input.data.registry.id\t    },\t    \"version\": msg.input.data.version,\t    \"size\": $round(msg.result.Size / 1024 / 1024),\t    \"ImageID\": msg.result.Id,\t    \"Digest\": $split(msg.result.RepoDigests[0], \"@\")[-1]\t}",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "method",
+                "pt": "msg",
+                "to": "POST",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 3350,
+        "y": 460,
+        "wires": [
+            [
+                "bcaafd9689539646"
+            ]
+        ]
+    },
+    {
+        "id": "bcaafd9689539646",
+        "type": "http request",
+        "z": "3ea1a4b04d852f38",
+        "name": "netbox request: create images",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 3630,
+        "y": 460,
+        "wires": [
+            [
+                "7599bd4551c41d60"
+            ]
+        ]
+    },
+    {
+        "id": "0b12e4e0c5591d31",
+        "type": "switch",
+        "z": "3ea1a4b04d852f38",
+        "name": "was netbox webhook?",
+        "property": "config.netbox_url",
+        "propertyType": "global",
+        "rules": [
+            {
+                "t": "nempty"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1380,
+        "y": 520,
+        "wires": [
+            [
+                "5c79a22a8f9ad79f"
             ]
         ]
     },
@@ -1872,7 +3763,8 @@
         "y": 420,
         "wires": [
             [
-                "4f41f373f7947d21"
+                "4f41f373f7947d21",
+                "c55b7692cfe65921"
             ]
         ]
     },
@@ -4012,1780 +5904,17 @@
         ]
     },
     {
-        "id": "e974d3bd502f614f",
-        "type": "http in",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "url": "/api/engine/:type",
-        "method": "post",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 140,
-        "y": 260,
-        "wires": [
-            [
-                "ea738534a1b15332",
-                "3508df86bd32474e"
-            ]
-        ]
-    },
-    {
-        "id": "5db8c0db8473ea8e",
-        "type": "switch",
-        "z": "3ea1a4b04d852f38",
-        "name": "route by :type",
-        "property": "req.params.type",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "containers",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "volumes",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "networks",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "images",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "endpoint",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 5,
-        "x": 360,
-        "y": 320,
-        "wires": [
-            [
-                "163b02482bbd751b"
-            ],
-            [
-                "060ac7e41c2e9d20"
-            ],
-            [
-                "1be042b22cf71230"
-            ],
-            [
-                "dfd9416e4f31ef88"
-            ],
-            [
-                "3584215a923021af"
-            ]
-        ]
-    },
-    {
-        "id": "12cecd82c1d9f476",
-        "type": "exec",
-        "z": "3ea1a4b04d852f38",
-        "command": "curl -X POST --unix-socket /var/run/docker.sock",
-        "addpay": "post",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "docker api request: create container",
-        "x": 1190,
-        "y": 140,
-        "wires": [
-            [
-                "7b6bbc39f8d6a88e"
-            ],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "0e4b8086449ddd56",
-        "type": "exec",
-        "z": "3ea1a4b04d852f38",
-        "command": "curl -X POST --unix-socket /var/run/docker.sock",
-        "addpay": "post",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "docker api request: create network",
-        "x": 1140,
-        "y": 380,
-        "wires": [
-            [
-                "fe7f9567d081d8a7"
-            ],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "b49c4832fc35827a",
-        "type": "exec",
-        "z": "3ea1a4b04d852f38",
-        "command": "curl -s -X POST --unix-socket /var/run/docker.sock",
-        "addpay": "post",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "docker api request: pull image",
-        "x": 1130,
-        "y": 500,
-        "wires": [
-            [
-                "0b12e4e0c5591d31"
-            ],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "ea738534a1b15332",
-        "type": "http response",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "statusCode": "202",
-        "headers": {},
-        "x": 360,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "7d0f6463ecfeeb50",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "prepare docker api request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "registries",
-                "pt": "msg",
-                "to": "payload.data.registry",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "input",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "post",
-                "pt": "msg",
-                "to": "'\\\"http://localhost/images/create?fromImage=' & msg.input.data.name  & '&tag=' & msg.input.data.version & '\\\"' & \" -H 'X-Registry-Auth: \" & $base64encode($string(msg.registries)) & \"'\"",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "journal",
-                "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.image\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"info\",\t   \"comments\": \"pulling image\"\t}",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 840,
-        "y": 500,
-        "wires": [
-            [
-                "b49c4832fc35827a",
-                "cedc032cfa072c59"
-            ]
-        ]
-    },
-    {
-        "id": "dfd9416e4f31ef88",
-        "type": "switch",
-        "z": "3ea1a4b04d852f38",
-        "name": "should we pull?",
-        "property": "(\t    (msg.payload.data.size <= 0 \t    and msg.payload.data.ImageID = null)\t    or msg.payload.data.force = true\t)\t",
-        "propertyType": "jsonata",
-        "rules": [
-            {
-                "t": "true"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 600,
-        "y": 500,
-        "wires": [
-            [
-                "7d0f6463ecfeeb50"
-            ]
-        ]
-    },
-    {
-        "id": "2eb2de8f9ca00a2b",
-        "type": "json",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "property": "payload",
-        "action": "",
-        "pretty": false,
-        "x": 2390,
-        "y": 520,
-        "wires": [
-            [
-                "9c92ef06fefd5f00"
-            ]
-        ]
-    },
-    {
-        "id": "cc3c1cea0eb84ca0",
-        "type": "exec",
-        "z": "3ea1a4b04d852f38",
-        "command": "curl -X GET --unix-socket /var/run/docker.sock ",
-        "addpay": "post",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "docker api request: inspect image",
-        "x": 2160,
-        "y": 520,
-        "wires": [
-            [
-                "2eb2de8f9ca00a2b"
-            ],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "3a845c367b89a50e",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "prepare docker api request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "post",
-                "pt": "msg",
-                "to": "'\\\"http://localhost/images/' & msg.input.data.name  & ':' & msg.input.data.version & '/json\\\"'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "journal",
-                "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.image\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"pulled image\"\t}",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1860,
-        "y": 520,
-        "wires": [
-            [
-                "cc3c1cea0eb84ca0"
-            ]
-        ]
-    },
-    {
-        "id": "d375e2981f9fa4fb",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "prepare netbox request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/images/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "PATCH",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "result",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "[{\t   \"id\": msg.input.data.id,\t   \"size\": $round(msg.payload.Size / 1024 / 1024),\t   \"ImageID\":  msg.payload.Id,\t   \"Digest\": $split(msg.result[0].RepoDigests[0], \"@\")[-1]\t}]",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 2810,
-        "y": 580,
-        "wires": [
-            [
-                "231e0a10bb5c0cac"
-            ]
-        ]
-    },
-    {
-        "id": "231e0a10bb5c0cac",
-        "type": "http request",
-        "z": "3ea1a4b04d852f38",
-        "name": "netbox request: update image",
-        "method": "use",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 3090,
-        "y": 580,
-        "wires": [
-            [
-                "829323373ce00e9e",
-                "34ea063b4d53a0a0",
-                "7599bd4551c41d60"
-            ]
-        ]
-    },
-    {
-        "id": "98985cb45ca68974",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "prepare docker api request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "input",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "post",
-                "pt": "msg",
-                "to": "'\\\"http://localhost/networks/create\\\" -H \\\"content-type: application/json\\\" -d { \\\"Name\\\":\\\"' & msg.input.data.name  & '\\\",\\\"Driver\\\":\\\"' & msg.input.data.driver & '\\\" }'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{\t   \"Name\": msg.input.data.name,\t   \"Driver\": msg.input.data.driver\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "post",
-                "pt": "msg",
-                "to": "\"http://localhost/networks/create -H 'content-type: application/json' -d '\" & $string(msg.payload) & \"'\"",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 860,
-        "y": 380,
-        "wires": [
-            [
-                "0e4b8086449ddd56"
-            ]
-        ]
-    },
-    {
-        "id": "060ac7e41c2e9d20",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "prepare docker api request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "input",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "dockerDriver",
-                "pt": "msg",
-                "to": "dockerinfo.Driver",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{\t   \"Name\": msg.input.data.name,\t   \"Driver\": msg.input.data.driver\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "payload.DriverOpts",
-                "pt": "msg",
-                "to": "msg.dockerDriver != \"overlay2\" and msg.input.data.max_size != null and $number(msg.input.data.max_size) > 0 ? \t    {\t   \"o\": \"size=\" & msg.input.data.max_size & \"m\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "post",
-                "pt": "msg",
-                "to": "\"http://localhost/volumes/create -H 'content-type: application/json' -d '\" & $string(msg.payload) & \"'\"",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 640,
-        "y": 260,
-        "wires": [
-            [
-                "40036eabb47532d6"
-            ]
-        ]
-    },
-    {
-        "id": "ecc3d13695524e12",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "prepare docker api request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "input",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{\t    \"Image\": msg.input.data.image.name & \":\" & msg.input.data.image.version,\t    \"Hostname\": msg.input.data.hostname,\t    \"HostConfig\": {\t        \"CapAdd\": msg.input.data.cap_add,\t        \"CapDrop\": msg.input.data.cap_drop\t    }\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "post",
-                "pt": "msg",
-                "to": "\"http://localhost/containers/create?name=\" & $string(msg.input.data.name) & \" -H 'content-type: application/json' -d '\" & $string(msg.payload) & \"'\"",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 880,
-        "y": 140,
-        "wires": [
-            [
-                "12cecd82c1d9f476"
-            ]
-        ]
-    },
-    {
-        "id": "163b02482bbd751b",
-        "type": "switch",
-        "z": "3ea1a4b04d852f38",
-        "name": "should we create it?",
-        "property": "(\t    $boolean(msg.payload.data.name)\t    and msg.payload.data.state = \"none\"\t)",
-        "propertyType": "jsonata",
-        "rules": [
-            {
-                "t": "true"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 620,
-        "y": 140,
-        "wires": [
-            [
-                "ecc3d13695524e12"
-            ]
-        ]
-    },
-    {
-        "id": "836f86ac79995686",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "prepare netbox request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "PATCH",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/containers/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "result",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "[{\t    \"id\": msg.input.data.id,\t    \"host\": msg.input.data.host.id,\t    \"name\": $replace(msg.result.Name,\"/\",\"\"),\t    \"hostname\": msg.result.Config.Hostname,\t    \"state\": \"created\",\t    \"operation\": \"none\",\t    \"status\": msg.result.State.Status = \"running\"\t        ? \"running \" & $ceil(($toMillis($now()) - $toMillis(msg.result.State.StartedAt)) / 1000 / 60 / 60 / 24) & \"d\"\t        : \"na\",\t    \"image\": {\t        \"host\": msg.input.data.host.id,\t        \"ImageID\": msg.result.Image\t    },\t    \"ContainerID\": msg.result.Id,\t    \"network_settings\": [\t        $each(\t            msg.result.NetworkSettings.Networks,\t            function($v, $k) {\t                { \"network\": { \"name\": $k, \"host\": msg.config.id } }\t            }\t        )\t    ],\t    \"ports\": msg.result.NetworkSettings.Ports\t        ? [\t            $each(\t                msg.result.NetworkSettings.Ports,\t                function($v, $k) {\t                    {\t                        \"public_port\": $v[0] = null or $length($v[0].HostPort) = 0 ? 0 : $v[0].HostPort,\t                        \"private_port\": $split($k,\"/\")[0],\t                        \"type\": $split($k,\"/\")[1]\t                    }\t                }\t            )\t          ]\t        : msg.result.Config.ExposedPorts ? [\t            $each(\t                msg.result.Config.ExposedPorts,\t                function($v, $k) {\t                    $not($exists($lookup($v,'IP'))) or $lookup($v,'IP') = \"0.0.0.0\"\t                        ? {\t                            \"public_port\": $v.PublicPort and $length($v.PublicPort) > 0 ? $v.PublicPort : \"0\",\t                            \"private_port\": $split($k,\"/\")[0],\t                            \"type\": $split($k,\"/\")[1]\t                        }\t                }\t            )\t          ] : [],\t   \"env\": [\t        $map(\t            msg.result.Config.Env,\t            function($v, $k) {\t                {\t                    \"var_name\": $substringBefore($v, \"=\"),\t                    \"value\": $substringAfter($v, \"=\")\t                }\t            }\t        )\t    ],\t   \"labels\": [\t        $each(\t            msg.result.Config.Labels,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ],\t   \"mounts\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"volume\"\t                    ? {\t                        \"source\": $v.Destination,\t                        \"volume\": { \"name\": $v.Name, \"host\": msg.config.id },\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ],\t    \"binds\": [\t        $map(\t            msg.result.Mounts,\t            function($v, $k) {\t                $v.Type = \"bind\"\t                    ? {\t                        \"host_path\": $v.Source,\t                        \"container_path\": $v.Destination,\t                        \"read_only\": $v.ReadOnly\t                    }\t            }\t        )\t    ],\t    \"log_driver\": msg.result.HostConfig.LogConfig.Type,\t    \"log_driver_options\": [$each(msg.result.HostConfig.LogConfig.Config, function($v, $k) {\t        {\t            \"option_name\": $k,\t            \"value\": $v\t        }\t    })],\t    \"sysctls\": [\t        $each(\t            msg.result.HostConfig.Sysctls,\t            function($v, $k) {\t                { \"key\": $k, \"value\": $v }\t            }\t        )\t    ]\t}]",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "journal",
-                "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.container\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"container created\"\t}",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 2350,
-        "y": 140,
-        "wires": [
-            [
-                "a363e235a4fda0b0",
-                "4b0b315e5dbc14f1"
-            ]
-        ]
-    },
-    {
-        "id": "a363e235a4fda0b0",
-        "type": "http request",
-        "z": "3ea1a4b04d852f38",
-        "name": "netbox request: update container",
-        "method": "use",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 2640,
-        "y": 140,
-        "wires": [
-            [
-                "14ee8c9739857e6c"
-            ]
-        ]
-    },
-    {
-        "id": "7b6bbc39f8d6a88e",
-        "type": "json",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "property": "payload",
-        "action": "",
-        "pretty": false,
-        "x": 1410,
-        "y": 140,
-        "wires": [
-            [
-                "8689e16407e06796"
-            ]
-        ]
-    },
-    {
-        "id": "23ca2c7db549468c",
-        "type": "exec",
-        "z": "3ea1a4b04d852f38",
-        "command": "curl -X GET --unix-socket /var/run/docker.sock",
-        "addpay": "post",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "docker api request: inspect container",
-        "x": 1930,
-        "y": 140,
-        "wires": [
-            [
-                "2f564349b35d306d"
-            ],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "8689e16407e06796",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "prepare docker api request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "result",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "post",
-                "pt": "msg",
-                "to": "\"http://localhost/containers/\" & $string(msg.result.Id) & \"/json -H 'content-type: application/json'\"",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1620,
-        "y": 140,
-        "wires": [
-            [
-                "23ca2c7db549468c"
-            ]
-        ]
-    },
-    {
-        "id": "2f564349b35d306d",
-        "type": "json",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "property": "payload",
-        "action": "obj",
-        "pretty": false,
-        "x": 2150,
-        "y": 140,
-        "wires": [
-            [
-                "836f86ac79995686"
-            ]
-        ]
-    },
-    {
-        "id": "fe7f9567d081d8a7",
-        "type": "json",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "property": "payload",
-        "action": "",
-        "pretty": false,
-        "x": 1350,
-        "y": 380,
-        "wires": [
-            [
-                "3032a954e533689f"
-            ]
-        ]
-    },
-    {
-        "id": "3032a954e533689f",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "prepare netbox request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "config",
-                "pt": "msg",
-                "to": "config",
-                "tot": "global"
-            },
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/networks/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "PATCH",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "result",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "[{\t   \"id\": msg.input.data.id,\t   \"NetworkID\":  msg.payload.Id,\t   \"state\": \"created\"\t}]",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1550,
-        "y": 380,
-        "wires": [
-            [
-                "01899c0865cdbdd7"
-            ]
-        ]
-    },
-    {
-        "id": "01899c0865cdbdd7",
-        "type": "http request",
-        "z": "3ea1a4b04d852f38",
-        "name": "netbox request: update network",
-        "method": "use",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 1830,
-        "y": 380,
-        "wires": [
-            [
-                "310b29964dbaaca6"
-            ]
-        ]
-    },
-    {
-        "id": "40036eabb47532d6",
-        "type": "exec",
-        "z": "3ea1a4b04d852f38",
-        "command": "curl -X POST --unix-socket /var/run/docker.sock",
-        "addpay": "post",
-        "append": "",
-        "useSpawn": "false",
-        "timer": "",
-        "winHide": false,
-        "oldrc": false,
-        "name": "docker api request: create volume",
-        "x": 960,
-        "y": 260,
-        "wires": [
-            [],
-            [],
-            []
-        ]
-    },
-    {
-        "id": "1be042b22cf71230",
-        "type": "switch",
-        "z": "3ea1a4b04d852f38",
-        "name": "should we create it?",
-        "property": "payload.data.state",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "creating",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 620,
-        "y": 380,
-        "wires": [
-            [
-                "98985cb45ca68974"
-            ]
-        ]
-    },
-    {
-        "id": "14ee8c9739857e6c",
+        "id": "c55b7692cfe65921",
         "type": "link out",
-        "z": "3ea1a4b04d852f38",
-        "name": "link out 8",
+        "z": "a827fd671d6a227e",
+        "name": "link out 15",
         "mode": "link",
         "links": [
-            "36f439d2ba0ac71a"
+            "60762f95ac69a674"
         ],
-        "x": 2825,
-        "y": 140,
-        "wires": []
-    },
-    {
-        "id": "310b29964dbaaca6",
-        "type": "link out",
-        "z": "3ea1a4b04d852f38",
-        "name": "link out 9",
-        "mode": "link",
-        "links": [
-            "36f439d2ba0ac71a"
-        ],
-        "x": 2005,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "829323373ce00e9e",
-        "type": "link out",
-        "z": "3ea1a4b04d852f38",
-        "name": "link out 10",
-        "mode": "link",
-        "links": [
-            "36f439d2ba0ac71a"
-        ],
-        "x": 3285,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "cedc032cfa072c59",
-        "type": "subflow:0455d311f0e53c09",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "x": 1070,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "84d8b152e92556ef",
-        "type": "switch",
-        "z": "3ea1a4b04d852f38",
-        "name": "did it work?",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "false"
-            },
-            {
-                "t": "true"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 1630,
-        "y": 520,
-        "wires": [
-            [
-                "dce108611cd0c5ba"
-            ],
-            [
-                "3a845c367b89a50e"
-            ]
-        ]
-    },
-    {
-        "id": "dce108611cd0c5ba",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "set error message",
-        "rules": [
-            {
-                "t": "set",
-                "p": "journal",
-                "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.image\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"danger\",\t   \"comments\": \"not pulled image\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "journal.comments",
-                "pt": "msg",
-                "to": "$string($map(\t            $split(resultPull, \"\\n\"),\t            function($v) {\t                $v != \"\" ? $eval($v)\t            }\t        ))",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1830,
-        "y": 460,
-        "wires": [
-            [
-                "4d5d170a3b67d702"
-            ]
-        ]
-    },
-    {
-        "id": "4b0b315e5dbc14f1",
-        "type": "subflow:0455d311f0e53c09",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "x": 2570,
-        "y": 180,
-        "wires": []
-    },
-    {
-        "id": "5c79a22a8f9ad79f",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "find image digest in output",
-        "rules": [
-            {
-                "t": "set",
-                "p": "resultPull",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "$count(\t    $filter(\t        $map(\t            $split(payload, \"\\n\"),\t            function($v) {\t                $v != \"\" ? $eval($v)\t            }\t        ),\t        function($v) {\t            $match(\t                $string($v.status),\t                /^Digest:/\t            )\t        }\t    )\t) > 0",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1570,
-        "y": 460,
-        "wires": [
-            [
-                "84d8b152e92556ef"
-            ]
-        ]
-    },
-    {
-        "id": "93e4927e83ed7795",
-        "type": "comment",
-        "z": "3ea1a4b04d852f38",
-        "name": "Images",
-        "info": "",
-        "x": 570,
-        "y": 460,
-        "wires": []
-    },
-    {
-        "id": "f3223f1c59aae2b0",
-        "type": "comment",
-        "z": "3ea1a4b04d852f38",
-        "name": "Networks",
-        "info": "",
-        "x": 580,
+        "x": 705,
         "y": 340,
         "wires": []
-    },
-    {
-        "id": "a63cdf11f5086bd8",
-        "type": "comment",
-        "z": "3ea1a4b04d852f38",
-        "name": "Volumes",
-        "info": "",
-        "x": 580,
-        "y": 220,
-        "wires": []
-    },
-    {
-        "id": "6a5da2a0bc5f3b01",
-        "type": "comment",
-        "z": "3ea1a4b04d852f38",
-        "name": "Containers",
-        "info": "",
-        "x": 580,
-        "y": 100,
-        "wires": []
-    },
-    {
-        "id": "4d5d170a3b67d702",
-        "type": "subflow:0455d311f0e53c09",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "x": 2010,
-        "y": 460,
-        "wires": []
-    },
-    {
-        "id": "3584215a923021af",
-        "type": "switch",
-        "z": "3ea1a4b04d852f38",
-        "name": "should we refresh?",
-        "property": "(\t    msg.payload.data.operation = \"refresh\"\t    and msg.payload.data.state = \"refreshing\"\t)\t",
-        "propertyType": "jsonata",
-        "rules": [
-            {
-                "t": "true"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 610,
-        "y": 660,
-        "wires": [
-            [
-                "253ff620fcf27838"
-            ]
-        ]
-    },
-    {
-        "id": "955a79aa03666065",
-        "type": "comment",
-        "z": "3ea1a4b04d852f38",
-        "name": "Hosts",
-        "info": "",
-        "x": 570,
-        "y": 620,
-        "wires": []
-    },
-    {
-        "id": "253ff620fcf27838",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "event",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg",
-                "dc": true
-            },
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "$globalContext(\"config\").netbox_url & \"/api/plugins/docker/containers/\"",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t   \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "$count(msg.event.data.containers) > 0 ? msg.event.data.containers[].{\"id\": id} : []",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 840,
-        "y": 660,
-        "wires": [
-            [
-                "8608528812c1323a"
-            ]
-        ]
-    },
-    {
-        "id": "61421eadf150332d",
-        "type": "comment",
-        "z": "3ea1a4b04d852f38",
-        "name": "Delete Containers",
-        "info": "",
-        "x": 830,
-        "y": 620,
-        "wires": []
-    },
-    {
-        "id": "8608528812c1323a",
-        "type": "http request",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "method": "DELETE",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 1050,
-        "y": 660,
-        "wires": [
-            [
-                "ade639ed2b7b63be"
-            ]
-        ]
-    },
-    {
-        "id": "40ef8d60a7da219e",
-        "type": "http request",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "method": "DELETE",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 1470,
-        "y": 660,
-        "wires": [
-            [
-                "d3173782d1b51a58"
-            ]
-        ]
-    },
-    {
-        "id": "ade639ed2b7b63be",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "$globalContext(\"config\").netbox_url & \"/api/plugins/docker/images/\"",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t   \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "$count(msg.event.data.images) > 0 ? msg.event.data.images[].{\"id\": id} : []",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1260,
-        "y": 660,
-        "wires": [
-            [
-                "40ef8d60a7da219e"
-            ]
-        ]
-    },
-    {
-        "id": "04f8498eacf96425",
-        "type": "comment",
-        "z": "3ea1a4b04d852f38",
-        "name": "Delete Images",
-        "info": "",
-        "x": 1230,
-        "y": 620,
-        "wires": []
-    },
-    {
-        "id": "755e723a449b9ee2",
-        "type": "http request",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "method": "DELETE",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 1050,
-        "y": 760,
-        "wires": [
-            [
-                "15f257e9999a2b1a"
-            ]
-        ]
-    },
-    {
-        "id": "d3173782d1b51a58",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "$globalContext(\"config\").netbox_url & \"/api/plugins/docker/volumes/\"",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t   \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "$count(msg.event.data.volumes) > 0 ? msg.event.data.volumes[].{\"id\": id} : []",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 840,
-        "y": 760,
-        "wires": [
-            [
-                "755e723a449b9ee2"
-            ]
-        ]
-    },
-    {
-        "id": "94f8ddb2615a789d",
-        "type": "comment",
-        "z": "3ea1a4b04d852f38",
-        "name": "Delete Volumes",
-        "info": "",
-        "x": 820,
-        "y": 720,
-        "wires": []
-    },
-    {
-        "id": "d9bb22467e819b00",
-        "type": "http request",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "method": "DELETE",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 1470,
-        "y": 760,
-        "wires": [
-            [
-                "86e79ca6ba19c6d7",
-                "8c66ea0e871d7690"
-            ]
-        ]
-    },
-    {
-        "id": "15f257e9999a2b1a",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "$globalContext(\"config\").netbox_url & \"/api/plugins/docker/networks/\"",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t   \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t   \"Accept\": \"application/json\"\t\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "$count(msg.event.data.networks) > 0 ? msg.event.data.networks[].{\"id\": id} : []",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1260,
-        "y": 760,
-        "wires": [
-            [
-                "d9bb22467e819b00"
-            ]
-        ]
-    },
-    {
-        "id": "23e75a4b1c409c83",
-        "type": "comment",
-        "z": "3ea1a4b04d852f38",
-        "name": "Delete Network",
-        "info": "",
-        "x": 1240,
-        "y": 720,
-        "wires": []
-    },
-    {
-        "id": "8c66ea0e871d7690",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "journal",
-                "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.host\",\t   \"assigned_object_id\": $globalContext(\"config\").id,\t   \"kind\": \"info\",\t   \"comments\": $string(\"agent refreshed\")\t}",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 830,
-        "y": 840,
-        "wires": [
-            [
-                "208cf12955858ec0"
-            ]
-        ]
-    },
-    {
-        "id": "208cf12955858ec0",
-        "type": "subflow:0455d311f0e53c09",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "x": 1010,
-        "y": 840,
-        "wires": []
-    },
-    {
-        "id": "86e79ca6ba19c6d7",
-        "type": "link out",
-        "z": "3ea1a4b04d852f38",
-        "name": "After refresh",
-        "mode": "link",
-        "links": [
-            "000871bc55201301",
-            "279f02a6712c7399",
-            "4d752b3ed43f85c0",
-            "e4bc72db316a3ba0",
-            "fca744c188c37382"
-        ],
-        "x": 1595,
-        "y": 760,
-        "wires": []
-    },
-    {
-        "id": "34ea063b4d53a0a0",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "registries",
-                "pt": "global",
-                "to": "(\t    $registry := {\t        \"id\": msg.input.data.registry.id,\t        \"name\": msg.input.data.registry.name,\t        \"serveraddress\": msg.input.data.registry.serveraddress,\t        \"images\": [msg.input.data.display]\t    };\t    $globalContext(\"registries\")[id=$registry.id] ? $globalContext(\"registries\") ~> |$[id=$registry.id]|{\"images\":$distinct([$append(images, $registry.images[0])])}| : $append($globalContext(\"registries\"), $registry)\t)",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 3330,
-        "y": 620,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "3508df86bd32474e",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "set rejectUnauthorized",
-        "rules": [
-            {
-                "t": "set",
-                "p": "rejectUnauthorized",
-                "pt": "msg",
-                "to": "$env(\"DISABLE_SSL_CHECK\") ? false : true",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 160,
-        "y": 320,
-        "wires": [
-            [
-                "5db8c0db8473ea8e"
-            ]
-        ]
-    },
-    {
-        "id": "9c92ef06fefd5f00",
-        "type": "switch",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "property": "msg.input.data.force = true and ($split(msg.payload.RepoDigests[0], \"@\")[-1] != msg.input.data.Digest or msg.payload.Id != msg.input.data.ImageID)",
-        "propertyType": "jsonata",
-        "rules": [
-            {
-                "t": "true"
-            },
-            {
-                "t": "else"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 2550,
-        "y": 520,
-        "wires": [
-            [
-                "20fb85d25c7725c5"
-            ],
-            [
-                "d375e2981f9fa4fb"
-            ]
-        ]
-    },
-    {
-        "id": "7599bd4551c41d60",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "journal",
-                "pt": "msg",
-                "to": "{\t   \"assigned_object_type\": \"netbox_docker_plugin.image\",\t   \"assigned_object_id\": msg.input.data.id,\t   \"kind\": \"success\",\t   \"comments\": \"pulled image\"\t}",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 3890,
-        "y": 520,
-        "wires": [
-            [
-                "6dc394adcc5bd2e9"
-            ]
-        ]
-    },
-    {
-        "id": "6dc394adcc5bd2e9",
-        "type": "subflow:0455d311f0e53c09",
-        "z": "3ea1a4b04d852f38",
-        "name": "",
-        "x": 4090,
-        "y": 520,
-        "wires": []
-    },
-    {
-        "id": "20fb85d25c7725c5",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "prepare netbox request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "msg.config.netbox_url & '/api/plugins/docker/images/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "PATCH",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": ($contains(msg.config.netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & msg.config.netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "result",
-                "pt": "msg",
-                "to": "payload",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "(\t   [{\t      \"id\": msg.input.data.id,\t      \"version\": $substring($split(msg.input.data.ImageID, \":\")[-1], 0, 12)\t   }]\t)\t",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 2790,
-        "y": 460,
-        "wires": [
-            [
-                "6aaf5213853617c2"
-            ]
-        ]
-    },
-    {
-        "id": "6aaf5213853617c2",
-        "type": "http request",
-        "z": "3ea1a4b04d852f38",
-        "name": "netbox request: update image",
-        "method": "use",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 3070,
-        "y": 460,
-        "wires": [
-            [
-                "ebd5345b2ad339da"
-            ]
-        ]
-    },
-    {
-        "id": "ebd5345b2ad339da",
-        "type": "change",
-        "z": "3ea1a4b04d852f38",
-        "name": "prepare netbox request",
-        "rules": [
-            {
-                "t": "set",
-                "p": "url",
-                "pt": "msg",
-                "to": "$globalContext(\"config\").netbox_url & '/api/plugins/docker/images/'",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "headers",
-                "pt": "msg",
-                "to": "{\t    \"Authorization\": ($contains($globalContext(\"config\").netbox_token, /^ntb_/) ? \"Bearer \": \"Token \") & $globalContext(\"config\").netbox_token,\t    \"Accept\": \"application/json\"\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "{\t    \"host\": $globalContext(\"config\").id,\t    \"name\": msg.input.data.name,\t    \"registry\": {\t        \"id\": msg.input.data.registry.id\t    },\t    \"version\": msg.input.data.version,\t    \"size\": $round(msg.result.Size / 1024 / 1024),\t    \"ImageID\": msg.result.Id,\t    \"Digest\": $split(msg.result.RepoDigests[0], \"@\")[-1]\t}",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "method",
-                "pt": "msg",
-                "to": "POST",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 3350,
-        "y": 460,
-        "wires": [
-            [
-                "bcaafd9689539646"
-            ]
-        ]
-    },
-    {
-        "id": "bcaafd9689539646",
-        "type": "http request",
-        "z": "3ea1a4b04d852f38",
-        "name": "netbox request: create images",
-        "method": "use",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 3630,
-        "y": 460,
-        "wires": [
-            [
-                "7599bd4551c41d60"
-            ]
-        ]
-    },
-    {
-        "id": "0b12e4e0c5591d31",
-        "type": "switch",
-        "z": "3ea1a4b04d852f38",
-        "name": "was netbox webhook?",
-        "property": "config.netbox_url",
-        "propertyType": "global",
-        "rules": [
-            {
-                "t": "nempty"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 1380,
-        "y": 520,
-        "wires": [
-            [
-                "5c79a22a8f9ad79f"
-            ]
-        ]
     },
     {
         "id": "dcf35b57666a30f9",

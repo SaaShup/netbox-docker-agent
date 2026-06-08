@@ -96,6 +96,9 @@ for v in "${versions[@]}"; do
   "${COMPOSE[@]}" exec -T agent node --input-type=module - < ws-exec-test.mjs \
     || { echo "!!! websocket-exec test failed for $v"; step_fail=1; }
 
+  "${COMPOSE[@]}" exec -T agent node --input-type=module - < docker-event-test.mjs \
+    || { echo "!!! docker-event test failed for $v"; step_fail=1; }
+
   # --- 3. netbox contract (E), isolated -------------------------------------
   # The agent rewrites /data/config.js from netbox responses during the suite
   # above, which can clear netbox_url. Restarting re-seeds a clean config (the
