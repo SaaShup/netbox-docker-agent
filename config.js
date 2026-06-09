@@ -1,1 +1,1 @@
-{"netbox_url":"","netbox_token":"","ui":1,"id":"","endpoint":"","flows":"0"}
+{"netbox_url":"http://localhost:8000","ui":1,"flows":"0"}

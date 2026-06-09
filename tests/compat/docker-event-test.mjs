@@ -143,14 +143,6 @@ async function main() {
   if (pid == undefined) {
     throw new Error(`curl on docker-event not found after a kill`);
   }
-
-  // Kill the container
-  await execPromise("curl -vvv -s -X POST --unix-socket /var/run/docker.sock http://localhost/containers/" + NAME + "/kill -H 'content-type: application/json'");
-
-  await sleep(1000);
-
-  stdout = await execPromise('curl http://netbox:8080/__admin/requests');
-  console.log(stdout);
 }
 
 main()
