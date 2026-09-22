@@ -8,6 +8,7 @@ services:
       - type: volume
         source: netbox-docker-agent
         target: /data
+      - /var/run/docker.sock:/var/run/docker.sock:rw
     restart: unless-stopped
     ports:
       - "1880:1880"
