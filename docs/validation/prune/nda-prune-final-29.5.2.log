@@ -1,0 +1,179 @@
+===================================================================
+=== Testing agent against dockerd 29.5.2
+===================================================================
+ Image saashup/netbox-docker-agent:compat Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 542B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 964B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:24-alpine
+#3 DONE 0.4s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 119B done
+#4 DONE 0.0s
+
+#5 [dependencies 1/4] FROM docker.io/library/node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 850B done
+#6 DONE 0.0s
+
+#7 [stage-1 7/8] COPY public ./public
+#7 CACHED
+
+#8 [stage-1 5/8] COPY package.json ./
+#8 CACHED
+
+#9 [dependencies 3/4] COPY package.json package-lock.json ./
+#9 CACHED
+
+#10 [stage-1 4/8] COPY --from=dependencies /app/node_modules ./node_modules
+#10 CACHED
+
+#11 [dependencies 4/4] RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
+#11 CACHED
+
+#12 [dependencies 2/4] WORKDIR /app
+#12 CACHED
+
+#13 [stage-1 3/8] RUN mkdir -p /data && chown node:node /data
+#13 CACHED
+
+#14 [stage-1 6/8] COPY src ./src
+#14 CACHED
+
+#15 [stage-1 8/8] COPY entrypoint.sh ./entrypoint.sh
+#15 CACHED
+
+#16 exporting to image
+#16 exporting layers done
+#16 writing image sha256:fb07c3a06a72266699bb9b634d1369e17f726006ff73ff79b54152062601a2eb done
+#16 naming to docker.io/saashup/netbox-docker-agent:compat done
+#16 DONE 0.0s
+
+#17 resolving provenance for metadata file
+#17 DONE 0.0s
+ Image saashup/netbox-docker-agent:compat Built 
+ Volume nda-prune-final-29-5-2_docker-run Creating 
+ Volume nda-prune-final-29-5-2_docker-run Creating 
+ Network nda-prune-final-29-5-2_default Creating 
+ Network nda-prune-final-29-5-2_default Creating 
+ Volume nda-prune-final-29-5-2_docker-run Created 
+ Volume nda-prune-final-29-5-2_docker-run Created 
+ Network nda-prune-final-29-5-2_default Created 
+ Network nda-prune-final-29-5-2_default Created 
+ Container nda-prune-final-29-5-2-netbox-1 Creating 
+ Container nda-prune-final-29-5-2-dind-1 Creating 
+ Container nda-prune-final-29-5-2-netbox-1 Created 
+ Container nda-prune-final-29-5-2-dind-1 Created 
+ Container nda-prune-final-29-5-2-agent-1 Creating 
+ Container nda-prune-final-29-5-2-agent-1 Created 
+ Container nda-prune-final-29-5-2-netbox-1 Starting 
+ Container nda-prune-final-29-5-2-dind-1 Starting 
+ Container nda-prune-final-29-5-2-netbox-1 Started 
+ Container nda-prune-final-29-5-2-dind-1 Started 
+ Container nda-prune-final-29-5-2-dind-1 Waiting 
+ Container nda-prune-final-29-5-2-netbox-1 Waiting 
+ Container nda-prune-final-29-5-2-netbox-1 Healthy 
+ Container nda-prune-final-29-5-2-dind-1 Healthy 
+ Container nda-prune-final-29-5-2-agent-1 Starting 
+ Container nda-prune-final-29-5-2-agent-1 Started 
+ Container nda-prune-final-29-5-2-dind-1 Running 
+ Container nda-prune-final-29-5-2-netbox-1 Running 
+ Container nda-prune-final-29-5-2-agent-1 Recreate 
+ Container nda-prune-final-29-5-2-agent-1 Recreated 
+ Container nda-prune-final-29-5-2-netbox-1 Waiting 
+ Container nda-prune-final-29-5-2-dind-1 Waiting 
+ Container nda-prune-final-29-5-2-netbox-1 Healthy 
+ Container nda-prune-final-29-5-2-dind-1 Healthy 
+ Container nda-prune-final-29-5-2-agent-1 Starting 
+ Container nda-prune-final-29-5-2-agent-1 Started 
+ Container nda-prune-final-29-5-2-agent-1 Waiting 
+ Container nda-prune-final-29-5-2-netbox-1 Waiting 
+ Container nda-prune-final-29-5-2-netbox-1 Healthy 
+ Container nda-prune-final-29-5-2-agent-1 Healthy 
+ Container nda-prune-final-29-5-2-tester-run-b5fc5d5a1ee1 Creating 
+ Container nda-prune-final-29-5-2-tester-run-b5fc5d5a1ee1 Created 
+[1;32mSuccess[0m [1m/tests/tests.hurl[0m (26 request(s) in 1442 ms)
+[1;32mSuccess[0m [1m/tests/read.hurl[0m (11 request(s) in 401 ms)
+[1;32mSuccess[0m [1m/tests/version.hurl[0m (1 request(s) in 202 ms)
+[1;32mSuccess[0m [1m/tests/lifecycle.hurl[0m (18 request(s) in 12292 ms)
+[1;32mSuccess[0m [1m/tests/container-ops.hurl[0m (18 request(s) in 4626 ms)
+[1;32mSuccess[0m [1m/tests/volumes.hurl[0m (5 request(s) in 1220 ms)
+[1;32mSuccess[0m [1m/tests/networks.hurl[0m (5 request(s) in 1206 ms)
+[1;32mSuccess[0m [1m/tests/images.hurl[0m (6 request(s) in 4520 ms)
+[1;32mSuccess[0m [1m/tests/metrics.hurl[0m (1 request(s) in 28 ms)
+[1;32mSuccess[0m [1m/tests/errors.hurl[0m (2 request(s) in 28 ms)
+[1;32mSuccess[0m [1m/tests/security.hurl[0m (4 request(s) in 72 ms)
+[1;32mSuccess[0m [1m/tests/recreate.hurl[0m (26 request(s) in 6898 ms)
+[1;32mSuccess[0m [1m/tests/host-network.hurl[0m (10 request(s) in 3343 ms)
+[1;32mSuccess[0m [1m/tests/prune.hurl[0m (30 request(s) in 1579 ms)
+--------------------------------------------------------------------------------
+Executed files:    14
+Executed requests: 163 (4.3/s)
+Succeeded files:   14 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          37923 ms (0h:0m:37s:923ms)
+
+PASS prune: dangling/tagged images deleted, stopped-container image retained
+PASS prune: 3 populated BuildKit cache records deleted
+ws-exec: server path /ws/engine/containers/5bbf8e0e84d94e13a6f61ff238578becf6dd48ced4f2c7605a5e2ef79a8a73a1/exec
+ws-exec: interactive stdin, resize, non-TTY stderr and exit status PASS
+ws-exec: exit=0 output="hello-ws-exec\r\n"
+ws-exec: PASS
+ Container nda-prune-final-29-5-2-dind-1 Restarting 
+ Container nda-prune-final-29-5-2-dind-1 Started 
+docker-event: daemon connection recovered; events.hurl checks subsequent callbacks
+ Container nda-prune-final-29-5-2-dind-1 Running 
+ Container nda-prune-final-29-5-2-netbox-1 Running 
+ Container nda-prune-final-29-5-2-agent-1 Running 
+ Container nda-prune-final-29-5-2-dind-1 Waiting 
+ Container nda-prune-final-29-5-2-netbox-1 Waiting 
+ Container nda-prune-final-29-5-2-netbox-1 Healthy 
+ Container nda-prune-final-29-5-2-dind-1 Healthy 
+ Container nda-prune-final-29-5-2-agent-1 Waiting 
+ Container nda-prune-final-29-5-2-netbox-1 Waiting 
+ Container nda-prune-final-29-5-2-netbox-1 Healthy 
+ Container nda-prune-final-29-5-2-agent-1 Healthy 
+ Container nda-prune-final-29-5-2-tester-run-dd6063610d7e Creating 
+ Container nda-prune-final-29-5-2-tester-run-dd6063610d7e Created 
+[1;32mSuccess[0m [1m/tests/events.hurl[0m (16 request(s) in 3394 ms)
+--------------------------------------------------------------------------------
+Executed files:    1
+Executed requests: 16 (4.7/s)
+Succeeded files:   1 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          3397 ms (0h:0m:3s:397ms)
+
+registry: PASS — authenticated push/pull and registry association
+self-recreate: PASS — independent helper replaced the serving agent and retained its API
+ Container nda-prune-final-29-5-2-dind-1 Running 
+ Container nda-prune-final-29-5-2-netbox-1 Running 
+ Container nda-prune-final-29-5-2-agent-1 Running 
+ Container nda-prune-final-29-5-2-dind-1 Waiting 
+ Container nda-prune-final-29-5-2-netbox-1 Waiting 
+ Container nda-prune-final-29-5-2-dind-1 Healthy 
+ Container nda-prune-final-29-5-2-netbox-1 Healthy 
+ Container nda-prune-final-29-5-2-netbox-1 Waiting 
+ Container nda-prune-final-29-5-2-agent-1 Waiting 
+ Container nda-prune-final-29-5-2-agent-1 Healthy 
+ Container nda-prune-final-29-5-2-netbox-1 Healthy 
+ Container nda-prune-final-29-5-2-tester-run-2d5df16e7a41 Creating 
+ Container nda-prune-final-29-5-2-tester-run-2d5df16e7a41 Created 
+[1;32mSuccess[0m [1m/tests/netbox.hurl[0m (6 request(s) in 1110 ms)
+--------------------------------------------------------------------------------
+Executed files:    1
+Executed requests: 6 (5.4/s)
+Succeeded files:   1 (100.0%)
+Failed files:      0 (0.0%)
+Duration:          1112 ms (0h:0m:1s:112ms)
+
+
+===== Compatibility summary =====
+  dockerd 29.5.2       PASS

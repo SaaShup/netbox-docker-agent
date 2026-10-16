@@ -1,0 +1,180 @@
+
+> paashup-agent@2.0.0 test
+> node --test --experimental-test-coverage --test-coverage-include='src/**/*.js' --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100 tests/unit/*.test.js tests/integration/*.test.js
+
+✔ HTTP read contracts, assets and documentation use real Engine transport (1660.955949ms)
+✔ asynchronous operations acknowledge and report NetBox callbacks, journals, authentication (79.187123ms)
+✔ all container operations and resource lifecycles reach Engine endpoints (196.229109ms)
+✔ container recreation preserves settings and rolls back a failed replacement (62.51946ms)
+✔ exec, logs and stats retain the legacy response envelopes (370.592842ms)
+✔ NetBox inventory synchronization covers every resource and host metadata (48.853453ms)
+✔ event stream reconnects after disconnect and synchronizes external state changes (1314.554295ms)
+✔ security rejects missing/wrong auth, cross-origin writes, malformed/oversized JSON and disabled exec (325.9612ms)
+✔ WebSocket upgrade requires credentials and same-origin even after reservation (52.577874ms)
+✔ endpoint registration persists credentials; disconnect resets configuration (167.948297ms)
+✔ NetBox errors increment metric counter and legacy tokens use Token auth (19.050637ms)
+✔ administrator credentials and editor presence semantics remain separate from API auth (44.812715ms)
+✔ host-state guards prevent destructive Docker requests; endpoint refresh clears and reimports inventories (32.076536ms)
+✔ forced image changes archive the prior record and publish a new version (13.948824ms)
+✔ self recreation is rejected over HTTP for both ID and name without Docker mutations (190.138901ms)
+✔ startup reports restart, requests version refresh and loads registry associations (19.479428ms)
+✔ NetBox TLS rejects untrusted certificates unless DISABLE_SSL_CHECK is explicitly set (31.047243ms)
+✔ Docker progress error frames fail image pulls and create danger journals (8.955554ms)
+✔ terminal styles use unique per-page CSP nonces without inline script permissions (80.3402ms)
+✔ volume size options follow the daemon storage driver and registry discovery creates remote associations (9.883979ms)
+✔ lifecycle events are gated during operations while pause/unpause continue to synchronize (22.34392ms)
+✔ operation none retains the legacy combined restart-policy update and optional rename (17.44125ms)
+✔ cross-site browser GETs cannot register an endpoint or trigger inventory writes without an Origin header (133.034119ms)
+✔ administration redirects, URL validation and environment overrides retain their contracts (212.756093ms)
+✔ HTTP input rejects non-object JSON and handles empty logs and disappeared terminals (531.302831ms)
+✔ an HTTP client disconnect during a read does not turn into an unhandled response error (40.616866ms)
+✔ settings and rename callbacks preserve configuration staged for recreation (84.842372ms)
+✔ saved owner metadata and configuration survive the next HTTP recreation (86.067621ms)
+✔ recreate restores a running original after replacement network failure (7.125704ms)
+✔ recreate restores a running original after replacement start failure (9.347857ms)
+✔ recreate restores a stopped original after replacement network failure (5.316695ms)
+✔ recreate restores a stopped original after replacement start failure (5.492714ms)
+✔ endpoint registration imports the complete inventory through the HTTP route (53.874146ms)
+✔ endpoint registration continues other imports when one inventory is rejected (48.550139ms)
+✔ prune API returns completed Engine reports and host journals for every resource (210.864229ms)
+✔ prune enforces authentication, origin, POST-only methods and strict input before Engine access (553.24802ms)
+✔ prune excludes concurrent prunes and agent mutations, and releases its lock after completion (321.695594ms)
+✔ prune excludes an active container operation even when it is not queued as a job (15.2041ms)
+✔ prune excludes a POST mutation whose body began arriving before pruning (85.41884ms)
+✔ prune excludes a PUT mutation whose body began arriving before pruning (72.648717ms)
+✔ prune excludes a DELETE mutation whose body began arriving before pruning (70.738579ms)
+✔ prune reports Docker failures, journals them and never fails a completed deletion for a callback error (78.579289ms)
+✔ external exec client handles queued stdin, pause/resume, output channels, resize and exit (43.432064ms)
+✔ external exec client defaults to TTY with the default shell (6.852094ms)
+✔ external exec client defaults to TTY with bash (4.370256ms)
+✔ external exec client rejects a denied WebSocket handshake (5.288421ms)
+✔ agent entry point starts and exits cleanly on SIGTERM (363.535757ms)
+✔ agent entry point uses port 1880 and all interfaces when settings are omitted (344.727763ms)
+✔ shutdown exits after its deadline when an in-flight manager request never completes (15340.671509ms)
+✔ recreation helper entry point replaces a container using preserved runtime settings (438.464738ms)
+✔ recreation helper entry point reports Engine failures with a nonzero exit (399.472476ms)
+{"event":"ssh-key-change","action":"add","account":"lav","fingerprint":"SHA256:da1QDMaVdoT68zv3C1mnBowHMIjjmKimQ56NH/83i64","time":"2026-10-16T19:04:27.615Z"}
+{"event":"ssh-key-admin-request","action":"POST","user":"owner","time":"2026-10-16T19:04:27.617Z"}
+{"event":"ssh-key-change","action":"remove","account":"lav","fingerprint":"SHA256:da1QDMaVdoT68zv3C1mnBowHMIjjmKimQ56NH/83i64","time":"2026-10-16T19:04:27.698Z"}
+{"event":"ssh-key-admin-request","action":"DELETE","user":"owner","time":"2026-10-16T19:04:27.699Z"}
+{"event":"ssh-key-change","action":"add","account":"lav","fingerprint":"SHA256:da1QDMaVdoT68zv3C1mnBowHMIjjmKimQ56NH/83i64","time":"2026-10-16T19:04:27.718Z"}
+{"event":"ssh-key-admin-request","action":"POST","user":"admin","time":"2026-10-16T19:04:27.720Z"}
+✔ administrator API manages actual helper files, protects API credentials, and rejects stale requests (281.847279ms)
+✔ disabled or unavailable helpers cannot change keys (15.298286ms)
+✔ helper exposes only fixed routes and methods, limits bodies and fails safely on malformed files (15.758317ms)
+✔ helper client rejects invalid, oversized and interrupted responses (21.906856ms)
+✔ helper client deadline destroys the request and keeps its timeout status (2.712789ms)
+✔ host helper entry point requires explicit absolute paths (507.591825ms)
+✔ host helper starts with a restricted socket and stops on SIGTERM (293.675413ms)
+✔ host helper starts with a restricted socket and stops on SIGINT (312.931837ms)
+{"event":"ssh-key-change","action":"add","account":"lav","fingerprint":"SHA256:da1QDMaVdoT68zv3C1mnBowHMIjjmKimQ56NH/83i64","time":"2026-10-16T19:04:28.964Z"}
+{"event":"ssh-key-admin-request","action":"POST","user":"owner","time":"2026-10-16T19:04:28.965Z"}
+✔ simultaneous administrator additions cannot lose updates or overwrite each other (84.450407ms)
+✔ a disconnected helper client cannot crash the service or change live keys (15.87238ms)
+✔ TTY terminal supports default shell, stdin, resize, pause/resume, backpressure and EOF (162.740514ms)
+✔ non-TTY terminal separates stdout/stderr and reports nonzero exit status (55.986849ms)
+✔ terminal reports exec failures to the browser (69.471046ms)
+✔ terminal reports stream failures to the browser (37.206406ms)
+✔ terminal reports inspect failures to the browser (35.45913ms)
+✔ terminal discards a late Docker connection after the browser disconnects (35.288992ms)
+✔ terminal closes clients that exceed the output buffer limit (36.132179ms)
+✔ terminal reaps expired reservations and terminates blocked clients (39.450959ms)
+✔ terminal rejects expired and disabled sessions before upgrading (36.507229ms)
+✔ terminal destroys malformed upgrades and handles socket errors (34.092496ms)
+✔ terminal shutdown forces stalled clients closed after the grace period (35.320281ms)
+✔ terminal shutdown terminates connections already closing (33.799139ms)
+✔ terminal shutdown sends the legacy shutdown code and closes gracefully; close is idempotent (83.641737ms)
+✔ operation queues serialize a resource, allow independent work and recover from failure (5.106803ms)
+✔ inventory tolerates disappeared containers but propagates Engine failures (1.761491ms)
+✔ registry discovery retains known credentials and handles digest-only and untagged images (1.240768ms)
+✔ sync handles empty volume inventories, unnamed drivers and missing host IDs (1.17752ms)
+✔ image deletion updates registry associations and supports tag references (4.887994ms)
+✔ image pulls merge existing registry images and archive ID changes even with unchanged digests (1.618845ms)
+✔ self recreation is blocked even when the old helper flag is set (1.008365ms)
+✔ recreation helper restores runtime identity and cleanup errors do not prevent rollback (1.334704ms)
+✔ events ignore unsupported types/actions, unconfigured managers and absent records (0.724534ms)
+✔ event watcher handles malformed frames, oversized frames, transport errors and reconnects (15.834068ms)
+✔ event watcher retries failed connections and cancels a connection completed after shutdown (1.394516ms)
+✔ startup imports registry references and periodic checks recover persistence failures (2.648208ms)
+✔ unconfigured startup avoids manager requests (0.801077ms)
+✔ prune tolerates empty reports and journals Engine failures even when the manager is offline (1.356986ms)
+✔ shutdown waits for prune reporting and releases its lock and tracked job together (0.596124ms)
+✔ legacy JSON config imports, persists atomically and survives concurrent saves (17.660301ms)
+✔ Basic authentication preserves default bcrypt password and rejects malformed input (73.551201ms)
+✔ origin checking allows server clients and same host only (0.475729ms)
+✔ NETBOX_URL overrides persisted configuration without evaluating config files (5.729215ms)
+✔ Docker connection settings support default/custom sockets, TCP and HTTPS (3.229735ms)
+✔ Docker output limits destroy oversized streams and preserve incomplete frames (3.326476ms)
+✔ a failed configuration save does not prevent a later save (31.190775ms)
+✔ sparse Docker inspections retain defaults, exposed ports and empty environment values (2.123788ms)
+✔ metrics distinguish exited/stopped states and tolerate missing container names (0.593169ms)
+✔ build-cache defaults retain conservative scope and reject empty filter values (0.677106ms)
+✔ NetBox transport handles redirect (1.772362ms)
+✔ NetBox transport handles server error (0.297596ms)
+✔ NetBox transport handles invalid JSON (0.274533ms)
+✔ NetBox transport handles empty response (0.15007ms)
+✔ NetBox transport handles response error (0.16572ms)
+✔ NetBox transport handles oversized response (0.259806ms)
+✔ NetBox transport handles timeout (0.25682ms)
+✔ unconfigured NetBox requests and host journals are no-ops (0.231843ms)
+✔ inspection mapping preserves nested plugin fields and values (3.434087ms)
+✔ recreation maps complete writable configuration without shell interpolation (1.048379ms)
+✔ image mapping handles registry ports, digests and untagged images (0.413413ms)
+✔ disk usage aggregates null arrays and all size fields (0.465029ms)
+✔ Docker stream demultiplexing preserves plain TTY and decodes every frame (0.390299ms)
+✔ Prometheus escapes labels and exposes all five metric families on daemon failure (0.880986ms)
+✔ prune scopes default conservatively and explicit all maps to Engine controls (4.038757ms)
+✔ prune rejects ambiguous or misspelled options instead of broadening deletion (1.260685ms)
+✔ OpenSSH validation accepts real supported algorithms and matches SHA256 fingerprints (47.035974ms)
+✔ OpenSSH validation rejects private keys, options, injection, malformed wire data and weak RSA (2.819188ms)
+✔ listing preserves comments, restrictions, CRLF, unknown lines and never lists commented keys (16.151893ms)
+{"event":"ssh-key-change","action":"add","account":"lav","fingerprint":"SHA256:865cUsOZmfAiNo2lb6E2RDGMbFAIove1wmhVt1IK93w","time":"2026-10-16T19:04:31.758Z"}
+{"event":"ssh-key-change","action":"remove","account":"lav","fingerprint":"SHA256:865cUsOZmfAiNo2lb6E2RDGMbFAIove1wmhVt1IK93w","time":"2026-10-16T19:04:31.765Z"}
+✔ add and remove are atomic, preserve metadata and restrictions, and save exact backups (18.969186ms)
+{"event":"ssh-key-change","action":"add","account":"lav","fingerprint":"SHA256:SQfC+vTbLURn9cTkVxIS8fGQ3FKNAJWeB0o139+gV4M","time":"2026-10-16T19:04:31.773Z"}
+{"event":"ssh-key-change","action":"remove","account":"lav","fingerprint":"SHA256:SQfC+vTbLURn9cTkVxIS8fGQ3FKNAJWeB0o139+gV4M","time":"2026-10-16T19:04:31.776Z"}
+{"event":"ssh-key-change","action":"remove","account":"lav","fingerprint":"SHA256:SQfC+vTbLURn9cTkVxIS8fGQ3FKNAJWeB0o139+gV4M","time":"2026-10-16T19:04:31.779Z"}
+{"event":"ssh-key-change","action":"add","account":"lav","fingerprint":"SHA256:865cUsOZmfAiNo2lb6E2RDGMbFAIove1wmhVt1IK93w","time":"2026-10-16T19:04:31.781Z"}
+✔ missing files, empty files and identical duplicate lines are handled without losing unrelated entries (15.132146ms)
+✔ mutation input rejects arbitrary fields, missing revisions and invalid IDs before touching disk (2.428288ms)
+✔ unsafe directory, symlink, hardlink, nonregular file and permissions are rejected (8.464908ms)
+✔ cross-process lock contention, backup failure and replacement failure leave live keys untouched (5.429526ms)
+✔ an external change or file replacement before commit is detected without overwriting it (9.794493ms)
+✔ truncated SSH fields and additions beyond the file limit are rejected (17.721806ms)
+✔ lock permission failures and real temporary-file write errors release resources without replacing keys (5.482164ms)
+✔ wrong helper ownership is rejected for both directory and authorized_keys (4.695344ms)
+✔ failed atomic rename keeps the original file and a recoverable backup (4.335502ms)
+ℹ tests 128
+ℹ suites 0
+ℹ pass 128
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 29806.214139
+ℹ start of coverage report
+ℹ --------------------------------------------------------------------
+ℹ file                | line % | branch % | funcs % | uncovered lines
+ℹ --------------------------------------------------------------------
+ℹ src                 |        |          |         | 
+ℹ  agent.js           | 100.00 |   100.00 |  100.00 | 
+ℹ  auth.js            | 100.00 |   100.00 |  100.00 | 
+ℹ  config.js          | 100.00 |   100.00 |  100.00 | 
+ℹ  docker.js          | 100.00 |   100.00 |  100.00 | 
+ℹ  exec-client.js     | 100.00 |   100.00 |  100.00 | 
+ℹ  index.js           | 100.00 |   100.00 |  100.00 | 
+ℹ  mapping.js         | 100.00 |   100.00 |  100.00 | 
+ℹ  metrics.js         | 100.00 |   100.00 |  100.00 | 
+ℹ  netbox.js          | 100.00 |   100.00 |  100.00 | 
+ℹ  prune.js           | 100.00 |   100.00 |  100.00 | 
+ℹ  recreate-helper.js | 100.00 |   100.00 |  100.00 | 
+ℹ  server.js          | 100.00 |   100.00 |  100.00 | 
+ℹ  ssh-client.js      | 100.00 |   100.00 |  100.00 | 
+ℹ  ssh-helper-main.js | 100.00 |   100.00 |  100.00 | 
+ℹ  ssh-helper.js      | 100.00 |   100.00 |  100.00 | 
+ℹ  ssh-keys.js        | 100.00 |   100.00 |  100.00 | 
+ℹ  terminal.js        | 100.00 |   100.00 |  100.00 | 
+ℹ --------------------------------------------------------------------
+ℹ all files           | 100.00 |   100.00 |  100.00 | 
+ℹ --------------------------------------------------------------------
+ℹ end of coverage report

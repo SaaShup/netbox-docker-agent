@@ -49,6 +49,9 @@ jsonpath "$.count" >= 1
 
 # === ...and a success journal entry must be recorded for our container ====
 POST {{netbox}}/__admin/requests/count
+[Options]
+retry: 30
+retry-interval: 1000
 ```json
 {
   "method": "POST",

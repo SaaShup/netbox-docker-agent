@@ -1,0 +1,33 @@
+
+Running 23 tests using 1 worker
+
+  ✓   1 tests/01-navigation.spec.ts:7:7 › navigation & load › loads with the expected title and no page errors (604ms)
+  ✓   2 tests/01-navigation.spec.ts:16:7 › navigation & load › Home shows host info and the system-usage chart (1.2s)
+  ✓   3 tests/01-navigation.spec.ts:33:9 › navigation & load › tab "containers" shows its section and hides the others (695ms)
+  ✓   4 tests/01-navigation.spec.ts:33:9 › navigation & load › tab "images" shows its section and hides the others (593ms)
+  ✓   5 tests/01-navigation.spec.ts:33:9 › navigation & load › tab "networks" shows its section and hides the others (872ms)
+  ✓   6 tests/01-navigation.spec.ts:33:9 › navigation & load › tab "volumes" shows its section and hides the others (742ms)
+  ✓   7 tests/01-navigation.spec.ts:41:7 › navigation & load › nav badges reflect the resource counts (976ms)
+  ✓   8 tests/02-lists.spec.ts:12:7 › resource lists reflect real state › a seeded container appears in the Containers list with the right count (1.8s)
+  ✓   9 tests/02-lists.spec.ts:33:7 › resource lists reflect real state › the pulled image appears in the Images list (789ms)
+  ✓  10 tests/02-lists.spec.ts:39:7 › resource lists reflect real state › default networks appear in the Networks list (1.0s)
+  ✓  11 tests/03-container-actions.spec.ts:41:7 › container actions via the UI › Start moves a stopped container to running (2.5s)
+  ✓  12 tests/03-container-actions.spec.ts:53:7 › container actions via the UI › Stop moves a running container to exited (1.9s)
+  ✓  13 tests/03-container-actions.spec.ts:66:7 › container actions via the UI › Kill moves a running container to exited (2.4s)
+  ✓  14 tests/03-container-actions.spec.ts:79:7 › container actions via the UI › Restart keeps a running container running (4.0s)
+  ✓  15 tests/04-logs.spec.ts:11:7 › container logs viewer › Logs tab shows the container's log output (2.8s)
+  ✓  16 tests/05-exec-terminal.spec.ts:14:7 › container exec & terminal › Exec tab runs a command and shows its output (2.2s)
+  ✓  17 tests/05-exec-terminal.spec.ts:37:7 › container exec & terminal › Terminal tab opens an interactive shell and echoes a command (5.0s)
+  ✓  18 tests/06-images.spec.ts:8:7 › images tab actions › Remove deletes an image from the daemon (5.6s)
+  ✓  19 tests/06-images.spec.ts:25:7 › images tab actions › Pull re-pulls an existing image (it stays present) (1.6s)
+  ✓  20 tests/07-notifications.spec.ts:12:7 › operation notifications › an operation shows the notification modal, then auto-dismisses (5.0s)
+  ✓  21 tests/08-security.spec.ts:2:5 › hostile Docker metadata renders as text and does not execute (826ms)
+  ✓  22 tests/08-security.spec.ts:6:5 › dashboard remains usable on a narrow viewport (987ms)
+  ✓  23 tests/08-security.spec.ts:9:5 › resource creation editor rejects malformed JSON visibly (957ms)
+
+  23 passed (50.7s)
+npm notice
+npm notice New major version of npm available! 11.19.0 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice

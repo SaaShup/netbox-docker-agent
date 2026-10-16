@@ -1,0 +1,135 @@
+
+> paashup-agent@2.0.0 test
+> node --test --experimental-test-coverage --test-coverage-include='src/**/*.js' --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100 tests/unit/*.test.js tests/integration/*.test.js
+
+✔ HTTP read contracts, assets and documentation use real Engine transport (806.269091ms)
+✔ asynchronous operations acknowledge and report NetBox callbacks, journals, authentication (63.668354ms)
+✔ all container operations and resource lifecycles reach Engine endpoints (73.682122ms)
+✔ container recreation preserves settings and rolls back a failed replacement (23.239342ms)
+✔ exec, logs and stats retain the legacy response envelopes (153.868938ms)
+✔ NetBox inventory synchronization covers every resource and host metadata (28.01106ms)
+✔ event stream reconnects after disconnect and synchronizes external state changes (1311.079742ms)
+✔ security rejects missing/wrong auth, cross-origin writes, malformed/oversized JSON and disabled exec (334.690404ms)
+✔ WebSocket upgrade requires credentials and same-origin even after reservation (50.783838ms)
+✔ endpoint registration persists credentials; disconnect resets configuration (129.240403ms)
+✔ NetBox errors increment metric counter and legacy tokens use Token auth (13.432152ms)
+✔ administrator credentials and editor presence semantics remain separate from API auth (49.510423ms)
+✔ host-state guards prevent destructive Docker requests; endpoint refresh clears and reimports inventories (36.686041ms)
+✔ forced image changes archive the prior record and publish a new version (30.620869ms)
+✔ self recreation delegates to an independent helper before stopping its own container (8.421625ms)
+✔ startup reports restart, requests version refresh and loads registry associations (31.054722ms)
+✔ NetBox TLS rejects untrusted certificates unless DISABLE_SSL_CHECK is explicitly set (27.323102ms)
+✔ Docker progress error frames fail image pulls and create danger journals (8.133165ms)
+✔ terminal styles use unique per-page CSP nonces without inline script permissions (76.467008ms)
+✔ volume size options follow the daemon storage driver and registry discovery creates remote associations (10.823475ms)
+✔ lifecycle events are gated during operations while pause/unpause continue to synchronize (17.103397ms)
+✔ operation none retains the legacy combined restart-policy update and optional rename (12.512048ms)
+✔ cross-site browser GETs cannot register an endpoint or trigger inventory writes without an Origin header (124.117026ms)
+✔ administration redirects, URL validation and environment overrides retain their contracts (177.61063ms)
+✔ HTTP input rejects non-object JSON and handles empty logs and disappeared terminals (453.009448ms)
+✔ an HTTP client disconnect during a read does not turn into an unhandled response error (39.101134ms)
+✔ settings and rename callbacks preserve configuration staged for recreation (89.572096ms)
+✔ saved owner metadata and configuration survive the next HTTP recreation (86.789705ms)
+✔ recreate restores a running original after replacement network failure (8.278427ms)
+✔ recreate restores a running original after replacement start failure (18.806408ms)
+✔ recreate restores a stopped original after replacement network failure (11.088832ms)
+✔ recreate restores a stopped original after replacement start failure (7.760117ms)
+✔ endpoint registration imports the complete inventory through the HTTP route (56.522859ms)
+✔ endpoint registration continues other imports when one inventory is rejected (51.752603ms)
+✔ prune API returns completed Engine reports and host journals for every resource (194.269936ms)
+✔ prune enforces authentication, origin, POST-only methods and strict input before Engine access (526.416993ms)
+✔ prune excludes concurrent prunes and agent mutations, and releases its lock after completion (211.110772ms)
+✔ prune reports Docker failures, journals them and never fails a completed deletion for a callback error (76.109469ms)
+✔ external exec client handles queued stdin, pause/resume, output channels, resize and exit (51.510729ms)
+✔ external exec client defaults to TTY with the default shell (8.737267ms)
+✔ external exec client defaults to TTY with bash (6.612156ms)
+✔ external exec client rejects a denied WebSocket handshake (7.879219ms)
+✔ agent entry point starts and exits cleanly on SIGTERM (428.60427ms)
+✔ agent entry point uses port 1880 and all interfaces when settings are omitted (425.106887ms)
+✔ shutdown exits after its deadline when an in-flight manager request never completes (15483.097357ms)
+✔ recreation helper entry point replaces a container using preserved runtime settings (430.295501ms)
+✔ recreation helper entry point reports Engine failures with a nonzero exit (385.633631ms)
+✔ TTY terminal supports default shell, stdin, resize, pause/resume, backpressure and EOF (116.455068ms)
+✔ non-TTY terminal separates stdout/stderr and reports nonzero exit status (40.057003ms)
+✔ terminal reports exec failures to the browser (36.152379ms)
+✔ terminal reports stream failures to the browser (35.424134ms)
+✔ terminal reports inspect failures to the browser (35.116659ms)
+✔ terminal discards a late Docker connection after the browser disconnects (35.92853ms)
+✔ terminal closes clients that exceed the output buffer limit (35.804367ms)
+✔ terminal reaps expired reservations and terminates blocked clients (41.121697ms)
+✔ terminal rejects expired and disabled sessions before upgrading (37.474596ms)
+✔ terminal destroys malformed upgrades and handles socket errors (35.733343ms)
+✔ terminal shutdown forces stalled clients closed after the grace period (35.607068ms)
+✔ terminal shutdown terminates connections already closing (34.995602ms)
+✔ terminal shutdown sends the legacy shutdown code and closes gracefully; close is idempotent (88.322993ms)
+✔ operation queues serialize a resource, allow independent work and recover from failure (6.110205ms)
+✔ inventory tolerates disappeared containers but propagates Engine failures (2.489273ms)
+✔ registry discovery retains known credentials and handles digest-only and untagged images (1.5965ms)
+✔ sync handles empty volume inventories, unnamed drivers and missing host IDs (1.762982ms)
+✔ image deletion updates registry associations and supports tag references (2.634435ms)
+✔ image pulls merge existing registry images and archive ID changes even with unchanged digests (2.629275ms)
+✔ self recreation requires a socket and passes volume/socket runtime settings to its helper (2.370871ms)
+✔ recreation helper restores runtime identity and cleanup errors do not prevent rollback (5.106055ms)
+✔ events ignore unsupported types/actions, unconfigured managers and absent records (1.059144ms)
+✔ event watcher handles malformed frames, oversized frames, transport errors and reconnects (17.592283ms)
+✔ event watcher retries failed connections and cancels a connection completed after shutdown (1.720392ms)
+✔ startup imports registry references and periodic checks recover persistence failures (3.894354ms)
+✔ unconfigured startup avoids manager requests (1.420852ms)
+✔ prune tolerates empty reports and journals Engine failures even when the manager is offline (1.689144ms)
+✔ shutdown waits for prune reporting and releases its lock and tracked job together (0.717063ms)
+✔ legacy JSON config imports, persists atomically and survives concurrent saves (23.226637ms)
+✔ Basic authentication preserves default bcrypt password and rejects malformed input (82.29473ms)
+✔ origin checking allows server clients and same host only (0.5073ms)
+✔ NETBOX_URL overrides persisted configuration without evaluating config files (6.129181ms)
+✔ Docker connection settings support default/custom sockets, TCP and HTTPS (3.914663ms)
+✔ Docker output limits destroy oversized streams and preserve incomplete frames (3.863447ms)
+✔ a failed configuration save does not prevent a later save (33.591101ms)
+✔ sparse Docker inspections retain defaults, exposed ports and empty environment values (2.750112ms)
+✔ metrics distinguish exited/stopped states and tolerate missing container names (0.780743ms)
+✔ build-cache defaults retain conservative scope and reject empty filter values (0.945972ms)
+✔ NetBox transport handles redirect (2.508058ms)
+✔ NetBox transport handles server error (0.362649ms)
+✔ NetBox transport handles invalid JSON (0.273813ms)
+✔ NetBox transport handles empty response (0.172183ms)
+✔ NetBox transport handles response error (0.205805ms)
+✔ NetBox transport handles oversized response (0.243526ms)
+✔ NetBox transport handles timeout (0.225633ms)
+✔ unconfigured NetBox requests and host journals are no-ops (0.212318ms)
+✔ inspection mapping preserves nested plugin fields and values (3.78466ms)
+✔ recreation maps complete writable configuration without shell interpolation (1.280188ms)
+✔ image mapping handles registry ports, digests and untagged images (0.45386ms)
+✔ disk usage aggregates null arrays and all size fields (0.471764ms)
+✔ Docker stream demultiplexing preserves plain TTY and decodes every frame (0.348032ms)
+✔ Prometheus escapes labels and exposes all five metric families on daemon failure (0.93929ms)
+✔ prune scopes default conservatively and explicit all maps to Engine controls (6.984132ms)
+✔ prune rejects ambiguous or misspelled options instead of broadening deletion (2.223194ms)
+ℹ tests 101
+ℹ suites 0
+ℹ pass 101
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 26089.294133
+ℹ start of coverage report
+ℹ --------------------------------------------------------------------
+ℹ file                | line % | branch % | funcs % | uncovered lines
+ℹ --------------------------------------------------------------------
+ℹ src                 |        |          |         | 
+ℹ  agent.js           | 100.00 |   100.00 |  100.00 | 
+ℹ  auth.js            | 100.00 |   100.00 |  100.00 | 
+ℹ  config.js          | 100.00 |   100.00 |  100.00 | 
+ℹ  docker.js          | 100.00 |   100.00 |  100.00 | 
+ℹ  exec-client.js     | 100.00 |   100.00 |  100.00 | 
+ℹ  index.js           | 100.00 |   100.00 |  100.00 | 
+ℹ  mapping.js         | 100.00 |   100.00 |  100.00 | 
+ℹ  metrics.js         | 100.00 |   100.00 |  100.00 | 
+ℹ  netbox.js          | 100.00 |   100.00 |  100.00 | 
+ℹ  prune.js           | 100.00 |   100.00 |  100.00 | 
+ℹ  recreate-helper.js | 100.00 |   100.00 |  100.00 | 
+ℹ  server.js          | 100.00 |   100.00 |  100.00 | 
+ℹ  terminal.js        | 100.00 |   100.00 |  100.00 | 
+ℹ --------------------------------------------------------------------
+ℹ all files           | 100.00 |   100.00 |  100.00 | 
+ℹ --------------------------------------------------------------------
+ℹ end of coverage report

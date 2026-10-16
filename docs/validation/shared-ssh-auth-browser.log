@@ -1,0 +1,30 @@
+
+> netbox-docker-agent-e2e@1.0.0 test
+> playwright test --config=/tmp/nda-ui-playwright.config.mjs 01-navigation.spec.ts 10-container-configuration.spec.ts 12-host-ssh-keys.spec.ts --output=/tmp/nda-shared-ssh-browser-results
+
+
+Running 19 tests using 1 worker
+
+(node:492294) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/01-navigation.spec.ts:7:7 › navigation & load › loads with the expected title and no page errors (664ms)
+  ✓   2 tests/01-navigation.spec.ts:16:7 › navigation & load › Home shows host info and the system-usage chart (863ms)
+  ✓   3 tests/01-navigation.spec.ts:35:9 › navigation & load › tab "containers" shows its section and hides the others (534ms)
+  ✓   4 tests/01-navigation.spec.ts:35:9 › navigation & load › tab "images" shows its section and hides the others (409ms)
+  ✓   5 tests/01-navigation.spec.ts:35:9 › navigation & load › tab "networks" shows its section and hides the others (425ms)
+  ✓   6 tests/01-navigation.spec.ts:35:9 › navigation & load › tab "volumes" shows its section and hides the others (429ms)
+  ✓   7 tests/01-navigation.spec.ts:43:7 › navigation & load › nav badges reflect the resource counts (573ms)
+  ✓   8 tests/10-container-configuration.spec.ts:35:5 › configuration groups show actual settings and render metadata safely (1.5s)
+  ✓   9 tests/10-container-configuration.spec.ts:57:5 › configuration editor submits changed supported settings through recreation (927ms)
+  ✓  10 tests/10-container-configuration.spec.ts:80:5 › action icons retain accessible names and configuration fits mobile screens (853ms)
+  ✓  11 tests/10-container-configuration.spec.ts:94:5 › the agent has no recreation controls while other containers remain editable (1.3s)
+  ✓  12 tests/12-host-ssh-keys.spec.ts:9:5 › disabled management does not prompt for credentials or access the mounted file (577ms)
+  ✓  13 tests/12-host-ssh-keys.spec.ts:18:5 › keys load automatically with dashboard authentication and render metadata safely (998ms)
+  ✓  14 tests/12-host-ssh-keys.spec.ts:30:5 › authentication and file errors allow reloading without a separate sign-in form (616ms)
+  ✓  15 tests/12-host-ssh-keys.spec.ts:39:5 › add and remove require confirmation, use revisions, refresh keys and show backups (907ms)
+  ✓  16 tests/12-host-ssh-keys.spec.ts:60:5 › stale changes preserve input and can be reloaded before retrying (721ms)
+  ✓  17 tests/12-host-ssh-keys.spec.ts:73:5 › real mounted host file adds and removes a key through existing dashboard authentication (1.0s)
+  ✓  18 tests/12-host-ssh-keys.spec.ts:85:5 › SSH management remains usable when Docker resource reads fail (515ms)
+  ✓  19 tests/12-host-ssh-keys.spec.ts:93:5 › opening the SSH tab loads keys on demand and revisiting reloads them (842ms)
+
+  19 passed (16.7s)

@@ -26,7 +26,7 @@ async function clickCardAction(page: Page, name: string, op: keyof typeof HANDLE
   await page.locator("#nav-containers-btn").click();
   const card = page.locator("#containers-list .card").filter({ hasText: name }).first();
   await expect(card).toBeVisible();
-  const button = card.locator(`button[onclick^="${HANDLER[op]}"]`);
+  const button = card.locator(`button[data-action="${op}"]`);
   await button.click();
   // The agent populates and shows a notification modal for the operation; its
   // title is set synchronously on click ("Operation <op>").

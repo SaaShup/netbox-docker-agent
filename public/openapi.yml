@@ -1,1528 +1,3716 @@
-info:
-  title: Netbox Docker Agent
-  version: 0.36.0
-openapi: 3.0.0
-paths:
-  /api/engine/endpoint:
-    get:
-      tags:
-        - netbox endpoint
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-  /api/engine/containers:
-    delete:
-      tags:
-        - netbox containers
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-    get:
-      tags:
-        - netbox containers
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-    post:
-      tags:
-        - netbox containers
-      requestBody:
-        description: create Container
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostApiEngineContainers'
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-    put:
-      tags:
-        - netbox containers
-      requestBody:
-        description: Container operation
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PutApiEngineContainers'
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-  /api/engine/images:
-    delete:
-      tags:
-        - netbox images
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-    get:
-      tags:
-        - netbox images
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-    post:
-      tags:
-        - netbox images
-      requestBody:
-        description: create Image
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostApiEngineImages'
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-  /api/engine/networks:
-    delete:
-      tags:
-        - netbox networks
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-    get:
-      tags:
-        - netbox networks
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-    post:
-      tags:
-        - netbox networks
-      requestBody:
-        description: create Networks
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostApiEngineNetworks'
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-  /api/engine/volumes:
-    delete:
-      tags:
-        - netbox volumes
-      responses:
-        '202':
-          description: 202 response
-    get:
-      tags:
-        - netbox volumes
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-    post:
-      tags:
-        - netbox volumes
-      requestBody:
-        description: create Networks
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostApiEngineVolumes'
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-  /api/engine/registries:
-    delete:
-      tags:
-        - netbox registries
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-    get:
-      tags:
-        - netbox registries
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-    post:
-      tags:
-        - netbox registries
-      requestBody:
-        description: create Networks
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PostApiEngineRegistry'
-      responses:
-        '202':
-          description: 202 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiEngine202ResponseBody'
-  /api/containers:
-    get:
-      tags:
-        - ui
-      responses:
-        '200':
-          description: 200 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiContainers200ResponseBody'
-  /api/engine/containers/{containerId}/logs:
-    put:
-      summary: Get log from a Container
-      tags:
-        - ui
-      parameters:
-        - in: path
-          name: containerId
-          schema:
-            type: string
-          required: true
-          description: The Container unique identifier
-      responses:
-        '200':
-          description: 200 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/LogsApiContainers200ResponseBody'
-  /api/engine/containers/{containerId}/exec:
-    put:
-      summary: Exec a command into a Container
-      tags:
-        - ui
-      parameters:
-        - in: path
-          name: containerId
-          schema:
-            type: string
-          required: true
-          description: The Container unique identifier
-      requestBody:
-        description: The command to exec
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ExecApiContainersRequestBody'
-      responses:
-        '200':
-          description: 200 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ExecApiContainers200ResponseBody'
-  /api/engine/containers/{containerId}/ws:
-    post:
-      summary: Start an exec stream on a given started container
-      tags:
-        - ui
-      parameters:
-        - in: path
-          name: containerId
-          schema:
-            type: string
-          required: true
-          description: The Container unique identifier
-      responses:
-        '200':
-          description: 200 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/WsApiContainers200ResponseBody'
-        '404':
-          description: Started container not found
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/WsApiContainers404ResponseBody'
-        '403':
-          description: Exec stream is disable on this agent
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/WsApiContainers403ResponseBody'
-  /api/images:
-    get:
-      tags:
-        - ui
-      responses:
-        '200':
-          description: 200 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiImages200ResponseBody'
-  /api/networks:
-    get:
-      tags:
-        - ui
-      responses:
-        '200':
-          description: 200 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiNetworks200ResponseBody'
-  /api/volumes:
-    get:
-      tags:
-        - ui
-      responses:
-        '200':
-          description: 200 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiVolumes200ResponseBody'
-  /api/registries:
-    get:
-      tags:
-        - ui
-      responses:
-        '200':
-          description: 200 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetApiRegistries200ResponseBody'
-  /metrics:
-    get:
-      tags:
-        - metrics
-      responses:
-        '200':
-          description: 200 response
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-  /info:
-    get:
-      tags:
-        - html
-      responses:
-        '200':
-          description: 200 response
-          content:
-            application/json; charset=utf-8:
-              examples:
-                /info:
-                  value:
-                    message: netbox-saashup-agent
-                    configured: nok
-              schema:
-                $ref: '#/components/schemas/GetInfo200ResponseBody'
-  /system/usage:
-    get:
-      tags:
-        - metrics
-      responses:
-        '200':
-          description: 200 response
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/GetSystemUsage200ResponseBody'
-  /doc:
-    get:
-      tags:
-        - html
-      responses:
-        '200':
-          description: 200 response
-          content:
-            text/html; charset=utf-8:
-              schema:
-                type: string
-  /:
-    get:
-      tags:
-        - html
-      responses:
-        '200':
-          description: 200 response
-          content:
-            text/html; charset=utf-8:
-              schema:
-                type: string
-components:
-  schemas:
-    PostApiEngineRegistry:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: number
-            name:
-              type: string
-            username:
-              type: string
-            password:
-              type: string
-            email:
-              type: string
-            server:
-              type: string
-    PostApiEngineVolumes:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: number
-            name:
-              type: string
-            driver:
-              type: string
-              enum:
-                - local
-    PostApiEngineNetworks:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: number
-            name:
-              type: string
-            driver:
-              type: string
-              enum:
-                - bridge
-                - host
-                - none
-    PostApiEngineImages:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: number
-            name:
-              type: string
-            version:
-              type: string
-    PostApiEngineContainers:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: number
-            name:
-              type: string
-            ContainerID:
-              type: string
-            image:
-              type: object
-              properties:
-                name:
-                  type: string
-                version:
-                  type: string
-    PutApiEngineContainers:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: number
-            hostname:
-              type: string
-            name:
-              type: string
-            ContainerID:
-              type: string
-            restart_policy:
-              type: "string"
-              enum:
-                - "no"
-                - "on-failure"
-                - always
-                - unless-stopped
-            extra_hosts:
-              type: array
-              items:
-                type: string
-                example: host.local:10.11.12.13
-            operation:
-              type: string
-              enum:
-                - restart
-                - start
-                - stop
-                - recreate
-                - rename
-                - kill
-                - pause
-                - unpause
-                - none
-            image:
-              type: string
-            labels:
-              type: object
-            env:
-              type: array
-              items:
-                type: string
-            ports:
-              type: object
-            networks:
-              type: object
-            mounts:
-              type: array
-              items:
-                type: object
-                properties:
-                  type:
-                    type: string
-                  source:
-                    type: string
-                  destination:
-                    type: string
-                  mode:
-                    type: string
-                  rw:
-                    type: boolean
-                  name:
-                    type: string
-                  driver:
-                    type: string
-    GetApiContainers200ResponseBody:
-      type: array
-      items:
-        type: object
-        properties:
-          Id:
-            type: string
-          Created:
-            type: string
-          Path:
-            type: string
-          Args:
-            type: array
-            items: {}
-          State:
-            type: object
-            properties:
-              Status:
-                type: string
-              Running:
-                type: boolean
-              Paused:
-                type: boolean
-              Restarting:
-                type: boolean
-              OOMKilled:
-                type: boolean
-              Dead:
-                type: boolean
-              Pid:
-                type: number
-              ExitCode:
-                type: number
-              Error:
-                type: string
-              StartedAt:
-                type: string
-              FinishedAt:
-                type: string
-              Health:
-                type: object
-                properties:
-                  Status:
-                    type: string
-                  FailingStreak:
-                    type: number
-                  Log:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        Start:
-                          type: string
-                        End:
-                          type: string
-                        ExitCode:
-                          type: number
-                        Output:
-                          type: string
-                      required:
-                        - Start
-                        - End
-                        - ExitCode
-                        - Output
-                required:
-                  - Status
-                  - FailingStreak
-                  - Log
-            required:
-              - Status
-              - Running
-              - Paused
-              - Restarting
-              - OOMKilled
-              - Dead
-              - Pid
-              - ExitCode
-              - Error
-              - StartedAt
-              - FinishedAt
-          Image:
-            type: string
-          ResolvConfPath:
-            type: string
-          HostnamePath:
-            type: string
-          HostsPath:
-            type: string
-          LogPath:
-            type: string
-          Name:
-            type: string
-          RestartCount:
-            type: number
-          Driver:
-            type: string
-          Platform:
-            type: string
-          MountLabel:
-            type: string
-          ProcessLabel:
-            type: string
-          AppArmorProfile:
-            type: string
-          ExecIDs:
-            type: string
-          HostConfig:
-            type: object
-            properties:
-              Binds:
-                type: array
-                items:
-                  type: string
-              ContainerIDFile:
-                type: string
-              LogConfig:
-                type: object
-                properties:
-                  Type:
-                    type: string
-                  Config:
-                    type: object
-                required:
-                  - Type
-                  - Config
-              NetworkMode:
-                type: string
-              PortBindings:
-                type: object
-              RestartPolicy:
-                type: object
-                properties:
-                  Name:
-                    type: string
-                  MaximumRetryCount:
-                    type: number
-                required:
-                  - Name
-                  - MaximumRetryCount
-              AutoRemove:
-                type: boolean
-              VolumeDriver:
-                type: string
-              VolumesFrom:
-                type: string
-              ConsoleSize:
-                type: array
-                items:
-                  type: number
-              CapAdd:
-                type: string
-              CapDrop:
-                type: string
-              CgroupnsMode:
-                type: string
-              Dns:
-                type: array
-                items: {}
-              DnsOptions:
-                type: array
-                items: {}
-              DnsSearch:
-                type: array
-                items: {}
-              ExtraHosts:
-                type: string
-              GroupAdd:
-                type: string
-              IpcMode:
-                type: string
-              Cgroup:
-                type: string
-              Links:
-                type: string
-              OomScoreAdj:
-                type: number
-              PidMode:
-                type: string
-              Privileged:
-                type: boolean
-              PublishAllPorts:
-                type: boolean
-              ReadonlyRootfs:
-                type: boolean
-              SecurityOpt:
-                type: string
-              UTSMode:
-                type: string
-              UsernsMode:
-                type: string
-              ShmSize:
-                type: number
-              Runtime:
-                type: string
-              Isolation:
-                type: string
-              CpuShares:
-                type: number
-              Memory:
-                type: number
-              NanoCpus:
-                type: number
-              CgroupParent:
-                type: string
-              BlkioWeight:
-                type: number
-              BlkioWeightDevice:
-                type: array
-                items: {}
-              BlkioDeviceReadBps:
-                type: array
-                items: {}
-              BlkioDeviceWriteBps:
-                type: array
-                items: {}
-              BlkioDeviceReadIOps:
-                type: array
-                items: {}
-              BlkioDeviceWriteIOps:
-                type: array
-                items: {}
-              CpuPeriod:
-                type: number
-              CpuQuota:
-                type: number
-              CpuRealtimePeriod:
-                type: number
-              CpuRealtimeRuntime:
-                type: number
-              CpusetCpus:
-                type: string
-              CpusetMems:
-                type: string
-              Devices:
-                type: array
-                items: {}
-              DeviceCgroupRules:
-                type: string
-              DeviceRequests:
-                type: string
-              MemoryReservation:
-                type: number
-              MemorySwap:
-                type: number
-              MemorySwappiness:
-                type: string
-              OomKillDisable:
-                type: string
-              PidsLimit:
-                type: string
-              Ulimits:
-                type: string
-              CpuCount:
-                type: number
-              CpuPercent:
-                type: number
-              IOMaximumIOps:
-                type: number
-              IOMaximumBandwidth:
-                type: number
-              MaskedPaths:
-                type: array
-                items:
-                  type: string
-              ReadonlyPaths:
-                type: array
-                items:
-                  type: string
-            required:
-              - Binds
-              - ContainerIDFile
-              - LogConfig
-              - NetworkMode
-              - PortBindings
-              - RestartPolicy
-              - AutoRemove
-              - VolumeDriver
-              - VolumesFrom
-              - ConsoleSize
-              - CapAdd
-              - CapDrop
-              - CgroupnsMode
-              - Dns
-              - DnsOptions
-              - DnsSearch
-              - ExtraHosts
-              - GroupAdd
-              - IpcMode
-              - Cgroup
-              - Links
-              - OomScoreAdj
-              - PidMode
-              - Privileged
-              - PublishAllPorts
-              - ReadonlyRootfs
-              - SecurityOpt
-              - UTSMode
-              - UsernsMode
-              - ShmSize
-              - Runtime
-              - Isolation
-              - CpuShares
-              - Memory
-              - NanoCpus
-              - CgroupParent
-              - BlkioWeight
-              - BlkioWeightDevice
-              - BlkioDeviceReadBps
-              - BlkioDeviceWriteBps
-              - BlkioDeviceReadIOps
-              - BlkioDeviceWriteIOps
-              - CpuPeriod
-              - CpuQuota
-              - CpuRealtimePeriod
-              - CpuRealtimeRuntime
-              - CpusetCpus
-              - CpusetMems
-              - Devices
-              - DeviceCgroupRules
-              - DeviceRequests
-              - MemoryReservation
-              - MemorySwap
-              - MemorySwappiness
-              - OomKillDisable
-              - PidsLimit
-              - Ulimits
-              - CpuCount
-              - CpuPercent
-              - IOMaximumIOps
-              - IOMaximumBandwidth
-              - MaskedPaths
-              - ReadonlyPaths
-          GraphDriver:
-            type: object
-            properties:
-              Data:
-                type: object
-                properties:
-                  LowerDir:
-                    type: string
-                  MergedDir:
-                    type: string
-                  UpperDir:
-                    type: string
-                  WorkDir:
-                    type: string
-                required:
-                  - LowerDir
-                  - MergedDir
-                  - UpperDir
-                  - WorkDir
-              Name:
-                type: string
-            required:
-              - Data
-              - Name
-          Mounts:
-            type: array
-            items:
-              type: object
-              properties:
-                Type:
-                  type: string
-                Source:
-                  type: string
-                Destination:
-                  type: string
-                Mode:
-                  type: string
-                RW:
-                  type: boolean
-                Propagation:
-                  type: string
-                Name:
-                  type: string
-                Driver:
-                  type: string
-              required:
-                - Type
-                - Source
-                - Destination
-                - Mode
-                - RW
-                - Propagation
-          Config:
-            type: object
-            properties:
-              Hostname:
-                type: string
-              Domainname:
-                type: string
-              User:
-                type: string
-              AttachStdin:
-                type: boolean
-              AttachStdout:
-                type: boolean
-              AttachStderr:
-                type: boolean
-              ExposedPorts:
-                type: object
-              Tty:
-                type: boolean
-              OpenStdin:
-                type: boolean
-              StdinOnce:
-                type: boolean
-              Env:
-                type: array
-                items:
-                  type: string
-              Cmd:
-                oneOf:
-                  - type: string
-                  - type: array
-                    items:
-                      type: string
-              Healthcheck:
-                type: object
-                properties:
-                  Test:
-                    type: array
-                    items:
-                      type: string
-                required:
-                  - Test
-              Image:
-                type: string
-              Volumes:
-                type: string
-              WorkingDir:
-                type: string
-              Entrypoint:
-                type: array
-                items:
-                  type: string
-              OnBuild:
-                type: string
-              Labels:
-                type: object
-              StopSignal:
-                type: string
-            required:
-              - Hostname
-              - Domainname
-              - User
-              - AttachStdin
-              - AttachStdout
-              - AttachStderr
-              - ExposedPorts
-              - Tty
-              - OpenStdin
-              - StdinOnce
-              - Env
-              - Cmd
-              - Image
-              - Volumes
-              - WorkingDir
-              - Entrypoint
-              - OnBuild
-              - Labels
-          NetworkSettings:
-            type: object
-            properties:
-              Bridge:
-                type: string
-              SandboxID:
-                type: string
-              HairpinMode:
-                type: boolean
-              LinkLocalIPv6Address:
-                type: string
-              LinkLocalIPv6PrefixLen:
-                type: number
-              Ports:
-                type: object
-                properties: {}
-              SandboxKey:
-                type: string
-              SecondaryIPAddresses:
-                type: string
-              SecondaryIPv6Addresses:
-                type: string
-              EndpointID:
-                type: string
-              Gateway:
-                type: string
-              GlobalIPv6Address:
-                type: string
-              GlobalIPv6PrefixLen:
-                type: number
-              IPAddress:
-                type: string
-              IPPrefixLen:
-                type: number
-              IPv6Gateway:
-                type: string
-              MacAddress:
-                type: string
-              Networks:
-                type: object
-                properties:
-                  bridge:
-                    type: object
-                    properties:
-                      IPAMConfig:
-                        type: string
-                      Links:
-                        type: string
-                      Aliases:
-                        type: string
-                      NetworkID:
-                        type: string
-                      EndpointID:
-                        type: string
-                      Gateway:
-                        type: string
-                      IPAddress:
-                        type: string
-                      IPPrefixLen:
-                        type: number
-                      IPv6Gateway:
-                        type: string
-                      GlobalIPv6Address:
-                        type: string
-                      GlobalIPv6PrefixLen:
-                        type: number
-                      MacAddress:
-                        type: string
-                      DriverOpts:
-                        type: string
-                    required:
-                      - IPAMConfig
-                      - Links
-                      - Aliases
-                      - NetworkID
-                      - EndpointID
-                      - Gateway
-                      - IPAddress
-                      - IPPrefixLen
-                      - IPv6Gateway
-                      - GlobalIPv6Address
-                      - GlobalIPv6PrefixLen
-                      - MacAddress
-                      - DriverOpts
-                required:
-                  - bridge
-            required:
-              - Bridge
-              - SandboxID
-              - HairpinMode
-              - LinkLocalIPv6Address
-              - LinkLocalIPv6PrefixLen
-              - Ports
-              - SandboxKey
-              - SecondaryIPAddresses
-              - SecondaryIPv6Addresses
-              - EndpointID
-              - Gateway
-              - GlobalIPv6Address
-              - GlobalIPv6PrefixLen
-              - IPAddress
-              - IPPrefixLen
-              - IPv6Gateway
-              - MacAddress
-              - Networks
-        required:
-          - Id
-          - Created
-          - Path
-          - Args
-          - State
-          - Image
-          - ResolvConfPath
-          - HostnamePath
-          - HostsPath
-          - LogPath
-          - Name
-          - RestartCount
-          - Driver
-          - Platform
-          - MountLabel
-          - ProcessLabel
-          - AppArmorProfile
-          - ExecIDs
-          - HostConfig
-          - GraphDriver
-          - Mounts
-          - Config
-          - NetworkSettings
-    ExecApiContainersRequestBody:
-      type: object
-      properties:
-        cmd:
-          type: array
-          items:
-            type: string
-      required:
-        - cmd
-      example:
-        cmd:
-          - ls
-          - -al
-    ExecApiContainers200ResponseBody:
-      type: object
-      properties:
-        stdout:
-          type: string
-      required:
-        - stdout
-      example:
-        stdout: |
-          total 10
-          drwxr-xr-x  24 user group    768 avr 30 09:57 ./
-          drwxr-xr-x  13 user group    416 mar 13 17:54 ../
-          drwxr-xr-x 435 user group  13920 fév 21 18:10 test1/
-          -rw-r--r--   1 user group 250200 avr 30 09:57 file1.json
-    LogsApiContainers200ResponseBody:
-      type: string
-      example: |
-          2024-05-10T11:42:08.530171933Z 2024/05/10 11:42:08 [notice] 28#28: start worker process 30
-          2024-05-10T11:42:08.532813004Z 2024/05/10 11:42:08 [notice] 28#28: start worker process 31
-          2024-05-10T11:42:08.532852562Z 2024/05/10 11:42:08 [notice] 28#28: start worker process 32
-    WsApiContainers200ResponseBody:
-      type: object
-      properties:
-        path:
-          type: string
-          description: the path of the started exec websocket server
-      required:
-        - path
-      example:
-        path: "/ws/engine/containers/114d30ae0de8653351a295f5bbdd2226ee7086cf96253e01b835ead464ebd3c8/exec"
-    WsApiContainers404ResponseBody:
-      type: object
-      properties:
-        code:
-          type: number
-          description: Error code number
-        message:
-          type: string
-          description: The error message
-      required:
-        - code
-        - message
-      example:
-        code: 404
-        message: "Containers not found"
-    WsApiContainers403ResponseBody:
-      type: object
-      properties:
-        code:
-          type: number
-          description: Error code number
-        message:
-          type: string
-          description: The error message
-      required:
-        - code
-        - message
-      example:
-        code: 403
-        message: "Exec stream is disabled"
-    GetApiEngine202ResponseBody:
-      type: object
-    GetApiImages200ResponseBody:
-      type: array
-      items:
-        type: object
-        properties:
-          Containers:
-            type: number
-          Created:
-            type: number
-          Id:
-            type: string
-          Labels:
-            type: object
-          ParentId:
-            type: string
-          RepoDigests:
-            type: array
-            items:
-              type: string
-          RepoTags:
-            type: array
-            items:
-              type: string
-          SharedSize:
-            type: number
-          Size:
-            type: number
-          VirtualSize:
-            type: number
-        required:
-          - Containers
-          - Created
-          - Id
-          - Labels
-          - ParentId
-          - RepoDigests
-          - RepoTags
-          - SharedSize
-          - Size
-          - VirtualSize
-    GetApiNetworks200ResponseBody:
-      type: array
-      items:
-        type: object
-        properties:
-          Name:
-            type: string
-          Id:
-            type: string
-          Created:
-            type: string
-          Scope:
-            type: string
-          Driver:
-            type: string
-          EnableIPv6:
-            type: boolean
-          IPAM:
-            type: object
-            properties:
-              Driver:
-                type: string
-              Options:
-                type: string
-              Config:
-                type: array
-                items: {}
-            required:
-              - Driver
-              - Options
-              - Config
-          Internal:
-            type: boolean
-          Attachable:
-            type: boolean
-          Ingress:
-            type: boolean
-          ConfigFrom:
-            type: object
-            properties:
-              Network:
-                type: string
-            required:
-              - Network
-          ConfigOnly:
-            type: boolean
-          Containers:
-            type: object
-          Options:
-            type: object
-            properties:
-              com.docker.network.bridge.default_bridge:
-                type: string
-              com.docker.network.bridge.enable_icc:
-                type: string
-              com.docker.network.bridge.enable_ip_masquerade:
-                type: string
-              com.docker.network.bridge.host_binding_ipv4:
-                type: string
-              com.docker.network.bridge.name:
-                type: string
-              com.docker.network.driver.mtu:
-                type: string
-          Labels:
-            type: object
-        required:
-          - Name
-          - Id
-          - Created
-          - Scope
-          - Driver
-          - EnableIPv6
-          - IPAM
-          - Internal
-          - Attachable
-          - Ingress
-          - ConfigFrom
-          - ConfigOnly
-          - Containers
-          - Options
-          - Labels
-    GetApiVolumes200ResponseBody:
-      type: object
-      properties:
-        Volumes:
-          type: array
-          items:
-            type: object
-            properties:
-              CreatedAt:
-                type: string
-              Driver:
-                type: string
-              Labels:
-                oneOf:
-                  - type: string
-                  - type: object
-                    properties:
-                      com.docker.volume.anonymous:
-                        type: string
-                    required:
-                      - com.docker.volume.anonymous
-              Mountpoint:
-                type: string
-              Name:
-                type: string
-              Options:
-                type: string
-              Scope:
-                type: string
-            required:
-              - CreatedAt
-              - Driver
-              - Labels
-              - Mountpoint
-              - Name
-              - Options
-              - Scope
-        Warnings:
-          type: string
-      required:
-        - Volumes
-        - Warnings
-    GetApiRegistries200ResponseBody:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            type: number
-          name:
-            type: string
-          serveraddress:
-            type: string
-          images:
-            type: array
-            items:
-              type: string
-    GetInfo200ResponseBody:
-      type: object
-      properties:
-        message:
-          type: string
-        configured:
-          type: string
-        version:
-          type: string
-        docker:
-          type: object
-          properties:
-            Platform:
-              type: object
-              properties:
-                Name:
-                  type: string
-              required:
-                - Name
-            Components:
-              type: array
-              items:
-                type: object
-                properties:
-                  Name:
-                    type: string
-                  Version:
-                    type: string
-                  Details:
-                    type: object
-                    properties:
-                      ApiVersion:
-                        type: string
-                      Arch:
-                        type: string
-                      BuildTime:
-                        type: string
-                      Experimental:
-                        type: string
-                      GitCommit:
-                        type: string
-                      GoVersion:
-                        type: string
-                      KernelVersion:
-                        type: string
-                      MinAPIVersion:
-                        type: string
-                      Os:
-                        type: string
-                    required:
-                      - GitCommit
-                required:
-                  - Name
-                  - Version
-                  - Details
-            Version:
-              type: string
-            ApiVersion:
-              type: string
-            MinAPIVersion:
-              type: string
-            GitCommit:
-              type: string
-            GoVersion:
-              type: string
-            Os:
-              type: string
-            Arch:
-              type: string
-            KernelVersion:
-              type: string
-            BuildTime:
-              type: string
-          required:
-            - Platform
-            - Components
-            - Version
-            - ApiVersion
-            - MinAPIVersion
-            - GitCommit
-            - GoVersion
-            - Os
-            - Arch
-            - KernelVersion
-            - BuildTime
-      required:
-        - message
-        - configured
-        - version
-        - docker
-    GetSystemUsage200ResponseBody:
-      type: object
-      properties:
-        layers_size:
-          type: integer
-        images:
-          type: object
-          properties:
-            shared_size:
-              type: integer
-            size:
-              type: integer
-            virtual_size:
-              type: integer
-          required:
-            - shared_size
-            - size
-            - virtual_size
-        containers:
-          type: object
-          properties:
-            size_rootfs:
-              type: integer
-          required:
-            - size_rootfs
-        volumes:
-          type: integer
-        build_cache:
-          type: integer
-      required:
-        - layers_size
-        - images
-        - containers
-        - volumes
-        - build_cache
+{
+  "info": {
+    "title": "Docker Agent",
+    "version": "2.0.0",
+    "description": "Interactive Docker Agent API. Execute requests against this agent. Engine webhooks return 202 acknowledgments; prune and SSH key mutations complete synchronously."
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/engine/endpoint": {
+      "get": {
+        "tags": [
+          "agent endpoint"
+        ],
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Register the manager connection or synchronize host inventories",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "url",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Management server URL; omit to synchronize without changing configuration"
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Manager host ID"
+          },
+          {
+            "in": "query",
+            "name": "token",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Management API token"
+          },
+          {
+            "in": "query",
+            "name": "endpoint",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Agent endpoint URL"
+          }
+        ],
+        "operationId": "get_api_engine_endpoint"
+      },
+      "post": {
+        "summary": "Refresh all resources from a host webhook",
+        "responses": {
+          "202": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "data": {
+                  "operation": "refresh",
+                  "state": "refreshing",
+                  "containers": [],
+                  "images": [],
+                  "volumes": [],
+                  "networks": []
+                }
+              }
+            }
+          }
+        },
+        "operationId": "post_api_engine_endpoint"
+      },
+      "delete": {
+        "summary": "Disconnect from the management server",
+        "responses": {
+          "202": {
+            "description": "Success"
+          }
+        },
+        "operationId": "delete_api_engine_endpoint"
+      }
+    },
+    "/api/engine/containers": {
+      "delete": {
+        "tags": [
+          "agent containers"
+        ],
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Delete a container",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "ContainerID"
+                    ],
+                    "properties": {
+                      "ContainerID": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "data": {
+                  "ContainerID": "container-id"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "delete_api_engine_containers"
+      },
+      "get": {
+        "tags": [
+          "agent containers"
+        ],
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Synchronize containers with the configured manager",
+        "operationId": "get_api_engine_containers"
+      },
+      "post": {
+        "tags": [
+          "agent containers"
+        ],
+        "requestBody": {
+          "description": "create Container",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostApiEngineContainers"
+              },
+              "example": {
+                "data": {
+                  "name": "my-container",
+                  "state": "none",
+                  "image": {
+                    "name": "nginx",
+                    "version": "alpine"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a container from a local image",
+        "operationId": "post_api_engine_containers"
+      },
+      "put": {
+        "tags": [
+          "agent containers"
+        ],
+        "requestBody": {
+          "description": "Container operation",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PutApiEngineContainers"
+              },
+              "example": {
+                "data": {
+                  "ContainerID": "container-id",
+                  "name": "my-container",
+                  "operation": "restart"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The agent cannot recreate its own container"
+          }
+        },
+        "summary": "Operate or recreate a container",
+        "operationId": "put_api_engine_containers"
+      }
+    },
+    "/api/engine/images": {
+      "delete": {
+        "tags": [
+          "agent images"
+        ],
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Delete a image",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "ImageID"
+                    ],
+                    "properties": {
+                      "ImageID": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "data": {
+                  "ImageID": "sha256:image-id"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "delete_api_engine_images"
+      },
+      "get": {
+        "tags": [
+          "agent images"
+        ],
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Synchronize images with the configured manager",
+        "operationId": "get_api_engine_images"
+      },
+      "post": {
+        "tags": [
+          "agent images"
+        ],
+        "requestBody": {
+          "description": "create Image",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostApiEngineImages"
+              },
+              "example": {
+                "data": {
+                  "name": "nginx",
+                  "version": "alpine",
+                  "size": 0,
+                  "ImageID": null
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Pull an image",
+        "operationId": "post_api_engine_images"
+      }
+    },
+    "/api/engine/networks": {
+      "delete": {
+        "tags": [
+          "agent networks"
+        ],
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Delete a network",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "name"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "data": {
+                  "name": "my-network"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "delete_api_engine_networks"
+      },
+      "get": {
+        "tags": [
+          "agent networks"
+        ],
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Synchronize networks with the configured manager",
+        "operationId": "get_api_engine_networks"
+      },
+      "post": {
+        "tags": [
+          "agent networks"
+        ],
+        "requestBody": {
+          "description": "create Networks",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostApiEngineNetworks"
+              },
+              "example": {
+                "data": {
+                  "name": "my-network",
+                  "driver": "bridge",
+                  "state": "creating"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a network",
+        "operationId": "post_api_engine_networks"
+      }
+    },
+    "/api/engine/volumes": {
+      "delete": {
+        "tags": [
+          "agent volumes"
+        ],
+        "responses": {
+          "202": {
+            "description": "202 response"
+          }
+        },
+        "summary": "Delete a volume",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "name"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "data": {
+                  "name": "my-volume"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "delete_api_engine_volumes"
+      },
+      "get": {
+        "tags": [
+          "agent volumes"
+        ],
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Synchronize volumes with the configured manager",
+        "operationId": "get_api_engine_volumes"
+      },
+      "post": {
+        "tags": [
+          "agent volumes"
+        ],
+        "requestBody": {
+          "description": "create Networks",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostApiEngineVolumes"
+              },
+              "example": {
+                "data": {
+                  "name": "my-volume",
+                  "driver": "local",
+                  "max_size": 0
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create a volume",
+        "operationId": "post_api_engine_volumes"
+      }
+    },
+    "/api/engine/registries": {
+      "delete": {
+        "summary": "Compatibility acknowledgment (no operation)",
+        "responses": {
+          "202": {
+            "description": "Success"
+          }
+        },
+        "operationId": "delete_api_engine_registries"
+      },
+      "get": {
+        "tags": [
+          "agent registries"
+        ],
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Discover registries from local images",
+        "operationId": "get_api_engine_registries"
+      },
+      "post": {
+        "tags": [
+          "agent registries"
+        ],
+        "responses": {
+          "202": {
+            "description": "202 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Compatibility acknowledgment (no operation)",
+        "operationId": "post_api_engine_registries"
+      }
+    },
+    "/api/containers": {
+      "get": {
+        "tags": [
+          "ui"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiContainers200ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List inspected containers",
+        "operationId": "get_api_containers"
+      }
+    },
+    "/api/engine/containers/{containerId}/logs": {
+      "get": {
+        "summary": "Get log from a Container",
+        "tags": [
+          "ui"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "containerId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The Container unique identifier"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recent timestamped container logs",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get_api_engine_containers_containerId_logs"
+      }
+    },
+    "/api/engine/containers/{containerId}/exec": {
+      "put": {
+        "summary": "Exec a command into a Container",
+        "tags": [
+          "ui"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "containerId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The Container unique identifier"
+          }
+        ],
+        "requestBody": {
+          "description": "The command to exec",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecApiContainersRequestBody"
+              },
+              "example": {
+                "cmd": [
+                  "echo",
+                  "hello"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "JSON-encoded command output",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "{\"stdout\":\"hello\\n\"}"
+              }
+            }
+          }
+        },
+        "operationId": "put_api_engine_containers_containerId_exec"
+      }
+    },
+    "/api/images": {
+      "get": {
+        "tags": [
+          "ui"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiImages200ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List local images",
+        "operationId": "get_api_images"
+      }
+    },
+    "/api/networks": {
+      "get": {
+        "tags": [
+          "ui"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiNetworks200ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List networks",
+        "operationId": "get_api_networks"
+      }
+    },
+    "/api/volumes": {
+      "get": {
+        "tags": [
+          "ui"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetApiVolumes200ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List volumes",
+        "operationId": "get_api_volumes"
+      }
+    },
+    "/metrics": {
+      "get": {
+        "tags": [
+          "metrics"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "text/plain; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Read Prometheus metrics",
+        "operationId": "get_metrics"
+      }
+    },
+    "/info": {
+      "get": {
+        "tags": [
+          "html"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "examples": {
+                  "/info": {
+                    "value": {
+                      "configured": "nok"
+                    }
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/GetInfo200ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Read agent and engine information",
+        "operationId": "get_info"
+      }
+    },
+    "/system/usage": {
+      "get": {
+        "tags": [
+          "metrics"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSystemUsage200ResponseBody"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Read Docker disk allocation",
+        "operationId": "get_system_usage"
+      }
+    },
+    "/doc": {
+      "get": {
+        "tags": [
+          "html"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Open interactive API documentation",
+        "operationId": "get_doc"
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "html"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Open the agent dashboard",
+        "operationId": "get_"
+      }
+    },
+    "/api/registries": {
+      "get": {
+        "summary": "Read persisted registry associations",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "get_api_registries"
+      }
+    },
+    "/api/engine/containers/{containerId}/stats": {
+      "get": {
+        "summary": "Get a nonstreaming Docker statistics snapshot",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "containerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "get_api_engine_containers_containerId_stats"
+      }
+    },
+    "/api/engine/containers/{containerId}/ws": {
+      "post": {
+        "summary": "Reserve an authenticated terminal WebSocket path",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "containerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_api_engine_containers_containerId_ws"
+      }
+    },
+    "/admin/config": {
+      "get": {
+        "summary": "Read configuration with API credentials",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "administration"
+        ],
+        "operationId": "get_admin_config"
+      },
+      "patch": {
+        "summary": "Update configuration with API credentials",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "administration"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "netbox_url": {
+                    "type": "string"
+                  },
+                  "netbox_token": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "endpoint": {
+                    "type": "string"
+                  },
+                  "ui": {
+                    "type": "integer",
+                    "enum": [
+                      0,
+                      1
+                    ]
+                  }
+                }
+              },
+              "example": {
+                "netbox_url": "https://manager.example.com",
+                "netbox_token": "",
+                "id": "",
+                "endpoint": "",
+                "ui": 1
+              }
+            }
+          }
+        },
+        "operationId": "patch_admin_config"
+      }
+    },
+    "/api/engine/containers/prune": {
+      "post": {
+        "tags": [
+          "cleanup"
+        ],
+        "operationId": "pruneContainers",
+        "summary": "Prune containers",
+        "description": "Delete stopped containers matching the filters. Attached volumes are retained. Synchronous: HTTP 200 means Docker completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use Docker string-array syntax.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "filters": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "until": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label!": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "data"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "filters": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "until": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label!": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "data": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed Docker prune report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ContainersDeleted": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "SpaceReclaimed": {
+                      "type": "integer",
+                      "format": "int64",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid options or Docker filters"
+          },
+          "401": {
+            "description": "API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "409": {
+            "description": "Another agent operation or Docker prune is in progress"
+          },
+          "500": {
+            "description": "Docker prune failed"
+          },
+          "502": {
+            "description": "Docker engine unavailable"
+          }
+        }
+      }
+    },
+    "/api/engine/images/prune": {
+      "post": {
+        "tags": [
+          "cleanup"
+        ],
+        "operationId": "pruneImages",
+        "summary": "Prune images",
+        "description": "Delete unused dangling images by default. all=true includes unused tagged images. Synchronous: HTTP 200 means Docker completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use Docker string-array syntax.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "filters": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "until": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label!": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          }
+                        }
+                      },
+                      "all": {
+                        "type": "boolean",
+                        "default": false
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "data"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "filters": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "until": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label!": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              }
+                            }
+                          },
+                          "all": {
+                            "type": "boolean",
+                            "default": false
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "data": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed Docker prune report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ImagesDeleted": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Deleted": {
+                            "type": "string"
+                          },
+                          "Untagged": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "SpaceReclaimed": {
+                      "type": "integer",
+                      "format": "int64",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid options or Docker filters"
+          },
+          "401": {
+            "description": "API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "409": {
+            "description": "Another agent operation or Docker prune is in progress"
+          },
+          "500": {
+            "description": "Docker prune failed"
+          },
+          "502": {
+            "description": "Docker engine unavailable"
+          }
+        }
+      }
+    },
+    "/api/engine/volumes/prune": {
+      "post": {
+        "tags": [
+          "cleanup"
+        ],
+        "operationId": "pruneVolumes",
+        "summary": "Prune volumes",
+        "description": "Delete unused anonymous volumes by default. all=true includes unused named volumes and their data. Synchronous: HTTP 200 means Docker completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use Docker string-array syntax.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "filters": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "label": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label!": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          }
+                        }
+                      },
+                      "all": {
+                        "type": "boolean",
+                        "default": false
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "data"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "filters": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "label": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label!": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              }
+                            }
+                          },
+                          "all": {
+                            "type": "boolean",
+                            "default": false
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "data": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed Docker prune report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "VolumesDeleted": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "SpaceReclaimed": {
+                      "type": "integer",
+                      "format": "int64",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid options or Docker filters"
+          },
+          "401": {
+            "description": "API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "409": {
+            "description": "Another agent operation or Docker prune is in progress"
+          },
+          "500": {
+            "description": "Docker prune failed"
+          },
+          "502": {
+            "description": "Docker engine unavailable"
+          }
+        }
+      }
+    },
+    "/api/engine/networks/prune": {
+      "post": {
+        "tags": [
+          "cleanup"
+        ],
+        "operationId": "pruneNetworks",
+        "summary": "Prune networks",
+        "description": "Delete unused custom networks. Built-in and attached networks are retained. Synchronous: HTTP 200 means Docker completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use Docker string-array syntax.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "filters": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "until": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label!": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "data"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "filters": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "until": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label!": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "data": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed Docker prune report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "NetworksDeleted": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid options or Docker filters"
+          },
+          "401": {
+            "description": "API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "409": {
+            "description": "Another agent operation or Docker prune is in progress"
+          },
+          "500": {
+            "description": "Docker prune failed"
+          },
+          "502": {
+            "description": "Docker engine unavailable"
+          }
+        }
+      }
+    },
+    "/api/engine/build-cache/prune": {
+      "post": {
+        "tags": [
+          "cleanup"
+        ],
+        "operationId": "pruneBuildCache",
+        "summary": "Prune build cache",
+        "description": "Prune this engine build cache; separate remote builders are not targeted. Synchronous: HTTP 200 means Docker completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use Docker string-array syntax.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "filters": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "until": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "id": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "parent": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "type": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "description": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "inuse": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "shared": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "private": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          }
+                        }
+                      },
+                      "all": {
+                        "type": "boolean",
+                        "default": false
+                      },
+                      "keep_storage": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "description": "Build cache bytes to retain."
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "data"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "filters": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "until": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "id": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "parent": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "type": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "description": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "inuse": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "shared": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "private": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              }
+                            }
+                          },
+                          "all": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "keep_storage": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Build cache bytes to retain."
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "data": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed Docker prune report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CachesDeleted": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "SpaceReclaimed": {
+                      "type": "integer",
+                      "format": "int64",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid options or Docker filters"
+          },
+          "401": {
+            "description": "API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "409": {
+            "description": "Another agent operation or Docker prune is in progress"
+          },
+          "500": {
+            "description": "Docker prune failed"
+          },
+          "502": {
+            "description": "Docker engine unavailable"
+          }
+        }
+      }
+    },
+    "/api/ssh-keys": {
+      "get": {
+        "summary": "List host authorized SSH public keys",
+        "tags": [
+          "host SSH keys"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Completed operation"
+          },
+          "400": {
+            "description": "Invalid key, revision or fields"
+          },
+          "401": {
+            "description": "Dashboard/API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "404": {
+            "description": "Disabled or missing key"
+          },
+          "409": {
+            "description": "Stale revision, concurrent edit or unsafe file metadata"
+          },
+          "413": {
+            "description": "Size limit exceeded"
+          },
+          "500": {
+            "description": "SSH file write/recovery failed; backup retained"
+          },
+          "502": {
+            "description": "Mounted file or backup filesystem error"
+          }
+        },
+        "operationId": "get_api_ssh_keys"
+      },
+      "post": {
+        "summary": "Authorize one host SSH public key",
+        "tags": [
+          "host SSH keys"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Completed operation"
+          },
+          "400": {
+            "description": "Invalid key, revision or fields"
+          },
+          "401": {
+            "description": "Dashboard/API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "404": {
+            "description": "Disabled or missing key"
+          },
+          "409": {
+            "description": "Stale revision, concurrent edit or unsafe file metadata"
+          },
+          "413": {
+            "description": "Size limit exceeded"
+          },
+          "500": {
+            "description": "SSH file write/recovery failed; backup retained"
+          },
+          "502": {
+            "description": "Mounted file or backup filesystem error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "publicKey",
+                  "revision"
+                ],
+                "properties": {
+                  "revision": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "publicKey": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "post_api_ssh_keys"
+      },
+      "delete": {
+        "summary": "Remove a host SSH key entry",
+        "tags": [
+          "host SSH keys"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Completed operation"
+          },
+          "400": {
+            "description": "Invalid key, revision or fields"
+          },
+          "401": {
+            "description": "Dashboard/API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "404": {
+            "description": "Disabled or missing key"
+          },
+          "409": {
+            "description": "Stale revision, concurrent edit or unsafe file metadata"
+          },
+          "413": {
+            "description": "Size limit exceeded"
+          },
+          "500": {
+            "description": "SSH file write/recovery failed; backup retained"
+          },
+          "502": {
+            "description": "Mounted file or backup filesystem error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "revision"
+                ],
+                "properties": {
+                  "revision": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "delete_api_ssh_keys"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PostApiEngineRegistry": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "server": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "PostApiEngineVolumes": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "driver": {
+                "type": "string",
+                "enum": [
+                  "local"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "PostApiEngineNetworks": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "driver": {
+                "type": "string",
+                "enum": [
+                  "bridge",
+                  "host",
+                  "none"
+                ]
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "creating"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "PostApiEngineImages": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              },
+              "size": {
+                "type": "number"
+              },
+              "ImageID": {
+                "type": "string",
+                "nullable": true
+              },
+              "force": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
+      "PostApiEngineContainers": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              },
+              "ContainerID": {
+                "type": "string"
+              },
+              "image": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  }
+                }
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "none"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "PutApiEngineContainers": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "hostname": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "ContainerID": {
+                "type": "string"
+              },
+              "restart_policy": {
+                "type": "string",
+                "enum": [
+                  "no",
+                  "on-failure",
+                  "always",
+                  "unless-stopped"
+                ]
+              },
+              "extra_hosts": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "example": "example: host.local:10.11.12.13"
+                }
+              },
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "restart",
+                  "start",
+                  "stop",
+                  "recreate",
+                  "rename",
+                  "kill",
+                  "pause",
+                  "unpause",
+                  "none"
+                ]
+              },
+              "image": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "ImageID": {
+                    "type": "string"
+                  }
+                }
+              },
+              "labels": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "key",
+                    "value"
+                  ],
+                  "properties": {
+                    "key": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "env": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "var_name",
+                    "value"
+                  ],
+                  "properties": {
+                    "var_name": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "ports": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "private_port": {
+                      "type": "integer"
+                    },
+                    "public_port": {
+                      "type": "integer"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "tcp",
+                        "udp",
+                        "sctp"
+                      ]
+                    }
+                  }
+                }
+              },
+              "mounts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "type": "string",
+                      "description": "Container path"
+                    },
+                    "volume": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "read_only": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              "network_settings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "network": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "NetworkID": {
+                          "type": "string"
+                        },
+                        "driver": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "binds": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "host_path": {
+                      "type": "string"
+                    },
+                    "container_path": {
+                      "type": "string"
+                    },
+                    "read_only": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetApiContainers200ResponseBody": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Id": {
+              "type": "string"
+            },
+            "Created": {
+              "type": "string"
+            },
+            "Path": {
+              "type": "string"
+            },
+            "Args": {
+              "type": "array",
+              "items": {}
+            },
+            "State": {
+              "type": "object",
+              "properties": {
+                "Status": {
+                  "type": "string"
+                },
+                "Running": {
+                  "type": "boolean"
+                },
+                "Paused": {
+                  "type": "boolean"
+                },
+                "Restarting": {
+                  "type": "boolean"
+                },
+                "OOMKilled": {
+                  "type": "boolean"
+                },
+                "Dead": {
+                  "type": "boolean"
+                },
+                "Pid": {
+                  "type": "number"
+                },
+                "ExitCode": {
+                  "type": "number"
+                },
+                "Error": {
+                  "type": "string"
+                },
+                "StartedAt": {
+                  "type": "string"
+                },
+                "FinishedAt": {
+                  "type": "string"
+                },
+                "Health": {
+                  "type": "object",
+                  "properties": {
+                    "Status": {
+                      "type": "string"
+                    },
+                    "FailingStreak": {
+                      "type": "number"
+                    },
+                    "Log": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Start": {
+                            "type": "string"
+                          },
+                          "End": {
+                            "type": "string"
+                          },
+                          "ExitCode": {
+                            "type": "number"
+                          },
+                          "Output": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "Start",
+                          "End",
+                          "ExitCode",
+                          "Output"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "Status",
+                    "FailingStreak",
+                    "Log"
+                  ]
+                }
+              },
+              "required": [
+                "Status",
+                "Running",
+                "Paused",
+                "Restarting",
+                "OOMKilled",
+                "Dead",
+                "Pid",
+                "ExitCode",
+                "Error",
+                "StartedAt",
+                "FinishedAt"
+              ]
+            },
+            "Image": {
+              "type": "string"
+            },
+            "ResolvConfPath": {
+              "type": "string"
+            },
+            "HostnamePath": {
+              "type": "string"
+            },
+            "HostsPath": {
+              "type": "string"
+            },
+            "LogPath": {
+              "type": "string"
+            },
+            "Name": {
+              "type": "string"
+            },
+            "RestartCount": {
+              "type": "number"
+            },
+            "Driver": {
+              "type": "string"
+            },
+            "Platform": {
+              "type": "string"
+            },
+            "MountLabel": {
+              "type": "string"
+            },
+            "ProcessLabel": {
+              "type": "string"
+            },
+            "AppArmorProfile": {
+              "type": "string"
+            },
+            "ExecIDs": {
+              "type": "string"
+            },
+            "HostConfig": {
+              "type": "object",
+              "properties": {
+                "Binds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "ContainerIDFile": {
+                  "type": "string"
+                },
+                "LogConfig": {
+                  "type": "object",
+                  "properties": {
+                    "Type": {
+                      "type": "string"
+                    },
+                    "Config": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "Type",
+                    "Config"
+                  ]
+                },
+                "NetworkMode": {
+                  "type": "string"
+                },
+                "PortBindings": {
+                  "type": "object"
+                },
+                "RestartPolicy": {
+                  "type": "object",
+                  "properties": {
+                    "Name": {
+                      "type": "string"
+                    },
+                    "MaximumRetryCount": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "Name",
+                    "MaximumRetryCount"
+                  ]
+                },
+                "AutoRemove": {
+                  "type": "boolean"
+                },
+                "VolumeDriver": {
+                  "type": "string"
+                },
+                "VolumesFrom": {
+                  "type": "string"
+                },
+                "ConsoleSize": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "CapAdd": {
+                  "type": "string"
+                },
+                "CapDrop": {
+                  "type": "string"
+                },
+                "CgroupnsMode": {
+                  "type": "string"
+                },
+                "Dns": {
+                  "type": "array",
+                  "items": {}
+                },
+                "DnsOptions": {
+                  "type": "array",
+                  "items": {}
+                },
+                "DnsSearch": {
+                  "type": "array",
+                  "items": {}
+                },
+                "ExtraHosts": {
+                  "type": "string"
+                },
+                "GroupAdd": {
+                  "type": "string"
+                },
+                "IpcMode": {
+                  "type": "string"
+                },
+                "Cgroup": {
+                  "type": "string"
+                },
+                "Links": {
+                  "type": "string"
+                },
+                "OomScoreAdj": {
+                  "type": "number"
+                },
+                "PidMode": {
+                  "type": "string"
+                },
+                "Privileged": {
+                  "type": "boolean"
+                },
+                "PublishAllPorts": {
+                  "type": "boolean"
+                },
+                "ReadonlyRootfs": {
+                  "type": "boolean"
+                },
+                "SecurityOpt": {
+                  "type": "string"
+                },
+                "UTSMode": {
+                  "type": "string"
+                },
+                "UsernsMode": {
+                  "type": "string"
+                },
+                "ShmSize": {
+                  "type": "number"
+                },
+                "Runtime": {
+                  "type": "string"
+                },
+                "Isolation": {
+                  "type": "string"
+                },
+                "CpuShares": {
+                  "type": "number"
+                },
+                "Memory": {
+                  "type": "number"
+                },
+                "NanoCpus": {
+                  "type": "number"
+                },
+                "CgroupParent": {
+                  "type": "string"
+                },
+                "BlkioWeight": {
+                  "type": "number"
+                },
+                "BlkioWeightDevice": {
+                  "type": "array",
+                  "items": {}
+                },
+                "BlkioDeviceReadBps": {
+                  "type": "array",
+                  "items": {}
+                },
+                "BlkioDeviceWriteBps": {
+                  "type": "array",
+                  "items": {}
+                },
+                "BlkioDeviceReadIOps": {
+                  "type": "array",
+                  "items": {}
+                },
+                "BlkioDeviceWriteIOps": {
+                  "type": "array",
+                  "items": {}
+                },
+                "CpuPeriod": {
+                  "type": "number"
+                },
+                "CpuQuota": {
+                  "type": "number"
+                },
+                "CpuRealtimePeriod": {
+                  "type": "number"
+                },
+                "CpuRealtimeRuntime": {
+                  "type": "number"
+                },
+                "CpusetCpus": {
+                  "type": "string"
+                },
+                "CpusetMems": {
+                  "type": "string"
+                },
+                "Devices": {
+                  "type": "array",
+                  "items": {}
+                },
+                "DeviceCgroupRules": {
+                  "type": "string"
+                },
+                "DeviceRequests": {
+                  "type": "string"
+                },
+                "MemoryReservation": {
+                  "type": "number"
+                },
+                "MemorySwap": {
+                  "type": "number"
+                },
+                "MemorySwappiness": {
+                  "type": "string"
+                },
+                "OomKillDisable": {
+                  "type": "string"
+                },
+                "PidsLimit": {
+                  "type": "string"
+                },
+                "Ulimits": {
+                  "type": "string"
+                },
+                "CpuCount": {
+                  "type": "number"
+                },
+                "CpuPercent": {
+                  "type": "number"
+                },
+                "IOMaximumIOps": {
+                  "type": "number"
+                },
+                "IOMaximumBandwidth": {
+                  "type": "number"
+                },
+                "MaskedPaths": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "ReadonlyPaths": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "Binds",
+                "ContainerIDFile",
+                "LogConfig",
+                "NetworkMode",
+                "PortBindings",
+                "RestartPolicy",
+                "AutoRemove",
+                "VolumeDriver",
+                "VolumesFrom",
+                "ConsoleSize",
+                "CapAdd",
+                "CapDrop",
+                "CgroupnsMode",
+                "Dns",
+                "DnsOptions",
+                "DnsSearch",
+                "ExtraHosts",
+                "GroupAdd",
+                "IpcMode",
+                "Cgroup",
+                "Links",
+                "OomScoreAdj",
+                "PidMode",
+                "Privileged",
+                "PublishAllPorts",
+                "ReadonlyRootfs",
+                "SecurityOpt",
+                "UTSMode",
+                "UsernsMode",
+                "ShmSize",
+                "Runtime",
+                "Isolation",
+                "CpuShares",
+                "Memory",
+                "NanoCpus",
+                "CgroupParent",
+                "BlkioWeight",
+                "BlkioWeightDevice",
+                "BlkioDeviceReadBps",
+                "BlkioDeviceWriteBps",
+                "BlkioDeviceReadIOps",
+                "BlkioDeviceWriteIOps",
+                "CpuPeriod",
+                "CpuQuota",
+                "CpuRealtimePeriod",
+                "CpuRealtimeRuntime",
+                "CpusetCpus",
+                "CpusetMems",
+                "Devices",
+                "DeviceCgroupRules",
+                "DeviceRequests",
+                "MemoryReservation",
+                "MemorySwap",
+                "MemorySwappiness",
+                "OomKillDisable",
+                "PidsLimit",
+                "Ulimits",
+                "CpuCount",
+                "CpuPercent",
+                "IOMaximumIOps",
+                "IOMaximumBandwidth",
+                "MaskedPaths",
+                "ReadonlyPaths"
+              ]
+            },
+            "GraphDriver": {
+              "type": "object",
+              "properties": {
+                "Data": {
+                  "type": "object",
+                  "properties": {
+                    "LowerDir": {
+                      "type": "string"
+                    },
+                    "MergedDir": {
+                      "type": "string"
+                    },
+                    "UpperDir": {
+                      "type": "string"
+                    },
+                    "WorkDir": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "LowerDir",
+                    "MergedDir",
+                    "UpperDir",
+                    "WorkDir"
+                  ]
+                },
+                "Name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Data",
+                "Name"
+              ]
+            },
+            "Mounts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Type": {
+                    "type": "string"
+                  },
+                  "Source": {
+                    "type": "string"
+                  },
+                  "Destination": {
+                    "type": "string"
+                  },
+                  "Mode": {
+                    "type": "string"
+                  },
+                  "RW": {
+                    "type": "boolean"
+                  },
+                  "Propagation": {
+                    "type": "string"
+                  },
+                  "Name": {
+                    "type": "string"
+                  },
+                  "Driver": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "Type",
+                  "Source",
+                  "Destination",
+                  "Mode",
+                  "RW",
+                  "Propagation"
+                ]
+              }
+            },
+            "Config": {
+              "type": "object",
+              "properties": {
+                "Hostname": {
+                  "type": "string"
+                },
+                "Domainname": {
+                  "type": "string"
+                },
+                "User": {
+                  "type": "string"
+                },
+                "AttachStdin": {
+                  "type": "boolean"
+                },
+                "AttachStdout": {
+                  "type": "boolean"
+                },
+                "AttachStderr": {
+                  "type": "boolean"
+                },
+                "ExposedPorts": {
+                  "type": "object"
+                },
+                "Tty": {
+                  "type": "boolean"
+                },
+                "OpenStdin": {
+                  "type": "boolean"
+                },
+                "StdinOnce": {
+                  "type": "boolean"
+                },
+                "Env": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "Cmd": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "Healthcheck": {
+                  "type": "object",
+                  "properties": {
+                    "Test": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "Test"
+                  ]
+                },
+                "Image": {
+                  "type": "string"
+                },
+                "Volumes": {
+                  "type": "string"
+                },
+                "WorkingDir": {
+                  "type": "string"
+                },
+                "Entrypoint": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "OnBuild": {
+                  "type": "string"
+                },
+                "Labels": {
+                  "type": "object"
+                },
+                "StopSignal": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Hostname",
+                "Domainname",
+                "User",
+                "AttachStdin",
+                "AttachStdout",
+                "AttachStderr",
+                "ExposedPorts",
+                "Tty",
+                "OpenStdin",
+                "StdinOnce",
+                "Env",
+                "Cmd",
+                "Image",
+                "Volumes",
+                "WorkingDir",
+                "Entrypoint",
+                "OnBuild",
+                "Labels"
+              ]
+            },
+            "NetworkSettings": {
+              "type": "object",
+              "properties": {
+                "Bridge": {
+                  "type": "string"
+                },
+                "SandboxID": {
+                  "type": "string"
+                },
+                "HairpinMode": {
+                  "type": "boolean"
+                },
+                "LinkLocalIPv6Address": {
+                  "type": "string"
+                },
+                "LinkLocalIPv6PrefixLen": {
+                  "type": "number"
+                },
+                "Ports": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "SandboxKey": {
+                  "type": "string"
+                },
+                "SecondaryIPAddresses": {
+                  "type": "string"
+                },
+                "SecondaryIPv6Addresses": {
+                  "type": "string"
+                },
+                "EndpointID": {
+                  "type": "string"
+                },
+                "Gateway": {
+                  "type": "string"
+                },
+                "GlobalIPv6Address": {
+                  "type": "string"
+                },
+                "GlobalIPv6PrefixLen": {
+                  "type": "number"
+                },
+                "IPAddress": {
+                  "type": "string"
+                },
+                "IPPrefixLen": {
+                  "type": "number"
+                },
+                "IPv6Gateway": {
+                  "type": "string"
+                },
+                "MacAddress": {
+                  "type": "string"
+                },
+                "Networks": {
+                  "type": "object",
+                  "properties": {
+                    "bridge": {
+                      "type": "object",
+                      "properties": {
+                        "IPAMConfig": {
+                          "type": "string"
+                        },
+                        "Links": {
+                          "type": "string"
+                        },
+                        "Aliases": {
+                          "type": "string"
+                        },
+                        "NetworkID": {
+                          "type": "string"
+                        },
+                        "EndpointID": {
+                          "type": "string"
+                        },
+                        "Gateway": {
+                          "type": "string"
+                        },
+                        "IPAddress": {
+                          "type": "string"
+                        },
+                        "IPPrefixLen": {
+                          "type": "number"
+                        },
+                        "IPv6Gateway": {
+                          "type": "string"
+                        },
+                        "GlobalIPv6Address": {
+                          "type": "string"
+                        },
+                        "GlobalIPv6PrefixLen": {
+                          "type": "number"
+                        },
+                        "MacAddress": {
+                          "type": "string"
+                        },
+                        "DriverOpts": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "IPAMConfig",
+                        "Links",
+                        "Aliases",
+                        "NetworkID",
+                        "EndpointID",
+                        "Gateway",
+                        "IPAddress",
+                        "IPPrefixLen",
+                        "IPv6Gateway",
+                        "GlobalIPv6Address",
+                        "GlobalIPv6PrefixLen",
+                        "MacAddress",
+                        "DriverOpts"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bridge"
+                  ]
+                }
+              },
+              "required": [
+                "Bridge",
+                "SandboxID",
+                "HairpinMode",
+                "LinkLocalIPv6Address",
+                "LinkLocalIPv6PrefixLen",
+                "Ports",
+                "SandboxKey",
+                "SecondaryIPAddresses",
+                "SecondaryIPv6Addresses",
+                "EndpointID",
+                "Gateway",
+                "GlobalIPv6Address",
+                "GlobalIPv6PrefixLen",
+                "IPAddress",
+                "IPPrefixLen",
+                "IPv6Gateway",
+                "MacAddress",
+                "Networks"
+              ]
+            }
+          },
+          "required": [
+            "Id",
+            "Created",
+            "Path",
+            "Args",
+            "State",
+            "Image",
+            "ResolvConfPath",
+            "HostnamePath",
+            "HostsPath",
+            "LogPath",
+            "Name",
+            "RestartCount",
+            "Driver",
+            "Platform",
+            "MountLabel",
+            "ProcessLabel",
+            "AppArmorProfile",
+            "ExecIDs",
+            "HostConfig",
+            "GraphDriver",
+            "Mounts",
+            "Config",
+            "NetworkSettings"
+          ]
+        }
+      },
+      "ExecApiContainersRequestBody": {
+        "type": "object",
+        "properties": {
+          "cmd": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "cmd"
+        ],
+        "example": {
+          "cmd": [
+            "ls",
+            "-al"
+          ]
+        }
+      },
+      "ExecApiContainers200ResponseBody": {
+        "type": "object",
+        "properties": {
+          "stdout": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "stdout"
+        ],
+        "example": {
+          "stdout": "total 10\ndrwxr-xr-x  24 user group    768 avr 30 09:57 ./\ndrwxr-xr-x  13 user group    416 mar 13 17:54 ../\ndrwxr-xr-x 435 user group  13920 f\u00e9v 21 18:10 test1/\n-rw-r--r--   1 user group 250200 avr 30 09:57 file1.json\n"
+        }
+      },
+      "LogsApiContainers200ResponseBody": {
+        "type": "string",
+        "example": "2024-05-10T11:42:08.530171933Z 2024/05/10 11:42:08 [notice] 28#28: start worker process 30\n2024-05-10T11:42:08.532813004Z 2024/05/10 11:42:08 [notice] 28#28: start worker process 31\n2024-05-10T11:42:08.532852562Z 2024/05/10 11:42:08 [notice] 28#28: start worker process 32\n"
+      },
+      "GetApiEngine202ResponseBody": {
+        "type": "object"
+      },
+      "GetApiImages200ResponseBody": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Containers": {
+              "type": "number"
+            },
+            "Created": {
+              "type": "number"
+            },
+            "Id": {
+              "type": "string"
+            },
+            "Labels": {
+              "type": "object"
+            },
+            "ParentId": {
+              "type": "string"
+            },
+            "RepoDigests": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "RepoTags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "SharedSize": {
+              "type": "number"
+            },
+            "Size": {
+              "type": "number"
+            },
+            "VirtualSize": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "Containers",
+            "Created",
+            "Id",
+            "Labels",
+            "ParentId",
+            "RepoDigests",
+            "RepoTags",
+            "SharedSize",
+            "Size",
+            "VirtualSize"
+          ]
+        }
+      },
+      "GetApiNetworks200ResponseBody": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "Name": {
+              "type": "string"
+            },
+            "Id": {
+              "type": "string"
+            },
+            "Created": {
+              "type": "string"
+            },
+            "Scope": {
+              "type": "string"
+            },
+            "Driver": {
+              "type": "string"
+            },
+            "EnableIPv6": {
+              "type": "boolean"
+            },
+            "IPAM": {
+              "type": "object",
+              "properties": {
+                "Driver": {
+                  "type": "string"
+                },
+                "Options": {
+                  "type": "string"
+                },
+                "Config": {
+                  "type": "array",
+                  "items": {}
+                }
+              },
+              "required": [
+                "Driver",
+                "Options",
+                "Config"
+              ]
+            },
+            "Internal": {
+              "type": "boolean"
+            },
+            "Attachable": {
+              "type": "boolean"
+            },
+            "Ingress": {
+              "type": "boolean"
+            },
+            "ConfigFrom": {
+              "type": "object",
+              "properties": {
+                "Network": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "Network"
+              ]
+            },
+            "ConfigOnly": {
+              "type": "boolean"
+            },
+            "Containers": {
+              "type": "object"
+            },
+            "Options": {
+              "type": "object",
+              "properties": {
+                "com.docker.network.bridge.default_bridge": {
+                  "type": "string"
+                },
+                "com.docker.network.bridge.enable_icc": {
+                  "type": "string"
+                },
+                "com.docker.network.bridge.enable_ip_masquerade": {
+                  "type": "string"
+                },
+                "com.docker.network.bridge.host_binding_ipv4": {
+                  "type": "string"
+                },
+                "com.docker.network.bridge.name": {
+                  "type": "string"
+                },
+                "com.docker.network.driver.mtu": {
+                  "type": "string"
+                }
+              }
+            },
+            "Labels": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "Name",
+            "Id",
+            "Created",
+            "Scope",
+            "Driver",
+            "EnableIPv6",
+            "IPAM",
+            "Internal",
+            "Attachable",
+            "Ingress",
+            "ConfigFrom",
+            "ConfigOnly",
+            "Containers",
+            "Options",
+            "Labels"
+          ]
+        }
+      },
+      "GetApiVolumes200ResponseBody": {
+        "type": "object",
+        "properties": {
+          "Volumes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "CreatedAt": {
+                  "type": "string"
+                },
+                "Driver": {
+                  "type": "string"
+                },
+                "Labels": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "com.docker.volume.anonymous": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "com.docker.volume.anonymous"
+                      ]
+                    }
+                  ]
+                },
+                "Mountpoint": {
+                  "type": "string"
+                },
+                "Name": {
+                  "type": "string"
+                },
+                "Options": {
+                  "type": "string"
+                },
+                "Scope": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "CreatedAt",
+                "Driver",
+                "Labels",
+                "Mountpoint",
+                "Name",
+                "Options",
+                "Scope"
+              ]
+            }
+          },
+          "Warnings": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "Volumes",
+          "Warnings"
+        ]
+      },
+      "GetApiRegistries200ResponseBody": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "id": {
+              "type": "number"
+            },
+            "username": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "server": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "GetInfo200ResponseBody": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "configured": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "docker": {
+            "type": "object",
+            "properties": {
+              "Platform": {
+                "type": "object",
+                "properties": {
+                  "Name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "Name"
+                ]
+              },
+              "Components": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "Name": {
+                      "type": "string"
+                    },
+                    "Version": {
+                      "type": "string"
+                    },
+                    "Details": {
+                      "type": "object",
+                      "properties": {
+                        "ApiVersion": {
+                          "type": "string"
+                        },
+                        "Arch": {
+                          "type": "string"
+                        },
+                        "BuildTime": {
+                          "type": "string"
+                        },
+                        "Experimental": {
+                          "type": "string"
+                        },
+                        "GitCommit": {
+                          "type": "string"
+                        },
+                        "GoVersion": {
+                          "type": "string"
+                        },
+                        "KernelVersion": {
+                          "type": "string"
+                        },
+                        "MinAPIVersion": {
+                          "type": "string"
+                        },
+                        "Os": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "GitCommit"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "Name",
+                    "Version",
+                    "Details"
+                  ]
+                }
+              },
+              "Version": {
+                "type": "string"
+              },
+              "ApiVersion": {
+                "type": "string"
+              },
+              "MinAPIVersion": {
+                "type": "string"
+              },
+              "GitCommit": {
+                "type": "string"
+              },
+              "GoVersion": {
+                "type": "string"
+              },
+              "Os": {
+                "type": "string"
+              },
+              "Arch": {
+                "type": "string"
+              },
+              "KernelVersion": {
+                "type": "string"
+              },
+              "BuildTime": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "Platform",
+              "Components",
+              "Version",
+              "ApiVersion",
+              "MinAPIVersion",
+              "GitCommit",
+              "GoVersion",
+              "Os",
+              "Arch",
+              "KernelVersion",
+              "BuildTime"
+            ]
+          },
+          "uptime": {
+            "type": "object",
+            "description": "Uptime in seconds for the operating system running the agent and the agent process.",
+            "properties": {
+              "system": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Agent host operating system uptime in seconds; not the uptime of a remote Docker daemon."
+              },
+              "agent": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Agent process uptime in seconds."
+              }
+            },
+            "required": [
+              "system",
+              "agent"
+            ]
+          }
+        },
+        "required": [
+          "message",
+          "configured",
+          "version",
+          "docker"
+        ]
+      },
+      "GetSystemUsage200ResponseBody": {
+        "type": "object",
+        "properties": {
+          "layers_size": {
+            "type": "integer"
+          },
+          "images": {
+            "type": "object",
+            "properties": {
+              "shared_size": {
+                "type": "integer"
+              },
+              "size": {
+                "type": "integer"
+              },
+              "virtual_size": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "shared_size",
+              "size",
+              "virtual_size"
+            ]
+          },
+          "containers": {
+            "type": "object",
+            "properties": {
+              "size_rootfs": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "size_rootfs"
+            ]
+          },
+          "volumes": {
+            "type": "integer"
+          },
+          "build_cache": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "layers_size",
+          "images",
+          "containers",
+          "volumes",
+          "build_cache"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Dashboard/API credentials: API_USERNAME and API_PASSWORD"
+      }
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "/",
+      "description": "This agent"
+    }
+  ]
+}

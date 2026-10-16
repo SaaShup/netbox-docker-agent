@@ -13,7 +13,8 @@ test.describe("images tab actions", () => {
     const card = page.locator("#images-list .card").filter({ hasText: "busybox" }).first();
     await expect(card).toBeVisible();
 
-    await card.locator('button[onclick^="deleteImage"]').click();
+    page.once("dialog", dialog => dialog.accept());
+    await card.getByRole("button", {name:"Remove", exact:true}).click();
     await expect(page.locator("#modalNotificationTitle")).toContainText("Delete image");
 
     await expect
@@ -29,7 +30,7 @@ test.describe("images tab actions", () => {
     const card = page.locator("#images-list .card").filter({ hasText: "nginx" }).first();
     await expect(card).toBeVisible();
 
-    await card.locator('button[onclick^="pullImage"]').click();
+    await card.getByRole("button", {name:"Pull", exact:true}).click();
     await expect(page.locator("#modalNotificationTitle")).toContainText("Pulling image");
 
     // give the (forced) pull a moment, then confirm it is still there

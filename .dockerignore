@@ -1,0 +1,10 @@
+.git
+node_modules
+tests
+docs
+*.log
+config.js
+registries.js
+.agents
+.codex
+.aws

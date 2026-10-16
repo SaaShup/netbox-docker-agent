@@ -1,0 +1,24 @@
+
+> netbox-docker-image-upgrade@3.22.0 test:integration
+> playwright test -c tests/integration/playwright.config.js --output=/tmp/nda-staged-settings-clean-results
+
+
+Running 13 tests using 1 worker
+
+(node:392819) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [integration-chromium] › tests/integration/full-flow.spec.js:263:1 › create docker host (3.3s)
+  ✓   2 [integration-chromium] › tests/integration/full-flow.spec.js:330:1 › create cloudflare in paasbox (449ms)
+  ✓   3 [integration-chromium] › tests/integration/full-flow.spec.js:342:1 › create keycloak server in paasbox (41.2s)
+  ✓   4 [integration-chromium] › tests/integration/full-flow.spec.js:1033:1 › enrolls an image, creates an instance from it (50.5s)
+  ✓   5 [integration-chromium] › tests/integration/full-flow.spec.js:1185:1 › shows both in the app (1.9s)
+  ✓   6 [integration-chromium] › tests/integration/full-flow.spec.js:1200:1 › ordered containers report the initial image version (5.3s)
+  ✓   7 [integration-chromium] › tests/integration/full-flow.spec.js:1207:1 › registry webhook updates enrolled image and writes ready email to SMTP sink (32.1s)
+  ✓   8 [integration-chromium] › tests/integration/full-flow.spec.js:1240:1 › ordered containers report the upgraded image version (5.4s)
+  ✓   9 [integration-chromium] › tests/integration/full-flow.spec.js:1247:1 › deletes them (40.1s)
+  ✓  10 [integration-chromium] › tests/integration/full-flow.spec.js:1276:3 › branding › creates a branding with an uploaded logo through the admin UI (1.5s)
+  ✓  11 [integration-chromium] › tests/integration/full-flow.spec.js:1302:3 › branding › rejects unsafe branding asset paths (28ms)
+  ✓  12 [integration-chromium] › tests/integration/full-flow.spec.js:1309:3 › branding › applies the branding attached to the integration profile on the order page (845ms)
+  ✓  13 [integration-chromium] › tests/integration/full-flow.spec.js:1334:3 › branding › deleting the branding removes the asset, detaches the profile and restores the default look (774ms)
+
+  13 passed (3.1m)

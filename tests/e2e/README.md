@@ -1,42 +1,25 @@
-# Web UI end-to-end tests (Playwright)
+# Browser tests
 
-Browser tests for the agent's dashboard ([public/index.html](../../public/index.html)),
-driving the real UI against a running agent + daemon.
+The original Playwright scenarios are retained and adapted to the vanilla dashboard's semantic controls. They cover navigation, counts, live lists, start/stop/kill/restart, timestamped logs, HTTP exec, a real interactive terminal, image pull/removal and operation notifications. Additional scenarios cover hostile Docker metadata, narrow viewports and JSON validation.
 
-## Coverage
-
-- `01-navigation.spec.ts` (**P1**) — the page loads without JS errors, the title
-  is correct, every tab switches sections, and Home renders the host info and
-  the system-usage chart.
-- `02-lists.spec.ts` (**P2**) — a container/image/network seeded via the agent
-  API shows up in the corresponding UI list, with the right count.
-- `03-container-actions.spec.ts` (**P3**) — the Start / Stop / Kill / Restart
-  buttons in a container card drive real operations: the test clicks the
-  button, confirms the notification modal, and verifies the resulting daemon
-  state via the API.
-- `04-logs.spec.ts` (**P4**) — the Logs tab fetches and renders the container's
-  log output.
-- `05-exec-terminal.spec.ts` (**P5**) — the Exec tab runs a one-shot command
-  and shows its stdout, and the Terminal tab opens an interactive xterm.js
-  console over the websocket exec channel and echoes a typed command.
-- `06-images.spec.ts` (**P6**) — the per-image Remove and Pull buttons drive
-  real delete / re-pull operations on the daemon.
-- `07-notifications.spec.ts` (**P7**) — the notification modal pops up for an
-  operation with the right title/message, then auto-dismisses.
-
-## Running
-
-Requires the compat stack to be up (so the agent talks to a real daemon):
+Start a dedicated compatibility stack and leave it unchanged for the entire run:
 
 ```sh
-# from tests/compat — bring up dind + netbox + agent
-DOCKER_VERSION=29.5.2 docker compose -p nda-compat up -d --build dind netbox agent
-
-# then, from here
-./run.sh
+DOCKER_VERSION=29.5.2 docker compose -p nda-ui -f tests/compat/docker-compose.yml up -d --build dind netbox agent
+NETWORK=nda-ui_default BASE_URL=http://agent:1880 tests/e2e/run.sh
+DOCKER_VERSION=29.5.2 docker compose -p nda-ui -f tests/compat/docker-compose.yml down -v
 ```
 
-`run.sh` uses the official `mcr.microsoft.com/playwright` image (browsers
-bundled) on the compose network, pointing `BASE_URL` at `http://agent:1880`.
-The UI is behind basic auth; credentials default to `admin` / `saashup` and are
-supplied via Playwright's `httpCredentials`.
+The runner uses the official Playwright image matching the pinned test dependency. `UI_USER`/`UI_PASS` can configure Playwright credentials when running directly. Container defaults are `admin`/`saashup`. Tests seed Docker resources through the agent and clean up directly on the isolated daemon (`DIND_URL`). Do not point them at a production daemon.
+
+Failure traces and screenshots are saved in `test-results/`. Use `npx playwright show-trace <trace.zip>` to investigate. Browser coverage currently targets Chromium; other browsers are not claimed as validated.
+
+Host SSH key UI scenarios are in `12-host-ssh-keys.spec.ts`. They stub the SSH
+endpoint by default. The real mounted-file scenario requires `SSH_KEYS_E2E=1` and an
+isolated agent mounting a temporary host file; never point this scenario at
+real host authorized keys. See [host SSH setup](../../docs/HOST-SSH-KEYS.md).
+
+Interactive Swagger UI tests are in `13-api-documentation.spec.ts`. They check
+local assets/CSP, real authenticated GET execution, editable request bodies,
+DELETE payloads, path/query parameters, shared API authorization and visible
+HTTP errors. Mutating calls are intercepted by the tests.

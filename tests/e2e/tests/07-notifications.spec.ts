@@ -21,7 +21,7 @@ test.describe("operation notifications", () => {
       const card = page.locator("#containers-list .card").filter({ hasText: name }).first();
       await expect(card).toBeVisible();
 
-      await card.locator('button[onclick^="stopContainer"]').click();
+      await card.locator('button[data-action="stop"]').click();
 
       const modal = page.locator("#modalNotification");
       await expect(modal).toBeVisible();

@@ -3,8 +3,7 @@ name: Pull Request CI
 on:
   pull_request:
     branches:
-      - "main"
-      - "develop"
+      - "main_v2"
   workflow_dispatch:
 
 # Restrict the default GITHUB_TOKEN to read-only (CodeQL hardening).
@@ -12,6 +11,21 @@ permissions:
   contents: read
 
 jobs:
+  unit:
+    name: Unit, integration and security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run test:unit
+      - run: npm audit --omit=dev
+      - run: npm --prefix tests/e2e install --ignore-scripts
+      - run: npm --prefix tests/e2e audit
+
   # Read the supported dockerd versions from versions.txt into a matrix.
   versions:
     runs-on: ubuntu-latest
@@ -39,7 +53,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run test suite
-        run: tests/compat/run.sh "${{ matrix.docker_version }}"
+        run: |
+          set -o pipefail
+          tests/compat/run.sh "${{ matrix.docker_version }}" 2>&1 | tee compat.log
+      - name: Upload compatibility evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compat-${{ matrix.docker_version }}
+          path: compat.log
 
   # Playwright end-to-end tests for the web UI. The UI talks to the agent API,
   # so it is version-agnostic — run it once, against the first pinned version.
@@ -74,4 +96,4 @@ jobs:
       - name: Tear down
         if: ${{ always() }}
         working-directory: tests/compat
-        run: docker compose -p nda-compat down -v --remove-orphans || true
+        run: DOCKER_VERSION=x docker compose -p nda-compat down -v --remove-orphans || true

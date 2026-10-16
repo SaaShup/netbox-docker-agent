@@ -1,0 +1,5 @@
+PASS recreate integrity: replacement ID, owner, labels, and existing named-volume contents retained
+PASS recreate rollback: network failure restores running original and its data
+PASS recreate rollback: start failure restores running original and its data
+PASS recreate rollback: network failure restores stopped original and its data
+PASS recreate rollback: start failure restores stopped original and its data

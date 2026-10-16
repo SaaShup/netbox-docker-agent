@@ -1,0 +1,22 @@
+
+Running 17 tests using 1 worker
+
+  ✓   1 tests/02-lists.spec.ts:12:7 › resource lists reflect real state › a seeded container appears in the Containers list with the right count (1.6s)
+  ✓   2 tests/02-lists.spec.ts:33:7 › resource lists reflect real state › the pulled image appears in the Images list (1.0s)
+  ✓   3 tests/02-lists.spec.ts:39:7 › resource lists reflect real state › default networks appear in the Networks list (1.1s)
+  ✓   4 tests/03-container-actions.spec.ts:41:7 › container actions via the UI › Start moves a stopped container to running (1.6s)
+  ✓   5 tests/03-container-actions.spec.ts:53:7 › container actions via the UI › Stop moves a running container to exited (2.1s)
+  ✓   6 tests/03-container-actions.spec.ts:66:7 › container actions via the UI › Kill moves a running container to exited (1.7s)
+  ✓   7 tests/03-container-actions.spec.ts:79:7 › container actions via the UI › Restart keeps a running container running (1.4s)
+  ✓   8 tests/04-logs.spec.ts:11:7 › container logs viewer › Logs tab shows the container's log output (1.7s)
+  ✓   9 tests/05-exec-terminal.spec.ts:14:7 › container exec & terminal › Exec tab runs a command and shows its output (2.1s)
+  ✓  10 tests/05-exec-terminal.spec.ts:37:7 › container exec & terminal › Terminal tab opens an interactive shell and echoes a command (2.9s)
+  ✓  11 tests/06-images.spec.ts:8:7 › images tab actions › Remove deletes an image from the daemon (7.6s)
+  ✓  12 tests/06-images.spec.ts:25:7 › images tab actions › Pull re-pulls an existing image (it stays present) (1.2s)
+  ✓  13 tests/07-notifications.spec.ts:12:7 › operation notifications › an operation shows the notification modal, then auto-dismisses (3.9s)
+  ✓  14 tests/09-resource-usage.spec.ts:3:5 › images and volumes show their containers and update after refresh (642ms)
+  ✓  15 tests/10-container-configuration.spec.ts:35:5 › configuration groups show actual settings and render metadata safely (1.7s)
+  ✓  16 tests/10-container-configuration.spec.ts:57:5 › configuration editor submits changed supported settings through recreation (955ms)
+  ✓  17 tests/10-container-configuration.spec.ts:80:5 › action icons retain accessible names and configuration fits mobile screens (969ms)
+
+  17 passed (37.1s)

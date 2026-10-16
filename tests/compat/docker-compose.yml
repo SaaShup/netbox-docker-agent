@@ -43,8 +43,8 @@ services:
     build:
       context: ../..
     image: saashup/netbox-docker-agent:compat
-    # The image runs as the unprivileged node-red user, but the dind socket is
-    # owned by root. Override to root for tests so curl can reach the socket.
+    # The image runs as the unprivileged node user, but the dind socket is
+    # owned by root. Override to root for tests so the agent can reach the socket.
     user: root
     depends_on:
       dind:
@@ -58,9 +58,10 @@ services:
       # writable /data/config.js so the agent can rewrite it (it persists
       # config after netbox interactions; a :ro mount there would EROFS).
       - ./fixtures/config.netbox.js:/seed/config.js:ro
-    entrypoint: ["sh", "-c", "cp /seed/config.js /data/config.js && exec ./entrypoint.sh"]
+      - ./fixtures/registry:/fixtures/registry:ro
+    entrypoint: ["sh", "-c", "cp /seed/config.js /data/config.js && exec /app/entrypoint.sh"]
     healthcheck:
-      test: ["CMD", "curl", "-fsS", "-u", "admin:saashup", "http://localhost:1880/"]
+      test: ["CMD", "node", "-e", "fetch('http://localhost:1880/', {headers:{authorization:'Basic YWRtaW46c2Fhc2h1cA=='}}).then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 5s
       timeout: 5s
       retries: 30

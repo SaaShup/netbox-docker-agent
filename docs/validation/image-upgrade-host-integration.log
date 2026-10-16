@@ -1,0 +1,12 @@
+
+> netbox-docker-image-upgrade@3.22.0 test:integration
+> playwright test -c tests/integration/playwright.config.js --grep create docker host
+
+
+Running 1 test using 1 worker
+
+(node:325797) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [integration-chromium] › tests/integration/full-flow.spec.js:263:1 › create docker host (74ms)
+
+  1 passed (888ms)

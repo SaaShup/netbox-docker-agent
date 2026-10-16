@@ -15,8 +15,7 @@
 // Env: BASE_URL (default http://localhost:1880), WS_USER, WS_PASS.
 
 import http from "http";
-import pkg from "docker-exec-websocket-server";
-const { DockerExecClient } = pkg;
+import { DockerExecClient } from "/app/src/exec-client.js";
 
 const BASE = process.env.BASE_URL || "http://localhost:1880";
 const USER = process.env.WS_USER || "admin";
@@ -67,6 +66,11 @@ async function findContainer() {
 }
 
 async function cleanup() {
+  const c = await findContainer().catch(() => null);
+  if (c?.State?.Running) {
+    await api('PUT', '/api/engine/containers', {data:{ContainerID:NAME,operation:'stop'}});
+    for (let i=0;i<30;i++) { const current=await findContainer(); if(!current?.State?.Running)break;await sleep(100); }
+  }
   await api("DELETE", "/api/engine/containers", {
     data: { ContainerID: NAME, name: NAME },
   }).catch(() => {});
@@ -120,7 +124,7 @@ async function main() {
 
   // Connect the client and run a command.
   const wsUrl = `ws://${base.hostname}:${base.port || 80}${path}`;
-  const client = new DockerExecClient({ url: wsUrl, tty: true, command: ["echo", MARKER] });
+  const client = new DockerExecClient({ url: wsUrl, tty: true, command: ["echo", MARKER], wsopts: { headers: { authorization: AUTH } } });
 
   const result = await new Promise(async (resolve) => {
     let out = "";
@@ -138,6 +142,25 @@ async function main() {
       resolve({ code, out });
     });
   });
+
+  // Prove terminal input reaches the process: the expected output does not
+  // occur verbatim in the typed printf command, so PTY echo cannot satisfy it.
+  const shell = new DockerExecClient({url: wsUrl, tty: true, command: ['/bin/sh'], wsopts:{headers:{authorization:AUTH}}});
+  await shell.execute(); shell.resize(32,100);
+  await new Promise((resolve,reject)=>{
+    let output='';const timer=setTimeout(()=>{shell.close();reject(Error('interactive stdin/resize timed out'));},10000);
+    shell.on('error',reject);
+    shell.stdout.on('data',data=>{output+=data.toString();if(output.includes('input-verified')){clearTimeout(timer);shell.stdin.write('exit\r');shell.close();resolve();}});
+    shell.stdin.write("printf 'input-%s\\n' 'verified'\r");
+  });
+  const nonTty = new DockerExecClient({url:wsUrl,tty:false,command:['/bin/sh','-c','printf separate-stderr >&2; exit 7'],wsopts:{headers:{authorization:AUTH}}});
+  await nonTty.execute();
+  await new Promise((resolve,reject)=>{
+    let stderr='';const timer=setTimeout(()=>{nonTty.close();reject(Error('non-TTY stderr/exit timed out'));},10000);
+    nonTty.stderr.on('data',data=>{stderr+=data.toString();});nonTty.on('error',reject);
+    nonTty.on('exit',code=>{clearTimeout(timer);if(code===7&&stderr.includes('separate-stderr'))resolve();else reject(Error(`non-TTY stream/exit mismatch: ${code} ${stderr}`));});
+  });
+  console.log('ws-exec: interactive stdin, resize, non-TTY stderr and exit status PASS');
 
   if (result.error) throw new Error(`ws client error: ${result.error}`);
   if (result.timeout) throw new Error(`timed out; partial output ${JSON.stringify(result.out)}`);

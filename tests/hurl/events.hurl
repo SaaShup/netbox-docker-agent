@@ -107,6 +107,20 @@ jsonpath "$.count" >= 1
 POST {{dind}}/containers/evt-container/unpause
 HTTP 204
 
+PUT {{host}}/api/engine/containers
+```json
+{"data":{"ContainerID":"evt-container","operation":"stop"}}
+```
+HTTP 202
+
+GET {{host}}/api/containers
+[Options]
+retry: 30
+retry-interval: 1000
+HTTP 200
+[Asserts]
+jsonpath "$[?(@.Name=='/evt-container')].State.Status" contains "exited"
+
 DELETE {{host}}/api/engine/containers
 ```json
 { "data": { "id": 777, "ContainerID": "evt-container", "name": "evt-container" } }

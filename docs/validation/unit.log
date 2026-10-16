@@ -1,0 +1,46 @@
+
+> netbox-docker-agent@2.0.0 test
+> node --test tests/unit/*.test.js tests/integration/*.test.js
+
+✔ HTTP read contracts, assets and documentation use real Engine transport (672.675976ms)
+✔ asynchronous operations acknowledge and report NetBox callbacks, journals, authentication (56.646787ms)
+✔ all container operations and resource lifecycles reach Engine endpoints (121.026949ms)
+✔ container recreation preserves settings and rolls back a failed replacement (42.798325ms)
+✔ exec, logs and stats retain the legacy response envelopes (136.346669ms)
+✔ NetBox inventory synchronization covers every resource and host metadata (22.695427ms)
+✔ event stream reconnects after disconnect and synchronizes external state changes (1312.605422ms)
+✔ security rejects missing/wrong auth, cross-origin writes, malformed/oversized JSON and disabled exec (183.88414ms)
+✔ WebSocket upgrade requires credentials and same-origin even after reservation (39.042304ms)
+✔ endpoint registration persists credentials; disconnect resets configuration (105.713383ms)
+✔ NetBox errors increment metric counter and legacy tokens use Token auth (9.534879ms)
+✔ administrator credentials and editor presence semantics remain separate from API auth (35.226991ms)
+✔ host-state guards prevent destructive Docker requests; endpoint refresh clears and reimports inventories (80.022504ms)
+✔ forced image changes archive the prior record and publish a new version (41.913984ms)
+✔ self recreation delegates to an independent helper before stopping its own container (11.53898ms)
+✔ startup reports restart, requests version refresh and loads registry associations (26.80558ms)
+✔ NetBox TLS rejects untrusted certificates unless DISABLE_SSL_CHECK is explicitly set (57.090004ms)
+✔ Docker progress error frames fail image pulls and create danger journals (29.358786ms)
+✔ terminal styles use unique per-page CSP nonces without inline script permissions (79.260762ms)
+✔ volume size options follow the daemon storage driver and registry discovery creates remote associations (6.064471ms)
+✔ lifecycle events are gated during operations while pause/unpause continue to synchronize (23.112476ms)
+✔ operation none retains the legacy combined restart-policy update and optional rename (15.032413ms)
+✔ cross-site browser GETs cannot register an endpoint or trigger inventory writes without an Origin header (89.542435ms)
+✔ terminal shutdown sends the legacy shutdown code and closes gracefully; close is idempotent (73.134105ms)
+✔ legacy JSON config imports, persists atomically and survives concurrent saves (17.283455ms)
+✔ Basic authentication preserves default bcrypt password and rejects malformed input (72.767921ms)
+✔ origin checking allows server clients and same host only (0.46632ms)
+✔ NETBOX_URL overrides persisted configuration without evaluating config files (7.96023ms)
+✔ inspection mapping preserves nested plugin fields and values (2.794727ms)
+✔ recreation maps complete writable configuration without shell interpolation (0.969831ms)
+✔ image mapping handles registry ports, digests and untagged images (0.37475ms)
+✔ disk usage aggregates null arrays and all size fields (0.395479ms)
+✔ Docker stream demultiplexing preserves plain TTY and decodes every frame (0.314507ms)
+✔ Prometheus escapes labels and exposes all five metric families on daemon failure (0.689437ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4125.541165

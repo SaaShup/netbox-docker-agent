@@ -1,0 +1,66 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 964B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:24-alpine
+#2 DONE 0.6s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 119B done
+#3 DONE 0.0s
+
+#4 [dependencies 1/4] FROM docker.io/library/node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 262.46kB 0.0s done
+#5 DONE 0.0s
+
+#6 [dependencies 2/4] WORKDIR /app
+#6 CACHED
+
+#7 [dependencies 3/4] COPY package.json package-lock.json ./
+#7 DONE 0.1s
+
+#8 [dependencies 4/4] RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
+#8 4.458 
+#8 4.458 added 71 packages, and audited 72 packages in 4s
+#8 4.458 
+#8 4.458 7 packages are looking for funding
+#8 4.458   run `npm fund` for details
+#8 4.463 
+#8 4.463 found 0 vulnerabilities
+#8 4.467 npm notice
+#8 4.467 npm notice New major version of npm available! 11.19.1 -> 12.2.0
+#8 4.467 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#8 4.467 npm notice To update run: npm install -g npm@12.2.0
+#8 4.467 npm notice
+#8 4.733 npm warn using --force Recommended protections disabled.
+#8 DONE 5.3s
+
+#9 [stage-1 3/8] RUN mkdir -p /data && chown node:node /data
+#9 CACHED
+
+#10 [stage-1 4/8] COPY --from=dependencies /app/node_modules ./node_modules
+#10 DONE 0.5s
+
+#11 [stage-1 5/8] COPY package.json ./
+#11 DONE 0.1s
+
+#12 [stage-1 6/8] COPY src ./src
+#12 DONE 0.1s
+
+#13 [stage-1 7/8] COPY public ./public
+#13 DONE 0.1s
+
+#14 [stage-1 8/8] COPY entrypoint.sh ./entrypoint.sh
+#14 DONE 0.1s
+
+#15 exporting to image
+#15 exporting layers
+#15 exporting layers 0.3s done
+#15 writing image sha256:7ace2167d4c75bec9f2989b22aab588b5280f61f684983393510a153bc1cee9c done
+#15 naming to docker.io/library/netbox-docker-agent:swagger-test done
+#15 DONE 0.4s

@@ -1,0 +1,2 @@
+eacc805c25b679d5fd57d368d21d4f8cd428eab7533fa1067b4a0fa6a06451a5  tests/compat/recreate-integrity-test.mjs
+910614f424156dc13bd74bd9e6324e90eeb5186ba0c2ee9b2095e5851b86ed6a  tests/compat/run.sh
