@@ -47,7 +47,7 @@ async function proxyReady() {
 async function helper(source, env = []) {
   const container = await docker.createContainer({
     Image: image, User: '0', Labels: labels, Entrypoint: ['node', '--input-type=module', '-e', source], Env: env,
-    HostConfig: { Binds: ['/etc/hosts:/fixture-hosts', '/etc/docker/certs.d:/fixture-certs'] },
+    HostConfig: { Binds: ['/etc/docker/certs.d:/fixture-certs'] },
   });
   try {
     await container.start(); const result = await container.wait();
@@ -150,7 +150,7 @@ try {
     ExposedPorts: { '5000/tcp': {}, '5001/tcp': {}, '5443/tcp': {} },
     Entrypoint: ['node', '--input-type=module', '-e', proxySource],
     Env: [`FIXTURE_HTPASSWD=fixture:${await bcrypt.hash(password, 4)}`, `FIXTURE_TLS_KEY=${(await readFile('/fixtures/registry/server.key')).toString('base64')}`, `FIXTURE_TLS_CERT=${(await readFile('/fixtures/registry/server.crt')).toString('base64')}`],
-    HostConfig: { Mounts: [{ Type: 'volume', Source: authVolume, Target: '/auth' }], PortBindings: { '5000/tcp': [{ HostPort: '5000' }], '5001/tcp': [{ HostPort: '5001' }] } },
+    HostConfig: { Mounts: [{ Type: 'volume', Source: authVolume, Target: '/auth' }], PortBindings: { '5000/tcp': [{ HostPort: '5000' }], '5001/tcp': [{ HostPort: '5001' }], '5443/tcp': [{ HostPort: '5443' }] } },
   });
   await proxy.start();
   try { await proxyReady(); }
@@ -168,8 +168,6 @@ try {
   target = `http://${Object.values((await backend.inspect()).NetworkSettings.Networks)[0].IPAddress}:5000`;
   await control({ target });
   await waitFor(async () => { try { return (await fetch(frontend + '/v2/')).status === 401; } catch { return false; } }, 'authenticated backend did not start', 30000);
-  const proxyIP = Object.values((await proxy.inspect()).NetworkSettings.Networks)[0].IPAddress;
-  await helper(`import {appendFile} from 'node:fs/promises'; await appendFile('/fixture-hosts', '\\n'+process.env.HOST_LINE+'\\n');`, [`HOST_LINE=${proxyIP} ${tlsHost.split(':')[0]} ${wrongHost.split(':')[0]} # ${prefix}`]);
   await trust(false);
 
   const initial = await publish('authentication');
@@ -217,7 +215,6 @@ try {
 } finally {
   for (const ref of refs) await docker.getImage(ref).remove().catch(error => { if (error.statusCode !== 404) throw error; });
   await trust(false).catch(() => {});
-  await helper(`import {readFile,writeFile} from 'node:fs/promises';const text=await readFile('/fixture-hosts','utf8');await writeFile('/fixture-hosts',text.split('\\n').filter(line=>!line.includes(process.env.MARKER)).join('\\n'));`, [`MARKER=${prefix}`]).catch(() => {});
   const containers = await docker.listContainers({ all: true, filters: { label: [`compat.registry-resilience=${suffix}`] } });
   for (const container of containers) await docker.getContainer(container.Id).remove({ force: true });
   for (const name of [authVolume, dataVolume]) await docker.getVolume(name).remove().catch(error => { if (error.statusCode !== 404) throw error; });

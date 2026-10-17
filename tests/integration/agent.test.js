@@ -48,6 +48,41 @@ async function setup(t) {
  const api=async(route,method='GET',data,headers={})=>fetch(base+route,{method,headers:{authorization:auth,...(data?{'content-type':'application/json'}:{}),...headers},body:data?JSON.stringify(data):undefined});
  return{agent,store,docker,netbox,api,base,calls,callbacks,engine,server,getEvents:()=>events};
 }
+test('standalone registry discovery refreshes local images through the HTTP route', async t => {
+ const { api, agent, store, callbacks, docker } = await setup(t);
+ store.config.netbox_url = '';
+ assert.equal((await (await api('/api/registries')).json())[0].name, 'dockerhub');
+ assert.equal((await api('/api/engine/registries')).status, 202);
+ await Promise.all(agent.jobs);
+ let registries = await (await api('/api/registries')).json();
+ assert.equal(registries[0].name, 'dockerhub');
+ assert.deepEqual(registries[0].images, ['nginx:alpine']);
+ docker.listImages = async () => [{ RepoTags: ['private.test/team/app:v2'] }];
+ assert.equal((await api('/api/engine/registries')).status, 202);
+ await Promise.all(agent.jobs);
+ registries = await (await api('/api/registries')).json();
+ assert.deepEqual(registries.map(r => r.name), ['private.test']);
+ assert.deepEqual(registries[0].images, ['private.test/team/app:v2']);
+ const saved = await new Store(store.directory).load();
+ assert.deepEqual(saved.registries, registries);
+ assert.equal(callbacks.length, 0);
+});
+test('registry reads reconcile external image changes and retain saved metadata', async t => {
+ const { api, store, docker, netbox } = await setup(t);
+ store.registries = [{ id: 42, name: 'private.test', serveraddress: 'https://custom.test', images: ['private.test/app:removed'] }];
+ netbox.resource = async () => { throw Error('manager offline'); };
+ docker.listImages = async () => [{ RepoTags: ['private.test/app:current', 'private.test/app:alias'] }];
+ let registries = await (await api('/api/registries')).json();
+ assert.deepEqual(registries, [{ id: 42, name: 'private.test', serveraddress: 'https://custom.test', images: ['private.test/app:alias', 'private.test/app:current'] }]);
+ docker.listImages = async () => [{ RepoDigests: ['new.test/app@sha256:digest'] }];
+ registries = await (await api('/api/registries')).json();
+ assert.equal(registries[0].name, 'new.test');
+ assert.deepEqual(registries[0].images, ['new.test/app@sha256:digest']);
+ assert.deepEqual((await new Store(store.directory).load()).registries, registries);
+ docker.listImages = async () => [];
+ assert.deepEqual(await (await api('/api/registries')).json(), []);
+});
+
 test('HTTP read contracts, assets and documentation use real Engine transport',async t=>{const {api}=await setup(t);for(const route of ['/','/app.js','/doc','/doc.js','/doc.css','/vendor/swagger-ui-bundle.js','/vendor/swagger-ui.css','/openapi','/openapi.json','/info','/system/usage','/api/containers','/api/images','/api/networks','/api/volumes','/api/registries','/metrics']){const r=await api(route);assert.equal(r.status,200,route);assert.equal(r.headers.get('x-content-type-options'),'nosniff');}assert.equal((await(await api('/api/containers')).json())[0].Name,'/demo');assert.equal((await(await api('/info')).json()).docker.Version,'29.5.2');assert.deepEqual((await(await api('/api/volumes')).json()).Volumes,[]);assert.equal((await(await api('/system/usage')).json()).images.size,0);});
 test('asynchronous operations acknowledge and report NetBox callbacks, journals, authentication',async t=>{const {api,agent,calls,callbacks}=await setup(t);const data={id:7,name:'demo',state:'none',image:{name:'nginx',version:'alpine'}};const r=await api('/api/engine/containers','POST',{data});assert.equal(r.status,202);assert.deepEqual(await r.json(),{data});await Promise.all(agent.jobs);assert.equal(calls.find(x=>x.path==='/containers/create').body.Image,'nginx:alpine');const cb=callbacks.find(x=>x.method==='PATCH'&&x.url==='/api/plugins/docker/containers/');assert.equal(cb.body[0].image.ImageID,'sha256:image');assert.equal(cb.body[0].state,'created');assert.equal(cb.auth,'Bearer ntb_test');assert.equal(callbacks.find(x=>x.url==='/api/extras/journal-entries/').body.kind,'success');});
 test('all container operations and resource lifecycles reach Engine endpoints',async t=>{const {agent,calls}=await setup(t);for(const operation of ['start','stop','restart','kill','pause','unpause','rename','none'])await agent.write('PUT','containers',{id:7,ContainerID:'abc',name:operation==='rename'?'renamed':'demo',operation,restart_policy:'always'});for(const operation of ['start','stop','restart','kill','pause','unpause','rename','update'])assert.ok(calls.some(x=>x.path===`/containers/abc/${operation}`),operation);await agent.write('POST','networks',{state:'creating',name:'n',driver:'bridge'});await agent.write('POST','volumes',{name:'v',driver:'local'});await agent.write('POST','images',{id:1,name:'nginx',version:'alpine',size:0,ImageID:null});for(const [type,d] of [['containers',{ContainerID:'abc'}],['images',{ImageID:'sha256:image'}],['volumes',{name:'v'}],['networks',{name:'n'}]])await agent.write('DELETE',type,d);assert.ok(calls.some(x=>x.path==='/images/create'));assert.ok(calls.some(x=>x.method==='DELETE'&&x.path==='/images/sha256:image'));});
@@ -289,6 +324,25 @@ test('prune API returns completed Engine reports and host journals for every res
  }
 });
 
+test('image prune refreshes and persists registry images without contacting manager inventory', async t => {
+ const { api, store, docker, netbox } = await setup(t);
+ store.registries = [
+  { id: 12, name: 'private.test', serveraddress: 'https://private.test/v2/', images: ['private.test/app:old', 'private.test/app:keep'] },
+  { name: 'dockerhub', images: ['unused:latest'] },
+ ];
+ netbox.resource = async () => { throw Error('manager inventory unavailable'); };
+ docker.listImages = async () => [{ RepoTags: ['private.test/app:keep', 'private.test/app:alias'] }];
+ const response = await api('/api/engine/images/prune', 'POST', { all: true });
+ assert.equal(response.status, 200);
+ const registries = await (await api('/api/registries')).json();
+ assert.deepEqual(registries, [{ id: 12, name: 'private.test', serveraddress: 'https://private.test/v2/', images: ['private.test/app:alias', 'private.test/app:keep'] }]);
+ assert.deepEqual((await new Store(store.directory).load()).registries, registries);
+ docker.listImages = async () => [];
+ assert.equal((await api('/api/engine/images/prune', 'POST', { all: true })).status, 200);
+ assert.deepEqual(await (await api('/api/registries')).json(), []);
+ assert.deepEqual((await new Store(store.directory).load()).registries, []);
+});
+
 test('prune enforces authentication, origin, POST-only methods and strict input before Engine access', async t => {
  const {api,base,calls}=await setup(t);const route='/api/engine/volumes/prune';
  assert.equal((await fetch(base+route,{method:'POST'})).status,401);
@@ -301,6 +355,26 @@ test('prune enforces authentication, origin, POST-only methods and strict input 
  assert.equal((await fetch(base+route,{method:'POST',headers:{authorization:auth},body:'{bad'})).status,400);
  assert.equal((await api(route,'POST',{filters:{label:['x'.repeat(1024*1024)]}})).status,413);
  assert.equal(calls.filter(c=>c.path.endsWith('/prune')).length,0);
+});
+
+test('background image events do not block build-cache pruning', async t => {
+ const { api, agent, docker, getEvents } = await setup(t);
+ let release, entered;
+ const pending = new Promise(resolve => { release = resolve; });
+ const ready = new Promise(resolve => { entered = resolve; });
+ docker.listImages = async () => { entered(); await pending; return []; };
+ await agent.watch();
+ getEvents().write(JSON.stringify({ Type: 'image', Action: 'delete', Actor: { ID: 'removed-image' } }) + '\n');
+ await ready;
+ try {
+  assert.equal(agent.jobs.size, 1);
+  const response = await api('/api/engine/build-cache/prune', 'POST', {});
+  assert.equal(response.status, 200);
+  assert.equal(agent.jobs.size, 1, 'the background refresh should still be tracked');
+ } finally {
+  release(); await Promise.all(agent.jobs);
+ }
+ assert.equal(agent.jobs.size, 0);
 });
 
 test('prune excludes concurrent prunes and agent mutations, and releases its lock after completion', async t => {

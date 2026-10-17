@@ -54,8 +54,10 @@ test.describe("container exec & terminal", () => {
       await pane.getByRole("combobox", {name:"Shell"}).selectOption("/bin/sh");
       await pane.getByRole("button", {name:"Open terminal"}).click();
 
-      // xterm renders its screen once the websocket shell is connected.
+      // xterm defers rendering offscreen terminals, including its accessible
+      // text rows. Visibility assertions alone do not scroll into view.
       const rows = card.locator(".terminal-screen");
+      await rows.scrollIntoViewIfNeeded();
       await expect(rows).toBeVisible({ timeout: 20_000 });
       // Wait for the shell prompt before typing, or early keystrokes are
       // dropped before the PTY is ready.

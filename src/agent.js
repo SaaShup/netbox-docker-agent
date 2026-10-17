@@ -3,20 +3,22 @@ import { diskUsage, usage } from './docker.js';
 import { containerRecord, createOptions, imageRecord } from './mapping.js';
 import { pruneDocker, pruneOptions } from './prune.js';
 export class Agent {
-  constructor(docker, store, netbox, version = '2.0.0') { Object.assign(this, { docker, store, netbox, version }); this.jobs = new Set(); this.chains = new Map(); this.stopped = false; this.activeOperations = 0; }
+  constructor(docker, store, netbox, version = '2.0.0') { Object.assign(this, { docker, store, netbox, version }); this.jobs = new Set(); this.pruneBlockers = new Set(); this.chains = new Map(); this.stopped = false; this.activeOperations = 0; }
   log(error) { console.error(JSON.stringify({ name: 'netbox-docker-agent', level: 'error', version: this.version, msg: error.message })); }
-  enqueue(key, work) {
-    const job = (this.chains.get(key) || Promise.resolve()).then(work).catch(error => this.log(error)).finally(() => { this.jobs.delete(job); if (this.chains.get(key) === job) this.chains.delete(key); });
+  enqueue(key, work, { blocksPrune = true } = {}) {
+    const job = (this.chains.get(key) || Promise.resolve()).then(work).catch(error => this.log(error)).finally(() => { this.jobs.delete(job); this.pruneBlockers.delete(job); if (this.chains.get(key) === job) this.chains.delete(key); });
+    if (blocksPrune) this.pruneBlockers.add(job);
     this.chains.set(key, job); this.jobs.add(job); return job;
   }
   async containers() { const list = await this.docker.listContainers({ all: true }); return Promise.all(list.map(c => this.docker.getContainer(c.Id).inspect().catch(e => { if (e.statusCode !== 404) throw e; return null; }))).then(x => x.filter(Boolean)); }
   async prune(resource, input) {
     const options = pruneOptions(resource, input);
-    if (this.pruning || this.jobs.size || this.activeOperations) throw Object.assign(new Error('Another agent operation is in progress; retry when it finishes'), { statusCode: 409 });
+    if (this.pruning || this.pruneBlockers.size || this.activeOperations) throw Object.assign(new Error('Another agent operation is in progress; retry when it finishes'), { statusCode: 409 });
     this.pruning = true;
     const work = (async () => {
       try {
         const report = await pruneDocker(this.docker, resource, options);
+        if (resource === 'images') await this.registries(false).catch(error => this.log(error));
         const deleted = report?.[({ containers: 'ContainersDeleted', images: 'ImagesDeleted', volumes: 'VolumesDeleted', networks: 'NetworksDeleted', 'build-cache': 'CachesDeleted' })[resource]] || [];
         await this.netbox.journal('host', this.store.config.id, 'success', `pruned ${resource}: ${deleted.length} deletion records, ${report?.SpaceReclaimed || 0} bytes reclaimed`).catch(e => this.log(e));
         return report;
@@ -41,22 +43,38 @@ export class Agent {
     return original;
   }
   async usage() { return usage(await diskUsage(this.docker)); }
-  async registries() {
-    const images = await this.docker.listImages({ digests: true }); const grouped = new Map();
-    for (const img of images) for (const ref of img.RepoTags?.length ? img.RepoTags : img.RepoDigests?.length ? img.RepoDigests : [img.Id]) {
-      const part = ref.split('/')[0]; const name = ref.includes('/') && /[.:]|localhost/.test(part) ? part : 'dockerhub';
-      if (!grouped.has(name)) grouped.set(name, { name, serveraddress: `https://${name}/v2/`, images: [] }); grouped.get(name).images.push(ref);
-    }
-    const known = this.store.config.netbox_url ? (await this.netbox.resource('GET', 'registries', undefined, `?host_id=${encodeURIComponent(this.store.config.id)}`))?.results || [] : this.store.registries;
-    for (const reg of grouped.values()) { const old = known.find(x => x.name === reg.name); if (old) { reg.id = old.id; reg.serveraddress = old.serveraddress; } }
-    const fresh = [...grouped.values()].filter(x => x.name !== 'dockerhub' && !x.id);
-    if (fresh.length && this.store.config.netbox_url) {
-      const created = await this.netbox.resource('POST', 'registries', fresh.map(x => ({ host: this.store.config.id, name: x.name, serveraddress: x.serveraddress })));
-      for (const reg of grouped.values()) reg.id ??= (Array.isArray(created) ? created : []).find(x => x.name === reg.name)?.id;
-    }
-    this.store.registries = [...grouped.values()]; await this.store.save(); return this.store.registries;
+  async registries(syncManager = true, registration) {
+    const refresh = (this.registryRefresh || Promise.resolve()).catch(() => {}).then(async () => {
+      const images = await this.docker.listImages({ digests: true }); const grouped = new Map();
+      for (const img of images) for (const ref of img.RepoTags?.length ? img.RepoTags : img.RepoDigests?.length ? img.RepoDigests : [img.Id]) {
+        const part = ref.split('/')[0]; const name = ref.includes('/') && /[.:]|localhost/.test(part) ? part : 'dockerhub';
+        if (!grouped.has(name)) grouped.set(name, { name, serveraddress: `https://${name}/v2/`, images: [] }); grouped.get(name).images.push(ref);
+      }
+      let known = syncManager && this.store.config.netbox_url ? (await this.netbox.resource('GET', 'registries', undefined, `?host_id=${encodeURIComponent(this.store.config.id)}`))?.results || [] : this.store.registries;
+      if (registration) known = [...known, registration];
+      for (const reg of grouped.values()) {
+        const matches = x => x.name === reg.name
+          || x.serveraddress?.replace(/^https?:\/\//i, '').split('/')[0].toLowerCase() === reg.name.toLowerCase()
+          || x.images?.some(ref => reg.images.includes(typeof ref === 'string' ? ref : ref.display));
+        // A locally inferred entry can coexist with manager metadata during a pull.
+        // Prefer the registered identity, including when it has a friendly name.
+        const old = known.findLast(x => x.id !== undefined && matches(x)) || known.find(matches);
+        if (old) { reg.id = old.id; reg.serveraddress = old.serveraddress; }
+      }
+      const fresh = [...grouped.values()].filter(x => x.name !== 'dockerhub' && !x.id);
+      if (fresh.length && syncManager && this.store.config.netbox_url) {
+        const created = await this.netbox.resource('POST', 'registries', fresh.map(x => ({ host: this.store.config.id, name: x.name, serveraddress: x.serveraddress })));
+        for (const reg of grouped.values()) reg.id ??= (Array.isArray(created) ? created : []).find(x => x.name === reg.name)?.id;
+      }
+      this.store.registries = [...grouped.values()].sort((a, b) => a.name.localeCompare(b.name));
+      for (const reg of this.store.registries) reg.images.sort();
+      await this.store.save(); return this.store.registries;
+    });
+    this.registryRefresh = refresh;
+    return refresh;
   }
   async sync(type) {
+    if (type === 'registries') return this.registries();
     if (!this.store.config.netbox_url) return;
     const host = this.store.config.id;
     if (type === 'endpoint') {
@@ -66,7 +84,6 @@ export class Agent {
     } else if (type === 'containers') { for (const c of await this.containers()) await this.netbox.resource('POST', type, containerRecord(c, host)); }
     else if (type === 'networks') { for (const n of await this.docker.listNetworks()) await this.netbox.resource('POST', type, { host, name: n.Name, driver: n.Driver ?? 'None', NetworkID: n.Id, state: 'created' }); }
     else if (type === 'volumes') { for (const v of (await this.docker.listVolumes()).Volumes || []) await this.netbox.resource('POST', type, { host, name: v.Name, driver: v.Driver }); }
-    else if (type === 'registries') await this.registries();
     else if (type === 'images') { await this.registries(); for (const i of await this.docker.listImages({ digests: true })) await this.netbox.resource('POST', type, imageRecord(i, host, this.store.registries)); }
   }
   async callback(c, d) {
@@ -109,7 +126,7 @@ export class Agent {
             await this.netbox.resource('PATCH', type, [{ id: d.id, version: d.ImageID.split(':').at(-1).slice(0, 12) }]);
             await this.netbox.resource('POST', type, { ...record, name: d.name, version: d.version, registry: { id: d.registry?.id } });
           } else await this.netbox.resource('PATCH', type, [{ id: d.id, size: record.size, ImageID: im.Id, Digest: record.Digest }]);
-          if (d.registry) { const reg = this.store.registries.find(r => r.id === d.registry.id); if (reg) reg.images = [...new Set([...reg.images, d.display])]; else this.store.registries.push({ id: d.registry.id, name: d.registry.name, serveraddress: d.registry.serveraddress, images: [d.display] }); await this.store.save(); }
+          if (d.registry) await this.registries(false, { id: d.registry.id, name: d.registry.name, serveraddress: d.registry.serveraddress, images: [`${d.name}:${d.version}`] });
           await this.netbox.journal('image', d.id, 'success', 'pulled image');
         }
         if (type === 'endpoint' && d.operation === 'refresh' && d.state === 'refreshing') {
@@ -146,9 +163,13 @@ export class Agent {
         await this.callback(c, d); await this.netbox.journal('container', d.id, 'success', `operation ${d.operation}: ok`);
       }
     } catch (error) { await this.netbox.journal(type === 'images' ? 'image' : 'container', d.id, 'danger', `operation ${d.operation || method}: failed ${error.message}`).catch(e => this.log(e)); throw error; }
-    finally { if (operating) this.activeOperations--; }
+    finally {
+      if (type === 'images') await this.registries(false).catch(error => this.log(error));
+      if (operating) this.activeOperations--;
+    }
   }
   async event(event) {
+    if (event.Type === 'image') return this.registries(false);
     if (event.Type !== 'container' || !['start','restart','stop','kill','oom','die','pause','unpause'].includes(event.Action) || !this.store.config.netbox_url) return;
     if (this.activeOperations > 0 && !['pause', 'unpause'].includes(event.Action)) return;
     const c = await this.docker.getContainer(event.id || event.Actor.ID).inspect();
@@ -170,7 +191,7 @@ export class Agent {
         buffer += chunk.toString();
         if (buffer.length > 1024 * 1024) { stream.destroy(new Error('Event frame too large')); return; }
         let index;
-        while ((index = buffer.indexOf('\n')) >= 0) { const line = buffer.slice(0, index); buffer = buffer.slice(index + 1); try { const event = JSON.parse(line); this.enqueue(`event:${event.Actor?.ID || event.id}`, () => this.event(event)); } catch { /* ignore empty/malformed frames */ } }
+        while ((index = buffer.indexOf('\n')) >= 0) { const line = buffer.slice(0, index); buffer = buffer.slice(index + 1); try { const event = JSON.parse(line); this.enqueue(`event:${event.Actor?.ID || event.id}`, () => this.event(event), { blocksPrune: false }); } catch { /* ignore empty/malformed frames */ } }
       });
       const reconnect = () => { if (this.events !== stream) return; this.events = null; if (!this.stopped) this.reconnect = setTimeout(() => this.watch(), 1000); };
       stream.once('error', error => { this.log(error); stream.destroy(); reconnect(); }); stream.once('end', reconnect); stream.once('close', reconnect);
@@ -180,17 +201,19 @@ export class Agent {
     this.watch();
     this.persistence = setInterval(() => this.store.save().catch(e => this.log(e)), 60000);
     const check = async () => {
+      await this.registries(false);
       if (!this.store.config.netbox_url) return;
       const remote = await this.netbox.resource('GET', 'hosts', undefined, `${this.store.config.id}/`);
       if (remote && remote.agent_version !== `${this.version}-${this.store.config.flows}`) await this.netbox.resource('PATCH', 'hosts', [{ id: Number(this.store.config.id || 0), agent_version: `${this.version}-${this.store.config.flows}`, operation: 'refresh' }]);
     };
-    this.updates = setInterval(() => this.enqueue('update', check), 60000);
+    this.updates = setInterval(() => this.enqueue('update', check, { blocksPrune: false }), 60000);
     this.enqueue('startup', async () => { await this.netbox.journal('host', this.store.config.id, 'info', 'agent restarted'); await check();
       if (this.store.config.netbox_url) {
         const remote = await this.netbox.resource('GET', 'registries', undefined, `?host_id=${encodeURIComponent(this.store.config.id)}`);
         this.store.registries = (remote?.results || []).map(r => ({ id: r.id, name: r.name, serveraddress: r.serveraddress, images: (r.images || []).map(i => typeof i === 'string' ? i : i.display) })).filter(r => r.images.length);
         await this.store.save();
-      } });
+      } }, { blocksPrune: false });
+    this.enqueue('startup', () => this.registries(false), { blocksPrune: false });
   }
   async close() { this.stopped = true; clearTimeout(this.reconnect); clearInterval(this.persistence); clearInterval(this.updates); this.events?.destroy(); await Promise.allSettled([...this.jobs]); await this.store.save(); }
 }

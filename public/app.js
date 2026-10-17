@@ -18,8 +18,10 @@ async function api(path, method = 'GET', data) {
   const text = await res.text(); try { return JSON.parse(text); } catch { return text; }
 }
 function error(e) { $('#error').textContent = e.message; $('#error').hidden = false; }
-function notify(title, text = 'Operation ongoing. Waiting for Docker…') { clearTimeout(noticeTimer); $('#modalNotificationTitle').textContent = title; $('#modalNotificationContent').textContent = text; $('#modalNotification').hidden = false; }
-function dismiss() { noticeTimer = setTimeout(() => { $('#modalNotification').hidden = true; }, 1200); }
+function notify(title, text = 'Operation ongoing. Waiting for the agent…') { clearTimeout(noticeTimer); $('#modalNotificationTitle').textContent = title; $('#modalNotificationContent').textContent = text; $('#modalNotification').hidden = false; }
+function hideNotification() { clearTimeout(noticeTimer); $('#modalNotification').hidden = true; }
+function dismiss(delay = 1200) { clearTimeout(noticeTimer); noticeTimer = setTimeout(hideNotification, delay); }
+$('#close-notification').onclick = hideNotification;
 const buttonStyles = {
   start: ['M8 5l11 7-11 7z', 'positive'], unpause: ['M8 5l11 7-11 7z', 'positive'],
   stop: ['M6 6h12v12H6z', 'warning'], pause: ['M8 5v14M16 5v14', 'warning'],
@@ -50,11 +52,13 @@ function decorateButton(e, text) {
   e.prepend(svg); e.classList.add(`action-${style[1]}`);
 }
 function button(text, action, cls) { const e = node('button', text, cls); e.type = 'button'; decorateButton(e, text); e.addEventListener('click', () => Promise.resolve().then(action).catch(error)); return e; }
-async function waitFor(test) { for (let i = 0; i < 30; i++) { await new Promise(r => setTimeout(r, 500)); if (await test()) return; } throw Error('Docker operation did not finish within 15 seconds. Check the agent logs.'); }
+async function waitFor(test) { for (let i = 0; i < 30; i++) { await new Promise(r => setTimeout(r, 500)); if (await test()) return; } throw Error('The operation did not finish within 15 seconds. Check the agent logs.'); }
 function navigate() {
   const id = location.hash.slice(1) || 'info';
   for (const section of document.querySelectorAll('main > section')) section.hidden = section.id !== id;
   for (const a of document.querySelectorAll('nav a')) { if (a.hash === `#${id}`) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); }
+  const descriptions = { info: 'A clear view of your host, workloads, and resources.', containers: 'Manage workloads and inspect their configuration, activity, and access.', images: 'Explore local images, their registries, and the workloads using them.', networks: 'Manage the connections between your workloads.', volumes: 'Keep track of persistent storage and the workloads using it.', registries: 'See where your images come from and what is available locally.', 'ssh-keys': 'Manage public keys authorized to access this host.', settings: 'Connect this host to your management platform.' };
+  $('#page-description').textContent = descriptions[id];
   $('#page-title').textContent = id === 'info' ? 'Overview' : id === 'ssh-keys' ? 'Host SSH keys' : id.charAt(0).toUpperCase() + id.slice(1);
   if (id === 'ssh-keys' && state.sshKeysEnabled) sshWork(loadSsh);
 }
@@ -142,6 +146,27 @@ function resourceCard(type, r) {
   if (type === 'containers') return containerCard(r);
   const card = node('article', undefined, 'card'); const name = r.Name || r.name || r.RepoTags?.[0] || r.Id;
   card.append(node('h3', name), node('p', r.Driver || r.serveraddress || `${Math.round((r.Size || 0)/1048576)} MB`, 'meta'));
+  if (type === 'images') {
+    const references = [...(r.RepoTags || []), ...(r.RepoDigests || [])].filter(ref => !ref.startsWith('<none>'));
+    const registries = [...new Set(references.map(ref => {
+      const host = ref.split('/')[0];
+      return ref.includes('/') && /[.:]|localhost/.test(host) ? host : 'dockerhub';
+    }))];
+    card.append(node('p', `${registries.length > 1 ? 'Registries' : 'Registry'}: ${registries.join(', ') || 'Unknown'}`, 'meta image-registry'));
+  }
+  if (type === 'registries') {
+    const images = r.images || [];
+    const attached = node('div', undefined, 'resource-usage registry-images');
+    const count = node('span', images.length, 'badge usage-count');
+    count.setAttribute('aria-label', `${images.length} ${images.length === 1 ? 'image' : 'images'}`);
+    attached.append(node('strong', 'Images'), count);
+    if (images.length) {
+      const list = node('ul');
+      for (const image of images) list.append(node('li', image));
+      attached.append(list);
+    } else attached.append(node('p', 'No images'));
+    card.append(attached);
+  }
   if (type === 'images' || type === 'volumes') {
     const containers = (state.containers || []).filter(c => type === 'images'
       ? c.Image === r.Id
@@ -170,7 +195,7 @@ function formatUptime(value) {
 }
 function renderContainers() { const filter = $('#container-search').value.toLowerCase(); $('#containers-list').replaceChildren(...(state.containers || []).filter(c => `${c.Name} ${c.Config.Image}`.toLowerCase().includes(filter)).map(containerCard)); }
 async function refresh() {
-  $('#refresh').disabled = true; $('#error').hidden = true;
+  $('main').setAttribute('aria-busy', 'true'); $('#error').hidden = true;
   try {
     const info = await api('/info');
     state.agentContainerId = info.containerId;
@@ -181,14 +206,14 @@ async function refresh() {
     const results = await Promise.all([api('/system/usage'), ...types.map(t => api(`/api/${t}`))]); const usage = results[0];
     types.forEach((type, i) => { const data = results[i+1]; state[type] = data.Volumes || data; });
     types.forEach(type => { $(`#${type}_num`).textContent = state[type].length; $(`#${type}-count`).textContent = state[type].length; $(`#${type}-list`).replaceChildren(...state[type].map(r => resourceCard(type,r))); });
-    renderContainers(); $('#connection').textContent = info.docker === 'error' ? 'Docker engine unavailable' : `Docker ${info.docker.Version} · Management ${info.configured === 'ok' ? 'connected' : 'not configured'}`;
+    renderContainers(); $('#connection').textContent = info.docker === 'error' ? 'Engine unavailable' : `Engine ${info.docker.Version} · Management ${info.configured === 'ok' ? 'connected' : 'not configured'}`;
     $('#info-list').replaceChildren();
-    for (const [label,value] of Object.entries({ 'Agent Version': info.version, 'Docker Api': info.docker.ApiVersion, 'Engine Version': info.docker.Version, 'Host': info.dockerInfo?.Name, 'System uptime': formatUptime(info.uptime?.system), 'Agent uptime': formatUptime(info.uptime?.agent), 'Operating system': info.dockerInfo?.OperatingSystem, 'Architecture': info.docker.Arch, 'Management URL': info.config?.netbox_url || 'Not connected' })) $('#info-list').append(node('dt',label),node('dd',value || '—'));
+    for (const [label,value] of Object.entries({ 'Agent Version': info.version, 'Engine API': info.docker.ApiVersion, 'Engine Version': info.docker.Version, 'Host': info.dockerInfo?.Name, 'System uptime': formatUptime(info.uptime?.system), 'Agent uptime': formatUptime(info.uptime?.agent), 'Operating system': info.dockerInfo?.OperatingSystem, 'Architecture': info.docker.Arch, 'Management URL': info.config?.netbox_url || 'Not connected' })) $('#info-list').append(node('dt',label),node('dd',value || '—'));
     $('#summary').replaceChildren(...types.slice(0,4).map(t => { const box = node('article'); box.append(node('span', t.toUpperCase()),node('strong',state[t].length)); return box; }));
     const values = { Images: usage.images.size, Containers: usage.containers.size_rootfs, Volumes: usage.volumes, 'Build cache': usage.build_cache }; const total = Math.max(1,...Object.values(values));
     $('#system-usage-chart').replaceChildren();
     for (const [label,value] of Object.entries(values)) { const row = node('div',undefined,'usage-row'); const span = node('span', label); span.append(node('b',`${(value/1048576).toFixed(1)} MB`)); const bar = node('progress'); bar.max = total; bar.value = Math.max(0,value); bar.setAttribute('aria-label',label); row.append(span,bar); $('#system-usage-chart').append(row); }
-  } catch(e) { error(e); } finally { $('#refresh').disabled = false; }
+  } catch(e) { error(e); } finally { $('main').setAttribute('aria-busy', 'false'); }
 }
 let editType, editMethod;
 function edit(type, method = 'POST', data) {
@@ -203,7 +228,7 @@ const pruneDescriptions = {
   images: 'Delete dangling images that are not referenced by any container. Optionally include unused tagged images.',
   volumes: 'Delete unused anonymous volumes and their data. Optionally include unused named volumes.',
   networks: 'Delete unused custom networks. Built-in networks and networks attached to containers are retained.',
-  'build-cache': 'Delete unused build cache on this Docker engine. This does not prune separate remote builders.',
+  'build-cache': 'Delete unused build cache on this engine. This does not prune separate remote builders.',
 };
 let pruneType, pruneBusy = false;
 for (const b of document.querySelectorAll('[data-prune]')) b.addEventListener('click', () => {
@@ -234,12 +259,13 @@ $('#prune-form').onsubmit = async e => {
     $('#prune-dialog').close();
     const records = report[({ containers: 'ContainersDeleted', images: 'ImagesDeleted', volumes: 'VolumesDeleted', networks: 'NetworksDeleted', 'build-cache': 'CachesDeleted' })[pruneType]] || [];
     notify('Prune complete', `${records.length} deletion records · ${((report.SpaceReclaimed || 0) / 1048576).toFixed(1)} MB reclaimed`);
+    dismiss(5000);
     await refresh();
   } catch (e) { $('#prune-error').textContent = e.message; $('#prune-error').hidden = false; }
   finally { pruneBusy = false; $('#confirm-prune').disabled = false; $('#cancel-prune').disabled = false; }
 };
 $('#cancel-resource').onclick = () => $('#resource-dialog').close();
-$('#resource-form').onsubmit = async e => { e.preventDefault(); try { const data = JSON.parse($('#resource-data').value); await api(`/api/engine/${editType}`,editMethod,{data}); $('#resource-dialog').close(); notify('Request accepted','Docker is processing the request. Refresh to check the result.'); dismiss(); } catch(e) { error(e); } };
+$('#resource-form').onsubmit = async e => { e.preventDefault(); try { const data = JSON.parse($('#resource-data').value); await api(`/api/engine/${editType}`,editMethod,{data}); $('#resource-dialog').close(); notify('Request accepted','The agent is processing the request. Refresh to check the result.'); dismiss(); } catch(e) { error(e); } };
 $('#settings-form').onsubmit = async e => { e.preventDefault(); try { await api('/api/engine/endpoint?' + new URLSearchParams(new FormData(e.target))); notify('Connection saved'); dismiss(); } catch(e) { error(e); } };
 $('#disconnect').onclick = async () => { try { if (confirm('Disconnect this agent from the management server?')) { await api('/api/engine/endpoint','DELETE'); await refresh(); } } catch(e) { error(e); } };
 $('#sync-registries').onclick = async () => { try { await api('/api/engine/registries'); notify('Registry discovery requested'); dismiss(); } catch(e) { error(e); } };
@@ -276,6 +302,6 @@ async function changeSsh(method, data, question) {
 }
 $('#ssh-add-form').onsubmit = e => { e.preventDefault(); changeSsh('POST', { publicKey: $('#ssh-public-key').value.trim() }, 'Authorize this public key for SSH access to the host account?'); };
 $('#ssh-reload').onclick = () => sshWork(loadSsh);
-$('#refresh').onclick = refresh; $('#container-search').oninput = renderContainers;
+$('#container-search').oninput = renderContainers;
 for (const b of document.querySelectorAll('button')) decorateButton(b, b.textContent.trim());
 window.addEventListener('hashchange',navigate); window.addEventListener('beforeunload',()=>{ for(const ws of sockets) ws.close(); }); navigate(); await refresh();

@@ -65,3 +65,27 @@ test('including named volumes requires explicit selection and failures stay visi
   await page.locator('[data-prune="volumes"]').click();
   await expect(page.locator('#prune-all')).not.toBeChecked();
 });
+
+test('prune completion notifications dismiss automatically and can be closed with the keyboard', async ({ page }) => {
+  await page.clock.install();
+  await page.route('**/api/engine/images/prune', route => route.fulfill({
+    json: { ImagesDeleted: [{ Deleted: 'unused-image' }], SpaceReclaimed: 1048576 },
+  }));
+  await page.goto('/#images');
+  const notice = page.locator('#modalNotification');
+  const prune = async () => {
+    await page.locator('[data-prune="images"]').click();
+    await page.locator('#confirm-prune').click();
+    await expect(page.locator('#modalNotificationTitle')).toHaveText('Prune complete');
+    await expect(notice).toBeVisible();
+    await expect(page.locator('main')).toHaveAttribute('aria-busy', 'false');
+  };
+  await prune();
+  await page.clock.fastForward(6000);
+  await expect(notice).toBeHidden();
+  await prune();
+  const close = page.getByRole('button', { name: 'Dismiss notification', exact: true });
+  await close.focus();
+  await page.keyboard.press('Enter');
+  await expect(notice).toBeHidden();
+});

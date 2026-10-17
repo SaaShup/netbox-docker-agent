@@ -33,7 +33,10 @@ async function child(t, script, env, flags = []) {
 test('agent entry point starts and exits cleanly on SIGTERM', async t => {
   let connected;
   const ready = new Promise(resolve => { connected = resolve; });
-  const engine = await server(t, (req, res) => { res.writeHead(200); res.write('\n'); connected(); });
+  const engine = await server(t, (req, res) => {
+    if (req.url.split('?')[0].endsWith('/images/json')) { res.setHeader('content-type', 'application/json'); res.end('[]'); return; }
+    res.writeHead(200); res.write('\n'); connected();
+  });
   const process = await child(t, 'src/index.js', { DOCKER_HOST: engine });
   await ready;
   assert.match(process.output, /listening on port/);
@@ -44,7 +47,10 @@ test('agent entry point starts and exits cleanly on SIGTERM', async t => {
 test('agent entry point uses port 1880 and all interfaces when settings are omitted', async t => {
   let connected;
   const ready = new Promise(resolve => { connected = resolve; });
-  const engine = await server(t, (req, res) => { res.writeHead(200); res.write('\n'); connected(); });
+  const engine = await server(t, (req, res) => {
+    if (req.url.split('?')[0].endsWith('/images/json')) { res.setHeader('content-type', 'application/json'); res.end('[]'); return; }
+    res.writeHead(200); res.write('\n'); connected();
+  });
   const process = await child(t, 'src/index.js', { DOCKER_HOST: engine, PORT: undefined, HOST: undefined }, ['--import', './tests/fixtures/default-listener.mjs']);
   await ready;
   assert.match(process.output, /listening on port 1880/);

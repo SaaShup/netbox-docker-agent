@@ -31,7 +31,7 @@ test('operation queues serialize a resource, allow independent work and recover 
   release(); await Promise.all([first, second]);
   assert.deepEqual(steps, ['first', 'independent', 'second']);
   assert.deepEqual(errors, ['failed']);
-  assert.equal(agent.jobs.size, 0); assert.equal(agent.chains.size, 0);
+  assert.equal(agent.jobs.size, 0); assert.equal(agent.pruneBlockers.size, 0); assert.equal(agent.chains.size, 0);
   const log = t.mock.method(console, 'error', () => {});
   Agent.prototype.log.call(agent, Error('test log'));
   assert.equal(JSON.parse(log.mock.calls[0].arguments[0]).msg, 'test log');
@@ -60,11 +60,113 @@ test('registry discovery retains known credentials and handles digest-only and u
     { RepoTags: ['private.test/ns/other:v1', 'private.test/ns/other:v2'] },
   ];
   const result = await agent.registries();
-  assert.equal(result[0].id, 12); assert.equal(result[0].serveraddress, 'https://custom.test');
-  assert.equal(result[0].images.length, 3); assert.equal(result[1].name, 'dockerhub');
+  assert.equal(result[1].id, 12); assert.equal(result[1].serveraddress, 'https://custom.test');
+  assert.equal(result[1].images.length, 3); assert.equal(result[0].name, 'dockerhub');
   store.config.netbox_url = 'http://manager';
   netbox.resource = async () => undefined;
-  assert.equal((await agent.registries())[0].id, undefined);
+  assert.equal((await agent.registries())[1].id, undefined);
+});
+
+test('registry refresh retains manager IDs with friendly names and prefers them over inferred entries', async t => {
+  const { agent, docker, store } = setup(t);
+  store.config.netbox_url = '';
+  docker.listImages = async () => [{ RepoTags: ['localhost:5000/team/app:v1'] }];
+  for (const serveraddress of ['localhost:5000', 'https://LOCALHOST:5000/v2/', 'http://localhost:5000/']) {
+    store.registries = [
+      { name: 'unrelated', images: [] },
+      { id: 700, name: 'Previous registration', serveraddress },
+      { name: 'localhost:5000', images: ['localhost:5000/team/app:v1'] },
+      { id: 808, name: 'Private registry', serveraddress, images: ['localhost:5000/team/app:v1'] },
+    ];
+    const result = await agent.registries(false);
+    assert.equal(result[0].id, 808);
+    assert.equal(result[0].serveraddress, serveraddress);
+    assert.deepEqual(result[0].images, ['localhost:5000/team/app:v1']);
+  }
+});
+
+test('registry identities survive image references reached through another endpoint alias', async t => {
+  const { agent, docker, store } = setup(t);
+  const ref = 'alias.test/team/app:v1';
+  docker.listImages = async () => [{ RepoTags: [ref] }];
+  for (const image of [ref, { display: ref }]) {
+    store.registries = [{ id: 90001, name: 'Private registry', serveraddress: 'localhost:5000', images: ['unrelated:v1', image] }];
+    const result = await agent.registries(false);
+    assert.equal(result[0].id, 90001);
+    assert.deepEqual(result[0].images, [ref]);
+  }
+});
+
+test('an in-flight stale image snapshot cannot erase registry metadata from a completed pull', async t => {
+  const { agent, docker, store } = setup(t);
+  const ref = 'private.test/app:v1';
+  let release, entered, calls = 0;
+  const ready = new Promise(resolve => { entered = resolve; });
+  const pending = new Promise(resolve => { release = resolve; });
+  docker.listImages = async () => {
+    if (++calls === 1) { entered(); await pending; return []; }
+    return [{ RepoTags: [ref] }];
+  };
+  docker.pull = async () => new PassThrough();
+  docker.modem = { followProgress: (_, cb) => cb(null, []) };
+  docker.getImage = () => ({ inspect: async () => ({ Id: 'sha256:pulled', RepoTags: [ref], Size: 1 }) });
+  const background = agent.registries(false);
+  await ready;
+  const pulling = agent.write('POST', 'images', {
+    id: 77, name: 'private.test/app', version: 'v1', force: true, display: ref,
+    registry: { id: 808, name: 'Private registry', serveraddress: 'private.test' },
+  });
+  await new Promise(setImmediate);
+  release(); await Promise.all([background, pulling]);
+  assert.equal(store.registries[0].id, 808);
+  assert.deepEqual(store.registries[0].images, [ref]);
+});
+
+test('registry snapshots remain identical when Docker reorders images and tags', async t => {
+  const { agent, docker } = setup(t);
+  let images = [
+    { RepoTags: ['z.test/app:z', 'z.test/app:a'] },
+    { RepoTags: ['a.test/app:v1', 'z.test/other:v1'] },
+  ];
+  docker.listImages = async () => images;
+  const before = await agent.registries(false);
+  assert.deepEqual(before.map(r => r.name), ['a.test', 'z.test']);
+  assert.deepEqual(before[1].images, ['z.test/app:a', 'z.test/app:z', 'z.test/other:v1']);
+  images = images.toReversed().map(image => ({ RepoTags: image.RepoTags.toReversed() }));
+  assert.equal(JSON.stringify(await agent.registries(false)), JSON.stringify(before));
+});
+
+test('image events reconcile registries without manager connectivity', async t => {
+  const { agent, docker, store, requests } = setup(t);
+  store.config.netbox_url = '';
+  for (const action of ['pull', 'tag', 'untag', 'delete', 'load', 'import']) {
+    docker.listImages = async () => [{ RepoTags: [`private.test/app:${action}`] }];
+    await agent.event({ Type: 'image', Action: action });
+    assert.deepEqual(store.registries[0].images, [`private.test/app:${action}`]);
+  }
+  docker.listImages = async () => [];
+  await agent.event({ Type: 'image', Action: 'delete' });
+  assert.deepEqual(store.registries, []);
+  assert.deepEqual(requests, []);
+});
+
+test('registry refreshes serialize concurrent requests and recover after failure', async t => {
+  const { agent, docker, store } = setup(t);
+  let release, entered;
+  const ready = new Promise(resolve => { entered = resolve; });
+  const pending = new Promise(resolve => { release = resolve; });
+  let calls = 0;
+  docker.listImages = async () => {
+    if (++calls === 1) { entered(); await pending; throw Error('daemon interrupted'); }
+    return [{ RepoTags: ['private.test/current:v2'] }];
+  };
+  const first = assert.rejects(agent.registries(false), /daemon interrupted/);
+  await ready;
+  const second = agent.registries(false);
+  await Promise.resolve();
+  assert.equal(calls, 1);
+  release(); await first; await second;
+  assert.deepEqual(store.registries[0].images, ['private.test/current:v2']);
 });
 
 test('sync handles empty volume inventories, unnamed drivers and missing host IDs', async t => {
@@ -83,19 +185,41 @@ test('sync handles empty volume inventories, unnamed drivers and missing host ID
 
 test('image deletion updates registry associations and supports tag references', async t => {
   const { agent, docker, store } = setup(t);
-  store.registries = [{ id: 1, images: ['app:v1', 'app:v2'] }, { id: 2, images: ['keep:v1'] }];
+  store.registries = [
+    { id: 1, name: 'private.test', images: ['private.test/app:v1', 'private.test/app:v2'] },
+    { id: 2, name: 'keep.test', images: ['keep.test/app:v1'] },
+  ];
+  docker.listImages = async () => [{ RepoTags: ['private.test/app:v2', 'keep.test/app:v1'] }];
   const removed = []; docker.getImage = ref => ({ remove: async () => { removed.push(ref); } });
-  await agent.write('DELETE', 'images', { name: 'app', version: 'v1', display: 'app:v1', registry: { id: 1 } });
-  assert.deepEqual(removed, ['app:v1']); assert.deepEqual(store.registries[0].images, ['app:v2']);
-  await agent.write('DELETE', 'images', { ImageID: 'sha256:two', display: 'app:v2', registry: { id: 1 } });
-  assert.deepEqual(store.registries, [{ id: 2, images: ['keep:v1'] }]);
+  await agent.write('DELETE', 'images', { name: 'private.test/app', version: 'v1', display: 'private.test/app:v1', registry: { id: 1 } });
+  assert.deepEqual(removed, ['private.test/app:v1']);
+  assert.deepEqual(store.registries.find(r => r.name === 'private.test').images, ['private.test/app:v2']);
+  docker.listImages = async () => [{ RepoTags: ['keep.test/app:v1'] }];
+  await agent.write('DELETE', 'images', { ImageID: 'sha256:two', display: 'private.test/app:v2', registry: { id: 1 } });
+  assert.deepEqual(store.registries.map(r => r.name), ['keep.test']);
+  assert.equal(store.registries[0].id, 2);
   await agent.write('DELETE', 'unknown');
   await agent.write('POST', 'unknown');
 });
 
+test('image operations reconcile Docker state even when a manager callback fails', async t => {
+  const { agent, docker, netbox, store, errors } = setup(t);
+  docker.pull = async () => new PassThrough();
+  docker.modem = { followProgress: (_, cb) => cb(null, []) };
+  docker.getImage = () => ({ inspect: async () => ({ Id: 'sha256:new', RepoTags: ['private.test/app:v1'], Size: 1 }) });
+  docker.listImages = async () => [{ RepoTags: ['private.test/app:v1'] }];
+  netbox.resource = async () => { throw Error('manager offline'); };
+  await assert.rejects(agent.write('POST', 'images', { name: 'private.test/app', version: 'v1', force: true }), /manager offline/);
+  assert.deepEqual(store.registries[0].images, ['private.test/app:v1']);
+  docker.listImages = async () => { throw Error('daemon unavailable'); };
+  await assert.rejects(agent.write('POST', 'images', { name: 'private.test/app', version: 'v1', force: true }), /manager offline/);
+  assert.ok(errors.includes('daemon unavailable'));
+});
+
 test('image pulls merge existing registry images and archive ID changes even with unchanged digests', async t => {
   const { agent, docker, store, requests } = setup(t);
-  store.registries = [{ id: 2, images: ['app:v1'] }];
+  store.registries = [{ id: 2, name: 'dockerhub', images: ['app:v1'] }];
+  docker.listImages = async () => [{ RepoTags: ['app:v1'] }];
   docker.pull = async () => new PassThrough();
   docker.modem = { followProgress: (_, cb) => cb(null, [{ status: 'done' }]) };
   docker.getImage = () => ({ inspect: async () => ({ Id: 'sha256:new', RepoTags: ['app:v1'], RepoDigests: ['app@sha256:same'], Size: 1 }) });
@@ -139,7 +263,7 @@ test('recreation helper restores runtime identity and cleanup errors do not prev
 
 test('events ignore unsupported types/actions, unconfigured managers and absent records', async t => {
   const { agent, docker, netbox, store, requests } = setup(t);
-  for (const event of [{ Type: 'image' }, { Type: 'container', Action: 'create' }]) await agent.event(event);
+  for (const event of [{ Type: 'image' }, { Type: 'volume', Action: 'create' }, { Type: 'container', Action: 'create' }]) await agent.event(event);
   store.config.netbox_url = ''; await agent.event({ Type: 'container', Action: 'start' });
   store.config.netbox_url = 'http://manager'; docker.getContainer = () => ({ inspect: async () => inspect() });
   netbox.resource = async (...args) => { requests.push(args); return { count: 0 }; };
@@ -182,7 +306,8 @@ test('event watcher retries failed connections and cancels a connection complete
 });
 
 test('startup imports registry references and periodic checks recover persistence failures', async t => {
-  const { agent, store, netbox, requests, errors } = setup(t);
+  const { agent, store, docker, netbox, requests, errors } = setup(t);
+  docker.listImages = async () => [{ RepoTags: ['private.test/one:v1', 'private.test/two:v2'] }];
   t.mock.timers.enable({ apis: ['setInterval'] });
   netbox.resource = async (method, type, ...args) => {
     requests.push([method, type, ...args]);
@@ -191,7 +316,8 @@ test('startup imports registry references and periodic checks recover persistenc
     ] } : { agent_version: '2.0.0-0' };
   };
   agent.start(); await Promise.all(agent.jobs);
-  assert.deepEqual(store.registries[0].images, ['one:v1', 'two:v2']);
+  assert.deepEqual(store.registries[0].images, ['private.test/one:v1', 'private.test/two:v2']);
+  assert.equal(store.registries[0].id, 1);
   assert.equal(store.registries.length, 1);
   store.save = async () => { throw Error('disk full'); };
   t.mock.timers.tick(60000); await new Promise(setImmediate); await Promise.all(agent.jobs);
@@ -204,11 +330,14 @@ test('startup imports registry references and periodic checks recover persistenc
   t.mock.timers.tick(60000); await new Promise(setImmediate); await Promise.all(agent.jobs);
 });
 
-test('unconfigured startup avoids manager requests', async t => {
-  const { agent, store, requests } = setup(t);
+test('unconfigured startup discovers local image registries without manager requests', async t => {
+  const { agent, store, docker, requests } = setup(t);
   store.config.netbox_url = '';
+  docker.listImages = async () => [{ RepoTags: ['nginx:alpine', 'private.test/team/app:v1'] }];
   agent.start(); await Promise.all(agent.jobs);
-  assert.equal(requests.some(r => r[0] === 'GET'), false);
+  assert.deepEqual(store.registries.map(r => r.name), ['dockerhub', 'private.test']);
+  assert.deepEqual(store.registries[1].images, ['private.test/team/app:v1']);
+  assert.equal(requests.some(r => r[0] !== 'journal'), false);
 });
 
 test('prune tolerates empty reports and journals Engine failures even when the manager is offline', async t => {
@@ -219,6 +348,26 @@ test('prune tolerates empty reports and journals Engine failures even when the m
   docker.modem.dial = (_, cb) => cb(Error('engine offline'));
   await assert.rejects(agent.prune('containers'), /engine offline/);
   assert.ok(errors.includes('manager offline')); assert.equal(agent.pruning, false);
+});
+
+test('image prune reports completed deletion even if registry refresh fails', async t => {
+  const { agent, docker, store, errors } = setup(t);
+  const report = { ImagesDeleted: [{ Deleted: 'sha256:old' }], SpaceReclaimed: 64 };
+  docker.modem = { dial: (_, cb) => cb(null, report) };
+  docker.listImages = async () => { throw Error('image list unavailable'); };
+  assert.deepEqual(await agent.prune('images'), report);
+  assert.ok(errors.includes('image list unavailable'));
+  docker.listImages = async () => [{ RepoTags: ['new.test/app:v1'] }];
+  await agent.prune('images');
+  assert.equal(store.registries[0].name, 'new.test');
+  store.save = async () => { throw Error('disk full'); };
+  assert.deepEqual(await agent.prune('images'), report);
+  assert.ok(errors.includes('disk full'));
+  store.save = async () => {};
+  const before = store.registries;
+  docker.modem.dial = (_, cb) => cb(Error('prune rejected'));
+  await assert.rejects(agent.prune('images'), /prune rejected/);
+  assert.equal(store.registries, before);
 });
 
 test('shutdown waits for prune reporting and releases its lock and tracked job together', async t => {

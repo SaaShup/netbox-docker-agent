@@ -9,7 +9,7 @@ test.describe("navigation & load", () => {
     page.on("pageerror", (e) => errors.push(e.message));
 
     await page.goto("/");
-    await expect(page).toHaveTitle(/^Docker Agent$/);
+    await expect(page).toHaveTitle(/^Paashup Agent$/);
     expect(errors, "no uncaught JS errors on load").toEqual([]);
   });
 
@@ -21,7 +21,7 @@ test.describe("navigation & load", () => {
     await expect(page.locator("#summary article")).toHaveCount(4);
     // Host info card is populated from /info.
     await expect(page.locator("#info-list")).toContainText("Agent Version");
-    await expect(page.locator("#info-list")).toContainText("Docker Api");
+    await expect(page.locator("#info-list")).toContainText("Engine API");
     // Disk usage remains visible below the resource summary.
     await expect(page.locator("#system-usage-chart progress").first()).toBeVisible();
   });

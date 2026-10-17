@@ -1,8 +1,8 @@
 {
   "info": {
-    "title": "Docker Agent",
+    "title": "Paashup Agent",
     "version": "2.0.0",
-    "description": "Interactive Docker Agent API. Execute requests against this agent. Engine webhooks return 202 acknowledgments; prune and SSH key mutations complete synchronously."
+    "description": "Interactive Paashup Agent API. Execute requests against this agent. Engine webhooks return 202 acknowledgments; prune and SSH key mutations complete synchronously."
   },
   "openapi": "3.0.0",
   "paths": {
@@ -853,7 +853,7 @@
             }
           }
         },
-        "summary": "Read Docker disk allocation",
+        "summary": "Read engine disk allocation",
         "operationId": "get_system_usage"
       }
     },
@@ -912,7 +912,7 @@
     },
     "/api/engine/containers/{containerId}/stats": {
       "get": {
-        "summary": "Get a nonstreaming Docker statistics snapshot",
+        "summary": "Get a nonstreaming engine statistics snapshot",
         "responses": {
           "200": {
             "description": "Success"
@@ -1033,7 +1033,7 @@
         ],
         "operationId": "pruneContainers",
         "summary": "Prune containers",
-        "description": "Delete stopped containers matching the filters. Attached volumes are retained. Synchronous: HTTP 200 means Docker completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use Docker string-array syntax.",
+        "description": "Delete stopped containers matching the filters. Attached volumes are retained. Synchronous: HTTP 200 means engine completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use engine string-array syntax.",
         "requestBody": {
           "required": false,
           "content": {
@@ -1131,7 +1131,7 @@
         },
         "responses": {
           "200": {
-            "description": "Completed Docker prune report",
+            "description": "Completed engine prune report",
             "content": {
               "application/json": {
                 "schema": {
@@ -1155,7 +1155,7 @@
             }
           },
           "400": {
-            "description": "Invalid options or Docker filters"
+            "description": "Invalid options or engine filters"
           },
           "401": {
             "description": "API authentication required"
@@ -1164,13 +1164,13 @@
             "description": "Cross-origin request rejected"
           },
           "409": {
-            "description": "Another agent operation or Docker prune is in progress"
+            "description": "Another agent operation or engine prune is in progress"
           },
           "500": {
-            "description": "Docker prune failed"
+            "description": "engine prune failed"
           },
           "502": {
-            "description": "Docker engine unavailable"
+            "description": "engine unavailable"
           }
         }
       }
@@ -1182,7 +1182,7 @@
         ],
         "operationId": "pruneImages",
         "summary": "Prune images",
-        "description": "Delete unused dangling images by default. all=true includes unused tagged images. Synchronous: HTTP 200 means Docker completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use Docker string-array syntax.",
+        "description": "Delete unused dangling images by default. all=true includes unused tagged images. Synchronous: HTTP 200 means engine completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use engine string-array syntax.",
         "requestBody": {
           "required": false,
           "content": {
@@ -1288,7 +1288,7 @@
         },
         "responses": {
           "200": {
-            "description": "Completed Docker prune report",
+            "description": "Completed engine prune report",
             "content": {
               "application/json": {
                 "schema": {
@@ -1320,7 +1320,7 @@
             }
           },
           "400": {
-            "description": "Invalid options or Docker filters"
+            "description": "Invalid options or engine filters"
           },
           "401": {
             "description": "API authentication required"
@@ -1329,13 +1329,13 @@
             "description": "Cross-origin request rejected"
           },
           "409": {
-            "description": "Another agent operation or Docker prune is in progress"
+            "description": "Another agent operation or engine prune is in progress"
           },
           "500": {
-            "description": "Docker prune failed"
+            "description": "engine prune failed"
           },
           "502": {
-            "description": "Docker engine unavailable"
+            "description": "engine unavailable"
           }
         }
       }
@@ -1347,7 +1347,7 @@
         ],
         "operationId": "pruneVolumes",
         "summary": "Prune volumes",
-        "description": "Delete unused anonymous volumes by default. all=true includes unused named volumes and their data. Synchronous: HTTP 200 means Docker completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use Docker string-array syntax.",
+        "description": "Delete unused anonymous volumes by default. all=true includes unused named volumes and their data. Synchronous: HTTP 200 means engine completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use engine string-array syntax.",
         "requestBody": {
           "required": false,
           "content": {
@@ -1437,7 +1437,7 @@
         },
         "responses": {
           "200": {
-            "description": "Completed Docker prune report",
+            "description": "Completed engine prune report",
             "content": {
               "application/json": {
                 "schema": {
@@ -1461,7 +1461,7 @@
             }
           },
           "400": {
-            "description": "Invalid options or Docker filters"
+            "description": "Invalid options or engine filters"
           },
           "401": {
             "description": "API authentication required"
@@ -1470,13 +1470,13 @@
             "description": "Cross-origin request rejected"
           },
           "409": {
-            "description": "Another agent operation or Docker prune is in progress"
+            "description": "Another agent operation or engine prune is in progress"
           },
           "500": {
-            "description": "Docker prune failed"
+            "description": "engine prune failed"
           },
           "502": {
-            "description": "Docker engine unavailable"
+            "description": "engine unavailable"
           }
         }
       }
@@ -1488,7 +1488,7 @@
         ],
         "operationId": "pruneNetworks",
         "summary": "Prune networks",
-        "description": "Delete unused custom networks. Built-in and attached networks are retained. Synchronous: HTTP 200 means Docker completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use Docker string-array syntax.",
+        "description": "Delete unused custom networks. Built-in and attached networks are retained. Synchronous: HTTP 200 means engine completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use engine string-array syntax.",
         "requestBody": {
           "required": false,
           "content": {
@@ -1586,7 +1586,7 @@
         },
         "responses": {
           "200": {
-            "description": "Completed Docker prune report",
+            "description": "Completed engine prune report",
             "content": {
               "application/json": {
                 "schema": {
@@ -1605,7 +1605,7 @@
             }
           },
           "400": {
-            "description": "Invalid options or Docker filters"
+            "description": "Invalid options or engine filters"
           },
           "401": {
             "description": "API authentication required"
@@ -1614,13 +1614,13 @@
             "description": "Cross-origin request rejected"
           },
           "409": {
-            "description": "Another agent operation or Docker prune is in progress"
+            "description": "Another agent operation or engine prune is in progress"
           },
           "500": {
-            "description": "Docker prune failed"
+            "description": "engine prune failed"
           },
           "502": {
-            "description": "Docker engine unavailable"
+            "description": "engine unavailable"
           }
         }
       }
@@ -1632,7 +1632,7 @@
         ],
         "operationId": "pruneBuildCache",
         "summary": "Prune build cache",
-        "description": "Prune this engine build cache; separate remote builders are not targeted. Synchronous: HTTP 200 means Docker completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use Docker string-array syntax.",
+        "description": "Prune this engine build cache; separate remote builders are not targeted. Synchronous: HTTP 200 means engine completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use engine string-array syntax.",
         "requestBody": {
           "required": false,
           "content": {
@@ -1828,7 +1828,7 @@
         },
         "responses": {
           "200": {
-            "description": "Completed Docker prune report",
+            "description": "Completed engine prune report",
             "content": {
               "application/json": {
                 "schema": {
@@ -1852,7 +1852,7 @@
             }
           },
           "400": {
-            "description": "Invalid options or Docker filters"
+            "description": "Invalid options or engine filters"
           },
           "401": {
             "description": "API authentication required"
@@ -1861,13 +1861,13 @@
             "description": "Cross-origin request rejected"
           },
           "409": {
-            "description": "Another agent operation or Docker prune is in progress"
+            "description": "Another agent operation or engine prune is in progress"
           },
           "500": {
-            "description": "Docker prune failed"
+            "description": "engine prune failed"
           },
           "502": {
-            "description": "Docker engine unavailable"
+            "description": "engine unavailable"
           }
         }
       }
@@ -3621,7 +3621,7 @@
               "system": {
                 "type": "number",
                 "minimum": 0,
-                "description": "Agent host operating system uptime in seconds; not the uptime of a remote Docker daemon."
+                "description": "Agent host operating system uptime in seconds; not the uptime of a remote engine."
               },
               "agent": {
                 "type": "number",

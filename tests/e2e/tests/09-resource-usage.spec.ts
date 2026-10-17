@@ -44,7 +44,7 @@ test("images and volumes show their containers and update after refresh", async 
   await expect(page.locator("#volumes-list .card").filter({ hasText: "unused-data" })).toContainText("No containers");
 
   containers = [];
-  await page.locator("#refresh").click();
+  await page.reload();
   await expect(volumeUsage).toContainText("No containers");
   await page.locator("#nav-images-btn").click();
   await expect(imageUsage).toContainText("No containers");

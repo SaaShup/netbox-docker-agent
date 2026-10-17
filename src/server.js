@@ -6,7 +6,7 @@ import { collect } from './docker.js';
 import { metrics } from './metrics.js';
 import { terminals } from './terminal.js';
 import { hostSshKeys } from './host-ssh.js';
-const assets = { '/vendor/swagger-ui-bundle.js': ['../node_modules/swagger-ui-dist/swagger-ui-bundle.js', 'text/javascript'], '/vendor/swagger-ui.css': ['../node_modules/swagger-ui-dist/swagger-ui.css', 'text/css'], '/doc.css': ['doc.css', 'text/css'], '/vendor/xterm.js': ['../node_modules/@xterm/xterm/lib/xterm.mjs', 'text/javascript'], '/vendor/xterm.css': ['../node_modules/@xterm/xterm/css/xterm.css', 'text/css'], '/': ['index.html', 'text/html'], '/app.js': ['app.js', 'text/javascript'], '/style.css': ['style.css', 'text/css'], '/doc': ['doc.html', 'text/html'], '/doc.js': ['doc.js', 'text/javascript'], '/openapi': ['openapi.yml', 'application/yaml'], '/openapi.yml': ['openapi.yml', 'application/yaml'], '/openapi.json': ['openapi.json', 'application/json'] };
+const assets = { '/theme.js': ['theme.js', 'text/javascript'], '/saashup-logo.svg': ['saashup-logo.svg', 'image/svg+xml'], '/vendor/swagger-ui-bundle.js': ['../node_modules/swagger-ui-dist/swagger-ui-bundle.js', 'text/javascript'], '/vendor/swagger-ui.css': ['../node_modules/swagger-ui-dist/swagger-ui.css', 'text/css'], '/doc.css': ['doc.css', 'text/css'], '/vendor/xterm.js': ['../node_modules/@xterm/xterm/lib/xterm.mjs', 'text/javascript'], '/vendor/xterm.css': ['../node_modules/@xterm/xterm/css/xterm.css', 'text/css'], '/': ['index.html', 'text/html'], '/app.js': ['app.js', 'text/javascript'], '/style.css': ['style.css', 'text/css'], '/doc': ['doc.html', 'text/html'], '/doc.js': ['doc.js', 'text/javascript'], '/openapi': ['openapi.yml', 'application/yaml'], '/openapi.yml': ['openapi.yml', 'application/yaml'], '/openapi.json': ['openapi.json', 'application/json'] };
 function send(res, status, body, type = 'application/json') { if (res.destroyed || res.writableEnded) return; res.writeHead(status, { 'Content-Type': `${type}; charset=utf-8` }); res.end(type === 'application/json' && !Buffer.isBuffer(body) ? JSON.stringify(body) : body); }
 async function body(req) {
   const chunks = []; let size = 0;
@@ -24,7 +24,7 @@ export function createServer(agent) {
     try {
       const url = new URL(req.url, 'http://localhost'); const route = url.pathname;
       if (route === '/doc') res.setHeader('Content-Security-Policy', res.getHeader('Content-Security-Policy') + "; style-src-attr 'unsafe-inline'; img-src 'self' data:");
-      if (!await authenticated(req)) { res.setHeader('WWW-Authenticate', 'Basic realm="Docker Agent", charset="UTF-8"'); return send(res, 401, { message: 'Unauthorized' }); }
+      if (!await authenticated(req)) { res.setHeader('WWW-Authenticate', 'Basic realm="Paashup Agent", charset="UTF-8"'); return send(res, 401, { message: 'Unauthorized' }); }
       if ((req.method !== 'GET' && req.method !== 'HEAD' || route.startsWith('/api/engine/')) && !sameOrigin(req)) return send(res, 403, { message: 'Cross-origin request rejected' });
       if (route === '/api/ssh-keys') {
         if (!['GET', 'POST', 'DELETE'].includes(req.method)) { res.setHeader('Allow', 'GET, POST, DELETE'); return send(res, 405, { message: 'Method not allowed' }); }
@@ -51,7 +51,7 @@ export function createServer(agent) {
       if (req.method === 'GET' && route === '/api/images') return send(res, 200, await agent.docker.listImages({ digests: true }));
       if (req.method === 'GET' && route === '/api/volumes') { const data = await agent.docker.listVolumes(); return send(res, 200, { ...data, Volumes: data.Volumes || [], Warnings: data.Warnings || null }); }
       if (req.method === 'GET' && route === '/api/networks') return send(res, 200, await agent.docker.listNetworks());
-      if (req.method === 'GET' && route === '/api/registries') return send(res, 200, agent.store.registries);
+      if (req.method === 'GET' && route === '/api/registries') return send(res, 200, await agent.registries(false));
       const prune = route.match(/^\/api\/engine\/([^/]+)\/prune$/);
       if (prune) {
         if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return send(res, 405, { message: 'Prune requires POST' }); }

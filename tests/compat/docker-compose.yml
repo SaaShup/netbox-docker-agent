@@ -16,6 +16,13 @@ services:
     environment:
       # Empty cert dir disables TLS, so dockerd serves a plain unix socket.
       DOCKER_TLS_CERTDIR: ""
+    # Register TLS names before dockerd starts; use the non-loopback address
+    # so Docker does not classify these endpoints as insecure local registries.
+    networks:
+      default:
+        aliases:
+          - compat-registry-tls.test
+          - compat-registry-wrong.test
     volumes:
       - docker-run:/var/run
     healthcheck:

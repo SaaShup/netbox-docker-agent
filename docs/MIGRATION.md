@@ -23,6 +23,6 @@ To roll back, stop 2.x, restore the backed-up data volume, and start the previou
 
 ## Optional prune actions
 
-Pruning adds new routes without changing existing resource webhook URLs. To request cleanup from Paasbox, configure a POST to `/api/engine/{containers,images,volumes,networks,build-cache}/prune` with the agent's **API Basic credentials**, not the manager's API token. Send prune options directly or under `data`; a standard model-event payload must be transformed into that options shape. See [the prune API documentation](../README.md#pruning-from-the-dashboard-or-paasbox) for examples and filters.
+Pruning adds new routes without changing existing resource webhook URLs. To request cleanup from Paasbox, configure a POST to `/api/engine/{containers,images,volumes,networks,build-cache}/prune` with the agent's **API Basic credentials**, not the manager's API token. Send prune options directly or under `data`; a standard model-event payload must be transformed into that options shape. See [the prune API documentation](PRUNING.md) for examples and filters.
 
 These endpoints return 200 with the completed Docker report rather than the legacy 202 acknowledgment. Reconcile manager inventory using the returned deletion identifiers. A configured integration also receives a best-effort host journal entry. Named volumes and tagged images require explicit `all: true`; the dashboard exposes those choices in its confirmation dialog. Test cleanup with disposable resources in your actual Paasbox deployment before enabling automation.
