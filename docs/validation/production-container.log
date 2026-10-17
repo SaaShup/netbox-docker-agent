@@ -1,6 +1,0 @@
-nda-production-check
-8e3295bdda5e2ee912ebfb41854b48d493230aba63f4e9e14c9f62dbd4a6c456
-production: UID 1000, writable data volume and Docker socket access PASS
-nda-production-check
-production: exit 0 and graceful persistence at mode 0600 PASS
-sha256:47db60602c1f2b82cefac4e36488e9d2f11920f736577d488209b3e838fa1146
