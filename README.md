@@ -40,8 +40,9 @@ DATAPATH=./data npm start
 The dashboard runs at **http://localhost:1880**. Open **http://localhost:1880/doc** for interactive API documentation.
 
 ```sh
-npm run test:unit  # unit, integration, and security tests
-npm test           # also runs the Docker compatibility matrix and browser tests
+npm run test:unit      # unit, integration, and security tests
+npm run codeql:install # one-time local CodeQL installation
+npm test              # also runs CodeQL, Docker compatibility, and browser tests
 ```
 
 The full suite requires Docker Compose, privileged containers, and registry network access. See [development and testing](docs/DEVELOPMENT.md) for individual suites and test setup.

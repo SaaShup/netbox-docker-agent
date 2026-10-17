@@ -7,4 +7,5 @@ config.js
 registries.js
 .agents
 .codex
+.codeql
 .aws

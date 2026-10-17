@@ -85,9 +85,9 @@ with the agent stopped.
 The agent rejects nonregular files, hardlinks, wrong ownership,
 group/world-writable files, invalid UTF-8 and files exceeding 1 MiB. A read-only
 mount or filesystem permission failure is reported without modifying the file.
-Successful changes log the account label, action and fingerprint; API logs record
-the authenticated dashboard user and action. Key contents and passwords are not
-logged.
+Successful changes log the action, fingerprint and timestamp. API request
+logs record the event, action and timestamp. API usernames, passwords and key
+contents are not logged.
 
 ## Configuration and API
 
@@ -97,7 +97,7 @@ logged.
   runtime feature when using the base Compose file.
 - `SSH_KEYS_UID`, `SSH_KEYS_GID`: Compose container identity matching the host file
   owner; defaults `1000:1000`.
-- `SSH_KEYS_ACCOUNT`: display/audit label; defaults to `Host account`.
+- `SSH_KEYS_ACCOUNT`: display label; defaults to `Host account`.
 - `DATAPATH`: existing data directory; backups use its `ssh-key-backups` subdirectory.
 
 The existing dashboard/API Basic authentication and same-origin checks apply to:

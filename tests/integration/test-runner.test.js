@@ -25,14 +25,15 @@ exit 0
 `, { mode: 0o755 });
 
   const cases = [
-    { name: 'success', env: {}, status: 0, results: ['PASS', 'PASS', 'PASS'] },
-    { name: 'unit failure', env: { FAIL_SUITE: 'test:unit' }, status: 23, results: ['FAIL', 'SKIPPED', 'SKIPPED'] },
-    { name: 'compatibility failure', env: { FAIL_SUITE: 'test:compat' }, status: 23, results: ['PASS', 'FAIL', 'SKIPPED'] },
-    { name: 'browser setup failure', env: { FAIL_SETUP: '1' }, status: 42, results: ['PASS', 'PASS', 'FAIL'] },
-    { name: 'browser failure', env: { FAIL_SUITE: 'test:browser' }, status: 23, results: ['PASS', 'PASS', 'FAIL'] },
-    { name: 'cleanup failure', env: { FAIL_CLEANUP: '1' }, status: 43, results: ['PASS', 'PASS', 'PASS'] },
-    { name: 'suite and cleanup failure', env: { FAIL_SUITE: 'test:browser', FAIL_CLEANUP: '1' }, status: 23, results: ['PASS', 'PASS', 'FAIL'] },
-    { name: 'interruption', env: { INTERRUPT_SUITE: 'test:unit' }, status: 143, results: ['FAIL', 'SKIPPED', 'SKIPPED'] },
+    { name: 'success', env: {}, status: 0, results: ['PASS', 'PASS', 'PASS', 'PASS'] },
+    { name: 'unit failure', env: { FAIL_SUITE: 'test:unit' }, status: 23, results: ['FAIL', 'SKIPPED', 'SKIPPED', 'SKIPPED'] },
+    { name: 'CodeQL failure', env: { FAIL_SUITE: 'test:codeql' }, status: 23, results: ['PASS', 'FAIL', 'SKIPPED', 'SKIPPED'] },
+    { name: 'compatibility failure', env: { FAIL_SUITE: 'test:compat' }, status: 23, results: ['PASS', 'PASS', 'FAIL', 'SKIPPED'] },
+    { name: 'browser setup failure', env: { FAIL_SETUP: '1' }, status: 42, results: ['PASS', 'PASS', 'PASS', 'FAIL'] },
+    { name: 'browser failure', env: { FAIL_SUITE: 'test:browser' }, status: 23, results: ['PASS', 'PASS', 'PASS', 'FAIL'] },
+    { name: 'cleanup failure', env: { FAIL_CLEANUP: '1' }, status: 43, results: ['PASS', 'PASS', 'PASS', 'PASS'] },
+    { name: 'suite and cleanup failure', env: { FAIL_SUITE: 'test:browser', FAIL_CLEANUP: '1' }, status: 23, results: ['PASS', 'PASS', 'PASS', 'FAIL'] },
+    { name: 'interruption', env: { INTERRUPT_SUITE: 'test:unit' }, status: 143, results: ['FAIL', 'SKIPPED', 'SKIPPED', 'SKIPPED'] },
   ];
   for (const scenario of cases) {
     await t.test(scenario.name, () => {
@@ -44,12 +45,12 @@ exit 0
       assert.ifError(result.error);
       assert.equal(result.status, scenario.status, result.stdout + result.stderr);
       const summary = result.stdout.slice(result.stdout.indexOf('===== npm test summary ====='));
-      const names = ['Unit and integration', 'Docker compatibility', 'Browser UI'];
+      const names = ['Unit and integration', 'CodeQL security', 'Docker compatibility', 'Browser UI'];
       names.forEach((name, i) => assert.match(summary, new RegExp(`${name} +${scenario.results[i]} +\\d+s`)));
       assert.match(summary, new RegExp(`Overall: ${scenario.status ? 'FAIL' : 'PASS'} .*\\d+s\\)\\n$`));
       if (scenario.status) assert.ok(summary.includes(`exit ${scenario.status},`));
       if (scenario.env.FAIL_CLEANUP) assert.match(summary, /Test stack cleanup: FAIL/);
-      assert.equal(result.stdout.includes('Test stack cleanup ran'), scenario.results[0] === 'PASS');
+      assert.equal(result.stdout.includes('Test stack cleanup ran'), scenario.results[1] === 'PASS');
     });
   }
 });

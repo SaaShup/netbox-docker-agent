@@ -8,3 +8,4 @@ playwright-report/
 test-results/
 
 /docs/validation/
+/.codeql/

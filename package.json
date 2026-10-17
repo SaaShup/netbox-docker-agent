@@ -12,6 +12,8 @@
     "start": "node src/index.js",
     "test": "bash tests/run.sh",
     "test:unit": "node --test --experimental-test-coverage --test-coverage-include='src/**/*.js' --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100 tests/unit/*.test.js tests/integration/*.test.js",
+    "codeql:install": "bash scripts/install-codeql.sh",
+    "test:codeql": "bash tests/codeql/run.sh",
     "test:hurl": "bash tests/hurl/run.sh",
     "test:compat": "bash tests/compat/run.sh",
     "test:browser": "bash tests/e2e/run.sh",

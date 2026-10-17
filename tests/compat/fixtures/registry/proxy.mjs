@@ -1,12 +1,13 @@
 // Test-only registry fault injector. The backend remains a real Distribution registry.
 import http from 'node:http';
 import https from 'node:https';
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 
 let target;
 let interruptDigest;
 const stats = { interrupted: 0, blockedRetries: 0, blobRequests: 0 };
-if (!existsSync('/auth/htpasswd')) writeFileSync('/auth/htpasswd', process.env.FIXTURE_HTPASSWD + '\n');
+try { writeFileSync('/auth/htpasswd', process.env.FIXTURE_HTPASSWD + '\n', { flag: 'wx' }); }
+catch (error) { if (error.code !== 'EEXIST') throw error; }
 
 function proxy(request, response) {
   if (!target) { response.writeHead(503); response.end('fixture backend not configured'); return; }
@@ -16,8 +17,10 @@ function proxy(request, response) {
     stats.blockedRetries++;
     response.writeHead(503); response.end('fixture layer transfer remains interrupted'); return;
   }
-  const upstream = http.request(new URL(request.url, target), {
-    method: request.method, headers: { ...request.headers, host: new URL(target).host },
+  const backend = new URL(target);
+  const upstream = http.request({
+    hostname: backend.hostname, port: backend.port, path: request.url,
+    method: request.method, headers: { ...request.headers, host: backend.host },
   }, incoming => {
     response.writeHead(incoming.statusCode, incoming.headers);
     if (request.method === 'GET' && request.url.includes('/blobs/')) stats.blobRequests++;

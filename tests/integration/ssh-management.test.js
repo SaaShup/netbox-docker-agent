@@ -19,6 +19,7 @@ async function fixture(t){
 }
 
 test('dashboard API authentication manages SSH without a separate login and updates the configured file directly with exact backups and unchanged inode',async t=>{
+ const logs=[];t.mock.method(console,'info',entry=>logs.push(JSON.parse(entry)));
  const {api,file,directory}=await fixture(t);const before=await fs.stat(file);
  for(const authorization of ['',basic('owner','secret'),basic('dashboard','wrong')])assert.equal((await api('GET',undefined,{authorization})).status,401);
  let list=await(await api()).json();assert.equal(list.account,'hostuser');assert.deepEqual(list.keys,[]);
@@ -34,6 +35,15 @@ test('dashboard API authentication manages SSH without a separate login and upda
  delete process.env.API_USERNAME;process.env.API_PASSWORD='saashup';delete process.env.SSH_KEYS_ACCOUNT;
  list=await(await api('GET',undefined,{authorization:basic('admin','saashup')})).json();assert.equal(list.account,'Host account');
  assert.equal((await api('POST',{publicKey,revision:list.revision},{authorization:basic('admin','saashup')})).status,200);
+ const requests=logs.filter(entry=>entry.event==='ssh-key-request');
+ assert.deepEqual(requests.map(entry=>entry.action),['POST','DELETE','POST']);
+ for(const entry of requests){
+  assert.deepEqual(Object.keys(entry).sort(),['action','event','time']);
+  assert.equal(new Date(entry.time).toISOString(),entry.time);
+ }
+ const changes=logs.filter(entry=>entry.event==='ssh-key-change');
+ assert.deepEqual(changes.map(entry=>entry.action),['add','remove','add']);
+ for(const entry of changes)assert.deepEqual(Object.keys(entry).sort(),['action','event','fingerprint','time']);
 });
 
 test('disabled, missing, readonly and invalid files report failures without creating host files',async t=>{

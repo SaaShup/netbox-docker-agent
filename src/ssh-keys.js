@@ -130,7 +130,7 @@ export class AuthorizedKeys {
         catch { throw sshError(500, `SSH key write and recovery failed; restore backup ${backup} from the agent data volume`); }
         throw error;
       }
-      console.info(JSON.stringify({ event: 'ssh-key-change', action: method === 'POST' ? 'add' : 'remove', account: this.account, fingerprint: changed.fingerprint, time: new Date().toISOString() }));
+      console.info(JSON.stringify({ event: 'ssh-key-change', action: method === 'POST' ? 'add' : 'remove', fingerprint: changed.fingerprint, time: new Date().toISOString() }));
       return { backup, revision: digest(next) };
     } finally {
       try { if (file) await file.close(); }

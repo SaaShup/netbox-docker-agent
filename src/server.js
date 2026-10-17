@@ -29,7 +29,7 @@ export function createServer(agent) {
       if (route === '/api/ssh-keys') {
         if (!['GET', 'POST', 'DELETE'].includes(req.method)) { res.setHeader('Allow', 'GET, POST, DELETE'); return send(res, 405, { message: 'Method not allowed' }); }
         const result = await hostSshKeys(req.method, req.method === 'GET' ? undefined : await body(req));
-        if (req.method !== 'GET') console.info(JSON.stringify({ event: 'ssh-key-request', action: req.method, user: process.env.API_USERNAME || 'admin', time: new Date().toISOString() }));
+        if (req.method !== 'GET') console.info(JSON.stringify({ event: 'ssh-key-request', action: req.method, time: new Date().toISOString() }));
         return send(res, 200, result);
       }
       if (route === '/admin/config') {
