@@ -126,7 +126,16 @@ export class Agent {
           await this.netbox.journal('image', d.id, 'success', 'pulled image');
         }
         if (type === 'endpoint' && d.operation === 'refresh' && d.state === 'refreshing') {
-          for (const resource of ['containers', 'images', 'volumes', 'networks']) await this.netbox.resource('DELETE', resource, (d[resource] || []).map(x => ({ id: x.id })));
+          for (const resource of ['containers', 'images', 'volumes', 'networks']) {
+            const records = (d[resource] || []).map(x => ({ id: x.id }));
+            if (!records.length) continue;
+            try { await this.netbox.resource('DELETE', resource, records); }
+            catch (error) {
+              // Paasbox purges inventory before notifying the agent and does
+              // not expose bulk DELETE. NetBox still needs these deletions.
+              if (error.statusCode !== 405) throw error;
+            }
+          }
           for (const resource of ['endpoint', 'networks', 'volumes', 'images', 'containers']) await this.sync(resource);
           await this.netbox.journal('host', host, 'info', 'agent refreshed');
         }

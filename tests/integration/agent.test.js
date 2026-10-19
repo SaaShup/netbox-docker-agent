@@ -14,7 +14,7 @@ import { Agent } from '../../src/agent.js';
 import { createServer } from '../../src/server.js';
 const auth='Basic '+Buffer.from('admin:saashup').toString('base64');
 const fixture={Id:'abc',Name:'/demo',Image:'sha256:image',Config:{Image:'nginx:alpine',Env:['X=1']},State:{Status:'created',ExitCode:0},HostConfig:{RestartPolicy:{Name:'no'},LogConfig:{Type:'json-file',Config:{}}},NetworkSettings:{Networks:{bridge:{}}},Mounts:[]};
-async function setup(t) {
+async function setup(t, deleteStatus = 200) {
  const dir=await mkdtemp(path.join(tmpdir(),'nda-integration-'));const calls=[],callbacks=[];let events;
  const engine=http.createServer(async(req,res)=>{let raw='';for await(const chunk of req)raw+=chunk;const url=new URL(req.url,'http://engine');const p=url.pathname.replace(/^\/v\d+\.\d+/,'');const body=raw?JSON.parse(raw):undefined;calls.push({method:req.method,path:p,query:url.search,body});
  const json=data=>{res.setHeader('content-type','application/json');res.end(JSON.stringify(data));};
@@ -40,7 +40,7 @@ async function setup(t) {
  if(req.method==='POST'||req.method==='DELETE'){res.statusCode=204;res.end();return;}
  res.statusCode=404;json({message:`unhandled ${p}`});
  });engine.listen(0,'127.0.0.1');await once(engine,'listening');
- const nb=http.createServer(async(req,res)=>{let raw='';for await(const chunk of req)raw+=chunk;callbacks.push({method:req.method,url:req.url,auth:req.headers.authorization,body:raw?JSON.parse(raw):undefined});res.setHeader('content-type','application/json');res.end(JSON.stringify(req.method==='GET'&&req.url.includes('containers')?{count:1,results:[{id:7,name:'demo'}]}:{results:[]}));});nb.listen(0,'127.0.0.1');await once(nb,'listening');
+ const nb=http.createServer(async(req,res)=>{let raw='';for await(const chunk of req)raw+=chunk;callbacks.push({method:req.method,url:req.url,auth:req.headers.authorization,body:raw?JSON.parse(raw):undefined});res.setHeader('content-type','application/json');if(req.method==='DELETE'&&deleteStatus!==200){res.statusCode=deleteStatus;res.end(JSON.stringify({detail:'bulk deletion rejected'}));return;}res.end(JSON.stringify(req.method==='GET'&&req.url.includes('containers')?{count:1,results:[{id:7,name:'demo'}]}:{results:[]}));});nb.listen(0,'127.0.0.1');await once(nb,'listening');
  const store=await new Store(dir).load();Object.assign(store.config,{netbox_url:`http://127.0.0.1:${nb.address().port}`,netbox_token:'ntb_test',id:9});
  const docker=new Docker({host:'127.0.0.1',port:engine.address().port,protocol:'http'});const netbox=new Netbox(store),agent=new Agent(docker,store,netbox);agent.log=()=>{};const server=createServer(agent);server.listen(0,'127.0.0.1');await once(server,'listening');
  const base=`http://127.0.0.1:${server.address().port}`;
@@ -138,6 +138,46 @@ test('configuration uses API credentials, ignores retired admin credentials and 
  }
 });
 test('host-state guards prevent destructive Docker requests; endpoint refresh clears and reimports inventories',async t=>{const {agent,calls,callbacks}=await setup(t);const count=calls.length;await agent.write('DELETE','containers',{ContainerID:'abc',host:{state:'deleted'}});await agent.write('DELETE','volumes',{name:'keep',host:{state:'refreshing'}});assert.equal(calls.length,count);await agent.write('POST','endpoint',{operation:'refresh',state:'refreshing',containers:[{id:7}],images:[{id:8}],volumes:[{id:9}],networks:[{id:10}]});for(const type of ['containers','images','volumes','networks'])assert.ok(callbacks.some(x=>x.method==='DELETE'&&x.url===`/api/plugins/docker/${type}/`));assert.ok(callbacks.some(x=>x.url==='/api/extras/journal-entries/'&&x.body.comments==='agent refreshed'));});
+for (const inventory of [{}, { containers: [], images: [], volumes: [], networks: [] }]) {
+ test(`refresh imports pre-purged inventory without DELETE for ${Object.keys(inventory).length ? 'empty' : 'missing'} ID lists`, async t => {
+  const { agent, api, callbacks, docker } = await setup(t, 405);
+  docker.listVolumes = async () => ({ Volumes: [{ Name: 'data', Driver: 'local' }] });
+  assert.equal((await api('/api/engine/endpoint', 'POST', { data: { operation: 'refresh', state: 'refreshing', ...inventory } })).status, 202);
+  await Promise.all(agent.jobs);
+  assert.equal(callbacks.some(c => c.method === 'DELETE'), false);
+  for (const type of ['networks', 'volumes', 'images', 'containers']) assert.ok(callbacks.some(c => c.method === 'POST' && c.url === `/api/plugins/docker/${type}/`), type);
+  assert.ok(callbacks.some(c => c.body?.comments === 'agent refreshed'));
+ });
+}
+
+for (const status of [405, 400, 401, 403, 404, 500]) {
+ test(`refresh ${status === 405 ? 'continues' : 'stops'} when inventory DELETE returns HTTP ${status}`, async t => {
+  const { agent, api, callbacks, docker, netbox } = await setup(t, status);
+  const errors = [];
+  agent.log = error => errors.push(error);
+  docker.listVolumes = async () => ({ Volumes: [{ Name: 'data', Driver: 'local' }] });
+  const resources = ['containers', 'images', 'volumes', 'networks'];
+  const inventory = Object.fromEntries(resources.map((type, index) => [type, [{ id: index + 1 }]]));
+  assert.equal((await api('/api/engine/endpoint', 'POST', { data: { operation: 'refresh', state: 'refreshing', ...inventory } })).status, 202);
+  await Promise.all(agent.jobs);
+  if (status === 405) {
+   assert.deepEqual(errors, []);
+   assert.equal(netbox.errors, 4);
+   for (const type of resources) {
+    assert.ok(callbacks.some(c => c.method === 'DELETE' && c.url === `/api/plugins/docker/${type}/`));
+    assert.ok(callbacks.some(c => c.method === 'POST' && c.url === `/api/plugins/docker/${type}/`));
+   }
+   assert.ok(callbacks.some(c => c.body?.comments === 'agent refreshed'));
+  } else {
+   assert.equal(errors.length, 1);
+   assert.equal(errors[0].statusCode, status);
+   assert.equal(callbacks.filter(c => c.method === 'DELETE').length, 1);
+   assert.equal(callbacks.some(c => c.method === 'POST' && c.url.startsWith('/api/plugins/docker/')), false);
+   assert.equal(callbacks.some(c => c.body?.comments === 'agent refreshed'), false);
+  }
+ });
+}
+
 test('forced image changes archive the prior record and publish a new version',async t=>{const {agent,callbacks}=await setup(t);await agent.write('POST','images',{id:8,name:'nginx',version:'alpine',ImageID:'sha256:oldimage',Digest:'sha256:old',force:true,registry:{id:3,name:'registry',serveraddress:'https://registry'},display:'nginx:alpine'});assert.ok(callbacks.some(x=>x.method==='PATCH'&&x.url==='/api/plugins/docker/images/'&&x.body[0].version==='oldimage'));assert.ok(callbacks.some(x=>x.method==='POST'&&x.url==='/api/plugins/docker/images/'&&x.body.ImageID==='sha256:image'));assert.equal(agent.store.registries[0].images[0],'nginx:alpine');});
 test('self recreation is rejected over HTTP for both ID and name without Docker mutations', async t => {
  const { agent, api, calls } = await setup(t); const old = process.env.HOSTNAME;

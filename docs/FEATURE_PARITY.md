@@ -13,7 +13,7 @@ Baseline: commit `96d321b7f967517cd1f966ba4e0b332380f6977d`, original `flows.jso
 | GET `/api/engine/:type`, async 202 acknowledgments | Native routing, `Agent.sync` | Smoke/read Hurl, per-resource inventory integration |
 | Endpoint registration (`url,id,token,endpoint`), NETBOX_URL override | Native route + atomic Store | Integration and migration config tests |
 | Endpoint disconnect and registry reset | `Agent.write` DELETE endpoint | Integration |
-| POST endpoint refresh: delete supplied NetBox resource IDs and repopulate | `Agent.write` refresh | Fixture integration; real plugin needs deployment verification |
+| POST endpoint refresh: delete supplied NetBox resource IDs and repopulate; skip empty deletes and accept Paasbox bulk DELETE 405 | `Agent.write` refresh | Fixture integration; real plugin needs deployment verification |
 | POST containers: state `none`, name gate, hostname/image/capabilities | `createOptions`, callback mapping | Lifecycle Hurl, integration |
 | POST images: size/ImageID gate and force pull | Dockerode pull/progress, image inspection | Image/lifecycle Hurl, integration |
 | Forced image refresh: archive prior image version and create current record | `Agent.write` force image branch | Fixture integration; real private-registry/tag-change verification required |

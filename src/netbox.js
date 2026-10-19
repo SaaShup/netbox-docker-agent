@@ -12,7 +12,7 @@ export class Netbox {
         const req = (url.protocol === 'https:' ? https : http).request(url, { method, rejectUnauthorized: !process.env.DISABLE_SSL_CHECK, timeout: 15000, headers: { Authorization: `${config.netbox_token?.startsWith('ntb_') ? 'Bearer' : 'Token'} ${config.netbox_token}`, Accept: 'application/json', ...(payload ? { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) } : {}) } }, res => {
           let data = ''; res.on('data', chunk => { data += chunk; if (data.length > 16 * 1024 * 1024) req.destroy(new Error('NetBox response too large')); });
           res.on('error', reject);
-          res.on('end', () => { if (res.statusCode >= 400 || res.statusCode >= 300 && res.statusCode < 400) return reject(new Error(`NetBox HTTP ${res.statusCode}`)); try { resolve(data ? JSON.parse(data) : null); } catch { reject(new Error('Invalid NetBox JSON')); } });
+          res.on('end', () => { if (res.statusCode >= 400 || res.statusCode >= 300 && res.statusCode < 400) return reject(Object.assign(new Error(`NetBox HTTP ${res.statusCode}`), { statusCode: res.statusCode })); try { resolve(data ? JSON.parse(data) : null); } catch { reject(new Error('Invalid NetBox JSON')); } });
         });
         req.on('timeout', () => req.destroy(new Error('NetBox timeout'))); req.on('error', reject); req.end(payload);
       });
