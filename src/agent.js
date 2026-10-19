@@ -82,7 +82,7 @@ export class Agent {
       await this.netbox.resource('PATCH', 'hosts', { id: host, endpoint: this.store.config.endpoint, state: 'running' }, `${host}/`);
       await this.netbox.resource('PATCH', 'hosts', [{ id: Number(host || 0), docker_api_version: version.ApiVersion, agent_version: `${this.version}-${this.store.config.flows}`, state: 'running', operation: 'none' }]);
     } else if (type === 'containers') { for (const c of await this.containers()) await this.netbox.resource('POST', type, containerRecord(c, host)); }
-    else if (type === 'networks') { for (const n of await this.docker.listNetworks()) await this.netbox.resource('POST', type, { host, name: n.Name, driver: n.Driver ?? 'None', NetworkID: n.Id, state: 'created' }); }
+    else if (type === 'networks') { for (const n of await this.docker.listNetworks()) await this.netbox.resource('POST', type, { host, name: n.Name, driver: n.Driver === 'null' ? 'None' : n.Driver ?? 'None', NetworkID: n.Id, state: 'created' }); }
     else if (type === 'volumes') { for (const v of (await this.docker.listVolumes()).Volumes || []) await this.netbox.resource('POST', type, { host, name: v.Name, driver: v.Driver }); }
     else if (type === 'images') { await this.registries(); for (const i of await this.docker.listImages({ digests: true })) await this.netbox.resource('POST', type, imageRecord(i, host, this.store.registries)); }
   }

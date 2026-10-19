@@ -89,6 +89,27 @@ test('all container operations and resource lifecycles reach Engine endpoints',a
 test('container recreation preserves settings and rolls back a failed replacement',async t=>{const {agent,calls,docker}=await setup(t);await agent.write('PUT','containers',{id:7,name:'demo',ContainerID:'demo',operation:'recreate',image:{ImageID:'sha256:image'},env:[{var_name:'A',value:"a'b"}],network_settings:[]});const created=calls.find(x=>x.path==='/containers/create');assert.deepEqual(created.body.Env,["A=a'b"]);assert.ok(calls.some(x=>x.method==='DELETE'&&x.path==='/containers/abc'));docker.createContainer=async()=>{throw Error('create failed')};await assert.rejects(agent.write('PUT','containers',{id:7,name:'demo',ContainerID:'abc',operation:'recreate',image:{ImageID:'sha256:image'}}),/create failed/);assert.ok(calls.filter(x=>x.path==='/containers/abc/rename').some(x=>x.query==='?name=demo'));});
 test('exec, logs and stats retain the legacy response envelopes',async t=>{const {api}=await setup(t);const result=await(await api('/api/engine/containers/abc/exec','PUT',{cmd:['echo','hello']})).json();assert.ok(result.stdout.includes('hello'));assert.equal(await(await api('/api/engine/containers/abc/logs')).text(),'hello\n');assert.equal((await(await api('/api/engine/containers/abc/stats')).json()).cpu_stats.cpu_usage.total_usage,5);assert.equal((await api('/api/engine/containers/abc/exec','PUT',{cmd:'whoami'})).status,400);});
 test('NetBox inventory synchronization covers every resource and host metadata',async t=>{const {agent,callbacks}=await setup(t);for(const type of ['endpoint','networks','volumes','images','containers','registries'])await agent.sync(type);assert.ok(callbacks.some(x=>x.url==='/api/plugins/docker/hosts/'&&x.body[0].agent_version==='2.0.0-0'));assert.ok(callbacks.some(x=>x.url==='/api/plugins/docker/networks/'&&x.body.NetworkID==='net'));assert.ok(callbacks.some(x=>x.url==='/api/plugins/docker/containers/'&&x.body.ContainerID==='abc'));assert.ok(callbacks.some(x=>x.url==='/api/plugins/docker/images/'&&x.body.name==='nginx'));});
+test('network discovery maps the Docker null driver to the legacy None callback value', async t => {
+ const { api, agent, docker, callbacks } = await setup(t);
+ docker.listNetworks = async () => [
+  { Id: 'none-id', Name: 'none', Driver: 'null' },
+  { Id: 'null-id', Name: 'null-driver', Driver: null },
+  { Id: 'missing-id', Name: 'missing-driver' },
+  { Id: 'bridge-id', Name: 'bridge', Driver: 'bridge' },
+  { Id: 'host-id', Name: 'host', Driver: 'host' },
+ ];
+ assert.equal((await api('/api/engine/networks')).status, 202);
+ await Promise.all(agent.jobs);
+ const records = callbacks.filter(c => c.method === 'POST' && c.url === '/api/plugins/docker/networks/').map(c => c.body);
+ assert.deepEqual(records, [
+  { host: 9, name: 'none', driver: 'None', NetworkID: 'none-id', state: 'created' },
+  { host: 9, name: 'null-driver', driver: 'None', NetworkID: 'null-id', state: 'created' },
+  { host: 9, name: 'missing-driver', driver: 'None', NetworkID: 'missing-id', state: 'created' },
+  { host: 9, name: 'bridge', driver: 'bridge', NetworkID: 'bridge-id', state: 'created' },
+  { host: 9, name: 'host', driver: 'host', NetworkID: 'host-id', state: 'created' },
+ ]);
+});
+
 test('event stream reconnects after disconnect and synchronizes external state changes',async t=>{const {agent,getEvents,callbacks}=await setup(t);await agent.watch();await new Promise(r=>setTimeout(r,20));getEvents().write(JSON.stringify({Type:'container',Action:'pause',Actor:{ID:'abc'}})+'\n');await new Promise(r=>setTimeout(r,80));await Promise.all(agent.jobs);assert.ok(callbacks.some(x=>x.method==='PATCH'&&x.url==='/api/plugins/docker/containers/7/'));const first=getEvents();first.end();await new Promise(r=>setTimeout(r,1200));assert.notEqual(getEvents(),first);});
 test('security rejects missing/wrong auth, cross-origin writes, malformed/oversized JSON and disabled exec',async t=>{const {api,base}=await setup(t);assert.equal((await fetch(base+'/api/containers')).status,401);assert.equal((await api('/api/containers','GET',undefined,{authorization:'Basic eDp5'})).status,401);assert.equal((await api('/api/engine/containers','POST',{data:{}},{origin:'https://evil.example'})).status,403);assert.equal((await api('/api/engine/endpoint?url=http://localhost','GET',undefined,{origin:'https://evil.example'})).status,403);assert.equal((await fetch(base+'/api/engine/containers',{method:'POST',headers:{authorization:auth},body:'{'})).status,400);assert.equal((await api('/api/engine/containers','POST',{data:{name:'x'.repeat(1024*1024)}})).status,413);assert.equal((await api('/../package.json')).status,404);process.env.DISABLE_EXEC='1';try{const disabled=await api('/api/engine/containers/abc/exec','PUT',{cmd:['id']});assert.equal(disabled.status,200);assert.deepEqual(await disabled.json(),{AttachStdin:false,AttachStdout:true,AttachStderr:true,Tty:false,Cmd:['id']});assert.equal((await api('/api/engine/containers/abc/ws','POST')).status,403);}finally{delete process.env.DISABLE_EXEC;}});
 test('WebSocket upgrade requires credentials and same-origin even after reservation',async t=>{const {api,base}=await setup(t);const result=await(await api('/api/engine/containers/abc/ws','POST')).json();assert.equal(result.path,'/ws/engine/containers/abc/exec');for(const headers of [{},{authorization:auth,origin:'https://evil.example'}]){const ws=new WebSocket(base.replace('http:','ws:')+result.path,{headers});const [err]=await once(ws,'error');assert.match(err.message,/403/);}});
