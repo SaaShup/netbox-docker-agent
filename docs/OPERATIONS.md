@@ -8,6 +8,8 @@ Container operations: start, stop, restart, kill, pause, unpause, rename, update
 
 Docker events reconnect automatically. External container lifecycle events update the matching NetBox container by host and name. Lifecycle events triggered during an agent operation are gated; pause/unpause events remain synchronized. The startup check reports the agent version and requests a host refresh after an upgrade. Endpoint refresh removes the plugin's supplied resource records and repopulates inventory.
 
+Settings saves (`operation: none`) still apply the restart policy and optional rename. Settings saves and explicit renames write their journals without PATCHing the container back to the manager, matching the legacy flow. This prevents callback webhooks from starting a journal loop and preserves configuration staged for recreation. Docker events send one PATCH containing runtime state to the container detail endpoint.
+
 The terminal keeps the existing `/ws/engine/containers/:id/exec` route and byte-code protocol. Request its path with `POST /api/engine/containers/:id/ws` first. The synchronous HTTP exec route retains its historical `text/plain` JSON envelope. With `DISABLE_EXEC` set it returns a 200 exec-options echo without executing; disabled WebSocket setup returns 403. Both setup and upgrade require API credentials, and browser upgrades must be same-origin. The dashboard supports shell selection, keyboard input, paste, terminal resize, output and session closure. External clients can use `src/exec-client.js` or the existing protocol with authenticated upgrades.
 
 ## Dashboard

@@ -147,7 +147,7 @@ test('Docker progress error frames fail image pulls and create danger journals',
 test('terminal styles use unique per-page CSP nonces without inline script permissions',async t=>{const {api}=await setup(t);const first=await api('/'),second=await api('/');const csp=first.headers.get('content-security-policy');const html=await first.text();assert.ok(!csp.includes('unsafe-inline'));assert.match(csp,/script-src 'self';/);const nonce=html.match(/name="style-nonce" content="([^"]+)"/)[1];assert.ok(csp.includes(`'nonce-${nonce}'`));assert.notEqual(csp,second.headers.get('content-security-policy'));});
 test('volume size options follow the daemon storage driver and registry discovery creates remote associations',async t=>{const {agent,docker,calls,netbox}=await setup(t);docker.info=async()=>({Driver:'btrfs'});await agent.write('POST','volumes',{name:'bounded',driver:'local',max_size:128});assert.deepEqual(calls.find(x=>x.path==='/volumes/create').body.DriverOpts,{o:'size=128m'});docker.listImages=async()=>[{Id:'sha256:registry',RepoTags:['private.example:5000/ns/app:v1'],Size:1}];const original=netbox.resource.bind(netbox);netbox.resource=async(method,type,data,suffix)=>type==='registries'?(method==='GET'?{results:[]}:[{id:42,name:'private.example:5000'}]):original(method,type,data,suffix);const registries=await agent.registries();assert.equal(registries[0].name,'private.example:5000');assert.equal(registries[0].id,42);assert.deepEqual(registries[0].images,['private.example:5000/ns/app:v1']);});
 test('lifecycle events are gated during operations while pause/unpause continue to synchronize',async t=>{const {agent,docker,callbacks}=await setup(t);let release,started;const entered=new Promise(resolve=>{started=resolve});const blocked=new Promise(resolve=>{release=resolve});const get=docker.getContainer.bind(docker);docker.getContainer=id=>{const container=get(id);container.start=async()=>{started();await blocked;};return container;};const operation=agent.write('PUT','containers',{id:7,ContainerID:'abc',operation:'start'});await entered;assert.equal(agent.activeOperations,1);const before=callbacks.filter(x=>x.method==='PATCH').length;await agent.event({Type:'container',Action:'start',Actor:{ID:'abc'}});assert.equal(callbacks.filter(x=>x.method==='PATCH').length,before);await agent.event({Type:'container',Action:'pause',Actor:{ID:'abc'}});assert.ok(callbacks.filter(x=>x.method==='PATCH').length>before);release();await operation;assert.equal(agent.activeOperations,0);const after=callbacks.length;await agent.event({Type:'container',Action:'die',Actor:{ID:'abc'}});assert.ok(callbacks.length>after);});
-test('operation none retains the legacy combined restart-policy update and optional rename',async t=>{const {agent,calls,callbacks}=await setup(t);await agent.write('PUT','containers',{id:7,ContainerID:'demo',name:'saved-name',operation:'none',restart_policy:'always'});assert.ok(calls.some(x=>x.path==='/containers/abc/update'&&x.body.RestartPolicy.Name==='always'));assert.ok(calls.some(x=>x.path==='/containers/abc/rename'&&x.query==='?name=saved-name'));assert.ok(callbacks.some(x=>x.url==='/api/plugins/docker/containers/'&&x.body[0].ContainerID==='abc'));});
+test('operation none retains the legacy combined restart-policy update and optional rename',async t=>{const {agent,calls,callbacks}=await setup(t);await agent.write('PUT','containers',{id:7,ContainerID:'demo',name:'saved-name',operation:'none',restart_policy:'always'});assert.ok(calls.some(x=>x.path==='/containers/abc/update'&&x.body.RestartPolicy.Name==='always'));assert.ok(calls.some(x=>x.path==='/containers/abc/rename'&&x.query==='?name=saved-name'));assert.equal(callbacks.some(x=>x.method==='PATCH'),false);});
 test('cross-site browser GETs cannot register an endpoint or trigger inventory writes without an Origin header',async t=>{const {api,store}=await setup(t);const original=store.config.netbox_url;const headers={'sec-fetch-site':'cross-site'};assert.equal((await api('/api/engine/endpoint?url=https://attacker.example','GET',undefined,headers)).status,403);assert.equal(store.config.netbox_url,original);assert.equal((await api('/api/engine/containers','GET',undefined,headers)).status,403);assert.equal((await api('/api/engine/endpoint','GET')).status,202);});
 
 test('configuration URL validation and environment overrides retain their contracts', async t => {
@@ -199,28 +199,57 @@ test('an HTTP client disconnect during a read does not turn into an unhandled re
  finish({configured:'ok'});await new Promise(setImmediate);
 });
 
-test('settings and rename callbacks preserve configuration staged for recreation', async t => {
+test('settings and rename finish without callbacks that overwrite staged configuration', async t => {
  const {api,agent,callbacks}=await setup(t);
  for(const operation of ['none','rename']) {
   const before=callbacks.length;
   const data={id:7,ContainerID:'abc',name:'demo',operation,restart_policy:'always',env:[{var_name:'SAASHUP_OWNER',value:'owner@example.test'}],labels:[{key:'traefik.enable',value:'true'}],ports:[{private_port:80,public_port:8080,type:'tcp'}]};
   assert.equal((await api('/api/engine/containers','PUT',{data})).status,202);
   await Promise.all(agent.jobs);
-  const callback=callbacks.slice(before).find(c=>c.method==='PATCH'&&c.url==='/api/plugins/docker/containers/');
-  assert.equal(callback.body[0].ContainerID,'abc');
-  assert.equal(callback.body[0].operation,'none');
-  for(const key of ['env','labels','ports','mounts','binds','network_settings','image','cmd','log_driver','log_driver_options','sysctls'])assert.equal(Object.hasOwn(callback.body[0],key),false,key);
+  assert.equal(callbacks.slice(before).some(c=>c.method==='PATCH'),false);
+  assert.ok(callbacks.slice(before).some(c=>c.body?.comments===`operation ${operation}: ok`));
  }
 });
+
+for (const trigger of ['start', 'stop', 'restart', 'kill', 'pause', 'unpause', 'none', 'rename', 'event:start', 'event:stop', 'event:restart', 'event:kill', 'event:die', 'event:oom', 'event:pause', 'event:unpause']) {
+ test(`${trigger} settles when manager PATCHes echo back as container webhooks`, async t => {
+  const { api, agent, netbox, calls, callbacks } = await setup(t);
+  const errors = [];
+  agent.log = error => errors.push(error.message);
+  const resource = netbox.resource.bind(netbox);
+  let patches = 0;
+  let managed = { id: 7, host: { id: 9 }, ContainerID: 'abc', name: 'demo', restart_policy: 'always', env: [{ var_name: 'STAGED', value: 'keep' }] };
+  netbox.resource = async (method, type, body, suffix) => {
+   const result = await resource(method, type, body, suffix);
+   if (method === 'PATCH' && type === 'containers') {
+    // Bound a regression so a broken implementation fails without hanging.
+    if (++patches > 3) throw Error('container webhook loop');
+    managed = { ...managed, ...(Array.isArray(body) ? body[0] : body) };
+    assert.equal((await api('/api/engine/containers', 'PUT', { data: managed })).status, 202);
+   }
+   return result;
+  };
+  if (trigger.startsWith('event:')) await agent.event({ Type: 'container', Action: trigger.slice(6), Actor: { ID: 'abc' } });
+  else assert.equal((await api('/api/engine/containers', 'PUT', { data: { ...managed, operation: trigger } })).status, 202);
+  while (agent.jobs.size) await Promise.all([...agent.jobs]);
+  assert.deepEqual(errors, []);
+  const settingsOnly = ['none', 'rename'].includes(trigger);
+  assert.equal(patches, settingsOnly ? 0 : 1);
+  const journals = callbacks.filter(c => c.url === '/api/extras/journal-entries/');
+  assert.equal(journals.length, trigger.startsWith('event:') || settingsOnly ? 2 : 4);
+  assert.equal(calls.filter(c => c.path === '/containers/abc/update').length, trigger === 'rename' ? 0 : 1);
+  if (trigger.startsWith('event:') || settingsOnly) assert.deepEqual(managed.env, [{ var_name: 'STAGED', value: 'keep' }]);
+ });
+}
 
 test('saved owner metadata and configuration survive the next HTTP recreation', async t => {
  const {api,agent,docker,callbacks}=await setup(t);
  const desired={id:7,ContainerID:'abc',name:'demo',operation:'none',restart_policy:'always',image:{ImageID:'sha256:upgraded'},env:[{var_name:'SAASHUP_OWNER',value:'owner@example.test'},{var_name:'EMPTY',value:''}],labels:[{key:'traefik.enable',value:'true'}],ports:[{private_port:80,public_port:8080,type:'tcp'}],mounts:[{source:'/data',volume:{name:'persistent-data'},read_only:false}],log_driver:'local',log_driver_options:[{option_name:'max-size',value:'10m'}]};
  assert.equal((await api('/api/engine/containers','PUT',{data:desired})).status,202);
  await Promise.all(agent.jobs);
- // Apply the agent's callback as the manager would before sending recreate.
- const saved=callbacks.find(c=>c.method==='PATCH'&&c.url==='/api/plugins/docker/containers/').body[0];
- const next={...desired,...saved,operation:'recreate'};
+ // The manager retains its staged configuration until recreation applies it.
+ assert.equal(callbacks.some(c=>c.method==='PATCH'),false);
+ const next={...desired,operation:'recreate'};
  let created;
  docker.createContainer=async options=>{
   created=options;
