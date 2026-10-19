@@ -82,17 +82,13 @@ export class Agent {
       await this.netbox.resource('PATCH', 'hosts', { id: host, endpoint: this.store.config.endpoint, state: 'running' }, `${host}/`);
       await this.netbox.resource('PATCH', 'hosts', [{ id: Number(host || 0), docker_api_version: version.ApiVersion, agent_version: `${this.version}-${this.store.config.flows}`, state: 'running', operation: 'none' }]);
     } else if (type === 'containers') { for (const c of await this.containers()) await this.netbox.resource('POST', type, containerRecord(c, host)); }
-    else if (type === 'networks') { for (const n of await this.docker.listNetworks()) await this.netbox.resource('POST', type, { host, name: n.Name, driver: n.Driver ?? 'None', NetworkID: n.Id, state: 'created' }); }
+    else if (type === 'networks') { for (const n of await this.docker.listNetworks()) await this.netbox.resource('POST', type, { host, name: n.Name, driver: n.Driver === 'null' ? 'None' : n.Driver ?? 'None', NetworkID: n.Id, state: 'created' }); }
     else if (type === 'volumes') { for (const v of (await this.docker.listVolumes()).Volumes || []) await this.netbox.resource('POST', type, { host, name: v.Name, driver: v.Driver }); }
     else if (type === 'images') { await this.registries(); for (const i of await this.docker.listImages({ digests: true })) await this.netbox.resource('POST', type, imageRecord(i, host, this.store.registries)); }
   }
   async callback(c, d) {
     const record = containerRecord(await c.inspect(), d.host?.id || this.store.config.id, d.id);
-    // A settings save only updates Docker's restart policy and optional name.
-    // Preserve the manager's staged configuration until recreation applies it.
-    const fields = ['id', 'host', 'name', 'ContainerID', 'state', 'operation', 'status', 'exitCode', 'restart_policy'];
-    const result = ['none', 'rename'].includes(d.operation) ? Object.fromEntries(fields.map(key => [key, record[key]])) : record;
-    return this.netbox.resource('PATCH', 'containers', [result]);
+    return this.netbox.resource('PATCH', 'containers', [record]);
   }
   async write(method, type, d = {}) {
     const host = this.store.config.id;
@@ -160,7 +156,11 @@ export class Agent {
         }
         else if (['start', 'stop', 'restart', 'kill', 'pause', 'unpause'].includes(d.operation)) await c[d.operation]();
         else return;
-        await this.callback(c, d); await this.netbox.journal('container', d.id, 'success', `operation ${d.operation}: ok`);
+        // Manager callbacks can produce another webhook with operation "none".
+        // As in the legacy flow, settings saves and renames finish without a
+        // container PATCH, breaking that cycle and preserving staged settings.
+        if (!['none', 'rename'].includes(d.operation)) await this.callback(c, d);
+        await this.netbox.journal('container', d.id, 'success', `operation ${d.operation}: ok`);
       }
     } catch (error) { await this.netbox.journal(type === 'images' ? 'image' : 'container', d.id, 'danger', `operation ${d.operation || method}: failed ${error.message}`).catch(e => this.log(e)); throw error; }
     finally {
@@ -177,8 +177,6 @@ export class Agent {
     if (found?.count === 1) {
       const record = containerRecord(c, this.store.config.id, found.results[0].id);
       await this.netbox.resource('PATCH', 'containers', { state: record.state, ContainerID: c.Id, operation: 'none', exitCode: record.exitCode, status: record.status }, `${record.id}/`);
-      // Bulk callback is also used by operations; both forms are supported by the plugin.
-      await this.netbox.resource('PATCH', 'containers', [record]);
     }
   }
   async watch() {

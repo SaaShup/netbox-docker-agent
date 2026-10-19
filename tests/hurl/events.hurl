@@ -92,10 +92,9 @@ retry-interval: 1000
 ```json
 {
   "method": "PATCH",
-  "urlPath": "/api/plugins/docker/containers/",
+  "urlPath": "/api/plugins/docker/containers/777/",
   "bodyPatterns": [
-    { "matchesJsonPath": "$[?(@.name == 'evt-container')]" },
-    { "matchesJsonPath": "$[?(@.state == 'paused')]" }
+    { "matchesJsonPath": { "expression": "$.state", "equalTo": "paused" } }
   ]
 }
 ```
