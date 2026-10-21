@@ -1,24 +1,20 @@
-FROM nodered/node-red:5.0.6-minimal
+FROM node:24-alpine AS dependencies
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 
-WORKDIR /data
-RUN openssl genrsa -out privkey.pem 2048
-RUN openssl req -new -sha256 -key privkey.pem -out csr.pem -subj "/C=FR/ST=Nancy/L=Nancy/O=SaaShup/OU=Netbox/CN=localhost"
-RUN openssl x509 -req -in csr.pem -signkey privkey.pem -out cert.pem
-
-WORKDIR /usr/src/node-red
-COPY package.json /usr/src/node-red
-RUN ln -s /usr/src/node-red/package.json /data/package.json
-RUN npm install --omit=dev
-
-COPY --chown=node-red:node-red public /usr/src/node-red/public
-COPY --chown=node-red:node-red flows.json /usr/src/node-red/flows.json
-COPY --chown=node-red:node-red lib/docker-exec-websocket.js /usr/src/node-red/lib/docker-exec-websocket.js
-
-ENV FLOWS=/usr/src/node-red/flows.json
-ENV DATAPATH=/data
-ENV APPPATH=/usr/src/node-red
-
-COPY --chown=node-red:node-red settings.js config.js registries.js /data
-
-LABEL prometheus_scrape_agent="true"
-LABEL prometheus_address="netbox-docker-agent:1880"
+FROM node:24-alpine
+ENV NODE_ENV=production DATAPATH=/data PORT=1880
+WORKDIR /app
+RUN mkdir -p /data && chown node:node /data
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY package.json ./
+COPY src ./src
+COPY public ./public
+COPY entrypoint.sh ./entrypoint.sh
+USER node
+EXPOSE 1880
+VOLUME /data
+HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=3 CMD node -e "fetch('http://127.0.0.1:'+process.env.PORT+'/',{headers:{authorization:'Basic '+Buffer.from((process.env.API_USERNAME||'admin')+':'+(process.env.HEALTHCHECK_PASSWORD||'saashup')).toString('base64')}}).then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+LABEL prometheus_scrape_agent="true" prometheus_address="netbox-docker-agent:1880"
+ENTRYPOINT ["./entrypoint.sh"]

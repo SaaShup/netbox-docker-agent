@@ -1,0 +1,11 @@
+name: Local security analysis
+paths-ignore:
+  - .codeql/**
+  - node_modules/**
+  - tests/e2e/node_modules/**
+  - tests/e2e/test-results/**
+  - tests/e2e/playwright-report/**
+  # These isolated SSH tests deliberately stat, replace and reread fixture files
+  # to verify inode preservation and race handling. Runtime tests still run them.
+  - tests/unit/ssh-keys.test.js
+  - tests/integration/ssh-management.test.js

@@ -21,8 +21,8 @@ test.describe("container logs viewer", () => {
       await expect(card).toBeVisible();
 
       // The Logs tab link triggers logs(); the output lands in the card's <pre>.
-      await card.locator('a[onclick^="logs("]').click();
-      const pre = card.locator('pre[id^="clogs_"][id$="_pre"]');
+      await card.getByRole("button", {name:"Logs", exact:true}).click();
+      const pre = card.locator(".pane pre");
       // timestamps=true is requested, so each line is prefixed with an RFC3339 stamp.
       await expect(pre).toContainText(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
     } finally {

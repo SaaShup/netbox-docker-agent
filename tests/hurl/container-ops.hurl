@@ -97,6 +97,20 @@ jsonpath "$[?(@.Name=='/ops-renamed')]" count == 1
 jsonpath "$[?(@.Name=='/ops-test')]" count == 0
 
 # === Clean up =============================================================
+PUT {{host}}/api/engine/containers
+```json
+{"data":{"ContainerID":"ops-renamed","operation":"stop"}}
+```
+HTTP 202
+
+GET {{host}}/api/containers
+[Options]
+retry: 30
+retry-interval: 1000
+HTTP 200
+[Asserts]
+jsonpath "$[?(@.Name=='/ops-renamed')].State.Status" contains "exited"
+
 DELETE {{host}}/api/engine/containers
 ```json
 { "data": { "id": 1, "ContainerID": "ops-renamed", "name": "ops-renamed" } }

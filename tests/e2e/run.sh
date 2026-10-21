@@ -13,7 +13,7 @@ cd "$(dirname "$0")"
 
 NETWORK="${NETWORK:-nda-compat_default}"
 BASE_URL="${BASE_URL:-http://agent:1880}"
-IMAGE="mcr.microsoft.com/playwright:v1.49.1-noble"
+IMAGE="mcr.microsoft.com/playwright:v1.64.1-noble"
 
 docker run --rm --network "$NETWORK" \
   -v "$PWD:/e2e" -w /e2e \

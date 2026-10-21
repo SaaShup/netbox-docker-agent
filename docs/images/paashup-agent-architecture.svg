@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600" role="img" aria-labelledby="title description">
+  <title id="title">Paashup connects to the agent running on a VM</title>
+  <desc id="description">Paashup sends authenticated API requests to the NetBox Docker Agent on port 1880 inside a virtual machine. The agent accesses the local Docker Engine through /var/run/docker.sock. Docker manages containers, images, networks, and volumes. The agent sends inventory, events, and journals back to the manager's NetBox API.</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <marker id="arrow-teal" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="600" rx="24" fill="#f8fafc"/>
+  <g font-family="DejaVu Sans, Arial, sans-serif">
+    <text x="44" y="52" fill="#64748b" font-size="13" font-weight="700" letter-spacing="2">DEPLOYMENT OVERVIEW</text>
+    <text x="44" y="91" fill="#0f172a" font-size="28" font-weight="700">Paashup → Agent → Docker</text>
+    <text x="44" y="121" fill="#475569" font-size="16">One agent on the VM, connected to its local Docker Engine.</text>
+
+    <rect x="44" y="200" width="260" height="270" rx="18" fill="#fff" stroke="#cbd5e1" stroke-width="1.5"/>
+    <rect x="68" y="225" width="48" height="48" rx="12" fill="#dbeafe"/>
+    <g fill="none" stroke="#2563eb" stroke-width="2">
+      <rect x="79" y="237" width="26" height="18" rx="3"/>
+      <path d="M92 255v7m-8 0h16"/>
+    </g>
+    <text x="68" y="311" fill="#0f172a" font-size="26" font-weight="700">Paashup</text>
+    <text x="68" y="340" fill="#475569" font-size="15">Management platform</text>
+    <path d="M68 362h212" stroke="#e2e8f0"/>
+    <text x="68" y="391" fill="#334155" font-size="14">Send operations</text>
+    <text x="68" y="416" fill="#334155" font-size="14">Read live Docker resources</text>
+    <text x="68" y="441" fill="#334155" font-size="14">Receive inventory updates</text>
+
+    <rect x="646" y="164" width="510" height="389" rx="20" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+    <text x="672" y="199" fill="#1e40af" font-size="16" font-weight="700">VIRTUAL MACHINE</text>
+    <text x="1130" y="199" text-anchor="end" fill="#475569" font-size="13">Docker host</text>
+
+    <rect x="674" y="224" width="454" height="100" rx="14" fill="#fff" stroke="#bfdbfe"/>
+    <circle cx="706" cy="255" r="6" fill="#2563eb"/>
+    <text x="724" y="262" fill="#0f172a" font-size="21" font-weight="700">NetBox Docker Agent</text>
+    <text x="698" y="293" fill="#475569" font-size="14">Agent container · authenticated API · port 1880</text>
+
+    <path d="M304 259H672" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+    <text x="488" y="231" text-anchor="middle" fill="#1d4ed8" font-size="15" font-weight="700">API requests / webhooks</text>
+    <text x="488" y="285" text-anchor="middle" fill="#475569" font-size="13">HTTP Basic · HTTPS via reverse proxy</text>
+
+    <path d="M674 311H623V399H306" fill="none" stroke="#0f766e" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#arrow-teal)"/>
+    <text x="468" y="352" text-anchor="middle" fill="#0f766e" font-size="15" font-weight="700">Inventory, events, journals</text>
+    <text x="468" y="376" text-anchor="middle" fill="#475569" font-size="13">Callbacks to the manager's NetBox API</text>
+
+    <path d="M901 324V389" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+    <text x="920" y="352" fill="#334155" font-size="13">Docker API</text>
+    <text x="920" y="373" fill="#475569" font-family="DejaVu Sans Mono, monospace" font-size="12">/var/run/docker.sock</text>
+
+    <rect x="674" y="391" width="454" height="64" rx="12" fill="#fff" stroke="#bfdbfe"/>
+    <text x="901" y="431" text-anchor="middle" fill="#0f172a" font-size="21" font-weight="700">Docker Engine</text>
+    <path d="M901 455V483" fill="none" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+    <rect x="674" y="485" width="454" height="42" rx="10" fill="#dbeafe"/>
+    <text x="901" y="511" text-anchor="middle" fill="#1e40af" font-size="14">Containers · Images · Networks · Volumes</text>
+
+    <text x="44" y="556" fill="#64748b" font-size="13">Solid arrows: management requests</text>
+    <text x="44" y="578" fill="#64748b" font-size="13">Dashed arrow: agent callbacks</text>
+  </g>
+</svg>

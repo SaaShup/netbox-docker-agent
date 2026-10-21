@@ -1,27 +1,31 @@
 {
-  "name": "netbox-docker-agent",
-  "version": "1.25.1",
-  "description": "Saashup agent for netbox manager",
-  "main": "index.js",
-  "scripts": {
-    "test": "cat ./tests/hurl/tests.hurl | ./node_modules/@orangeopensource/hurl/dist/bin/hurl --test --color --variable host=http://localhost:1880 -u admin:saashup",
-    "start": "node index.js"
+  "name": "paashup-agent",
+  "version": "2.0.0",
+  "description": "Management agent for PaasHup",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=24"
   },
-  "keywords": [
-    "saashup nodered docker netbox"
-  ],
-  "author": "lav@saashup.com",
-  "homepage": "https://github.com/SaaShup/netbox-docker-agent",
-  "bugs": {
-    "url": "https://github.com/SaaShup/netbox-docker-agent/issues",
-    "email": "contact@saashup.com"
+  "scripts": {
+    "build": "docker compose -f docker-compose.yml -f docker-compose.ssh.yml up -d --build",
+    "start": "node src/index.js",
+    "test": "bash tests/run.sh",
+    "test:unit": "node --test --experimental-test-coverage --test-coverage-include='src/**/*.js' --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100 tests/unit/*.test.js tests/integration/*.test.js",
+    "codeql:install": "bash scripts/install-codeql.sh",
+    "test:codeql": "bash tests/codeql/run.sh",
+    "test:hurl": "bash tests/hurl/run.sh",
+    "test:compat": "bash tests/compat/run.sh",
+    "test:browser": "bash tests/e2e/run.sh",
+    "build:no-ssh": "docker compose up -d --build",
+    "prebuild": "node scripts/check-ssh-file.mjs"
   },
   "license": "ISC",
   "dependencies": {
-    "docker-exec-websocket-server": "^1.3.7",
-    "node-red": "*"
-  },
-  "devDependencies": {
-    "@orangeopensource/hurl": "*"
+    "@xterm/xterm": "6.0.0",
+    "bcryptjs": "3.0.3",
+    "dockerode": "5.0.1",
+    "swagger-ui-dist": "5.33.3",
+    "ws": "8.22.0"
   }
 }

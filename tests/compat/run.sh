@@ -19,7 +19,7 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
-COMPOSE=(docker compose -p nda-compat)
+COMPOSE=(docker compose -p "${COMPOSE_PROJECT_NAME:-nda-compat}")
 
 # Main suite (run together against the same agent).
 HURL_MAIN=(
@@ -33,10 +33,14 @@ HURL_MAIN=(
   /tests/images.hurl
   /tests/metrics.hurl
   /tests/errors.hurl
+  /tests/security.hurl
+  /tests/recreate.hurl
+  /tests/host-network.hurl
+  /tests/prune.hurl
 )
 # Agent->netbox tests: run in isolation (see below) — the contract callback
 # and the dockerd event watcher, both of which depend on a clean netbox config.
-HURL_NETBOX=(/tests/netbox.hurl /tests/events.hurl)
+HURL_NETBOX=(/tests/netbox.hurl)
 
 if [ "$#" -gt 0 ]; then
   versions=("$@")
@@ -64,7 +68,7 @@ wait_healthy() { # $1 = container name
 
 hurl() { # remaining args: hurl files
   "${COMPOSE[@]}" run --rm tester \
-    --test --color \
+    --test --jobs 1 --color \
     --variable host=http://agent:1880 \
     --variable netbox=http://netbox:8080 \
     --variable dind=http://dind:2375 \
@@ -90,14 +94,29 @@ for v in "${versions[@]}"; do
 
   # --- 1. hurl main suite ---------------------------------------------------
   hurl "${HURL_MAIN[@]}" || { echo "!!! hurl suite failed for $v"; step_fail=1; }
+  "${COMPOSE[@]}" exec -T agent node --input-type=module - < prune-test.mjs \
+    || { echo "!!! populated prune tests failed for $v"; step_fail=1; }
 
   # --- 2. websocket exec (F): not expressible in hurl -----------------------
   # Self-contained: it pulls nginx:alpine through the agent itself.
   "${COMPOSE[@]}" exec -T agent node --input-type=module - < ws-exec-test.mjs \
     || { echo "!!! websocket-exec test failed for $v"; step_fail=1; }
 
+  "${COMPOSE[@]}" restart dind
   "${COMPOSE[@]}" exec -T agent node --input-type=module - < docker-event-test.mjs \
     || { echo "!!! docker-event test failed for $v"; step_fail=1; }
+
+  hurl /tests/events.hurl || { echo "!!! event synchronization after reconnect failed for $v"; step_fail=1; }
+  "${COMPOSE[@]}" exec -T agent node --input-type=module - < registry-test.mjs \
+    || { echo "!!! authenticated registry test failed for $v"; step_fail=1; }
+
+  # Verify self-recreation is blocked for an agent running inside the tested daemon.
+  if docker image save saashup/netbox-docker-agent:compat | "${COMPOSE[@]}" exec -T dind docker image load >/dev/null; then
+    "${COMPOSE[@]}" exec -T agent node --input-type=module - < self-recreate-test.mjs \
+      || { echo "!!! self recreation failed for $v"; step_fail=1; }
+  else
+    echo "!!! could not load agent image for self recreation ($v)"; step_fail=1
+  fi
 
   # --- 3. netbox contract (E), isolated -------------------------------------
   # The agent rewrites /data/config.js from netbox responses during the suite
@@ -105,6 +124,10 @@ for v in "${versions[@]}"; do
   # entrypoint copies it from /seed), giving this test a known-good agent.
   "${COMPOSE[@]}" restart agent >/dev/null 2>&1 || true
   if wait_healthy agent; then
+    "${COMPOSE[@]}" exec -T agent node --input-type=module - < registry-resilience-test.mjs \
+      || { echo "!!! registry authentication/TLS/recovery tests failed for $v"; step_fail=1; }
+    "${COMPOSE[@]}" exec -T agent node --input-type=module - < recreate-integrity-test.mjs \
+      || { echo "!!! recreation integrity and rollback failed for $v"; step_fail=1; }
     hurl "${HURL_NETBOX[@]}" || { echo "!!! netbox-contract test failed for $v"; step_fail=1; }
   else
     echo "!!! agent did not become healthy after restart for $v"; step_fail=1

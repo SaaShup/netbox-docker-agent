@@ -92,10 +92,9 @@ retry-interval: 1000
 ```json
 {
   "method": "PATCH",
-  "urlPath": "/api/plugins/docker/containers/",
+  "urlPath": "/api/plugins/docker/containers/777/",
   "bodyPatterns": [
-    { "matchesJsonPath": "$[?(@.name == 'evt-container')]" },
-    { "matchesJsonPath": "$[?(@.state == 'paused')]" }
+    { "matchesJsonPath": { "expression": "$.state", "equalTo": "paused" } }
   ]
 }
 ```
@@ -106,6 +105,20 @@ jsonpath "$.count" >= 1
 # === Clean up: unpause (out-of-band) and delete via the agent =============
 POST {{dind}}/containers/evt-container/unpause
 HTTP 204
+
+PUT {{host}}/api/engine/containers
+```json
+{"data":{"ContainerID":"evt-container","operation":"stop"}}
+```
+HTTP 202
+
+GET {{host}}/api/containers
+[Options]
+retry: 30
+retry-interval: 1000
+HTTP 200
+[Asserts]
+jsonpath "$[?(@.Name=='/evt-container')].State.Status" contains "exited"
 
 DELETE {{host}}/api/engine/containers
 ```json

@@ -1,10 +1,12 @@
-name: Pull Request CI
+name: CI and image publishing
 
 on:
+  push:
+    tags:
+      - '**'
   pull_request:
     branches:
-      - "main"
-      - "develop"
+      - "main_v2"
   workflow_dispatch:
 
 # Restrict the default GITHUB_TOKEN to read-only (CodeQL hardening).
@@ -12,6 +14,21 @@ permissions:
   contents: read
 
 jobs:
+  unit:
+    name: Unit, integration and security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run test:unit
+      - run: npm audit --omit=dev
+      - run: npm --prefix tests/e2e install --ignore-scripts
+      - run: npm --prefix tests/e2e audit
+
   # Read the supported dockerd versions from versions.txt into a matrix.
   versions:
     runs-on: ubuntu-latest
@@ -39,7 +56,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run test suite
-        run: tests/compat/run.sh "${{ matrix.docker_version }}"
+        run: |
+          set -o pipefail
+          tests/compat/run.sh "${{ matrix.docker_version }}" 2>&1 | tee compat.log
+      - name: Upload compatibility evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compat-${{ matrix.docker_version }}
+          path: compat.log
 
   # Playwright end-to-end tests for the web UI. The UI talks to the agent API,
   # so it is version-agnostic — run it once, against the first pinned version.
@@ -74,4 +99,38 @@ jobs:
       - name: Tear down
         if: ${{ always() }}
         working-directory: tests/compat
-        run: docker compose -p nda-compat down -v --remove-orphans || true
+        run: DOCKER_VERSION=x docker compose -p nda-compat down -v --remove-orphans || true
+
+  publish:
+    name: Publish image to GHCR
+    needs: [unit, test, ui]
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+      - name: Log in to GHCR
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Image tags and labels
+        id: meta
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: type=ref,event=tag
+          flavor: latest=false
+      - name: Build and publish
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

@@ -4,3 +4,8 @@ npm-debug.log*
 .npm
 node_modules
 .*.json*
+playwright-report/
+test-results/
+
+/docs/validation/
+/.codeql/

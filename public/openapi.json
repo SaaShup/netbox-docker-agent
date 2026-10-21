@@ -1,14 +1,15 @@
 {
   "info": {
-    "title": "Netbox Docker Agent",
-    "version": "0.24.0"
+    "title": "Paashup Agent",
+    "version": "2.0.0",
+    "description": "Interactive Paashup Agent API. Execute requests against this agent. Engine webhooks return 202 acknowledgments; prune and SSH key mutations complete synchronously."
   },
   "openapi": "3.0.0",
   "paths": {
     "/api/engine/endpoint": {
       "get": {
         "tags": [
-          "netbox endpoint"
+          "agent endpoint"
         ],
         "responses": {
           "202": {
@@ -21,13 +22,91 @@
               }
             }
           }
-        }
+        },
+        "summary": "Register the manager connection or synchronize host inventories",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "url",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Management server URL; omit to synchronize without changing configuration"
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Manager host ID"
+          },
+          {
+            "in": "query",
+            "name": "token",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Management API token"
+          },
+          {
+            "in": "query",
+            "name": "endpoint",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Agent endpoint URL"
+          }
+        ],
+        "operationId": "get_api_engine_endpoint"
+      },
+      "post": {
+        "summary": "Refresh all resources from a host webhook",
+        "responses": {
+          "202": {
+            "description": "Success"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "data": {
+                  "operation": "refresh",
+                  "state": "refreshing",
+                  "containers": [],
+                  "images": [],
+                  "volumes": [],
+                  "networks": []
+                }
+              }
+            }
+          }
+        },
+        "operationId": "post_api_engine_endpoint"
+      },
+      "delete": {
+        "summary": "Disconnect from the management server",
+        "responses": {
+          "202": {
+            "description": "Success"
+          }
+        },
+        "operationId": "delete_api_engine_endpoint"
       }
     },
     "/api/engine/containers": {
       "delete": {
         "tags": [
-          "netbox containers"
+          "agent containers"
         ],
         "responses": {
           "202": {
@@ -40,11 +119,44 @@
               }
             }
           }
-        }
+        },
+        "summary": "Delete a container",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "ContainerID"
+                    ],
+                    "properties": {
+                      "ContainerID": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "data": {
+                  "ContainerID": "container-id"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "delete_api_engine_containers"
       },
       "get": {
         "tags": [
-          "netbox containers"
+          "agent containers"
         ],
         "responses": {
           "202": {
@@ -57,11 +169,13 @@
               }
             }
           }
-        }
+        },
+        "summary": "Synchronize containers with the configured manager",
+        "operationId": "get_api_engine_containers"
       },
       "post": {
         "tags": [
-          "netbox containers"
+          "agent containers"
         ],
         "requestBody": {
           "description": "create Container",
@@ -70,6 +184,16 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PostApiEngineContainers"
+              },
+              "example": {
+                "data": {
+                  "name": "my-container",
+                  "state": "none",
+                  "image": {
+                    "name": "nginx",
+                    "version": "alpine"
+                  }
+                }
               }
             }
           }
@@ -85,11 +209,13 @@
               }
             }
           }
-        }
+        },
+        "summary": "Create a container from a local image",
+        "operationId": "post_api_engine_containers"
       },
       "put": {
         "tags": [
-          "netbox containers"
+          "agent containers"
         ],
         "requestBody": {
           "description": "Container operation",
@@ -98,6 +224,13 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PutApiEngineContainers"
+              },
+              "example": {
+                "data": {
+                  "ContainerID": "container-id",
+                  "name": "my-container",
+                  "operation": "restart"
+                }
               }
             }
           }
@@ -112,14 +245,19 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "The agent cannot recreate its own container"
           }
-        }
+        },
+        "summary": "Operate or recreate a container",
+        "operationId": "put_api_engine_containers"
       }
     },
     "/api/engine/images": {
       "delete": {
         "tags": [
-          "netbox images"
+          "agent images"
         ],
         "responses": {
           "202": {
@@ -132,11 +270,44 @@
               }
             }
           }
-        }
+        },
+        "summary": "Delete a image",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "ImageID"
+                    ],
+                    "properties": {
+                      "ImageID": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "data": {
+                  "ImageID": "sha256:image-id"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "delete_api_engine_images"
       },
       "get": {
         "tags": [
-          "netbox images"
+          "agent images"
         ],
         "responses": {
           "202": {
@@ -149,11 +320,13 @@
               }
             }
           }
-        }
+        },
+        "summary": "Synchronize images with the configured manager",
+        "operationId": "get_api_engine_images"
       },
       "post": {
         "tags": [
-          "netbox images"
+          "agent images"
         ],
         "requestBody": {
           "description": "create Image",
@@ -162,6 +335,14 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PostApiEngineImages"
+              },
+              "example": {
+                "data": {
+                  "name": "nginx",
+                  "version": "alpine",
+                  "size": 0,
+                  "ImageID": null
+                }
               }
             }
           }
@@ -177,13 +358,15 @@
               }
             }
           }
-        }
+        },
+        "summary": "Pull an image",
+        "operationId": "post_api_engine_images"
       }
     },
     "/api/engine/networks": {
       "delete": {
         "tags": [
-          "netbox networks"
+          "agent networks"
         ],
         "responses": {
           "202": {
@@ -196,11 +379,44 @@
               }
             }
           }
-        }
+        },
+        "summary": "Delete a network",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "name"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "data": {
+                  "name": "my-network"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "delete_api_engine_networks"
       },
       "get": {
         "tags": [
-          "netbox networks"
+          "agent networks"
         ],
         "responses": {
           "202": {
@@ -213,11 +429,13 @@
               }
             }
           }
-        }
+        },
+        "summary": "Synchronize networks with the configured manager",
+        "operationId": "get_api_engine_networks"
       },
       "post": {
         "tags": [
-          "netbox networks"
+          "agent networks"
         ],
         "requestBody": {
           "description": "create Networks",
@@ -226,6 +444,13 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PostApiEngineNetworks"
+              },
+              "example": {
+                "data": {
+                  "name": "my-network",
+                  "driver": "bridge",
+                  "state": "creating"
+                }
               }
             }
           }
@@ -241,23 +466,58 @@
               }
             }
           }
-        }
+        },
+        "summary": "Create a network",
+        "operationId": "post_api_engine_networks"
       }
     },
     "/api/engine/volumes": {
       "delete": {
         "tags": [
-          "netbox volumes"
+          "agent volumes"
         ],
         "responses": {
           "202": {
             "description": "202 response"
           }
-        }
+        },
+        "summary": "Delete a volume",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "name"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "data": {
+                  "name": "my-volume"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "delete_api_engine_volumes"
       },
       "get": {
         "tags": [
-          "netbox volumes"
+          "agent volumes"
         ],
         "responses": {
           "202": {
@@ -270,11 +530,13 @@
               }
             }
           }
-        }
+        },
+        "summary": "Synchronize volumes with the configured manager",
+        "operationId": "get_api_engine_volumes"
       },
       "post": {
         "tags": [
-          "netbox volumes"
+          "agent volumes"
         ],
         "requestBody": {
           "description": "create Networks",
@@ -283,6 +545,13 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PostApiEngineVolumes"
+              },
+              "example": {
+                "data": {
+                  "name": "my-volume",
+                  "driver": "local",
+                  "max_size": 0
+                }
               }
             }
           }
@@ -298,30 +567,24 @@
               }
             }
           }
-        }
+        },
+        "summary": "Create a volume",
+        "operationId": "post_api_engine_volumes"
       }
     },
     "/api/engine/registries": {
       "delete": {
-        "tags": [
-          "netbox registries"
-        ],
+        "summary": "Compatibility acknowledgment (no operation)",
         "responses": {
           "202": {
-            "description": "202 response",
-            "content": {
-              "application/json; charset=utf-8": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
-                }
-              }
-            }
+            "description": "Success"
           }
-        }
+        },
+        "operationId": "delete_api_engine_registries"
       },
       "get": {
         "tags": [
-          "netbox registries"
+          "agent registries"
         ],
         "responses": {
           "202": {
@@ -331,26 +594,17 @@
                 "schema": {
                   "$ref": "#/components/schemas/GetApiEngine202ResponseBody"
                 }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "netbox registries"
-        ],
-        "requestBody": {
-          "description": "create Networks",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PostApiEngineRegistry"
               }
             }
           }
         },
+        "summary": "Discover registries from local images",
+        "operationId": "get_api_engine_registries"
+      },
+      "post": {
+        "tags": [
+          "agent registries"
+        ],
         "responses": {
           "202": {
             "description": "202 response",
@@ -362,7 +616,9 @@
               }
             }
           }
-        }
+        },
+        "summary": "Compatibility acknowledgment (no operation)",
+        "operationId": "post_api_engine_registries"
       }
     },
     "/api/containers": {
@@ -381,11 +637,13 @@
               }
             }
           }
-        }
+        },
+        "summary": "List inspected containers",
+        "operationId": "get_api_containers"
       }
     },
     "/api/engine/containers/{containerId}/logs": {
-      "put": {
+      "get": {
         "summary": "Get log from a Container",
         "tags": [
           "ui"
@@ -403,16 +661,17 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "Recent timestamped container logs",
             "content": {
-              "application/json; charset=utf-8": {
+              "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/LogsApiContainers200ResponseBody"
+                  "type": "string"
                 }
               }
             }
           }
-        }
+        },
+        "operationId": "get_api_engine_containers_containerId_logs"
       }
     },
     "/api/engine/containers/{containerId}/exec": {
@@ -439,22 +698,30 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ExecApiContainersRequestBody"
+              },
+              "example": {
+                "cmd": [
+                  "echo",
+                  "hello"
+                ]
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "JSON-encoded command output",
             "content": {
-              "application/json; charset=utf-8": {
+              "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ExecApiContainers200ResponseBody"
-                }
+                  "type": "string"
+                },
+                "example": "{\"stdout\":\"hello\\n\"}"
               }
             }
           }
-        }
+        },
+        "operationId": "put_api_engine_containers_containerId_exec"
       }
     },
     "/api/images": {
@@ -473,7 +740,9 @@
               }
             }
           }
-        }
+        },
+        "summary": "List local images",
+        "operationId": "get_api_images"
       }
     },
     "/api/networks": {
@@ -492,7 +761,9 @@
               }
             }
           }
-        }
+        },
+        "summary": "List networks",
+        "operationId": "get_api_networks"
       }
     },
     "/api/volumes": {
@@ -511,7 +782,9 @@
               }
             }
           }
-        }
+        },
+        "summary": "List volumes",
+        "operationId": "get_api_volumes"
       }
     },
     "/metrics": {
@@ -530,7 +803,9 @@
               }
             }
           }
-        }
+        },
+        "summary": "Read Prometheus metrics",
+        "operationId": "get_metrics"
       }
     },
     "/info": {
@@ -546,7 +821,6 @@
                 "examples": {
                   "/info": {
                     "value": {
-                      "message": "netbox-saashup-agent",
                       "configured": "nok"
                     }
                   }
@@ -557,7 +831,9 @@
               }
             }
           }
-        }
+        },
+        "summary": "Read agent and engine information",
+        "operationId": "get_info"
       }
     },
     "/system/usage": {
@@ -576,7 +852,9 @@
               }
             }
           }
-        }
+        },
+        "summary": "Read engine disk allocation",
+        "operationId": "get_system_usage"
       }
     },
     "/doc": {
@@ -595,7 +873,9 @@
               }
             }
           }
-        }
+        },
+        "summary": "Open interactive API documentation",
+        "operationId": "get_doc"
       }
     },
     "/": {
@@ -614,7 +894,1155 @@
               }
             }
           }
+        },
+        "summary": "Open the agent dashboard",
+        "operationId": "get_"
+      }
+    },
+    "/api/registries": {
+      "get": {
+        "summary": "Read persisted registry associations",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "operationId": "get_api_registries"
+      }
+    },
+    "/api/engine/containers/{containerId}/stats": {
+      "get": {
+        "summary": "Get a nonstreaming engine statistics snapshot",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "containerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "get_api_engine_containers_containerId_stats"
+      }
+    },
+    "/api/engine/containers/{containerId}/ws": {
+      "post": {
+        "summary": "Reserve an authenticated terminal WebSocket path",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "parameters": [
+          {
+            "name": "containerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "post_api_engine_containers_containerId_ws"
+      }
+    },
+    "/admin/config": {
+      "get": {
+        "summary": "Read configuration with API credentials",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "administration"
+        ],
+        "operationId": "get_admin_config"
+      },
+      "patch": {
+        "summary": "Update configuration with API credentials",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "tags": [
+          "administration"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "netbox_url": {
+                    "type": "string"
+                  },
+                  "netbox_token": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "endpoint": {
+                    "type": "string"
+                  },
+                  "ui": {
+                    "type": "integer",
+                    "enum": [
+                      0,
+                      1
+                    ]
+                  }
+                }
+              },
+              "example": {
+                "netbox_url": "https://manager.example.com",
+                "netbox_token": "",
+                "id": "",
+                "endpoint": "",
+                "ui": 1
+              }
+            }
+          }
+        },
+        "operationId": "patch_admin_config"
+      }
+    },
+    "/api/engine/containers/prune": {
+      "post": {
+        "tags": [
+          "cleanup"
+        ],
+        "operationId": "pruneContainers",
+        "summary": "Prune containers",
+        "description": "Delete stopped containers matching the filters. Attached volumes are retained. Synchronous: HTTP 200 means engine completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use engine string-array syntax.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "filters": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "until": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label!": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "data"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "filters": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "until": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label!": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "data": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed engine prune report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ContainersDeleted": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "SpaceReclaimed": {
+                      "type": "integer",
+                      "format": "int64",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid options or engine filters"
+          },
+          "401": {
+            "description": "API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "409": {
+            "description": "Another agent operation or engine prune is in progress"
+          },
+          "500": {
+            "description": "engine prune failed"
+          },
+          "502": {
+            "description": "engine unavailable"
+          }
         }
+      }
+    },
+    "/api/engine/images/prune": {
+      "post": {
+        "tags": [
+          "cleanup"
+        ],
+        "operationId": "pruneImages",
+        "summary": "Prune images",
+        "description": "Delete unused dangling images by default. all=true includes unused tagged images. Synchronous: HTTP 200 means engine completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use engine string-array syntax.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "filters": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "until": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label!": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          }
+                        }
+                      },
+                      "all": {
+                        "type": "boolean",
+                        "default": false
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "data"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "filters": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "until": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label!": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              }
+                            }
+                          },
+                          "all": {
+                            "type": "boolean",
+                            "default": false
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "data": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed engine prune report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ImagesDeleted": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "Deleted": {
+                            "type": "string"
+                          },
+                          "Untagged": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "SpaceReclaimed": {
+                      "type": "integer",
+                      "format": "int64",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid options or engine filters"
+          },
+          "401": {
+            "description": "API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "409": {
+            "description": "Another agent operation or engine prune is in progress"
+          },
+          "500": {
+            "description": "engine prune failed"
+          },
+          "502": {
+            "description": "engine unavailable"
+          }
+        }
+      }
+    },
+    "/api/engine/volumes/prune": {
+      "post": {
+        "tags": [
+          "cleanup"
+        ],
+        "operationId": "pruneVolumes",
+        "summary": "Prune volumes",
+        "description": "Delete unused anonymous volumes by default. all=true includes unused named volumes and their data. Synchronous: HTTP 200 means engine completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use engine string-array syntax.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "filters": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "label": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label!": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          }
+                        }
+                      },
+                      "all": {
+                        "type": "boolean",
+                        "default": false
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "data"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "filters": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "label": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label!": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              }
+                            }
+                          },
+                          "all": {
+                            "type": "boolean",
+                            "default": false
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "data": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed engine prune report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "VolumesDeleted": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "SpaceReclaimed": {
+                      "type": "integer",
+                      "format": "int64",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid options or engine filters"
+          },
+          "401": {
+            "description": "API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "409": {
+            "description": "Another agent operation or engine prune is in progress"
+          },
+          "500": {
+            "description": "engine prune failed"
+          },
+          "502": {
+            "description": "engine unavailable"
+          }
+        }
+      }
+    },
+    "/api/engine/networks/prune": {
+      "post": {
+        "tags": [
+          "cleanup"
+        ],
+        "operationId": "pruneNetworks",
+        "summary": "Prune networks",
+        "description": "Delete unused custom networks. Built-in and attached networks are retained. Synchronous: HTTP 200 means engine completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use engine string-array syntax.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "filters": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "until": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "label!": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "data"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "filters": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "until": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "label!": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "data": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed engine prune report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "NetworksDeleted": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid options or engine filters"
+          },
+          "401": {
+            "description": "API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "409": {
+            "description": "Another agent operation or engine prune is in progress"
+          },
+          "500": {
+            "description": "engine prune failed"
+          },
+          "502": {
+            "description": "engine unavailable"
+          }
+        }
+      }
+    },
+    "/api/engine/build-cache/prune": {
+      "post": {
+        "tags": [
+          "cleanup"
+        ],
+        "operationId": "pruneBuildCache",
+        "summary": "Prune build cache",
+        "description": "Prune this engine build cache; separate remote builders are not targeted. Synchronous: HTTP 200 means engine completed the operation. Uses API Basic authentication. When configured, sends a best-effort host journal callback. Use returned deletion identifiers to reconcile manager inventory. Overlapping agent operations return 409. Filters use engine string-array syntax.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "filters": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "until": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "id": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "parent": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "type": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "description": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "inuse": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "shared": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "private": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          }
+                        }
+                      },
+                      "all": {
+                        "type": "boolean",
+                        "default": false
+                      },
+                      "keep_storage": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "description": "Build cache bytes to retain."
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "data"
+                    ],
+                    "properties": {
+                      "data": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "filters": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "until": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "id": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "parent": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "type": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "description": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "inuse": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "shared": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              },
+                              "private": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "type": "string",
+                                  "minLength": 1
+                                }
+                              }
+                            }
+                          },
+                          "all": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "keep_storage": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Build cache bytes to retain."
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "example": {
+                "data": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Completed engine prune report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "CachesDeleted": {
+                      "type": "array",
+                      "nullable": true,
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "SpaceReclaimed": {
+                      "type": "integer",
+                      "format": "int64",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid options or engine filters"
+          },
+          "401": {
+            "description": "API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "409": {
+            "description": "Another agent operation or engine prune is in progress"
+          },
+          "500": {
+            "description": "engine prune failed"
+          },
+          "502": {
+            "description": "engine unavailable"
+          }
+        }
+      }
+    },
+    "/api/ssh-keys": {
+      "get": {
+        "summary": "List host authorized SSH public keys",
+        "tags": [
+          "host SSH keys"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Completed operation"
+          },
+          "400": {
+            "description": "Invalid key, revision or fields"
+          },
+          "401": {
+            "description": "Dashboard/API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "404": {
+            "description": "Disabled or missing key"
+          },
+          "409": {
+            "description": "Stale revision, concurrent edit or unsafe file metadata"
+          },
+          "413": {
+            "description": "Size limit exceeded"
+          },
+          "500": {
+            "description": "SSH file write/recovery failed; backup retained"
+          },
+          "502": {
+            "description": "Mounted file or backup filesystem error"
+          }
+        },
+        "operationId": "get_api_ssh_keys"
+      },
+      "post": {
+        "summary": "Authorize one host SSH public key",
+        "tags": [
+          "host SSH keys"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Completed operation"
+          },
+          "400": {
+            "description": "Invalid key, revision or fields"
+          },
+          "401": {
+            "description": "Dashboard/API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "404": {
+            "description": "Disabled or missing key"
+          },
+          "409": {
+            "description": "Stale revision, concurrent edit or unsafe file metadata"
+          },
+          "413": {
+            "description": "Size limit exceeded"
+          },
+          "500": {
+            "description": "SSH file write/recovery failed; backup retained"
+          },
+          "502": {
+            "description": "Mounted file or backup filesystem error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "publicKey",
+                  "revision"
+                ],
+                "properties": {
+                  "revision": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "publicKey": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "post_api_ssh_keys"
+      },
+      "delete": {
+        "summary": "Remove a host SSH key entry",
+        "tags": [
+          "host SSH keys"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Completed operation"
+          },
+          "400": {
+            "description": "Invalid key, revision or fields"
+          },
+          "401": {
+            "description": "Dashboard/API authentication required"
+          },
+          "403": {
+            "description": "Cross-origin request rejected"
+          },
+          "404": {
+            "description": "Disabled or missing key"
+          },
+          "409": {
+            "description": "Stale revision, concurrent edit or unsafe file metadata"
+          },
+          "413": {
+            "description": "Size limit exceeded"
+          },
+          "500": {
+            "description": "SSH file write/recovery failed; backup retained"
+          },
+          "502": {
+            "description": "Mounted file or backup filesystem error"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "id",
+                  "revision"
+                ],
+                "properties": {
+                  "revision": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "delete_api_ssh_keys"
       }
     }
   },
@@ -689,6 +2117,12 @@
                   "host",
                   "none"
                 ]
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "creating"
+                ]
               }
             }
           }
@@ -708,6 +2142,16 @@
               },
               "version": {
                 "type": "string"
+              },
+              "size": {
+                "type": "number"
+              },
+              "ImageID": {
+                "type": "string",
+                "nullable": true
+              },
+              "force": {
+                "type": "boolean"
               }
             }
           }
@@ -738,6 +2182,12 @@
                     "type": "string"
                   }
                 }
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "none"
+                ]
               }
             }
           }
@@ -792,48 +2242,135 @@
                 ]
               },
               "image": {
-                "type": "string"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  },
+                  "ImageID": {
+                    "type": "string"
+                  }
+                }
               },
               "labels": {
-                "type": "object"
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "key",
+                    "value"
+                  ],
+                  "properties": {
+                    "key": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                }
               },
               "env": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "object",
+                  "required": [
+                    "var_name",
+                    "value"
+                  ],
+                  "properties": {
+                    "var_name": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  }
                 }
               },
               "ports": {
-                "type": "object"
-              },
-              "networks": {
-                "type": "object"
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "private_port": {
+                      "type": "integer"
+                    },
+                    "public_port": {
+                      "type": "integer"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "tcp",
+                        "udp",
+                        "sctp"
+                      ]
+                    }
+                  }
+                }
               },
               "mounts": {
                 "type": "array",
                 "items": {
                   "type": "object",
                   "properties": {
-                    "type": {
-                      "type": "string"
-                    },
                     "source": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Container path"
                     },
-                    "destination": {
-                      "type": "string"
+                    "volume": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        }
+                      }
                     },
-                    "mode": {
-                      "type": "string"
-                    },
-                    "rw": {
+                    "read_only": {
                       "type": "boolean"
-                    },
-                    "name": {
+                    }
+                  }
+                }
+              },
+              "network_settings": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "network": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "NetworkID": {
+                          "type": "string"
+                        },
+                        "driver": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "binds": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "host_path": {
                       "type": "string"
                     },
-                    "driver": {
+                    "container_path": {
                       "type": "string"
+                    },
+                    "read_only": {
+                      "type": "boolean"
                     }
                   }
                 }
@@ -1686,7 +3223,7 @@
           "stdout"
         ],
         "example": {
-          "stdout": "total 10\ndrwxr-xr-x  24 user group    768 avr 30 09:57 ./\ndrwxr-xr-x  13 user group    416 mar 13 17:54 ../\ndrwxr-xr-x 435 user group  13920 fév 21 18:10 test1/\n-rw-r--r--   1 user group 250200 avr 30 09:57 file1.json\n"
+          "stdout": "total 10\ndrwxr-xr-x  24 user group    768 avr 30 09:57 ./\ndrwxr-xr-x  13 user group    416 mar 13 17:54 ../\ndrwxr-xr-x 435 user group  13920 f\u00e9v 21 18:10 test1/\n-rw-r--r--   1 user group 250200 avr 30 09:57 file1.json\n"
         }
       },
       "LogsApiContainers200ResponseBody": {
@@ -2076,6 +3613,26 @@
               "KernelVersion",
               "BuildTime"
             ]
+          },
+          "uptime": {
+            "type": "object",
+            "description": "Uptime in seconds for the operating system running the agent and the agent process.",
+            "properties": {
+              "system": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Agent host operating system uptime in seconds; not the uptime of a remote engine."
+              },
+              "agent": {
+                "type": "number",
+                "minimum": 0,
+                "description": "Agent process uptime in seconds."
+              }
+            },
+            "required": [
+              "system",
+              "agent"
+            ]
           }
         },
         "required": [
@@ -2088,13 +3645,21 @@
       "GetSystemUsage200ResponseBody": {
         "type": "object",
         "properties": {
-          "layers_size": {"type": "integer"},
+          "layers_size": {
+            "type": "integer"
+          },
           "images": {
             "type": "object",
             "properties": {
-              "shared_size": {"type": "integer"},
-              "size": {"type": "integer"},
-              "virtual_size": {"type": "integer"}
+              "shared_size": {
+                "type": "integer"
+              },
+              "size": {
+                "type": "integer"
+              },
+              "virtual_size": {
+                "type": "integer"
+              }
             },
             "required": [
               "shared_size",
@@ -2105,14 +3670,20 @@
           "containers": {
             "type": "object",
             "properties": {
-              "size_rootfs": {"type": "integer"}
+              "size_rootfs": {
+                "type": "integer"
+              }
             },
             "required": [
               "size_rootfs"
             ]
           },
-          "volumes": {"type": "integer"},
-          "build_cache": {"type": "integer"}
+          "volumes": {
+            "type": "integer"
+          },
+          "build_cache": {
+            "type": "integer"
+          }
         },
         "required": [
           "layers_size",
@@ -2122,6 +3693,24 @@
           "build_cache"
         ]
       }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Dashboard/API credentials: API_USERNAME and API_PASSWORD"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "servers": [
+    {
+      "url": "/",
+      "description": "This agent"
+    }
+  ]
 }

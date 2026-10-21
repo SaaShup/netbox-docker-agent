@@ -1,0 +1,105 @@
+{
+  "source_commit": "96d321b7f967517cd1f966ba4e0b332380f6977d",
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/api/engine/:type",
+      "source": "e974d3bd502f614f"
+    },
+    {
+      "method": "GET",
+      "path": "/api/engine/:type",
+      "source": "91e25dba31c28805"
+    },
+    {
+      "method": "GET",
+      "path": "/info",
+      "source": "fd0a547f9fcd6516"
+    },
+    {
+      "method": "GET",
+      "path": "/system/usage",
+      "source": "4a209458cc75aee0"
+    },
+    {
+      "method": "GET",
+      "path": "/api/containers",
+      "source": "4488c340663ed73b"
+    },
+    {
+      "method": "GET",
+      "path": "/api/volumes",
+      "source": "7f1c812d4a047cd7"
+    },
+    {
+      "method": "GET",
+      "path": "/api/networks",
+      "source": "0173bf6bb3a58ebf"
+    },
+    {
+      "method": "GET",
+      "path": "/api/images",
+      "source": "c5ff71cf8bf0b5ed"
+    },
+    {
+      "method": "GET",
+      "path": "/api/registries",
+      "source": "97877b8f5f5daed0"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/engine/containers",
+      "source": "dcf35b57666a30f9"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/engine/:type",
+      "source": "3eb97ccb653722a0"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/engine/containers/:id/exec",
+      "source": "5528cd8d52eeef7a"
+    },
+    {
+      "method": "GET",
+      "path": "/api/engine/containers/:id/logs",
+      "source": "68e3b18ef95a2437"
+    },
+    {
+      "method": "POST",
+      "path": "/api/engine/containers/:id/ws",
+      "source": "dbf8c893e93119b9"
+    },
+    {
+      "method": "GET",
+      "path": "/api/engine/containers/:id/stats",
+      "source": "11bd132498210f7b"
+    },
+    {
+      "method": "GET",
+      "path": "/metrics",
+      "source": "788067a8780c7835"
+    }
+  ],
+  "openapi_paths": [
+    "/api/engine/endpoint",
+    "/api/engine/containers",
+    "/api/engine/images",
+    "/api/engine/networks",
+    "/api/engine/volumes",
+    "/api/engine/registries",
+    "/api/containers",
+    "/api/engine/containers/{containerId}/logs",
+    "/api/engine/containers/{containerId}/exec",
+    "/api/images",
+    "/api/networks",
+    "/api/volumes",
+    "/metrics",
+    "/info",
+    "/system/usage",
+    "/doc",
+    "/"
+  ],
+  "node_count": 410
+}
